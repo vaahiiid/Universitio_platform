@@ -81,6 +81,10 @@ export default function BlogPostPage() {
   useEffect(() => {
     if (post) {
       document.title = `${post.title} | Universitio Blog`;
+      const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
+      meta.setAttribute("name", "description");
+      meta.setAttribute("content", post.excerpt.slice(0, 160));
+      if (!meta.parentElement) document.head.appendChild(meta);
     }
     window.scrollTo(0, 0);
   }, [post]);

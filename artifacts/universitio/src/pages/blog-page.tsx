@@ -21,6 +21,10 @@ export default function BlogPage() {
 
   useEffect(() => {
     document.title = "Blog | Universitio — Insights & Guidance for International Students";
+    const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
+    meta.setAttribute("name", "description");
+    meta.setAttribute("content", "Expert insights, university guides, and practical advice for international students planning to study abroad. Browse articles on UK universities, student experience, scholarships, and more.");
+    if (!meta.parentElement) document.head.appendChild(meta);
   }, []);
 
   const featured = blogPosts[0];
@@ -28,10 +32,9 @@ export default function BlogPage() {
   const visible = remaining.slice(0, visibleCount);
   const hasMore = visibleCount < remaining.length;
 
-  const topCategories = blogCategories
+  const allCategories = blogCategories
     .filter((c) => c.postCount > 0)
-    .sort((a, b) => b.postCount - a.postCount)
-    .slice(0, 10);
+    .sort((a, b) => b.postCount - a.postCount);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -55,7 +58,7 @@ export default function BlogPage() {
               <button className="px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap bg-primary text-white border-primary shadow-md">
                 All
               </button>
-              {topCategories.map((cat) => (
+              {allCategories.map((cat) => (
                 <Link key={cat.slug} href={`/blog/category/${cat.slug}`}>
                   <button className="px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap bg-white text-foreground border-border hover:border-primary hover:text-primary transition-all">
                     {cat.name}

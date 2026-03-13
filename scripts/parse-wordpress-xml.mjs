@@ -63,8 +63,25 @@ function cleanHtml(html) {
   let cleaned = html;
   cleaned = cleaned.replace(/<!--\s*\/?wp:[^>]*-->/g, '');
   cleaned = cleaned.replace(/\[[\w_]+[^\]]*\]/g, '');
-  cleaned = cleaned.replace(/<div[^>]*class="[^"]*(?:react-scroll|@container|flex-1 overflow)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '');
-  cleaned = cleaned.replace(/<div[^>]*data-component[^>]*>[\s\S]*?<\/div>/gi, '');
+
+  cleaned = cleaned.replace(/<div[^>]*>/gi, '');
+  cleaned = cleaned.replace(/<\/div>/gi, '');
+
+  cleaned = cleaned.replace(/<article[^>]*>/gi, '');
+  cleaned = cleaned.replace(/<\/article>/gi, '');
+
+  cleaned = cleaned.replace(/ data-section-id="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-start="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-end="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-turn-id="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-turn="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-testid="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-scroll-anchor="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ data-message-[a-z-]+="[^"]*"/g, '');
+  cleaned = cleaned.replace(/ dir="auto"/g, '');
+  cleaned = cleaned.replace(/ tabindex="-1"/g, '');
+  cleaned = cleaned.replace(/ class="[^"]*(?:text-token-text|agent-turn|markdown prose|thread-content|text-base my-auto|conversation-turn|text-message|flex-col|min-h-8|wrap-break-word|markdown-new-styling)[^"]*"/g, '');
+
   cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
   cleaned = cleaned.replace(/^\s+|\s+$/g, '');
   return cleaned;

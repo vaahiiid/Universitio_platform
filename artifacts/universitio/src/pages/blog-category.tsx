@@ -26,15 +26,18 @@ export default function BlogCategoryPage() {
   useEffect(() => {
     if (category) {
       document.title = `${category.name} Articles | Universitio Blog`;
+      const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
+      meta.setAttribute("name", "description");
+      meta.setAttribute("content", `Browse ${posts.length} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`);
+      if (!meta.parentElement) document.head.appendChild(meta);
     }
     window.scrollTo(0, 0);
     setVisibleCount(POSTS_PER_PAGE);
-  }, [category, categorySlug]);
+  }, [category, categorySlug, posts.length]);
 
-  const topCategories = blogCategories
+  const allCategoriesSorted = blogCategories
     .filter((c) => c.postCount > 0)
-    .sort((a, b) => b.postCount - a.postCount)
-    .slice(0, 10);
+    .sort((a, b) => b.postCount - a.postCount);
 
   const visible = posts.slice(0, visibleCount);
   const hasMore = visibleCount < posts.length;
@@ -91,7 +94,7 @@ export default function BlogCategoryPage() {
                   All
                 </button>
               </Link>
-              {topCategories.map((cat) => (
+              {allCategoriesSorted.map((cat) => (
                 <Link key={cat.slug} href={`/blog/category/${cat.slug}`}>
                   <button
                     className={`px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition-all ${
