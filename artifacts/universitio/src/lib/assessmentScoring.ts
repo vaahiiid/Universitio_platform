@@ -345,12 +345,18 @@ function generateObservations(profile: AssessmentProfile, scores: {
   else
     obs.push("Obtaining a recognised language qualification is strongly recommended and would meaningfully improve your admission potential.");
 
+  const destNames: Record<string, string> = {
+    "UK": "the UK", "USA": "the USA", "Canada": "Canada",
+    "Germany": "Germany", "Netherlands": "the Netherlands", "Australia": "Australia"
+  };
+  const destLabel = destNames[destination] || "this destination";
+
   if (scores.budget >= 10)
-    obs.push("Your budget level is suitable for study in this destination.");
+    obs.push(`Your budget level is suitable for study in ${destLabel}.`);
   else if (scores.budget >= 5)
-    obs.push("Your budget is workable for some programmes — we can help identify affordable options within your range.");
+    obs.push(`Your budget is workable for some programmes in ${destLabel} — we can help identify affordable options within your range.`);
   else
-    obs.push("Your budget may significantly limit your options in this destination. Exploring scholarships or alternative destinations could be beneficial.");
+    obs.push(`Your budget may significantly limit your options in ${destLabel}. Exploring scholarships or alternative destinations could be beneficial.`);
 
   if (scores.alignment >= 6)
     obs.push("Your intended course aligns well with your academic background, which strengthens your application.");
