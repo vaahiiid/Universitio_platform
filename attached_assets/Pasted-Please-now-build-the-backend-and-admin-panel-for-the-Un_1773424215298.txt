@@ -1,0 +1,375 @@
+Please now build the backend and admin panel for the Universitio website, and also fix the remaining navigation issue carefully.
+
+The result must be clean, user-friendly, secure, well-structured, and easy to manage.
+
+Main goals:
+1. Build an admin login system
+2. Build an admin dashboard
+3. Store and manage all website submissions as leads
+4. Separate each lead type into its own section
+5. Add a blog import area in admin
+6. Keep the system simple, practical, and user-friendly
+7. Fix the unresolved cross-page section navigation issue properly
+
+==================================================
+A. ADMIN LOGIN
+==================================================
+
+Create a secure admin login page.
+
+Requirements:
+- Username and password login
+- Protected admin area
+- Unauthenticated users must not access the admin panel
+- Clean, minimal, modern login page design aligned with the Universitio brand
+
+Use these admin credentials for now:
+
+Username:
+info@universitio.com
+
+Password:
+Universitio2002@
+
+After login, the user should be redirected to the admin dashboard.
+
+Add a logout button in the admin area.
+
+==================================================
+B. ADMIN PANEL STRUCTURE
+==================================================
+
+Create a clean admin dashboard with a sidebar or clear navigation.
+
+Main admin sections:
+1. Dashboard
+2. Forms
+3. Assessments
+4. Partner Requests
+5. Student Referrals
+6. Blog Import
+7. Settings / Admin Account (simple for now)
+
+The admin panel must be user-friendly, easy to scan, and practical.
+It should feel clean, professional, and not overloaded.
+
+==================================================
+C. DASHBOARD OVERVIEW
+==================================================
+
+Create a dashboard home page that gives a quick overview such as:
+- total new leads
+- total consultation forms
+- total assessments
+- total partner requests
+- total student referral applications
+- recent submissions
+
+This should be visual, simple, and helpful.
+
+==================================================
+D. FORMS SECTION
+==================================================
+
+Create a section for all standard contact / consultation form submissions.
+
+This section should allow the admin to:
+- view all submissions
+- open each submission
+- see full submitted details
+- search
+- filter
+- mark status
+
+Suggested statuses:
+- New
+- Reviewed
+- Contacted
+- Closed
+
+Each submission view should show:
+- full name
+- email
+- phone
+- submitted details
+- preferred contact method if available
+- submission date
+- internal notes field
+- current status
+
+==================================================
+E. ASSESSMENTS SECTION
+==================================================
+
+Create a dedicated section for Free Admissions Assessment submissions.
+
+This is very important.
+
+Requirements:
+- Every assessment submission must be saved before the user can see their result
+- The result must not be visible unless the assessment is submitted successfully
+- The admin must be able to see all submitted assessments
+
+The Assessments section should show:
+- applicant full name
+- email
+- phone
+- nationality
+- age/date of birth
+- marital status
+- selected destinations
+- intended level of study
+- intended course area
+- highest qualification
+- language details
+- budget
+- CV / upload if provided
+- final score
+- score band / label
+- key assessment notes / flags
+- whether follow-up was requested
+- submission date
+- status
+- internal notes
+
+Suggested statuses:
+- New
+- Reviewed
+- Contacted
+- Follow-up Needed
+- Closed
+
+The assessment result shown in admin should be easy to read and structured.
+
+==================================================
+F. PARTNER REQUESTS SECTION
+==================================================
+
+Create a separate section for “Become a Universitio Partner” applications.
+
+For each partner request, show:
+- full name
+- position
+- organisation name
+- email
+- contact number
+- website
+- service description
+- target student nationalities
+- organisation country
+- requested study destination countries
+- additional notes
+- submission date
+- status
+- internal notes
+
+Suggested statuses:
+- New
+- Under Review
+- Contacted
+- Accepted
+- Rejected
+
+==================================================
+G. STUDENT REFERRALS SECTION
+==================================================
+
+Create a separate section for Student Referral Programme submissions.
+
+For each referral application, show:
+- full name
+- email
+- date of birth
+- university currently studying at
+- source student nationalities they want to refer
+- destination countries they want to refer students for
+- additional notes
+- submission date
+- status
+- internal notes
+
+Suggested statuses:
+- New
+- Under Review
+- Contacted
+- Accepted
+- Rejected
+
+==================================================
+H. LEAD MANAGEMENT USABILITY
+==================================================
+
+Across all admin sections, the admin should be able to:
+- search by name or email
+- filter by status
+- sort by newest first
+- open individual records
+- add internal notes
+- update status easily
+
+The admin UI must be simple and practical.
+Avoid clutter.
+
+==================================================
+I. BLOG IMPORT SECTION IN ADMIN
+==================================================
+
+Create an admin section called:
+
+Blog Import
+
+This is for uploading blog import files later through the UI.
+
+For now, build the UI and backend flow for ZIP-based blog import.
+
+Important concept:
+The admin should be able to upload a ZIP file that contains:
+- a structured blog data file
+- images
+
+The system should then:
+- read the ZIP
+- extract the blog data
+- import the blog posts
+- save the images
+- connect the right images to the right posts
+- place the imported posts into the blog automatically
+
+Expected future ZIP structure example:
+blog-import.zip
+ ├── posts.json
+ └── images/
+     ├── image1.jpg
+     ├── image2.jpg
+
+The Blog Import page should include:
+- upload area
+- short instructions
+- import button
+- success/error messages
+- optional preview summary if possible
+
+For now, just build the structure and import capability around this ZIP approach.
+Make it user-friendly and clear.
+
+==================================================
+J. BLOG IMPORT DATA FORMAT
+==================================================
+
+The expected blog data file inside the ZIP should be JSON.
+
+Design the import logic around a posts.json structure such as:
+
+{
+  "posts": [
+    {
+      "title": "Post title",
+      "slug": "post-slug",
+      "date": "2026-03-10",
+      "excerpt": "Short summary",
+      "content": "<p>Full article content...</p>",
+      "categories": ["Category 1", "Category 2"],
+      "tags": ["tag1", "tag2"],
+      "featured_image": "example-image.jpg",
+      "status": "published"
+    }
+  ]
+}
+
+For now, build the system to support this structure.
+The UI should explain that:
+- the ZIP should contain posts.json
+- images must be inside an images folder
+- featured_image values should match image file names
+
+==================================================
+K. EMAIL / CONTACT STORAGE
+==================================================
+
+All submitted data must be stored so that nothing is lost.
+
+The backend should reliably save all:
+- consultation forms
+- assessments
+- partner requests
+- student referrals
+
+Submissions must remain available in the admin panel.
+
+==================================================
+L. CROSS-PAGE SECTION NAVIGATION FIX (IMPORTANT - STILL NOT SOLVED)
+==================================================
+
+This issue is still not fixed and must be resolved properly.
+
+Problem:
+When the user is on another page, such as Free Consultation or another internal page, and clicks a homepage navbar item like:
+- About Us
+- Contact Us
+- Services
+- Agents
+- etc.
+
+the site currently goes back to the homepage top/hero section instead of smoothly taking the user directly to the correct homepage section.
+
+This must be fixed.
+
+Correct expected behaviour:
+- If the user is on another page
+- and clicks a navbar item linked to a homepage section
+- the site must navigate back to the homepage AND scroll directly to the correct section
+- not just land on the hero/top of the homepage
+
+Examples:
+- About Us → homepage About Us section
+- Contact Us → homepage Contact section
+- Agents → homepage Agents section
+- Services → homepage Services section
+
+Please implement this correctly across the whole site.
+
+==================================================
+M. PAGE SCROLL RESET
+==================================================
+
+Also ensure that whenever the user goes to a normal page such as:
+- Free Consultation
+- Assessment
+- Partner page
+- Student Referral page
+- Blog
+- Careers
+
+the new page always opens from the top.
+
+No page should preserve the previous scroll position.
+
+==================================================
+N. ADMIN / UX / QUALITY EXPECTATIONS
+==================================================
+
+The entire backend-connected admin experience should be:
+- user-friendly
+- clean
+- practical
+- minimal
+- easy to manage
+- visually organised
+
+Do not overcomplicate the first version.
+
+Build a solid first admin panel focused on managing leads and submissions.
+
+==================================================
+FINAL OBJECTIVE
+==================================================
+
+Build a secure Universitio admin panel with:
+- username/password login
+- dashboard
+- separate sections for Forms, Assessments, Partner Requests, and Student Referrals
+- internal status and notes management
+- Blog Import UI for ZIP + JSON + images
+- full submission storage
+- proper cross-page homepage section navigation fix
+- proper page scroll-to-top behaviour
