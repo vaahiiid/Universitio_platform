@@ -1,0 +1,103 @@
+Please revise the Admissions Assessment logic and submission flow.
+
+Important conversion change:
+Users must NOT see their estimated score or percentage before submitting their details successfully.
+
+New required flow:
+1. User completes the full multi-step assessment
+2. Before results are shown, display a final review/submit step
+3. In that final step, clearly explain that they need to submit their assessment so we can save their information and provide their result
+4. Only after successful submission should the estimated admission score/results be shown
+5. If the form is not submitted, the result must not be visible
+
+This is very important because the assessment must function as a lead-generation tool.
+We need to capture the lead details before showing the result.
+
+Please implement a clean final step such as:
+- Review Your Information
+- Submit Assessment to View Your Result
+
+Use a strong but user-friendly CTA button such as:
+- Submit and View My Result
+- Get My Result
+- Submit Assessment
+
+After successful submission:
+- save the lead data properly
+- then reveal the result screen
+
+Scoring revision:
+The current scoring feels too generous and not realistic enough.
+Please revise the weighting and scoring logic so that weak or incomplete profiles do NOT receive high green scores.
+
+Important scoring expectations:
+- profiles with only minimum/basic strengths should not appear strongly eligible
+- low-quality profiles should not receive high percentages
+- green/high-confidence scoring should be harder to achieve
+- results should feel realistic, stricter, and more trustworthy
+
+Please make the scoring model more logical and better calibrated.
+
+Suggested result interpretation bands:
+- 0–39 = Low admission readiness
+- 40–59 = Developing profile
+- 60–74 = Moderate potential
+- 75–89 = Good potential
+- 90–100 = Strong potential
+
+Colour logic:
+- red for low
+- orange for developing
+- yellow for moderate
+- light green for good
+- green for strong
+
+Important:
+Do not make average or weak profiles appear green.
+
+Scoring logic improvement:
+Please increase the significance of meaningful factors and apply more realistic weighting.
+Use stronger differentiation between:
+- destination eligibility
+- academic readiness
+- target level alignment
+- language readiness
+- budget suitability
+- age alignment
+- profile strength
+- additional qualifications
+- research background where relevant
+
+Also apply soft score caps where necessary.
+Examples:
+- if academic background is strongly misaligned with the intended study level, the final score should not be able to reach a very high band
+- if budget is very weak for the selected destination, the score should be limited accordingly
+- if language readiness is weak for a language-sensitive destination/level, the score should be moderated
+- if nationality restrictions exist for a selected destination, that destination score should reflect that clearly
+
+Age factor:
+Age should remain a factor, but scoring must be moderate and realistic.
+Younger applicants who are well aligned with their intended study level may score slightly higher.
+However, age should not unfairly eliminate older applicants.
+Use age as a soft weighting factor, not a hard rejection factor.
+
+Desired scoring outcome:
+- weak/minimal profiles should more often fall in low or developing bands
+- average profiles should mostly fall in moderate bands
+- only genuinely stronger and better-aligned profiles should enter good or strong bands
+
+Results page:
+After submission, display:
+- estimated score
+- band/label
+- concise explanation
+- 2–4 key observations
+- CTA for personalised guidance if the score is not strong
+
+For lower or moderate scores, add a strong follow-up CTA such as:
+- Improve My Chances
+- Contact Me With Suggestions
+- Help Me Strengthen My Profile
+
+Please keep the UI premium, minimal, user-friendly, and trustworthy.
+The user should feel guided, not judged.
