@@ -373,8 +373,6 @@ function generateExplanations(profile: AssessmentProfile, scores: {
   academic: number; language: number; budget: number;
   alignment: number; profileStrength: number; age: number;
 }, destination: string, finalScore: number): string[] {
-  if (finalScore >= 90) return [];
-
   const reasons: { priority: number; text: string }[] = [];
   const destNames: Record<string, string> = {
     "UK": "the UK", "USA": "the USA", "Canada": "Canada",
@@ -384,18 +382,24 @@ function generateExplanations(profile: AssessmentProfile, scores: {
 
   if (scores.budget < 14) {
     reasons.push({ priority: 1, text: `Budget is below the typical cost for study in ${destLabel}.` });
+  } else if (scores.budget < 20) {
+    reasons.push({ priority: 8, text: `A higher budget would give you more programme choices in ${destLabel}.` });
   }
 
   if (scores.language < 8) {
     reasons.push({ priority: 2, text: "Language readiness needs strengthening — a recognised test score would help." });
   } else if (scores.language < 12) {
     reasons.push({ priority: 3, text: "A higher language test score would open more competitive programme options." });
+  } else if (scores.language < 16) {
+    reasons.push({ priority: 9, text: "Improving your language score further could unlock the most selective programmes." });
   }
 
   if (scores.academic < 8) {
     reasons.push({ priority: 2, text: "Academic background may need further development for the intended study level." });
   } else if (scores.academic < 12) {
     reasons.push({ priority: 4, text: "Stronger academic grades would improve competitiveness for top programmes." });
+  } else if (scores.academic < 16) {
+    reasons.push({ priority: 10, text: "Top-tier programmes look for the strongest academic records — yours is solid but could be even more competitive." });
   }
 
   if (scores.alignment <= 3) {
@@ -404,10 +408,16 @@ function generateExplanations(profile: AssessmentProfile, scores: {
 
   if (scores.profileStrength < 3) {
     reasons.push({ priority: 6, text: "Adding qualifications like work experience, certifications, or test scores would strengthen the profile." });
+  } else if (scores.profileStrength < 6) {
+    reasons.push({ priority: 11, text: "Extra credentials such as research, certifications, or relevant work experience would give your application an edge." });
   }
 
   if (scores.age < 6) {
     reasons.push({ priority: 7, text: "Age relative to the chosen study level may affect some admission decisions." });
+  }
+
+  if (reasons.length === 0) {
+    reasons.push({ priority: 99, text: "Your profile is very strong overall — our consultants can help you target the most competitive programmes." });
   }
 
   reasons.sort((a, b) => a.priority - b.priority);

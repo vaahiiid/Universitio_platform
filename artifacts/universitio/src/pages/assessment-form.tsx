@@ -264,16 +264,14 @@ function ResultsView({ results, onReset }: { results: DestinationScore[]; onRese
                 {r.restricted && r.restrictionMessage && (
                   <AdvisoryNote variant="warning">{r.restrictionMessage}</AdvisoryNote>
                 )}
-                {r.explanations && r.explanations.length > 0 && (
-                  <div className="mt-4 w-full space-y-1.5">
-                    {r.explanations.map((exp, i) => (
-                      <p key={i} className="text-xs text-muted-foreground flex items-start gap-2">
-                        <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" />
-                        {exp}
-                      </p>
-                    ))}
-                  </div>
-                )}
+                <div className="mt-4 w-full space-y-1.5">
+                  {(r.explanations || []).map((exp, i) => (
+                    <p key={i} className="text-xs text-muted-foreground flex items-start gap-2">
+                      <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" />
+                      {exp}
+                    </p>
+                  ))}
+                </div>
               </div>
             );
           })}
