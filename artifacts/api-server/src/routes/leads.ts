@@ -1,142 +1,233 @@
-import { Router, type IRouter } from "express";
-import { db, consultations, assessments, partnerRequests, studentReferrals } from "@workspace/db";
+import { Router, type IRouter, type Request, type Response } from "express";
+import {
+  db,
+  consultations,
+  assessments,
+  partnerRequests,
+  studentReferrals,
+} from "@workspace/db";
+import type { InsertConsultation } from "@workspace/db";
+import type { InsertAssessment } from "@workspace/db";
+import type { InsertPartnerRequest } from "@workspace/db";
+import type { InsertStudentReferral } from "@workspace/db";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 
 const router: IRouter = Router();
 
-function validateRequired(data: any, fields: string[]): string | null {
+const CV_UPLOAD_DIR = path.resolve(process.cwd(), "uploads/cvs");
+if (!fs.existsSync(CV_UPLOAD_DIR)) {
+  fs.mkdirSync(CV_UPLOAD_DIR, { recursive: true });
+}
+
+const cvUpload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, CV_UPLOAD_DIR),
+    filename: (_req, file, cb) => {
+      const unique = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+      const ext = path.extname(file.originalname);
+      cb(null, `${unique}${ext}`);
+    },
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = [".pdf", ".doc", ".docx"];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only PDF, DOC, and DOCX files are allowed"));
+    }
+  },
+});
+
+function tryParseJson(val: unknown): unknown {
+  if (typeof val === "string") {
+    try { return JSON.parse(val); } catch { return val; }
+  }
+  return val;
+}
+
+function normaliseBody(data: Record<string, unknown>): Record<string, unknown> {
+  const jsonFields = [
+    "preferredDestinations", "previousEducation", "destinations",
+    "additionalStrengths", "studentNationalities", "nationalities",
+  ];
+  const result = { ...data };
+  for (const field of jsonFields) {
+    if (result[field] !== undefined) {
+      result[field] = tryParseJson(result[field]);
+    }
+  }
+  return result;
+}
+
+function validateRequired(data: Record<string, unknown>, fields: string[]): string | null {
   for (const field of fields) {
-    if (!data[field] || (typeof data[field] === "string" && !data[field].trim())) {
+    const val = data[field];
+    if (!val || (typeof val === "string" && !val.trim())) {
       return `${field} is required`;
     }
   }
   return null;
 }
 
-router.post("/leads/consultation", async (req, res) => {
+function toBool(val: unknown): boolean {
+  if (typeof val === "boolean") return val;
+  if (typeof val === "string") return val.toLowerCase() === "yes" || val === "true";
+  return false;
+}
+
+router.post("/leads/consultation", cvUpload.single("cvFile"), async (req: Request, res: Response) => {
   try {
-    const data = req.body;
+    const data = normaliseBody(req.body as Record<string, unknown>);
     const err = validateRequired(data, ["fullName", "email", "mobile"]);
     if (err) { res.status(400).json({ error: err }); return; }
 
-    const [row] = await db.insert(consultations).values({
-      fullName: data.fullName,
-      email: data.email,
-      mobile: data.mobile,
-      dateOfBirth: data.dateOfBirth,
-      nationality: data.nationality,
-      maritalStatus: data.maritalStatus,
-      preferredDestinations: data.preferredDestinations,
-      intendedCourseArea: data.intendedCourseArea === "Other" ? data.intendedCourseAreaOther || data.intendedCourseArea : data.intendedCourseArea,
-      previousEducation: data.previousEducation,
-      hasEnglishQualification: data.hasEnglishQualification,
-      englishQualificationType: data.englishQualificationType === "Other" ? data.englishQualificationTypeOther || data.englishQualificationType : data.englishQualificationType,
-      englishOverallScore: data.englishOverallScore,
-      englishCurrentLevel: data.englishCurrentLevel,
-      tuitionBudget: data.tuitionBudget,
-      preferredContactMethod: data.preferredContactMethod,
-      howDidYouHear: data.howDidYouHear === "Other" ? data.howDidYouHearOther || data.howDidYouHear : data.howDidYouHear,
-      cvFileName: data.cvFileName || null,
+    const cvFileName = req.file ? req.file.filename : (data.cvFileName as string | undefined) || null;
+
+    const intendedCourseArea = data.intendedCourseArea === "Other"
+      ? (data.intendedCourseAreaOther as string) || (data.intendedCourseArea as string)
+      : (data.intendedCourseArea as string);
+
+    const englishQualificationType = data.englishQualificationType === "Other"
+      ? (data.englishQualificationTypeOther as string) || (data.englishQualificationType as string)
+      : (data.englishQualificationType as string);
+
+    const howDidYouHear = data.howDidYouHear === "Other"
+      ? (data.howDidYouHearOther as string) || (data.howDidYouHear as string)
+      : (data.howDidYouHear as string);
+
+    const values: InsertConsultation = {
+      fullName: data.fullName as string,
+      email: data.email as string,
+      mobile: data.mobile as string,
+      dateOfBirth: data.dateOfBirth as string,
+      nationality: data.nationality as string,
+      maritalStatus: data.maritalStatus as string,
+      preferredDestinations: data.preferredDestinations as string[],
+      intendedCourseArea,
+      previousEducation: data.previousEducation as Array<{ fieldOfStudy: string; levelOfStudy: string }>,
+      hasEnglishQualification: data.hasEnglishQualification as string,
+      englishQualificationType,
+      englishOverallScore: data.englishOverallScore as string,
+      englishCurrentLevel: data.englishCurrentLevel as string,
+      tuitionBudget: data.tuitionBudget as string,
+      preferredContactMethod: data.preferredContactMethod as string,
+      howDidYouHear,
+      cvFileName,
       rawData: data,
       status: "New",
-    }).returning();
-    res.status(201).json({ success: true, id: row.id });
-  } catch (err: any) {
+    };
+
+    const [row] = await db.insert(consultations).values(values).returning();
+    res.status(201).json({ success: true, data: row });
+  } catch (err) {
     console.error("Error saving consultation:", err);
     res.status(500).json({ error: "Failed to save consultation" });
   }
 });
 
-router.post("/leads/assessment", async (req, res) => {
+router.post("/leads/assessment", cvUpload.single("cvFile"), async (req: Request, res: Response) => {
   try {
-    const data = req.body;
+    const data = normaliseBody(req.body as Record<string, unknown>);
     const err = validateRequired(data, ["fullName", "email", "mobile"]);
     if (err) { res.status(400).json({ error: err }); return; }
 
-    const [row] = await db.insert(assessments).values({
-      fullName: data.fullName,
-      email: data.email,
-      mobile: data.mobile,
-      dateOfBirth: data.dateOfBirth,
-      nationality: data.nationality,
-      maritalStatus: data.maritalStatus,
-      destinations: data.destinations,
-      studyLevel: data.studyLevel,
-      courseArea: data.courseArea,
-      highestQualification: data.highestQualification,
-      academicPerformance: data.academicPerformance,
-      fieldAlignment: data.fieldAlignment,
-      previousEducation: data.previousEducation,
-      hasLanguageQualification: data.hasLanguageQualification,
-      languageQualificationType: data.languageQualificationType,
-      languageScore: data.languageScore,
-      englishLevel: data.englishLevel,
-      budget: data.budget,
-      additionalStrengths: data.additionalStrengths,
-      hasResearchExperience: data.hasResearchExperience,
-      preferredContactMethod: data.preferredContactMethod,
-      howDidYouHear: data.howDidYouHear,
-      cvFileName: data.cvFileName || null,
-      overallScore: data.overallScore ?? null,
-      scoreBand: data.scoreBand ?? null,
-      scoreNotes: data.scoreNotes ?? null,
-      followUpRequested: data.followUpRequested ?? false,
+    const cvFileName = req.file ? req.file.filename : (data.cvFileName as string | undefined) || null;
+
+    const values: InsertAssessment = {
+      fullName: data.fullName as string,
+      email: data.email as string,
+      mobile: data.mobile as string,
+      dateOfBirth: data.dateOfBirth as string,
+      nationality: data.nationality as string,
+      maritalStatus: data.maritalStatus as string,
+      destinations: data.destinations as string[],
+      studyLevel: data.studyLevel as string,
+      courseArea: data.courseArea as string,
+      highestQualification: data.highestQualification as string,
+      academicPerformance: data.academicPerformance as string,
+      fieldAlignment: data.fieldAlignment as string,
+      previousEducation: data.previousEducation as Record<string, unknown>,
+      hasLanguageQualification: toBool(data.hasLanguageQualification),
+      languageQualificationType: data.languageQualificationType as string,
+      languageScore: data.languageScore as string,
+      englishLevel: data.englishLevel as string,
+      budget: data.budget as string,
+      additionalStrengths: data.additionalStrengths as string[],
+      hasResearchExperience: toBool(data.hasResearchExperience),
+      preferredContactMethod: data.preferredContactMethod as string,
+      howDidYouHear: data.howDidYouHear as string,
+      cvFileName,
+      overallScore: typeof data.overallScore === "number" ? data.overallScore : null,
+      scoreBand: (data.scoreBand as string) ?? null,
+      scoreNotes: (data.scoreNotes as string) ?? null,
+      followUpRequested: toBool(data.followUpRequested),
       rawData: data,
       status: "New",
-    }).returning();
-    res.status(201).json({ success: true, id: row.id });
-  } catch (err: any) {
+    };
+
+    const [row] = await db.insert(assessments).values(values).returning();
+    res.status(201).json({ success: true, data: row });
+  } catch (err) {
     console.error("Error saving assessment:", err);
     res.status(500).json({ error: "Failed to save assessment" });
   }
 });
 
-router.post("/leads/partners", async (req, res) => {
+router.post("/leads/partners", async (req: Request, res: Response) => {
   try {
-    const data = req.body;
+    const data = normaliseBody(req.body as Record<string, unknown>);
     const err = validateRequired(data, ["fullName", "email"]);
     if (err) { res.status(400).json({ error: err }); return; }
 
-    const [row] = await db.insert(partnerRequests).values({
-      fullName: data.fullName,
-      position: data.position,
-      organisation: data.organisation,
-      email: data.email,
-      phone: data.phone,
-      website: data.website,
-      services: data.services,
-      studentNationalities: data.studentNationalities,
-      country: data.country,
-      destinations: data.destinations,
-      additionalNotes: data.additionalNotes,
+    const values: InsertPartnerRequest = {
+      fullName: data.fullName as string,
+      email: data.email as string,
+      position: data.position as string,
+      organisation: (data.organisationName ?? data.organisation) as string,
+      phone: data.phone as string,
+      website: data.website as string,
+      services: (data.servicesDescription ?? data.services) as string,
+      studentNationalities: (data.nationalities ?? data.studentNationalities) as string[],
+      country: (data.basedIn ?? data.country) as string,
+      destinations: data.destinations as string[],
+      additionalNotes: (data.notes ?? data.additionalNotes) as string,
       rawData: data,
       status: "New",
-    }).returning();
-    res.status(201).json({ success: true, id: row.id });
-  } catch (err: any) {
+    };
+
+    const [row] = await db.insert(partnerRequests).values(values).returning();
+    res.status(201).json({ success: true, data: row });
+  } catch (err) {
     console.error("Error saving partner request:", err);
     res.status(500).json({ error: "Failed to save partner request" });
   }
 });
 
-router.post("/leads/referral", async (req, res) => {
+router.post("/leads/referral", async (req: Request, res: Response) => {
   try {
-    const data = req.body;
+    const data = normaliseBody(req.body as Record<string, unknown>);
     const err = validateRequired(data, ["fullName", "email"]);
     if (err) { res.status(400).json({ error: err }); return; }
 
-    const [row] = await db.insert(studentReferrals).values({
-      fullName: data.fullName,
-      email: data.email,
-      dateOfBirth: data.dateOfBirth,
-      university: data.university,
-      studentNationalities: data.studentNationalities,
-      destinations: data.destinations,
-      additionalNotes: data.additionalNotes,
+    const values: InsertStudentReferral = {
+      fullName: data.fullName as string,
+      email: data.email as string,
+      dateOfBirth: data.dateOfBirth as string,
+      university: data.university as string,
+      studentNationalities: (data.nationalities ?? data.studentNationalities) as string[],
+      destinations: data.destinations as string[],
+      additionalNotes: (data.notes ?? data.additionalNotes) as string,
       rawData: data,
       status: "New",
-    }).returning();
-    res.status(201).json({ success: true, id: row.id });
-  } catch (err: any) {
+    };
+
+    const [row] = await db.insert(studentReferrals).values(values).returning();
+    res.status(201).json({ success: true, data: row });
+  } catch (err) {
     console.error("Error saving student referral:", err);
     res.status(500).json({ error: "Failed to save student referral" });
   }

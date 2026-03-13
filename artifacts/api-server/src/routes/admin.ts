@@ -1,4 +1,4 @@
-import { Router, type IRouter } from "express";
+import { Router, type IRouter, type Request, type Response } from "express";
 import {
   db,
   consultations,
@@ -7,7 +7,8 @@ import {
   studentReferrals,
   blogImportRecords,
 } from "@workspace/db";
-import { eq, desc, ilike, or, and, sql, count } from "drizzle-orm";
+import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
+import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
 import { requireAdmin } from "../middleware/auth";
 import multer from "multer";
 import AdmZip from "adm-zip";
@@ -23,12 +24,17 @@ const ALLOWED_IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".
 const MAX_ZIP_ENTRIES = 500;
 const MAX_UNCOMPRESSED_SIZE = 100 * 1024 * 1024;
 
-function parseId(raw: string): number | null {
-  const id = parseInt(raw, 10);
+function parseId(raw: string | string[]): number | null {
+  const str = Array.isArray(raw) ? raw[0] : raw;
+  const id = parseInt(str, 10);
   return Number.isFinite(id) && id > 0 ? id : null;
 }
 
-router.get("/admin/stats", async (_req, res) => {
+interface AdminRequest extends Request {
+  admin?: { email: string };
+}
+
+router.get("/admin/stats", async (_req: Request, res: Response) => {
   try {
     const [consCount] = await db.select({ value: count() }).from(consultations);
     const [assCount] = await db.select({ value: count() }).from(assessments);
@@ -53,16 +59,29 @@ router.get("/admin/stats", async (_req, res) => {
   }
 });
 
-function buildListCondition(nameCol: any, emailCol: any, statusCol: any, query: any) {
+interface ListParams {
+  whereClause: SQL | undefined;
+  page: number;
+  limit: number;
+  offset: number;
+}
+
+function buildListParams(
+  nameCol: Column,
+  emailCol: Column,
+  statusCol: Column,
+  query: Record<string, unknown>,
+): ListParams {
   const page = Math.max(1, parseInt(query.page as string) || 1);
   const limit = Math.min(100, Math.max(1, parseInt(query.limit as string) || 20));
   const offset = (page - 1) * limit;
   const search = query.search as string | undefined;
   const statusFilter = query.status as string | undefined;
 
-  const conditions: any[] = [];
+  const conditions: SQL[] = [];
   if (search) {
-    conditions.push(or(ilike(nameCol, `%${search}%`), ilike(emailCol, `%${search}%`)));
+    const searchCond = or(ilike(nameCol, `%${search}%`), ilike(emailCol, `%${search}%`));
+    if (searchCond) conditions.push(searchCond);
   }
   if (statusFilter) {
     conditions.push(eq(statusCol, statusFilter));
@@ -72,18 +91,25 @@ function buildListCondition(nameCol: any, emailCol: any, statusCol: any, query: 
   return { whereClause, page, limit, offset };
 }
 
-async function listRecords(table: any, nameCol: any, emailCol: any, statusCol: any, createdCol: any, query: any) {
-  const { whereClause, page, limit, offset } = buildListCondition(nameCol, emailCol, statusCol, query);
+async function listRecords(
+  table: PgTable,
+  nameCol: Column,
+  emailCol: Column,
+  statusCol: Column,
+  createdCol: PgColumn,
+  query: Record<string, unknown>,
+) {
+  const { whereClause, page, limit, offset } = buildListParams(nameCol, emailCol, statusCol, query);
 
-  let baseQuery = db.select().from(table);
-  let countQuery = db.select({ value: count() }).from(table);
+  const baseQuery = whereClause
+    ? db.select().from(table).where(whereClause)
+    : db.select().from(table);
 
-  if (whereClause) {
-    baseQuery = baseQuery.where(whereClause) as any;
-    countQuery = countQuery.where(whereClause) as any;
-  }
+  const countQuery = whereClause
+    ? db.select({ value: count() }).from(table).where(whereClause)
+    : db.select({ value: count() }).from(table);
 
-  const rows = await (baseQuery as any).orderBy(desc(createdCol)).limit(limit).offset(offset);
+  const rows = await baseQuery.orderBy(desc(createdCol)).limit(limit).offset(offset);
   const [total] = await countQuery;
 
   return {
@@ -97,11 +123,25 @@ async function listRecords(table: any, nameCol: any, emailCol: any, statusCol: a
   };
 }
 
-router.get("/admin/consultations", async (req, res) => {
+function validatePatchBody(body: Record<string, unknown>): { status?: string; notes?: string } | string {
+  const updates: { status?: string; notes?: string } = {};
+  if (body.status !== undefined) {
+    if (typeof body.status !== "string" || !VALID_STATUSES.includes(body.status)) {
+      return "Invalid status";
+    }
+    updates.status = body.status;
+  }
+  if (body.notes !== undefined) {
+    updates.notes = typeof body.notes === "string" ? body.notes : "";
+  }
+  return updates;
+}
+
+router.get("/admin/consultations", async (req: Request, res: Response) => {
   try {
     const result = await listRecords(
       consultations, consultations.fullName, consultations.email,
-      consultations.status, consultations.createdAt, req.query
+      consultations.status, consultations.createdAt, req.query as Record<string, unknown>
     );
     res.json(result);
   } catch (err) {
@@ -110,7 +150,7 @@ router.get("/admin/consultations", async (req, res) => {
   }
 });
 
-router.get("/admin/consultations/:id", async (req, res) => {
+router.get("/admin/consultations/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
@@ -122,17 +162,13 @@ router.get("/admin/consultations/:id", async (req, res) => {
   }
 });
 
-router.patch("/admin/consultations/:id", async (req, res) => {
+router.patch("/admin/consultations/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const updates: any = { updatedAt: new Date() };
-    if (req.body.status) {
-      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
-      updates.status = req.body.status;
-    }
-    if (req.body.notes !== undefined) updates.notes = req.body.notes;
-    const [row] = await db.update(consultations).set(updates).where(eq(consultations.id, id)).returning();
+    const result = validatePatchBody(req.body as Record<string, unknown>);
+    if (typeof result === "string") { res.status(400).json({ error: result }); return; }
+    const [row] = await db.update(consultations).set({ ...result, updatedAt: new Date() }).where(eq(consultations.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
     res.json(row);
   } catch (err) {
@@ -140,11 +176,11 @@ router.patch("/admin/consultations/:id", async (req, res) => {
   }
 });
 
-router.get("/admin/assessments", async (req, res) => {
+router.get("/admin/assessments", async (req: Request, res: Response) => {
   try {
     const result = await listRecords(
       assessments, assessments.fullName, assessments.email,
-      assessments.status, assessments.createdAt, req.query
+      assessments.status, assessments.createdAt, req.query as Record<string, unknown>
     );
     res.json(result);
   } catch (err) {
@@ -153,7 +189,7 @@ router.get("/admin/assessments", async (req, res) => {
   }
 });
 
-router.get("/admin/assessments/:id", async (req, res) => {
+router.get("/admin/assessments/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
@@ -165,17 +201,13 @@ router.get("/admin/assessments/:id", async (req, res) => {
   }
 });
 
-router.patch("/admin/assessments/:id", async (req, res) => {
+router.patch("/admin/assessments/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const updates: any = { updatedAt: new Date() };
-    if (req.body.status) {
-      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
-      updates.status = req.body.status;
-    }
-    if (req.body.notes !== undefined) updates.notes = req.body.notes;
-    const [row] = await db.update(assessments).set(updates).where(eq(assessments.id, id)).returning();
+    const result = validatePatchBody(req.body as Record<string, unknown>);
+    if (typeof result === "string") { res.status(400).json({ error: result }); return; }
+    const [row] = await db.update(assessments).set({ ...result, updatedAt: new Date() }).where(eq(assessments.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
     res.json(row);
   } catch (err) {
@@ -183,11 +215,11 @@ router.patch("/admin/assessments/:id", async (req, res) => {
   }
 });
 
-router.get("/admin/partners", async (req, res) => {
+router.get("/admin/partners", async (req: Request, res: Response) => {
   try {
     const result = await listRecords(
       partnerRequests, partnerRequests.fullName, partnerRequests.email,
-      partnerRequests.status, partnerRequests.createdAt, req.query
+      partnerRequests.status, partnerRequests.createdAt, req.query as Record<string, unknown>
     );
     res.json(result);
   } catch (err) {
@@ -196,7 +228,7 @@ router.get("/admin/partners", async (req, res) => {
   }
 });
 
-router.get("/admin/partners/:id", async (req, res) => {
+router.get("/admin/partners/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
@@ -208,17 +240,13 @@ router.get("/admin/partners/:id", async (req, res) => {
   }
 });
 
-router.patch("/admin/partners/:id", async (req, res) => {
+router.patch("/admin/partners/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const updates: any = { updatedAt: new Date() };
-    if (req.body.status) {
-      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
-      updates.status = req.body.status;
-    }
-    if (req.body.notes !== undefined) updates.notes = req.body.notes;
-    const [row] = await db.update(partnerRequests).set(updates).where(eq(partnerRequests.id, id)).returning();
+    const result = validatePatchBody(req.body as Record<string, unknown>);
+    if (typeof result === "string") { res.status(400).json({ error: result }); return; }
+    const [row] = await db.update(partnerRequests).set({ ...result, updatedAt: new Date() }).where(eq(partnerRequests.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
     res.json(row);
   } catch (err) {
@@ -226,11 +254,11 @@ router.patch("/admin/partners/:id", async (req, res) => {
   }
 });
 
-router.get("/admin/referrals", async (req, res) => {
+router.get("/admin/referrals", async (req: Request, res: Response) => {
   try {
     const result = await listRecords(
       studentReferrals, studentReferrals.fullName, studentReferrals.email,
-      studentReferrals.status, studentReferrals.createdAt, req.query
+      studentReferrals.status, studentReferrals.createdAt, req.query as Record<string, unknown>
     );
     res.json(result);
   } catch (err) {
@@ -239,7 +267,7 @@ router.get("/admin/referrals", async (req, res) => {
   }
 });
 
-router.get("/admin/referrals/:id", async (req, res) => {
+router.get("/admin/referrals/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
@@ -251,17 +279,13 @@ router.get("/admin/referrals/:id", async (req, res) => {
   }
 });
 
-router.patch("/admin/referrals/:id", async (req, res) => {
+router.patch("/admin/referrals/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const updates: any = { updatedAt: new Date() };
-    if (req.body.status) {
-      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
-      updates.status = req.body.status;
-    }
-    if (req.body.notes !== undefined) updates.notes = req.body.notes;
-    const [row] = await db.update(studentReferrals).set(updates).where(eq(studentReferrals.id, id)).returning();
+    const result = validatePatchBody(req.body as Record<string, unknown>);
+    if (typeof result === "string") { res.status(400).json({ error: result }); return; }
+    const [row] = await db.update(studentReferrals).set({ ...result, updatedAt: new Date() }).where(eq(studentReferrals.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
     res.json(row);
   } catch (err) {
@@ -269,7 +293,7 @@ router.patch("/admin/referrals/:id", async (req, res) => {
   }
 });
 
-router.get("/admin/recent", async (_req, res) => {
+router.get("/admin/recent", async (_req: Request, res: Response) => {
   try {
     const recentCons = await db.select({
       id: consultations.id,
@@ -320,7 +344,7 @@ router.get("/admin/recent", async (_req, res) => {
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
-router.post("/admin/blog-import", upload.single("file"), async (req, res) => {
+router.post("/admin/blog-import", upload.single("file"), async (req: AdminRequest, res: Response) => {
   try {
     if (!req.file) {
       res.status(400).json({ error: "No file uploaded" });
@@ -344,13 +368,16 @@ router.post("/admin/blog-import", upload.single("file"), async (req, res) => {
       }
     }
 
-    let postsJson: any = null;
+    let postsJson: { posts: unknown[] } | null = null;
     const imageEntries: AdmZip.IZipEntry[] = [];
 
     for (const entry of zipEntries) {
       const name = entry.entryName.toLowerCase();
       if (name === "posts.json" || name.endsWith("/posts.json")) {
-        postsJson = JSON.parse(entry.getData().toString("utf8"));
+        const parsed = JSON.parse(entry.getData().toString("utf8")) as Record<string, unknown>;
+        if (parsed && Array.isArray(parsed.posts)) {
+          postsJson = parsed as { posts: unknown[] };
+        }
       }
       if ((name.startsWith("images/") || name.includes("/images/")) && !entry.isDirectory) {
         const ext = path.extname(entry.entryName).toLowerCase();
@@ -360,7 +387,7 @@ router.post("/admin/blog-import", upload.single("file"), async (req, res) => {
       }
     }
 
-    if (!postsJson || !postsJson.posts || !Array.isArray(postsJson.posts)) {
+    if (!postsJson) {
       res.status(400).json({ error: "ZIP must contain a valid posts.json with a \"posts\" array" });
       return;
     }
@@ -385,7 +412,7 @@ router.post("/admin/blog-import", upload.single("file"), async (req, res) => {
       postCount: postsJson.posts.length,
       imageCount: imagesSaved,
       importData: postsJson,
-      importedBy: (req as any).admin?.email || "admin",
+      importedBy: req.admin?.email || "admin",
     }).returning();
 
     res.status(201).json({
@@ -394,13 +421,13 @@ router.post("/admin/blog-import", upload.single("file"), async (req, res) => {
       postCount: postsJson.posts.length,
       imageCount: imagesSaved,
     });
-  } catch (err: any) {
+  } catch (err) {
     console.error("Blog import error:", err);
     res.status(500).json({ error: "Failed to process blog import" });
   }
 });
 
-router.get("/admin/blog-imports", async (_req, res) => {
+router.get("/admin/blog-imports", async (_req: Request, res: Response) => {
   try {
     const rows = await db.select({
       id: blogImportRecords.id,
