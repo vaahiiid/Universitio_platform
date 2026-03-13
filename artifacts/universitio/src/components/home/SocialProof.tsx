@@ -148,7 +148,7 @@ export function SocialProof() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {[...blogPosts].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3).map((post) => (
+            {[...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3).map((post) => (
               <div key={post.id} className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
                 <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
                   <img
