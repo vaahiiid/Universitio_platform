@@ -298,16 +298,26 @@ function applyCaps(
     }
   }
 
+  const isWeakPerformance = profile.academicPerformance === "Weak";
+  const isWeakLanguage = !profile.hasLanguageQualification && languageScore <= 5;
+  const isWeakBudget = budgetScore <= 2;
+
   let weaknessCount = 0;
-  if (budgetScore <= 2) weaknessCount++;
+  if (isWeakBudget) weaknessCount++;
   if (languageScore <= 5) weaknessCount++;
-  if (academicScore <= 5) weaknessCount++;
+  if (academicScore <= 5 || isWeakPerformance) weaknessCount++;
   if (academicGap >= 2) weaknessCount++;
 
   if (weaknessCount >= 3) {
-    capped = Math.min(capped, 35);
+    capped = Math.min(capped, 32);
   } else if (weaknessCount >= 2) {
-    capped = Math.min(capped, 45);
+    capped = Math.min(capped, 42);
+  }
+
+  if (isWeakPerformance && isWeakLanguage && isWeakBudget) {
+    capped = Math.min(capped, 28);
+  } else if (isWeakPerformance && (isWeakLanguage || isWeakBudget)) {
+    capped = Math.min(capped, 35);
   }
 
   return capped;
