@@ -1,0 +1,22 @@
+packages:
+  "framer-motion": "For premium page transitions and scroll-triggered animations"
+  "react-hook-form": "For form state management"
+  "@hookform/resolvers": "Zod validation for react-hook-form"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility for merging tailwind classes safely"
+
+images:
+  - path: "artifacts/universitio/public/images/blog-1.png"
+    description: "A student studying at a modern desk with a laptop, natural lighting, premium photography style, bright"
+    aspect_ratio: "16:9"
+  - path: "artifacts/universitio/public/images/blog-2.png"
+    description: "A wide shot of a classic British university campus, Oxford style architecture, sunny day, aspirational"
+    aspect_ratio: "16:9"
+  - path: "artifacts/universitio/public/images/blog-3.png"
+    description: "Abstract modern graphic showing an acceptance letter or university offer document with a premium aesthetic, blue tones"
+    aspect_ratio: "16:9"
+
+notes:
+  - Site uses static/mocked data as requested, forms simulate successful mutation via TanStack Query delays
+  - Using Framer Motion for elegant reveal animations
+  - Section IDs must match exactly what is mapped in the Navbar for smooth scroll to work properly

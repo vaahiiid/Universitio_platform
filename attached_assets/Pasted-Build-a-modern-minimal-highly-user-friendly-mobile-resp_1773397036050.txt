@@ -1,0 +1,349 @@
+Build a modern, minimal, highly user-friendly, mobile-responsive, SEO-friendly education consultancy website homepage for a UK-registered company called "Universitio".
+
+The website is for international students who want to study abroad, especially in the UK, but also worldwide.
+
+Important:
+This stage is ONLY for building the homepage and the global layout/components, but the architecture must be ready for adding separate pages later for:
+1. Free Consultation
+2. Assessment Form
+3. Blog
+
+The homepage should be elegant, trustworthy, premium-looking, modern, minimal, and conversion-focused. It must feel clear, supportive, and credible for students and families. Avoid clutter. Use strong spacing, clean typography, modern cards, subtle animations, rounded sections, soft shadows, and a polished layout.
+
+Use a professional modern UI with strong UX. The website should be designed to increase trust and drive users to the main CTA: "Free Consultation".
+
+Tech and output requirements:
+- Build with a modern React-based stack suitable for Replit
+- Clean component structure
+- Fast loading
+- SEO-friendly
+- Fully responsive for desktop, tablet, and mobile
+- Accessible semantic HTML
+- Proper heading hierarchy
+- Good performance
+- Easy to expand later
+- Include placeholder assets/images/logos where needed
+- Use tasteful animation only where relevant
+- Do not make it visually noisy
+
+Global site structure:
+- Sticky top navigation bar
+- Beautiful footer
+- One-page homepage sections with anchor navigation
+- Separate routes prepared for:
+  /free-consultation
+  /assessment-form
+  /blog
+
+Navbar items:
+- About Us
+- Our Services
+- Agents
+- Earn as a Student
+- Contact Us
+- Assessment Form
+- Blog
+- Free Consultation (primary CTA button)
+
+Important structure rule:
+The following should be sections inside the homepage, not separate pages:
+- About Us
+- Contact Us
+- Agents
+- Earn as a Student
+
+Separate pages later:
+- Free Consultation
+- Assessment Form
+- Blog
+
+Brand positioning:
+Universitio helps students apply to top universities, colleges, and schools worldwide with expert guidance, especially for the UK.
+The company offers personalised support for international students, from choosing the right university, college, or school to submitting a strong application and preparing for their study abroad journey.
+
+Use the following content and messaging as the basis for the homepage copy, but rewrite and refine it into strong website copy in polished British English:
+
+Main business description:
+"Apply to Top Universities Worldwide with Expert Guidance"
+
+"Personalised support for international students, from choosing the right University, Colleges, or schools to submitting a strong application and preparing for your study abroad journey."
+
+Trust and accreditation points:
+- Accredited by ICEF — A global quality benchmark in international student recruitment
+- Certification award as the agent of British Council — Committed to recognised UK education standards and best practices
+- Registered with the ICO — Fully compliant with UK GDPR and data protection regulations
+- Member of the Birmingham Chambers of Commerce — Part of the UK’s trusted business network
+- Official UK Education Agent — Supporting applications to recognised UK education institutions
+- Trusted by 1000+ international students from over 20 countries
+- UK-Registered Company (Company No. 15168670)
+- Rated 4.6 on Trustpilot — Based on verified student reviews
+- Your application is handled by certified UK education professionals
+
+Additional company text to incorporate naturally:
+"Your Global Gateway to Education Abroad
+At Universitio, we help students from all around the world apply to trusted schools, colleges, and universities abroad. Whether you’re aiming high or just starting, we make the application process simple, personal, and stress-free.
+
+We’re a UK-registered education consultancy, proudly approved by the British Council, accredited by ICEF, and a member of the Greater Birmingham Chambers of Commerce. Your privacy matters, that’s why we’re also registered with the Information Commissioner’s Office (ICO).
+
+With years of hands-on experience, our team provides tailored, one-on-one support, from selecting the right course and country to preparing a strong application that stands out.
+
+You can get started today, right here on our website. Apply in just a few clicks, or if you prefer a personal touch, reach out via WhatsApp or Telegram, or fill in our free consultation form to explore your options."
+
+Main design goals:
+- Clean and premium
+- Minimal and modern
+- Readable and not crowded
+- Friendly to students and families
+- Designed for people considering studying abroad, especially in the UK
+- Strong trust signals
+- Strong call-to-action throughout
+- SEO-friendly layout and copy
+- High conversion intent
+
+Homepage sections required in this order:
+
+1. Hero Section
+Requirements:
+- A powerful headline focused on studying abroad with expert support
+- A short compelling supporting paragraph
+- Primary CTA button: Free Consultation
+- Secondary CTA button: Assessment Form
+- A visually attractive hero image or illustration showing international students / study abroad / university success
+- Add subtle premium background design, gradients or light abstract shape elements
+- Hero must immediately communicate trust, clarity, and action
+
+2. Trusted By / Accreditation Strip
+Requirements:
+- A clean horizontal logo section for accreditation and memberships
+- Use placeholder logos for:
+  ICEF
+  British Council
+  ICO
+  Birmingham Chambers of Commerce
+  Trustpilot
+- Include a short heading like “Trusted, Accredited, and Recognised”
+- Make this section elegant, not oversized
+
+3. Stats / Impact Section
+Create a visually strong stats section inspired by this format:
+- 1.3M+ Students Helped
+- 150,000+ Global Programs
+- 1,500+ Institutions Globally
+- 180+ Nationalities
+- 10+ Years of Expertise
+
+Important:
+These numbers are design placeholders only for now. Make them easy to edit later from one config/data file.
+Design them in a premium card or counter style.
+
+4. About Us Section
+This must be a homepage section.
+Explain who Universitio is, what makes it credible, and how it supports students.
+Keep it concise, warm, and professional.
+Include a CTA to Free Consultation.
+
+5. Services Overview Section
+Create a modern cards-based layout for key services.
+Include cards for:
+- UK University Applications
+- Global University Applications
+- School and College Applications
+- Dependant Visa Pathway Support
+- PhD and Research Support
+- Student Application Review
+- Interview and Documentation Guidance
+- Course and Country Selection
+
+Each card should have:
+- Icon
+- Title
+- 1–2 line description
+- Optional link or button style for future expansion
+
+6. Special Pathways Section
+Create three featured highlight blocks/cards for:
+- Dependant Visa Route to the UK
+- PhD and Research Applicants
+- School Students Preparing for University
+
+Each should feel important and helpful.
+Use concise persuasive text and a CTA such as “Explore Your Options” or “Get Free Consultation”.
+
+7. University Logos Marquee Section
+Create a horizontally animated marquee/carousel of university logos passing across the screen.
+Use placeholder logos for well-known universities.
+Style should be subtle, premium, and smooth.
+This section should visually suggest broad institutional reach without making false claims.
+Add a small heading such as “Explore pathways to leading institutions worldwide”.
+Make sure this is easy to replace with real logos later.
+
+8. Why Students Choose Us Section
+Create a section with icon-based benefits or cards.
+Include points such as:
+- Personalised guidance
+- UK-focused expertise
+- Worldwide study options
+- Trusted and accredited
+- Simple and stress-free process
+- Support from real education professionals
+
+9. Countries We Support Section
+Create interactive country cards or tabs.
+When a user clicks on a country, a small inline expandable panel or accordion opens with a short description showing that Universitio supports students from that country.
+Use sample countries such as:
+- India
+- Pakistan
+- Nigeria
+- Bangladesh
+- Ghana
+- Iran
+- UAE
+- Saudi Arabia
+- Kenya
+- Turkey
+
+Use placeholder short descriptions like:
+“We support students from [Country] with personalised guidance for UK and international applications.”
+This section must be easy to edit later.
+
+10. Agents Section
+This must be part of the homepage.
+Purpose:
+For people who want to collaborate with Universitio by referring students.
+Create a clean professional section explaining partnership opportunities for agents, counsellors, and introducers.
+Include a CTA button such as:
+“Partner With Us”
+
+11. Earn as a Student Section
+This must be part of the homepage.
+Explain that students can earn by referring friends or connecting potential applicants.
+It should feel trustworthy and simple, not spammy.
+Use a clean card or two-column layout.
+Include CTA:
+“Start Referring”
+
+12. Testimonials Section
+Create a modern testimonials slider or grid.
+Use placeholder testimonials from international students.
+Include a visible Trustpilot callout with rating placeholder:
+“Rated 4.6 on Trustpilot”
+Add a CTA/button to view reviews on Trustpilot later.
+
+13. Latest Blog Posts Section
+Important:
+The blog will later be pulled from WordPress.
+For now:
+- Create a “Latest Articles” section
+- Use placeholder blog cards
+- Structure the component so it can later consume posts from WordPress
+- Each card should include image, title, excerpt, date, and “Read More”
+- Add a button to visit /blog
+
+14. Contact Us Section
+This must be part of the homepage.
+Include:
+- Short contact text
+- Email placeholder
+- WhatsApp placeholder
+- Telegram placeholder
+- Social media links placeholders
+- A CTA button for Free Consultation
+Keep it clean and modern.
+
+15. Footer
+Create a polished footer with:
+- Short Universitio description
+- Quick links
+- Contact links
+- Social links
+- Legal text placeholder
+- Copyright
+- Company number placeholder mention
+- Blog link
+- Assessment Form link
+- Free Consultation button or link
+
+Social links to include:
+- Instagram
+- Facebook
+- TikTok
+- LinkedIn
+
+SEO requirements:
+This is extremely important.
+The site must be built to be highly SEO-friendly.
+
+Please include:
+- Proper semantic HTML structure
+- One H1 only
+- Correct H2/H3 hierarchy
+- SEO-friendly title and meta description for homepage
+- Open Graph meta placeholders
+- Twitter/X meta placeholders
+- Canonical setup placeholder
+- Crawlable, indexable structure
+- Clean internal linking
+- Descriptive alt text for images
+- Good page speed considerations
+- Structured data placeholders where appropriate
+- Ensure all sections are indexable and not hidden in a way that harms SEO
+
+Suggested homepage SEO direction:
+Target users looking for:
+- study in the UK
+- apply to UK universities
+- international student application support
+- study abroad consultancy
+- UK education agent
+- free study abroad consultation
+
+Do not do keyword stuffing.
+Keep copy natural, premium, persuasive, and SEO-aware.
+
+Design style notes:
+- Minimal but premium
+- Soft gradients allowed
+- Clean white/light background with contrast sections
+- Professional education brand feel
+- Rounded cards
+- Subtle motion
+- Clear CTAs
+- Not noisy
+- Not childish
+- Not generic corporate
+- Must feel like a trustworthy modern international education platform
+
+Important UX notes:
+- Free Consultation must appear multiple times as the main CTA
+- The page should naturally guide users from trust → services → pathways → proof → action
+- Mobile UX must be excellent
+- Navbar should collapse beautifully on mobile
+- Smooth scrolling for one-page anchors
+- Buttons should feel prominent but elegant
+
+Architecture requirements for future expansion:
+Prepare reusable components and data-driven sections so content can be updated easily later.
+Make all stats, testimonials, countries, services, and blog cards editable from a central data file if possible.
+Prepare placeholders and routing so the future pages can be added cleanly:
+- /free-consultation
+- /assessment-form
+- /blog
+
+Blog integration note:
+The blog will later be connected from an existing WordPress blog.
+So build the blog preview section in a way that can later consume WordPress posts via API or mapped data.
+
+Content quality:
+Write polished, conversion-focused, trust-building British English copy.
+Do not use filler.
+Do not overpromise.
+Do not use fake claims.
+Keep credibility high.
+
+Final output needed:
+- A complete homepage implementation
+- Reusable components
+- Navigation and footer
+- Placeholder content and images where real assets are not yet available
+- Ready for deployment on Replit
+- Clean, modern, scalable codebase
