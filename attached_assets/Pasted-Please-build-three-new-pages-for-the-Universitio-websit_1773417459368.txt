@@ -1,0 +1,233 @@
+Please build three new pages for the Universitio website:
+
+1. Become a Universitio Partner
+2. Student Referral Programme
+3. Blog page
+
+Important overall design rules:
+- Keep everything aligned with the Universitio brand
+- Main brand colour: #42147d
+- Premium, minimal, modern, highly user-friendly design
+- Strong UI and UX
+- Excellent mobile responsiveness
+- Strong readability and spacing
+- Clean forms with polished inputs and smart grouping
+- Consistent navigation and footer with the rest of the site
+- Clear CTA hierarchy
+- Professional and trustworthy tone
+- Use polished British English
+- SEO-friendly structure for all pages
+- Semantic HTML
+- Strong page headings and subheadings
+- Accessible form fields and labels
+
+==================================================
+1. BECOME A UNIVERSITIO PARTNER PAGE
+==================================================
+
+Create a dedicated page for organisations, counsellors, agencies, introducers, and education partners who want to collaborate with Universitio.
+
+Page goal:
+To collect professional partnership enquiries in a clean, credible, and conversion-focused way.
+
+Suggested route:
+- /partners
+
+Page structure:
+- Hero/intro section
+- Short explanatory content about partnership opportunities
+- Modern professional form
+- Trust-building layout
+- Strong submit CTA
+
+Hero section:
+Create a clean and professional hero section with:
+- headline
+- short supporting paragraph
+- clear call to action to complete the form
+
+Suggested messaging direction:
+- “Become a Universitio Partner”
+- “Work with us to support international students applying to universities worldwide.”
+- “If you are an education agency, counsellor, introducer, or student recruitment partner, we would be glad to learn more about your organisation.”
+
+Form fields for Partner page:
+- Full Name (required)
+- Position / Job Title (required)
+- Organisation Name (required)
+- Email Address (required)
+- Contact Number (required, with international country code selector if possible)
+- Organisation Website (optional but recommended)
+- Short Description of Services (required, textarea)
+- Which student nationalities do you mainly work with? (required)
+  - make this a country multi-select list
+  - allow selecting multiple nationalities
+- Which country is your organisation based in? (required)
+  - single country dropdown
+- Which study destinations are you interested in working with for student applications? (required)
+  - multi-select options such as:
+    - United Kingdom
+    - United States
+    - Canada
+    - Germany
+    - Netherlands
+    - Australia
+    - Europe (general)
+- Additional Notes / Comments (optional, textarea)
+
+UX notes:
+- Group the fields clearly into sections if useful
+- Keep the form clean and not overwhelming
+- Use a polished layout with strong spacing
+- Make it feel credible and business-oriented
+
+Submit behaviour:
+After successful submission, show a polished success message or modal:
+“Thank you for your interest in partnering with Universitio. Your enquiry has been received, and our team will review your information and contact you shortly.”
+
+==================================================
+2. STUDENT REFERRAL PROGRAMME PAGE
+==================================================
+
+Create a dedicated page for students who want to refer other students to Universitio.
+
+Suggested route:
+- /student-referral
+
+Page goal:
+To collect referral programme applications in a friendly, trustworthy, and clear way.
+
+Important messaging:
+This programme is for students who want to refer potential applicants.
+Commission/reward will only be considered after the referred student successfully enrols.
+The page should be clear, transparent, and not feel spammy.
+
+Page structure:
+- Hero/intro section
+- Short explanation of how the programme works
+- Modern referral form
+- Submit CTA
+- Trustworthy messaging
+
+Hero section:
+Create a welcoming but professional hero section with:
+- headline
+- short paragraph
+- simple explanation of the programme
+
+Suggested direction:
+- “Join the Universitio Student Referral Programme”
+- “Refer students who are planning to study abroad and apply through Universitio.”
+- “Applications are reviewed individually, and accepted applicants will be contacted by email.”
+
+Important note to show clearly on the page:
+After submitting the form, the applicant may be accepted or rejected, and they will be informed by email.
+
+Form fields for Student Referral page:
+- Referrer Full Name (required)
+- Email Address (required)
+- Date of Birth (required)
+- Name of the University where they currently study (required)
+- Which student nationalities are you planning to refer? (required)
+  - country multi-select list
+  - allow selecting as many as needed
+- Which destination countries do you want to refer students for? (required)
+  - multi-select options such as:
+    - United Kingdom
+    - United States
+    - Canada
+    - Germany
+    - Netherlands
+    - Australia
+    - Europe (general)
+- Additional Notes / Comments (optional, textarea)
+
+UX notes:
+- Make the form friendly, clear, and easy to complete
+- Keep it minimal, modern, and mobile-friendly
+- Use clean field grouping and spacing
+- Make the programme feel legitimate and transparent
+
+Submit behaviour:
+After successful submission, show a polished success message or modal:
+“Thank you. Your referral programme application has been received successfully. Our team will review your submission, and you will be informed by email if your application is accepted or not.”
+
+==================================================
+3. BLOG PAGE
+==================================================
+
+Create a dedicated Blog page for Universitio.
+
+Suggested route:
+- /blog
+
+Important note:
+The actual blog content will later be connected from WordPress.
+For now, build the blog page structure, design, and placeholder layout in a modern, flexible, scalable way.
+
+Design direction:
+- Modern, elegant, minimal, SEO-friendly blog layout
+- Clean cards and strong typography
+- Good spacing and readability
+- Premium educational brand feel
+- Should not look generic or cluttered
+
+Blog page structure:
+- Blog hero/header section
+- Featured article area
+- Latest articles grid
+- Search or filter placeholder if useful
+- Categories/tags placeholder if useful
+- Pagination or load-more placeholder
+- CTA block for Free Consultation or Assessment if appropriate
+
+Hero section for blog:
+Include:
+- Page title such as “Universitio Blog”
+- Short supporting text such as:
+  “Insights, guidance, and updates for international students planning to study abroad.”
+
+Featured article:
+Create a strong featured article card or layout at the top.
+
+Latest articles:
+Create a modern responsive grid of article cards.
+Each card should include:
+- image placeholder
+- article title
+- short excerpt
+- date
+- read more button/link
+
+Build the blog layout so it can later consume WordPress content via API or mapped data.
+
+SEO and structure for blog page:
+- Strong heading hierarchy
+- Semantic article/card structure
+- Crawlable and indexable layout
+- Easy to extend later
+- Internal linking opportunities
+- Strong readability for titles and excerpts
+
+==================================================
+GENERAL TECHNICAL REQUIREMENTS
+==================================================
+
+For all three pages:
+- Use clean reusable React components
+- Keep forms validated
+- Use proper labels and helper text
+- Multi-select country inputs should be user-friendly
+- Use full country lists where needed
+- Make code clean, scalable, and easy to edit later
+- Maintain consistent header/navbar/footer
+- Keep everything visually aligned with the Universitio homepage
+- Strong CTA buttons
+- Strong mobile UX
+- Premium minimal design
+
+Final objective:
+Build three polished, trustworthy, modern pages for Universitio:
+- a professional partner enquiry page
+- a student referral application page
+- a scalable, elegant blog page
