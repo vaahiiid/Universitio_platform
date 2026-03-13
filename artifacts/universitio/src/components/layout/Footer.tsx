@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Instagram, Facebook, Linkedin } from "lucide-react";
 import { useEffect } from "react";
-import logoImg from "@/assets/universitio_logo.png";
+import logoImg from "@assets/universitio logo.png";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,15 +15,12 @@ export function Footer() {
     script.defer = true;
     script.crossOrigin = "anonymous";
     document.body.appendChild(script);
-    // Do not remove on unmount — re-injection causes the ICEF script to
-    // re-declare globals and throw a SyntaxError in development.
   }, []);
 
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Main Footer Grid */}
         <div className="pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
 
           {/* Brand Column */}
@@ -38,39 +35,24 @@ export function Footer() {
               Your global gateway to education abroad. Expert, personalised guidance for international students applying to top universities worldwide.
             </p>
 
-            {/* Social Links */}
             <div className="flex items-center gap-3 mb-8">
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
-              >
+              <a href="https://www.instagram.com/universitio_" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all">
                 <Instagram size={16} />
               </a>
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
-              >
+              <a href="https://www.facebook.com/universitioco" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all">
                 <Facebook size={16} />
               </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
-              >
+              <a href="https://www.linkedin.com/company/universitio" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all">
                 <Linkedin size={16} />
               </a>
-              <a
-                href="#"
-                aria-label="TikTok"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-              </a>
+              <span aria-label="TikTok" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              </span>
+              <span aria-label="YouTube" className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+              </span>
             </div>
 
-            {/* ICEF Badge — anchored naturally in the brand/accreditation column */}
             <div className="flex items-center gap-3">
               <span id="iasBadge" data-account-id="6539"></span>
             </div>
@@ -82,7 +64,6 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li><Link href="/#about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link href="/#services" className="hover:text-white transition-colors">Our Services</Link></li>
-              <li><Link href="/#pathways" className="hover:text-white transition-colors">Pathways</Link></li>
               <li><Link href="/free-consultation" className="hover:text-white transition-colors">Free Consultation</Link></li>
               <li><Link href="/assessment-form" className="hover:text-white transition-colors">Free Assessment</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
@@ -104,12 +85,12 @@ export function Footer() {
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5">Contact</h4>
             <ul className="space-y-4 text-sm text-primary-foreground/70">
               <li className="flex items-start gap-3">
-                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <a href="mailto:info@universitio.co.uk" className="hover:text-white transition-colors">info@universitio.co.uk</a>
+                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                <a href="tel:+441217203341" className="hover:text-white transition-colors">+44 121 720 3341</a>
               </li>
               <li className="flex items-start gap-3">
-                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                <span>WhatsApp & Telegram: @universitio</span>
+                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <a href="mailto:info@universitio.co.uk" className="hover:text-white transition-colors">info@universitio.co.uk</a>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -122,12 +103,12 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-foreground/50">
           <div className="text-center md:text-left">
-            <p>© {currentYear} Universitio Ltd. All rights reserved.</p>
-            <p className="mt-1">Registered in England and Wales · Company No. 15168670 · ICEF Accredited · British Council Certified · ICO Registered</p>
+            <p>&copy; {currentYear} Universitio Ltd. All rights reserved.</p>
+            <p className="mt-1">Registered in England and Wales &middot; Company No. 15168670 &middot; ICEF Accredited &middot; British Council Agent &middot; ICO Registered</p>
           </div>
           <div className="flex gap-6">
             <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="#" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>

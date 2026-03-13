@@ -2,7 +2,7 @@ import {
   GraduationCap, Globe, BookOpen, UserCheck, 
   Search, FileText, CheckCircle, MessagesSquare, 
   MapPin, Clock, Award, ShieldCheck, HeartHandshake,
-  BadgeCheck
+  BadgeCheck, PenLine, FlaskConical
 } from "lucide-react";
 
 export const siteData = {
@@ -18,38 +18,32 @@ export const siteData = {
     {
       id: "uk-uni",
       icon: GraduationCap,
-      title: "UK University Applications",
-      description: "Expert guidance for applying to leading UK universities, from Russell Group to specialist institutions."
+      title: "University Applications",
+      description: "End-to-end guidance for UK, US, Canadian, and European university admissions."
     },
     {
-      id: "global-uni",
-      icon: Globe,
-      title: "Global University Applications",
-      description: "Support for applications worldwide, including the US, Canada, Australia, Europe, and beyond."
+      id: "personal-statement",
+      icon: PenLine,
+      title: "Personal Statement & CV",
+      description: "Professional preparation of personal statements, CVs, and supporting documents that stand out."
+    },
+    {
+      id: "phd-research",
+      icon: FlaskConical,
+      title: "PhD Proposal & Research",
+      description: "Tailored support for research proposals, supervisor identification, and competitive PhD applications."
+    },
+    {
+      id: "course-country",
+      icon: MapPin,
+      title: "Course & Country Selection",
+      description: "Personalised consultation to help you choose the right course, country, and institution."
     },
     {
       id: "school-college",
       icon: BookOpen,
       title: "School & College Applications",
-      description: "Helping younger students and families navigate school and college applications with confidence."
-    },
-    {
-      id: "pre-departure",
-      icon: CheckCircle,
-      title: "Pre-Departure Guidance",
-      description: "Practical preparation support to help students get ready for life as an international student abroad."
-    },
-    {
-      id: "phd-research",
-      icon: Search,
-      title: "PhD & Research Support",
-      description: "Tailored support for postgraduate researchers targeting competitive PhD programmes worldwide."
-    },
-    {
-      id: "app-review",
-      icon: FileText,
-      title: "Application Review",
-      description: "Professional review of your personal statement, CV, and supporting documents before submission."
+      description: "Helping younger students and families navigate school and college admissions with confidence."
     },
     {
       id: "interview-docs",
@@ -58,10 +52,16 @@ export const siteData = {
       description: "Preparation guidance for university interviews and help organising your application documents."
     },
     {
-      id: "course-country",
-      icon: MapPin,
-      title: "Course & Country Selection",
-      description: "Personalised consultation to help you choose the right course, country, and institution for your goals."
+      id: "app-review",
+      icon: FileText,
+      title: "Application Review",
+      description: "Professional review of your full application package before submission."
+    },
+    {
+      id: "pre-departure",
+      icon: CheckCircle,
+      title: "Pre-Departure Guidance",
+      description: "Practical preparation to help you get ready for life as an international student abroad."
     }
   ],
 
@@ -69,21 +69,21 @@ export const siteData = {
     {
       id: "dependants",
       title: "Studying with Family in the UK",
-      description: "Planning to study in the UK alongside family members? We help you understand the options available for accompanying family, navigating the relevant application processes, and ensuring you have all the documentation in order before applying.",
+      description: "We help you understand the options available for accompanying family, navigating the relevant application processes, and ensuring you have all the documentation in order.",
       ctaText: "Explore This Pathway",
       link: "/free-consultation?interest=family-study"
     },
     {
       id: "phd",
       title: "PhD & Research Applicants",
-      description: "Applying for a PhD or research programme requires a different approach. We work with research applicants to refine their research proposals, identify supervisors, and navigate the complex application requirements.",
+      description: "We work with research applicants to refine their research proposals, identify supervisors, and navigate the complex application requirements.",
       ctaText: "PhD Consultation",
       link: "/free-consultation?interest=phd"
     },
     {
       id: "school",
       title: "School Students Preparing for University",
-      description: "Starting early gives students a real advantage. We support younger students planning ahead — from A-Level and IB course selection to building a strong university application profile.",
+      description: "We support younger students planning ahead — from A-Level and IB course selection to building a strong university application profile.",
       ctaText: "Start Early",
       link: "/free-consultation?interest=school"
     }
@@ -93,26 +93,22 @@ export const siteData = {
     {
       country: "United Kingdom",
       flag: "🇬🇧",
-      description: "Full guidance for applications to UK schools, colleges, and universities, including specialist support for the UK admissions process.",
-      highlights: ["Russell Group universities", "Further education colleges", "Independent schools", "UCAS applications"]
+      description: "Full guidance for UK schools, colleges, and universities — including Russell Group, UCAS applications, and specialist admissions support."
     },
     {
       country: "United States",
       flag: "🇺🇸", 
-      description: "Support for students applying to leading institutions across the USA, from Ivy League universities to community colleges.",
-      highlights: ["Common App support", "Undergraduate & postgraduate", "Liberal arts colleges", "Research universities"]
+      description: "Support for leading US institutions, from Ivy League universities to liberal arts colleges, with Common App guidance."
     },
     {
       country: "Canada",
       flag: "🇨🇦",
-      description: "Personalised admissions support for colleges and universities in Canada, one of the world's most welcoming destinations for international students.",
-      highlights: ["University of Toronto", "McGill University", "College of Applied Arts", "Province-based applications"]
+      description: "Personalised admissions support for Canadian colleges and universities — one of the most welcoming study destinations."
     },
     {
       country: "Europe",
       flag: "🇪🇺",
-      description: "Guidance for study opportunities across selected European destinations, including English-taught programmes and internationally recognised institutions.",
-      highlights: ["English-taught programmes", "Netherlands, Germany & beyond", "Bachelor's & Master's", "European application systems"]
+      description: "Guidance for English-taught programmes across the Netherlands, Germany, and other selected European destinations."
     }
   ],
 
@@ -126,8 +122,8 @@ export const siteData = {
     {
       id: "british-council",
       logoKey: "british-council",
-      name: "British Council Certified",
-      statement: "Committed to recognised UK education standards and best practices"
+      name: "British Council Agent",
+      statement: "Certification award as an agent of the British Council"
     },
     {
       id: "ico",
@@ -199,15 +195,16 @@ export const siteData = {
 
   countries: [
     { name: "India", flag: "🇮🇳" },
-    { name: "Pakistan", flag: "🇵🇰" },
     { name: "Nigeria", flag: "🇳🇬" },
-    { name: "Bangladesh", flag: "🇧🇩" },
-    { name: "Ghana", flag: "🇬🇭" },
-    { name: "Iran", flag: "🇮🇷" },
-    { name: "UAE", flag: "🇦🇪" },
+    { name: "Pakistan", flag: "🇵🇰" },
     { name: "Saudi Arabia", flag: "🇸🇦" },
-    { name: "Kenya", flag: "🇰🇪" },
-    { name: "Turkey", flag: "🇹🇷" }
+    { name: "United Arab Emirates", flag: "🇦🇪" },
+    { name: "Qatar", flag: "🇶🇦" },
+    { name: "Bangladesh", flag: "🇧🇩" },
+    { name: "Iran", flag: "🇮🇷" },
+    { name: "Turkey", flag: "🇹🇷" },
+    { name: "China", flag: "🇨🇳" },
+    { name: "Hong Kong", flag: "🇭🇰" }
   ],
 
   testimonials: [
