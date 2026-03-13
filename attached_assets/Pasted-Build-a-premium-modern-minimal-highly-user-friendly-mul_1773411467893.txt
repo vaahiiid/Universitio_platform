@@ -1,0 +1,493 @@
+Build a premium, modern, minimal, highly user-friendly multi-step “Free Admissions Assessment” page for Universitio.
+
+Brand and design rules:
+- Main brand colour: #42147d
+- Premium, minimal, modern, trustworthy design
+- Strong UX and UI
+- Clear progress flow
+- Excellent mobile responsiveness
+- Clean cards, strong spacing, subtle transitions
+- The page must feel intelligent, supportive, and conversion-focused
+- Keep the page readable and not crowded
+
+Main purpose of this page:
+This assessment should estimate a student’s admission potential based on their profile and selected destination(s).
+
+Important:
+- This is NOT a guarantee of admission
+- The result should be presented as an estimated admission potential / readiness score
+- The tool should feel credible and helpful, not gimmicky
+- If the score is low or moderate, encourage the student to allow us to contact them with tailored suggestions to improve their profile
+
+Top intro section:
+At the top of the page, add a clean, visually appealing intro section with:
+- headline
+- short supporting text
+- explanation that the more accurately the form is completed, the better we can guide the student
+- reassurance that this is a free admissions assessment
+
+Suggested tone:
+“Complete this assessment carefully so we can better understand your profile and estimate your admission potential more accurately.”
+
+Important UX note:
+This assessment should be built as a multi-step form with a visible progress indicator.
+Suggested step flow:
+1. Basic Profile
+2. Study Plans
+3. Academic Background
+4. Language & Qualifications
+5. Budget & Additional Factors
+6. Results
+
+The form must be smooth, modern, and easy to complete.
+
+========================
+STEP 1 — BASIC PROFILE
+========================
+
+Collect short lead information in a concise and user-friendly way.
+
+Fields:
+- Full Name (required)
+- Mobile Number with country code selector (required)
+- Email Address (required)
+- Date of Birth (required)
+- Nationality (required, full country list)
+- Marital Status (required)
+  Options:
+  - Single
+  - Married
+
+For marital status, display a short helper text:
+“This helps us understand suitability for certain study pathways, especially where dependant-related restrictions may apply.”
+
+Age factor:
+Use date of birth to calculate age automatically.
+Age must contribute to scoring based on the target study level.
+The logic should reward more typical age alignment, but not automatically disqualify older applicants.
+
+Suggested age scoring principle:
+- Bachelor: younger applicants generally score better
+- Master: early-to-mid career age range scores well
+- PhD: a wider adult range is acceptable, but younger research-ready profiles can still score slightly higher
+
+Use a flexible and moderate age scoring model, not a harsh one.
+
+========================
+STEP 2 — STUDY PLANS
+========================
+
+Fields:
+1. Preferred study destinations (required)
+- User can select up to 2 destinations only
+Options:
+- United Kingdom
+- United States
+- Canada
+- Germany
+- Netherlands
+- Australia
+
+Add helper note:
+“You may choose up to 2 destinations.”
+
+2. Intended level of study (required)
+Options:
+- Foundation / Pathway
+- College
+- Bachelor’s
+- Master’s
+- PhD / Research
+
+3. Intended course area (required)
+Include major course areas such as:
+- Business and Management
+- Computer Science / IT
+- Engineering
+- Health and Nursing
+- Medicine
+- Law
+- Architecture
+- Art and Design
+- Education
+- Social Sciences
+- Psychology
+- Media and Communications
+- Hospitality and Tourism
+- Finance and Accounting
+- Marketing
+- Data Science / AI
+- English / Humanities
+- Other
+
+If “Other” is selected, require a text field.
+
+========================
+STEP 3 — ACADEMIC BACKGROUND
+========================
+
+Fields:
+1. Highest completed qualification (required)
+Options:
+- High School
+- Diploma / College Diploma
+- Bachelor’s Degree
+- Master’s Degree
+- Other
+
+2. Previous field(s) of study
+Allow repeatable entries so users can add more than one previous qualification.
+For each entry:
+- Qualification level
+- Field of study
+
+3. Academic performance (required)
+Use a simple self-reported option:
+- Excellent
+- Good
+- Average
+- Weak
+
+4. Field alignment question (required)
+“Is your intended course related to your previous studies?”
+Options:
+- Yes, same field
+- Yes, related field
+- No, different field
+- Not sure yet
+
+Academic scoring logic:
+Scoring must depend on alignment between highest completed qualification and intended level of study.
+
+Examples of strong alignment:
+- High School → Bachelor
+- Diploma → College / Bachelor
+- Bachelor → Master
+- Master → PhD
+
+Do NOT penalise High School applicants unfairly if they are applying for Bachelor level.
+This must be goal-based scoring, not absolute scoring.
+
+========================
+STEP 4 — LANGUAGE & QUALIFICATIONS
+========================
+
+Ask:
+“Do you have a language qualification?” (required)
+Options:
+- Yes
+- No
+
+If Yes:
+Ask:
+1. Which qualification do you have? (required)
+Options:
+- IELTS Academic
+- IELTS General
+- TOEFL
+- PTE Academic
+- Duolingo English Test
+- Cambridge English
+- German Language Certificate
+- Other
+
+If “Other” is selected, require a text field.
+
+2. Overall score / level (required)
+
+Language scoring logic:
+- Higher scores should receive more points
+- IELTS General should receive a moderate score, lower than IELTS Academic for most academic routes
+- IELTS or equivalent 5.5 = strong for many college-level routes
+- IELTS or equivalent 6.0+ = good for Bachelor and some Master’s
+- IELTS or equivalent 6.5 = excellent for Master’s
+- Around 7.0 and sometimes 6.0+ can support PhD/research routes depending on destination and profile
+
+Important:
+If the student does NOT have a language test yet:
+- do NOT penalise harshly
+- simply do not award language-test points
+- still allow the assessment to continue
+- recognise that applications may still be possible in some cases
+
+If No:
+Ask:
+“What is your current English level?” (required)
+Options:
+- Beginner
+- Elementary
+- Pre-Intermediate
+- Intermediate
+- Upper-Intermediate
+- Advanced
+
+Germany-specific logic:
+If the selected destination includes Germany and the user has a German language qualification, award destination-specific bonus points.
+
+========================
+STEP 5 — BUDGET & ADDITIONAL FACTORS
+========================
+
+1. Tuition budget (required)
+Add a short helper note:
+“Please provide realistic information so we can guide you more effectively and recommend suitable options.”
+
+Options:
+- Under $10,000
+- $10,000 to $20,000
+- Over $20,000
+
+Country-sensitive budget logic:
+- For the UK and Canada:
+  - Under $10,000 = no budget points
+  - $10,000 to $20,000 = good
+  - Over $20,000 = excellent
+- For Europe:
+  - budget scoring should be more flexible, especially for lower budgets
+- For the United States and Australia:
+  - lower budgets may still receive some points, but not as strongly as higher budgets
+
+If the user selects “Under $10,000”, show a helpful advisory note:
+- For study in the UK, this budget is generally not sufficient
+- For Canada and the USA, options may be limited
+- Some European destinations may still offer possible pathways
+
+This note should be informative, not blocking.
+
+2. Additional profile strengths
+Use a checkbox list.
+Each selected item may add points, with a maximum cap.
+
+Include options such as:
+- GRE
+- GMAT
+- SAT
+- A-Levels
+- Foundation Programme
+- Published Research
+- Research Experience
+- Work Experience
+- Internship Experience
+- Portfolio (for art/design/architecture)
+- Relevant Professional Certifications
+
+3. Research background
+Ask separately:
+“Do you have research experience or research-based academic work?”
+Options:
+- Yes
+- No
+
+This should contribute positively, especially for PhD / Research routes.
+
+4. CV
+Ask:
+“Do you have a CV?”
+Options:
+- Yes
+- No
+
+Display note:
+“Providing a CV at this stage is not mandatory, but it can help us assist you more effectively.”
+
+If Yes:
+- show file upload field
+- file upload becomes required only when Yes is selected
+
+========================
+STEP 6 — LEAD FOLLOW-UP PREFERENCE
+========================
+
+Collect a little extra lead information in a concise way.
+
+1. How did you hear about us? (optional)
+Options:
+- Google Search
+- Google Search Ads
+- Instagram
+- Facebook
+- LinkedIn
+- Friend Referral
+- Other
+
+If “Other” is selected, show text field.
+
+2. Preferred contact method (required)
+Question:
+“What is your preferred method for consultation and contact?”
+Options:
+- WhatsApp
+- Telegram
+- Video Call
+- Email
+
+3. Consent / next-step question
+If the score is not strong enough, we want to ask if they would like improvement suggestions.
+
+Prepare the logic so that if the user’s score is below the strong threshold, the results page also asks:
+“Would you like us to contact you with suggestions to improve your profile and increase your admission potential?”
+Options:
+- Yes, contact me
+- No, thanks
+
+========================
+SCORING ENGINE
+========================
+
+Build a scoring engine with a total score out of 100.
+
+The scoring should combine:
+1. Nationality / destination eligibility
+2. Academic readiness
+3. Language readiness
+4. Budget readiness
+5. Study alignment
+6. Profile strength
+7. Age alignment
+
+Suggested weighting:
+- Nationality / destination eligibility: 15
+- Academic readiness: 20
+- Language readiness: 20
+- Budget readiness: 15
+- Study alignment: 10
+- Profile strength / extra qualifications: 10
+- Age alignment: 10
+
+Important scoring rules:
+- The model must be goal-based
+- A profile is scored in relation to the student’s intended study level
+- High School should score strongly if the target is Bachelor
+- Bachelor should score strongly if the target is Master
+- Master should score strongly if the target is PhD
+
+Age scoring:
+Use moderate age weighting:
+- Bachelor applicants in a younger range should score higher
+- Master applicants in an early-to-mid career range should score well
+- PhD applicants can have a broader acceptable range
+- Do not make age scoring too harsh
+- Older applicants should not be unfairly excluded
+- Use age as a soft factor, not a rigid filter
+
+Nationality / destination restriction logic:
+Use the following restriction checks:
+
+For the UK:
+If nationality is one of:
+- Afghanistan
+- Cameroon
+- Myanmar
+- Sudan
+
+Display a clear advisory message:
+“Applications to the UK may currently be restricted for your nationality under current policy conditions.”
+
+For the USA:
+If nationality is one of:
+- Afghanistan
+- Burma
+- Burkina Faso
+- Chad
+- Republic of the Congo
+- Equatorial Guinea
+- Eritrea
+- Haiti
+- Iran
+- Laos
+- Libya
+- Mali
+- Niger
+- Sierra Leone
+- Somalia
+- South Sudan
+- Sudan
+- Syria
+- Yemen
+
+Display a clear advisory message:
+“U.S. visa issuance may currently be suspended or restricted for your nationality under current policy conditions.”
+
+Important:
+- The tool should still continue the assessment
+- If one destination is restricted, still assess the other selected destination
+- Destination-specific scores are preferred if possible
+
+Country-specific result logic:
+If the user selected one destination, show one main score.
+If the user selected two destinations, show separate estimated scores for each destination if possible.
+
+Example:
+- United Kingdom: 74%
+- Canada: 68%
+
+Interpretation bands:
+- 80–100: Strong admission potential
+- 60–79: Good potential with some improvements recommended
+- 40–59: Moderate potential – profile strengthening recommended
+- Below 40: Further preparation is recommended before applying
+
+Result wording must be polished and careful:
+- Do not guarantee admission
+- Use wording like:
+  - Estimated admission potential
+  - Profile readiness
+  - Your profile may benefit from improvement
+  - Your profile appears well aligned
+  - Some areas could be strengthened
+
+========================
+RESULTS PAGE / FINAL STEP
+========================
+
+The result step should be visually impressive, premium, and easy to understand.
+
+Include:
+- the estimated score or scores
+- a short interpretation
+- a few key observations based on the profile
+- clear next steps
+
+Examples of personalised observations:
+- Your academic background appears well aligned with your intended level of study
+- Your language profile could be strengthened for more competitive options
+- Your budget may limit some destinations but still support others
+- Your profile may be stronger for some destinations than others
+
+If the score is low or moderate:
+show a gentle improvement CTA:
+“Would you like us to contact you with personalised suggestions to help improve your profile and increase your admission potential?”
+
+Include a CTA button such as:
+- Get Personalised Guidance
+- Help Me Improve My Profile
+- Contact Me with Suggestions
+
+Submission success popup:
+After final submission, show a polished success modal:
+“Thank you. Your assessment has been submitted successfully.
+We will review your information and contact you within up to 24 hours using your preferred method.”
+
+========================
+TECHNICAL / UX REQUIREMENTS
+========================
+
+- Build this as a multi-step React form
+- Use a clean progress bar / step indicator
+- Strong validation
+- Accessible form fields
+- Great mobile UX
+- Smooth transitions between steps
+- Max 2 destination selection logic
+- Conditional rendering for dependent questions
+- Country code selector for phone number
+- File upload field for CV
+- Centralised scoring configuration if possible
+- Clean reusable components
+- Premium, minimal UI
+- Strong CTA hierarchy
+- SEO-friendly page structure
+- Keep the design aligned with the Universitio homepage and brand
+
+Final objective:
+Create a high-converting, trustworthy Free Admissions Assessment tool that helps students understand their estimated admission readiness while also generating qualified leads for Universitio.
