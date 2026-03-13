@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation, Redirect } from "wouter";
+import { trackPageView } from "@/lib/analytics";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,6 +34,7 @@ function ScrollToTop() {
     if (!window.location.hash) {
       window.scrollTo(0, 0);
     }
+    trackPageView(location);
   }, [location]);
   return null;
 }

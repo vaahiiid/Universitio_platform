@@ -1,0 +1,150 @@
+Please add Google Analytics 4 tracking to the Universitio website, and also implement key event tracking for the most important user actions.
+
+Important:
+- Add the Google tag only once across the whole website
+- Place it in the main HTML document, immediately after the opening <head> tag
+- Do not duplicate the Google tag on individual pages
+- Keep the implementation clean and production-ready
+- Make sure tracking works correctly for a React/Vite-style app with route navigation
+
+Use this exact Google Analytics code:
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QVQPPZ9SGE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-QVQPPZ9SGE');
+</script>
+
+==================================================
+1. CORE GOOGLE ANALYTICS INSTALLATION
+==================================================
+
+Please:
+- add the GA4 tag to the main HTML shell
+- ensure it is only added once
+- make sure page views are tracked correctly across route/page navigation
+- for SPA navigation, ensure route changes are tracked properly if needed
+
+==================================================
+2. EVENT TRACKING TO ADD
+==================================================
+
+Please add Google Analytics event tracking for the following important actions.
+
+A. Free Consultation form submission
+When the user successfully submits the Free Consultation form, send an event:
+
+Event name:
+consultation_form_submit
+
+Suggested parameters:
+- event_category: lead
+- event_label: Free Consultation Form
+
+B. Free Admissions Assessment completion/submission
+When the user successfully submits the assessment and reaches the result stage, send an event:
+
+Event name:
+assessment_completed
+
+Suggested parameters:
+- event_category: lead
+- event_label: Admission Assessment
+
+C. Partner application submission
+When the user successfully submits the Become a Universitio Partner form, send an event:
+
+Event name:
+partner_application_submit
+
+Suggested parameters:
+- event_category: partner
+- event_label: Partner Application
+
+D. Student referral submission
+When the user successfully submits the Student Referral form, send an event:
+
+Event name:
+student_referral_submit
+
+Suggested parameters:
+- event_category: referral
+- event_label: Student Referral
+
+E. WhatsApp clicks
+Track clicks on WhatsApp contact buttons/links across the website.
+
+Event name:
+whatsapp_click
+
+Suggested parameters:
+- event_category: contact
+- event_label: WhatsApp Button
+
+F. Blog article reads
+When a user opens an individual blog article page, send an event:
+
+Event name:
+blog_article_view
+
+Suggested parameters:
+- event_category: blog
+- event_label: article slug or article title
+
+==================================================
+3. IMPLEMENTATION RULES
+==================================================
+
+Please implement event tracking carefully and only on successful meaningful actions.
+
+Important rules:
+- consultation_form_submit should fire only after successful submission
+- assessment_completed should fire only after successful submission and result reveal
+- partner_application_submit should fire only after successful submission
+- student_referral_submit should fire only after successful submission
+- whatsapp_click should fire on actual click
+- blog_article_view should fire when a real individual blog article page is viewed
+
+Do not fire duplicate events accidentally.
+
+==================================================
+4. CLEAN CODE REQUIREMENTS
+==================================================
+
+Please keep the implementation clean and reusable.
+
+If helpful:
+- create a small analytics utility/helper
+- guard tracking calls so they do not break the site if gtag is unavailable
+- avoid console errors
+- avoid duplicate code
+
+Use a safe pattern such as checking that gtag exists before firing events.
+
+==================================================
+5. OPTIONAL BUT USEFUL EVENT PARAMETERS
+==================================================
+
+If practical, include helpful event parameters such as:
+- page_path
+- destination country for assessment if available
+- form type
+- article slug
+- article title
+
+But do not overcomplicate the implementation.
+
+==================================================
+6. FINAL GOAL
+==================================================
+
+The final result should:
+- install GA4 correctly using the provided Google tag
+- track page views correctly
+- track the key lead-generation actions across the site
+- help measure real user behaviour and conversions for Universitio
+- remain stable, clean, and production-ready

@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -155,6 +156,11 @@ export default function StudentReferral() {
         throw new Error((body as { error?: string }).error || "Submission failed");
       }
       setSubmitted(true);
+      trackEvent("student_referral_submit", {
+        event_category: "referral",
+        event_label: "Student Referral",
+        page_path: "/student-referral",
+      });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       setSubmitError(e instanceof Error ? e.message : "Something went wrong. Please try again.");

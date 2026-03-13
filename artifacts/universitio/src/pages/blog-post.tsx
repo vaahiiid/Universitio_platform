@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -85,6 +86,12 @@ export default function BlogPostPage() {
       meta.setAttribute("name", "description");
       meta.setAttribute("content", post.excerpt.slice(0, 160));
       if (!meta.parentElement) document.head.appendChild(meta);
+      trackEvent("blog_article_view", {
+        event_category: "blog",
+        event_label: post.title,
+        article_slug: post.slug,
+        page_path: `/blog/${post.slug}`,
+      });
     }
   }, [post]);
 
@@ -204,6 +211,7 @@ export default function BlogPostPage() {
               href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + articleUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent("whatsapp_click", { event_category: "contact", event_label: "WhatsApp Button", article_slug: post.slug })}
               className="text-sm text-muted-foreground hover:text-green-600 transition-colors"
             >
               WhatsApp

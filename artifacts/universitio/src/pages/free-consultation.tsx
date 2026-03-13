@@ -6,6 +6,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { consultationSchema, type ConsultationInput } from "@/hooks/use-form-mutations";
 import { useSubmitConsultation } from "@/hooks/use-form-mutations";
+import { trackEvent } from "@/lib/analytics";
 import {
   Form,
   FormControl,
@@ -171,6 +172,11 @@ export default function FreeConsultation() {
     mutation.mutate(values, {
       onSuccess: () => {
         setShowSuccessModal(true);
+        trackEvent("consultation_form_submit", {
+          event_category: "lead",
+          event_label: "Free Consultation Form",
+          page_path: "/free-consultation",
+        });
       }
     });
   }

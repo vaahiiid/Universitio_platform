@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -165,6 +166,11 @@ export default function Partners() {
         throw new Error((body as { error?: string }).error || "Submission failed");
       }
       setSubmitted(true);
+      trackEvent("partner_application_submit", {
+        event_category: "partner",
+        event_label: "Partner Application",
+        page_path: "/partners",
+      });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       setSubmitError(e instanceof Error ? e.message : "Something went wrong. Please try again.");

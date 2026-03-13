@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { siteData } from "@/data/siteData";
 import { blogPosts } from "@/data/blog/postsData";
+import { trackEvent } from "@/lib/analytics";
 import { Star, Mail, MapPin, CheckCircle2, ArrowRight, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -202,7 +203,7 @@ export function SocialProof() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">WhatsApp</h4>
-                    <a href="https://web.whatsapp.com/send?phone=447963345465" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">+44 7963 345465</a>
+                    <a href="https://web.whatsapp.com/send?phone=447963345465" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={() => trackEvent("whatsapp_click", { event_category: "contact", event_label: "WhatsApp Button" })}>+44 7963 345465</a>
                   </div>
                 </div>
 
@@ -223,7 +224,7 @@ export function SocialProof() {
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">WhatsApp & Telegram</h4>
                     <div className="flex flex-col gap-1">
-                      <a href="https://web.whatsapp.com/send?phone=447963345465" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Chat on WhatsApp</a>
+                      <a href="https://web.whatsapp.com/send?phone=447963345465" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={() => trackEvent("whatsapp_click", { event_category: "contact", event_label: "WhatsApp Button" })}>Chat on WhatsApp</a>
                       <a href="https://t.me/universitio" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Message on Telegram</a>
                     </div>
                   </div>

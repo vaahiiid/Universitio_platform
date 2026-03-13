@@ -23,6 +23,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
 import { apiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent } from "@/lib/analytics";
 
 import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
 
@@ -465,6 +466,12 @@ export default function AssessmentForm() {
 
     setResults(scores);
     setSubmitted(true);
+    trackEvent("assessment_completed", {
+      event_category: "lead",
+      event_label: "Admission Assessment",
+      destinations: scores.map((s) => s.destination).join(", "),
+      page_path: "/assessment-form",
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
