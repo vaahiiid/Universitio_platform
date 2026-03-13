@@ -98,7 +98,7 @@ function buildListParams(
   query: Record<string, unknown>,
 ): ListParams {
   const page = Math.max(1, parseInt(query.page as string) || 1);
-  const limit = Math.min(100, Math.max(1, parseInt(query.limit as string) || 20));
+  const limit = Math.min(10000, Math.max(1, parseInt(query.limit as string) || 20));
   const offset = (page - 1) * limit;
   const search = query.search as string | undefined;
   const statusFilter = query.status as string | undefined;
