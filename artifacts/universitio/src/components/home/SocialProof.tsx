@@ -163,7 +163,7 @@ export function SocialProof() {
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Get in Touch</h2>
               <p className="text-lg text-muted-foreground mb-12 max-w-lg">
-                Have a question? Ready to start your journey? Reach out via phone, email, social media, or the form.
+                Have a question? Ready to start your journey? Reach out via WhatsApp, email, social media, or the form.
               </p>
 
               <div className="space-y-7 mb-12">
@@ -173,7 +173,7 @@ export function SocialProof() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">WhatsApp</h4>
-                    <a href="https://web.whatsapp.com/send?phone=447963345465&text=" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Message Us on WhatsApp</a>
+                    <a href="https://web.whatsapp.com/send?phone=447963345465" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">+44 7963 345465</a>
                   </div>
                 </div>
 
@@ -194,7 +194,7 @@ export function SocialProof() {
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">WhatsApp & Telegram</h4>
                     <div className="flex flex-col gap-1">
-                      <a href="https://web.whatsapp.com/send?phone=447963345465&text=" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Chat on WhatsApp</a>
+                      <a href="https://web.whatsapp.com/send?phone=447963345465" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Chat on WhatsApp</a>
                       <a href="https://t.me/universitio" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Message on Telegram</a>
                     </div>
                   </div>
