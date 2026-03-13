@@ -19,7 +19,9 @@ const router: IRouter = Router();
 
 router.use(requireAdmin);
 
-const VALID_STATUSES = ["New", "Reviewed", "Contacted", "In Progress", "Closed", "Archived"];
+const CONSULTATION_STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
+const GENERAL_STATUSES = ["New", "Under Review", "Contacted", "Accepted", "Rejected"];
+const ALL_VALID_STATUSES = [...new Set([...CONSULTATION_STATUSES, ...GENERAL_STATUSES])];
 const ALLOWED_IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".avif"]);
 const MAX_ZIP_ENTRIES = 500;
 const MAX_UNCOMPRESSED_SIZE = 100 * 1024 * 1024;
@@ -119,10 +121,10 @@ async function listRecords(
   };
 }
 
-function validatePatchBody(body: Record<string, unknown>): { status?: string; notes?: string } | string {
+function validatePatchBody(body: Record<string, unknown>, validStatuses: string[] = ALL_VALID_STATUSES): { status?: string; notes?: string } | string {
   const updates: { status?: string; notes?: string } = {};
   if (body.status !== undefined) {
-    if (typeof body.status !== "string" || !VALID_STATUSES.includes(body.status)) {
+    if (typeof body.status !== "string" || !validStatuses.includes(body.status)) {
       return "Invalid status";
     }
     updates.status = body.status;
@@ -162,7 +164,7 @@ router.patch("/admin/consultations/:id", async (req: Request, res: Response) => 
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const result = validatePatchBody(req.body as Record<string, unknown>);
+    const result = validatePatchBody(req.body as Record<string, unknown>, CONSULTATION_STATUSES);
     if (typeof result === "string") { res.status(400).json({ error: result }); return; }
     const [row] = await db.update(consultations).set({ ...result, updatedAt: new Date() }).where(eq(consultations.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
@@ -201,7 +203,7 @@ router.patch("/admin/assessments/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const result = validatePatchBody(req.body as Record<string, unknown>);
+    const result = validatePatchBody(req.body as Record<string, unknown>, GENERAL_STATUSES);
     if (typeof result === "string") { res.status(400).json({ error: result }); return; }
     const [row] = await db.update(assessments).set({ ...result, updatedAt: new Date() }).where(eq(assessments.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
@@ -240,7 +242,7 @@ router.patch("/admin/partners/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const result = validatePatchBody(req.body as Record<string, unknown>);
+    const result = validatePatchBody(req.body as Record<string, unknown>, GENERAL_STATUSES);
     if (typeof result === "string") { res.status(400).json({ error: result }); return; }
     const [row] = await db.update(partnerRequests).set({ ...result, updatedAt: new Date() }).where(eq(partnerRequests.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }
@@ -279,7 +281,7 @@ router.patch("/admin/referrals/:id", async (req: Request, res: Response) => {
   try {
     const id = parseId(req.params.id);
     if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
-    const result = validatePatchBody(req.body as Record<string, unknown>);
+    const result = validatePatchBody(req.body as Record<string, unknown>, GENERAL_STATUSES);
     if (typeof result === "string") { res.status(400).json({ error: result }); return; }
     const [row] = await db.update(studentReferrals).set({ ...result, updatedAt: new Date() }).where(eq(studentReferrals.id, id)).returning();
     if (!row) { res.status(404).json({ error: "Not found" }); return; }

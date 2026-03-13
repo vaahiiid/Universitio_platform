@@ -4,6 +4,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
@@ -11,7 +12,7 @@ import {
   ArrowLeft, Search, ChevronLeft, ChevronRight, X, Save, Loader2
 } from "lucide-react";
 
-const STATUSES = ["New", "Under Review", "Contacted", "Accepted", "Rejected"];
+const STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
 
 interface Pagination {
   page: number;
@@ -23,10 +24,9 @@ interface Pagination {
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
     New: "bg-blue-100 text-blue-700",
-    "Under Review": "bg-yellow-100 text-yellow-700",
+    Reviewed: "bg-yellow-100 text-yellow-700",
     Contacted: "bg-green-100 text-green-700",
-    Accepted: "bg-emerald-100 text-emerald-700",
-    Rejected: "bg-red-100 text-red-700",
+    Closed: "bg-gray-100 text-gray-600",
   };
   return (
     <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${colors[status] || "bg-gray-100 text-gray-600"}`}>
@@ -154,7 +154,7 @@ function DetailView({ id }: { id: number }) {
               </div>
               <div>
                 <label className="text-sm font-medium text-foreground mb-1.5 block">Internal Notes</label>
-                <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Add internal notes..." />
+                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Add internal notes..." rows={3} />
               </div>
             </div>
             <Button onClick={handleSave} disabled={saving} className="bg-[#42147d] hover:bg-[#42147d]/90 text-white">
