@@ -40,11 +40,10 @@ const partnerSchema = z.object({
 type PartnerFormValues = z.infer<typeof partnerSchema>;
 
 function CountryMultiSelect({
-  selected, onChange, label, placeholder
+  selected, onChange, placeholder
 }: {
   selected: string[];
   onChange: (val: string[]) => void;
-  label: string;
   placeholder?: string;
 }) {
   const [search, setSearch] = useState("");
@@ -330,7 +329,6 @@ export default function Partners() {
                           <CountryMultiSelect
                             selected={field.value}
                             onChange={(val) => field.onChange(val)}
-                            label="nationalities"
                             placeholder="Click to select nationalities..."
                           />
                           <FormMessage />
