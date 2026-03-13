@@ -180,11 +180,9 @@ function ListView() {
             <h1 className="text-2xl font-bold text-foreground">Contact Messages</h1>
             <p className="text-sm text-muted-foreground mt-1">{pagination.total} total messages</p>
           </div>
-          {items.length > 0 && (
-            <Button variant="outline" size="sm" onClick={() => handleExportCsv(search, statusFilter)}>
-              <Download className="w-4 h-4 mr-1.5" /> Export CSV
-            </Button>
-          )}
+          <Button variant="outline" size="sm" onClick={() => handleExportCsv(search, statusFilter)}>
+            <Download className="w-4 h-4 mr-1.5" /> Export CSV
+          </Button>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">

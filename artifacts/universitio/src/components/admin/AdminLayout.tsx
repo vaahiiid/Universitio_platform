@@ -22,7 +22,7 @@ const NAV_ITEMS = [
   { label: "Assessments", path: "/admin/assessments", icon: ClipboardCheck, unreadKey: "assessments" as const },
   { label: "Partners", path: "/admin/partners", icon: Handshake, unreadKey: "partners" as const },
   { label: "Referrals", path: "/admin/referrals", icon: Users, unreadKey: "referrals" as const },
-  { label: "Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const },
+  { label: "Contact Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const },
   { label: "Blog Import", path: "/admin/blog-import", icon: Upload, unreadKey: null },
 ];
 
