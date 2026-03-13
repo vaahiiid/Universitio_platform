@@ -112,6 +112,16 @@ function DetailView({ id }: { id: number }) {
             <FieldRow label="Budget" value={data.budget as string} />
             <FieldRow label="Research Exp." value={data.hasResearchExperience ? "Yes" : "No"} />
             <FieldRow label="Strengths" value={strengths?.join(", ")} />
+            {data.previousEducation && Array.isArray(data.previousEducation) && (data.previousEducation as Array<{levelOfStudy?: string; fieldOfStudy?: string}>).length > 0 && (
+              <div className="flex items-start py-2 border-b border-border/50">
+                <span className="text-sm text-muted-foreground w-40 shrink-0">Previous Education</span>
+                <div className="text-sm text-foreground">
+                  {(data.previousEducation as Array<{levelOfStudy?: string; fieldOfStudy?: string}>).map((edu, i) => (
+                    <div key={i}>{edu.levelOfStudy}{edu.fieldOfStudy ? ` — ${edu.fieldOfStudy}` : ""}</div>
+                  ))}
+                </div>
+              </div>
+            )}
             <FieldRow label="Contact Method" value={data.preferredContactMethod as string} />
             <FieldRow label="How Heard" value={data.howDidYouHear as string} />
             <FieldRow label="Score Notes" value={data.scoreNotes as string} />

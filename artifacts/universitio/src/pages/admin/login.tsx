@@ -4,6 +4,7 @@ import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, Mail, AlertCircle } from "lucide-react";
+import logoImg from "@assets/universitio logo.png";
 
 export default function AdminLogin() {
   const { login, isAuthenticated } = useAdminAuth();
@@ -36,7 +37,7 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-gradient-to-br from-[#1a0a2e] via-[#2d1b4e] to-[#42147d] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white">Universitio</h1>
+          <img src={logoImg} alt="Universitio" className="h-12 mx-auto mb-2" />
           <p className="text-white/50 text-sm mt-1">Admin Panel</p>
         </div>
 
