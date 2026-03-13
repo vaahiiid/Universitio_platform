@@ -1,0 +1,230 @@
+Please apply the following admin, assessment, homepage blog, and notification improvements to the Universitio website.
+
+The goal is to make the admin panel more practical, make the assessment logic more encouraging and transparent, and improve content syncing and usability.
+
+Keep everything clean, user-friendly, well-structured, and aligned with the current Universitio brand and UI.
+
+==================================================
+1. ADMIN PANEL IMPROVEMENTS
+==================================================
+
+Please improve the admin panel so that all major submission lists are easier to manage.
+
+A. Add delete functionality everywhere
+All major list sections in admin must support deletion.
+
+This includes:
+- Forms
+- Assessments
+- Partner Requests
+- Student Referrals
+- Contact Messages
+
+Requirements:
+- allow deleting individual records
+- include a confirmation step before deletion
+- keep the UI clean and safe
+- if possible, also support bulk delete later, but individual delete is required now
+
+B. Add export functionality
+All major admin lists should support export.
+
+Required export support:
+- CSV export at minimum
+- Excel-friendly format is acceptable
+
+Apply export to:
+- Forms
+- Assessments
+- Partner Requests
+- Student Referrals
+- Contact Messages
+
+Exports should include the key fields visible in each section.
+
+C. Bring Contact Us messages into admin
+The Contact Us form/messages must also be stored and shown inside the admin panel.
+
+Create a separate section:
+- Contact Messages
+
+Each contact message should show:
+- full name
+- email
+- phone if provided
+- subject
+- message
+- submission date
+- status
+- internal notes
+
+Suggested statuses:
+- New
+- Reviewed
+- Contacted
+- Closed
+
+Make this section searchable and filterable like the others.
+
+==================================================
+2. ASSESSMENT SCORING IMPROVEMENTS
+==================================================
+
+The current assessment scoring logic needs revision.
+
+Important:
+The current system feels too strict.
+It should become more realistic, more encouraging, and less discouraging for users.
+
+The result should still be honest, but should not make users feel hopeless.
+
+A. Make budget the most important factor
+Budget must have the highest weight in the scoring logic.
+
+Please revise the scoring model so that financial readiness has the strongest influence, especially depending on the selected destination(s).
+
+B. Reduce harshness
+Please make the assessment less strict overall.
+Weak or incomplete profiles should not automatically feel rejected or hopeless.
+
+The scoring should still be meaningful, but softer and more user-friendly.
+
+C. Show why the score is lower
+The user must clearly understand why their score is not higher.
+
+The result must include a short explanation or breakdown such as:
+- budget limitations for selected destination
+- language readiness not yet strong enough
+- academic alignment could be stronger
+- profile is promising but needs improvement in specific areas
+
+Make these explanations clear, concise, and helpful.
+
+D. New score colour bands
+Use exactly this colour system:
+
+- Below 50% = red
+- 50% to 69% = yellow
+- 70% to 89% = light green
+- 90% and above = bold/strong attractive green
+
+The UI should reflect these bands clearly.
+
+E. Four result labels instead of the current setup
+Because the result now has four colour bands, the score labels should also be four-level.
+
+Make them clear, friendly, and slightly warm / engaging.
+
+Use this exact style for the final score labels:
+- Needs a Boost
+- On the Right Track
+- Strong Potential
+- Top Shape
+
+Apply them to the final overall assessment result.
+
+F. Academic Performance question update
+The question “Academic Performance” should be updated.
+
+Replace the current options with clearer academic-style labels such as:
+- Distinction
+- Merit
+- Pass
+- Needs Improvement
+
+Keep this user-friendly and understandable for international users.
+
+If helpful, add short helper text so users understand roughly what each means.
+
+G. Keep the result motivating
+The assessment should help users feel guided, not judged.
+Even when the score is not high, the tone should remain constructive and optimistic.
+
+If the result is lower, show a helpful message offering guidance to improve the profile.
+
+==================================================
+3. HOMEPAGE LATEST BLOG POSTS MUST AUTO-UPDATE
+==================================================
+
+The “Latest Blog Posts” or “Latest Articles” section on the homepage must not be disconnected from the actual blog.
+
+Right now, it is not properly pulling from the real blog source.
+
+Please fix this so that:
+- the homepage latest blog section always reads from the actual blog data source
+- when a new blog post is added/imported, the homepage latest blog section updates automatically
+- the homepage should always display the latest published blog posts dynamically
+
+Do not keep it as static placeholder data.
+
+==================================================
+4. ADMIN NOTIFICATIONS FOR NEW SUBMISSIONS
+==================================================
+
+If possible, add admin notifications for new submissions.
+
+The admin should be able to notice when a new form or submission arrives.
+
+At minimum, support:
+- new consultation form submission
+- new assessment submission
+- new partner request
+- new student referral
+- new contact message
+
+Suggested UX ideas:
+- notification badge count in admin
+- recent activity indicator on dashboard
+- in-app notification or toast when new entries appear if feasible
+
+Keep it simple and useful.
+This does not need to be overly complex, but the admin should clearly notice new submissions.
+
+==================================================
+5. GENERAL ADMIN USABILITY
+==================================================
+
+Keep the admin panel practical and easy to use.
+
+Across all admin sections:
+- keep search
+- keep filter by status
+- keep internal notes
+- keep clear detail views
+- make delete and export easy to access
+- maintain a clean layout
+
+==================================================
+6. QUALITY / UX EXPECTATIONS
+==================================================
+
+Please implement these updates carefully without damaging the existing admin panel or frontend.
+
+Important goals:
+- more practical admin management
+- more user-friendly assessment results
+- more transparent score explanations
+- dynamic latest blog syncing on homepage
+- simple but useful admin notifications
+
+Keep the design:
+- clean
+- modern
+- minimal
+- readable
+- consistent with Universitio
+
+==================================================
+FINAL OBJECTIVE
+==================================================
+
+Improve the Universitio system so that:
+- all admin lists can be deleted and exported
+- contact messages are visible in admin
+- assessment scoring becomes softer, clearer, and more transparent
+- budget becomes the most important scoring factor
+- the user understands why their score is lower
+- assessment result colours and labels use the new 4-level system
+- Academic Performance uses Distinction / Merit / Pass / Needs Improvement
+- homepage latest blog posts update automatically from the real blog source
+- admin can notice new submissions more easily
