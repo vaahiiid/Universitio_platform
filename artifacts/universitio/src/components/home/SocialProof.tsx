@@ -16,7 +16,7 @@ export function SocialProof() {
     if (document.getElementById("tp-widget-script")) return;
     const script = document.createElement("script");
     script.id = "tp-widget-script";
-    script.src = "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
+    script.src = "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
     script.async = true;
     document.head.appendChild(script);
   }, []);
@@ -42,7 +42,7 @@ export function SocialProof() {
               className="trustpilot-widget"
               data-locale="en-GB"
               data-template-id="56278e9abfbbba0bdcd568bc"
-              data-businessunit-id="universitio.co.uk"
+              data-businessunit-id="7ac98d0742b24421b3d38448"
               data-style-height="52px"
               data-style-width="100%"
             >
