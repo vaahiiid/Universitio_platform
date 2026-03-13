@@ -56,14 +56,14 @@ Universitio marketing website — a UK education consultancy homepage for intern
 
 - **Stack**: React + Vite, Tailwind CSS v4, wouter routing, framer-motion, react-hook-form
 - **Served at**: `/` (preview path root)
-- **Pages**: `/` homepage, `/free-consultation`, `/assessment-form`, `/blog`
+- **Pages**: `/` homepage, `/free-consultation`, `/assessment-form`, `/blog`, `/blog/:slug` (article), `/blog/category/:category`
 - **Brand colour**: #42147d (deep purple) — primary: 266 72% 28%
 - **Key components**: `src/components/layout/` (Navbar, Footer), `src/components/home/` (Hero, TrustIndicators, AboutAndServices, GlobalReach, StudyDestinations, Partnerships, SocialProof)
 - **Data**: All editable content (stats, services, countries, testimonials, blog posts, study destinations, accreditations) lives in `src/data/siteData.ts`
 - **Assets**: Accreditation logos imported via `@assets/` alias from `attached_assets/`
 - **ICEF badge**: Injected via `useEffect` in Footer using account ID 6539 — renders live badge
 - **SEO**: Full meta tags, Open Graph, Twitter Card, structured data (LD+JSON) in `index.html`
-- **Blog**: Structured for future WordPress API integration
+- **Blog**: 252 WordPress posts imported from XML, stored in `src/data/blog/postsData.ts` and `categoriesData.ts`. 43 royalty-free Unsplash images stored in `public/blog-images/`. 20 categories. Blog index with category filter pills, featured article hero, Load More pagination. Article pages with Tailwind Typography prose rendering, breadcrumbs, share links, related posts. Category pages with filtered grids. Build scripts: `scripts/parse-wordpress-xml.mjs`, `scripts/download-blog-images.mjs`
 - Dev: `pnpm --filter @workspace/universitio run dev`
 
 ### `artifacts/api-server` (`@workspace/api-server`)
