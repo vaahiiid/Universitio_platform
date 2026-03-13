@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
@@ -10,6 +11,16 @@ import { Partnerships } from "@/components/home/Partnerships";
 import { SocialProof } from "@/components/home/SocialProof";
 
 export default function Home() {
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const id = hash.replace("#", "");
+      const timer = setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

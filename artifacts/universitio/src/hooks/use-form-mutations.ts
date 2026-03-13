@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { apiUrl } from "@/lib/api";
 
 export const consultationSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -57,32 +58,54 @@ export const consultationSchema = z.object({
 
 export type ConsultationInput = z.infer<typeof consultationSchema>;
 
-const mockApiCall = async <T>(data: T, delayMs = 1500) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ success: true, data });
-    }, delayMs);
+async function submitConsultation(data: ConsultationInput) {
+  const formData = new FormData();
+
+  const cvFile = data.cvFile instanceof FileList ? data.cvFile[0] : data.cvFile instanceof File ? data.cvFile : null;
+
+  for (const [key, value] of Object.entries(data)) {
+    if (key === "cvFile") continue;
+    if (Array.isArray(value)) {
+      formData.append(key, JSON.stringify(value));
+    } else if (value !== undefined && value !== null) {
+      formData.append(key, String(value));
+    }
+  }
+
+  if (cvFile) {
+    formData.append("cvFile", cvFile);
+  }
+
+  const res = await fetch(apiUrl("/leads/consultation"), {
+    method: "POST",
+    body: formData,
   });
-};
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error((body as { error?: string }).error || "Submission failed");
+  }
+
+  return res.json();
+}
 
 export function useSubmitConsultation() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (data: ConsultationInput) => mockApiCall(data),
+    mutationFn: submitConsultation,
     onSuccess: () => {
       toast({
         title: "Request Submitted Successfully",
         description: "One of our education experts will contact you shortly.",
       });
     },
-    onError: () => {
+    onError: (err) => {
       toast({
         variant: "destructive",
         title: "Submission Failed",
-        description: "Please try again later or contact us directly.",
+        description: err instanceof Error ? err.message : "Please try again later or contact us directly.",
       });
     }
   });
 }
-

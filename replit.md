@@ -56,7 +56,7 @@ Universitio marketing website — a UK education consultancy homepage for intern
 
 - **Stack**: React + Vite, Tailwind CSS v4, wouter routing, framer-motion, react-hook-form
 - **Served at**: `/` (preview path root)
-- **Pages**: `/` homepage, `/free-consultation`, `/assessment-form`, `/blog`, `/blog/:slug` (article), `/blog/category/:category`
+- **Pages**: `/` homepage, `/free-consultation`, `/assessment-form`, `/blog`, `/blog/:slug` (article), `/blog/category/:category`, `/partners`, `/student-referral`, `/careers`, `/admin/login`, `/admin` (dashboard), `/admin/consultations`, `/admin/assessments`, `/admin/partners`, `/admin/referrals`, `/admin/blog-import`
 - **Brand colour**: #42147d (deep purple) — primary: 266 72% 28%
 - **Key components**: `src/components/layout/` (Navbar, Footer), `src/components/home/` (Hero, TrustIndicators, AboutAndServices, GlobalReach, StudyDestinations, Partnerships, SocialProof)
 - **Data**: All editable content (stats, services, countries, testimonials, blog posts, study destinations, accreditations) lives in `src/data/siteData.ts`
@@ -64,6 +64,8 @@ Universitio marketing website — a UK education consultancy homepage for intern
 - **ICEF badge**: Injected via `useEffect` in Footer using account ID 6539 — renders live badge
 - **SEO**: Full meta tags, Open Graph, Twitter Card, structured data (LD+JSON) in `index.html`
 - **Blog**: 252 WordPress posts imported from XML, stored in `src/data/blog/postsData.ts` and `categoriesData.ts`. 43 royalty-free Unsplash images stored in `public/blog-images/`. 20 categories. Blog index with category filter pills, featured article hero, Load More pagination. Article pages with Tailwind Typography prose rendering, breadcrumbs, share links, related posts. Category pages with filtered grids. Build scripts: `scripts/parse-wordpress-xml.mjs`, `scripts/download-blog-images.mjs`
+- **Admin Panel**: JWT-authenticated admin panel at `/admin/*` with sidebar navigation, route guard (`AdminGuard`), and auth context (`AdminAuthContext`). Pages: dashboard (stats + recent), consultations, assessments, partners, referrals (all with list/detail/status-update views), blog import (ZIP upload). Auth stored in localStorage (`admin_token`, `admin_email`).
+- **API Integration**: All frontend forms (consultation, assessment, partners, referral) submit to real API endpoints via `/api` proxy. Vite dev server proxies `/api` to `http://localhost:8080`. API helper in `src/lib/api.ts` provides `apiFetch` (with auto-token and 401 redirect) and `apiUrl` (URL builder).
 - Dev: `pnpm --filter @workspace/universitio run dev`
 
 ### `artifacts/api-server` (`@workspace/api-server`)

@@ -11,9 +11,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, useMemo } from "react";
+import { apiUrl } from "@/lib/api";
 import {
   ArrowLeft, Check, Gift, Share2, Users, Award,
-  Search, X, Info, ClipboardCheck
+  Search, X, Info, ClipboardCheck, Loader2
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
@@ -117,6 +118,8 @@ function CountryMultiSelect({
 
 export default function StudentReferral() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const form = useForm<ReferralFormValues>({
     resolver: zodResolver(referralSchema),
@@ -138,9 +141,26 @@ export default function StudentReferral() {
     }
   }
 
-  function onSubmit() {
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  async function onSubmit(values: ReferralFormValues) {
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch(apiUrl("/leads/referral"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error((body as { error?: string }).error || "Submission failed");
+      }
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -311,8 +331,14 @@ export default function StudentReferral() {
                         </FormItem>
                       )} />
 
-                      <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base font-semibold shadow-lg">
-                        Submit Application
+                      {submitError && (
+                        <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                          {submitError}
+                        </div>
+                      )}
+
+                      <Button type="submit" size="lg" disabled={submitting} className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base font-semibold shadow-lg">
+                        {submitting ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Submitting...</> : "Submit Application"}
                       </Button>
                       <p className="text-xs text-muted-foreground text-center">
                         By submitting, you confirm the information provided is accurate and you agree to

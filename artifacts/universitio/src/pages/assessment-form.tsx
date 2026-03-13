@@ -21,6 +21,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
+import { apiUrl } from "@/lib/api";
 
 import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
 
@@ -385,7 +386,9 @@ export default function AssessmentForm() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function handleSubmitAndReveal() {
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmitAndReveal() {
     const values = form.getValues();
     const step5Result = stepSchemas[5].safeParse(values);
     if (!step5Result.success) {
@@ -415,6 +418,33 @@ export default function AssessmentForm() {
       hasResearchExperience: values.hasResearchExperience === "yes",
     };
     const scores = computeScores(profile);
+
+    setSubmitting(true);
+    try {
+      const cvFile = values.cvFile instanceof FileList ? values.cvFile[0] : values.cvFile instanceof File ? values.cvFile : null;
+      const formData = new FormData();
+
+      for (const [key, value] of Object.entries(values)) {
+        if (key === "cvFile") continue;
+        if (Array.isArray(value)) {
+          formData.append(key, JSON.stringify(value));
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      }
+
+      if (cvFile) formData.append("cvFile", cvFile);
+
+      await fetch(apiUrl("/leads/assessment"), {
+        method: "POST",
+        body: formData,
+      });
+    } catch {
+      // submission is best-effort; still show results
+    } finally {
+      setSubmitting(false);
+    }
+
     setResults(scores);
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -997,8 +1027,8 @@ export default function AssessmentForm() {
                       Continue <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   ) : (
-                    <Button type="button" onClick={handleSubmitAndReveal} className="rounded-full px-8 py-3 bg-primary hover:bg-primary/90 text-white shadow-lg text-base font-semibold">
-                      Submit and View My Result <ArrowRight className="w-5 h-5 ml-2" />
+                    <Button type="button" onClick={handleSubmitAndReveal} disabled={submitting} className="rounded-full px-8 py-3 bg-primary hover:bg-primary/90 text-white shadow-lg text-base font-semibold">
+                      {submitting ? "Processing..." : <>Submit and View My Result <ArrowRight className="w-5 h-5 ml-2" /></>}
                     </Button>
                   )}
                 </div>

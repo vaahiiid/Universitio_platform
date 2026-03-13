@@ -16,9 +16,10 @@ import { z } from "zod";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState, useMemo } from "react";
+import { apiUrl } from "@/lib/api";
 import {
   ArrowLeft, Check, Users, Handshake, Globe, ShieldCheck,
-  BookOpen, Award, Search, X
+  BookOpen, Award, Search, X, Loader2
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
@@ -126,6 +127,8 @@ function CountryMultiSelect({
 
 export default function Partners() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const form = useForm<PartnerFormValues>({
     resolver: zodResolver(partnerSchema),
@@ -148,9 +151,26 @@ export default function Partners() {
     }
   }
 
-  function onSubmit() {
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  async function onSubmit(values: PartnerFormValues) {
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch(apiUrl("/leads/partners"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error((body as { error?: string }).error || "Submission failed");
+      }
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -382,8 +402,14 @@ export default function Partners() {
                         </FormItem>
                       )} />
 
-                      <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base font-semibold shadow-lg">
-                        Submit Partner Enquiry
+                      {submitError && (
+                        <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+                          {submitError}
+                        </div>
+                      )}
+
+                      <Button type="submit" size="lg" disabled={submitting} className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base font-semibold shadow-lg">
+                        {submitting ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Submitting...</> : "Submit Partner Enquiry"}
                       </Button>
                     </form>
                   </Form>
