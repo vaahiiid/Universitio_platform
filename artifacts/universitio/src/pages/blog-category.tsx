@@ -31,7 +31,6 @@ export default function BlogCategoryPage() {
       meta.setAttribute("content", `Browse ${posts.length} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`);
       if (!meta.parentElement) document.head.appendChild(meta);
     }
-    window.scrollTo(0, 0);
     setVisibleCount(POSTS_PER_PAGE);
   }, [category, categorySlug, posts.length]);
 

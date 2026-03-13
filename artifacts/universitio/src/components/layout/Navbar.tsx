@@ -27,7 +27,8 @@ export function Navbar() {
           element.scrollIntoView({ behavior: "smooth" });
         }
       } else {
-        setLocation(href);
+        const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+        window.location.href = `${base}${href}`;
       }
     } else {
       setLocation(href);

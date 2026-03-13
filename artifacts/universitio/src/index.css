@@ -142,6 +142,13 @@
     font-family: var(--font-display);
     @apply tracking-tight font-bold;
   }
+
+  button,
+  a,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
 }
 
 @keyframes marquee {

@@ -86,7 +86,6 @@ export default function BlogPostPage() {
       meta.setAttribute("content", post.excerpt.slice(0, 160));
       if (!meta.parentElement) document.head.appendChild(meta);
     }
-    window.scrollTo(0, 0);
   }, [post]);
 
   const relatedPosts = useMemo(() => {
