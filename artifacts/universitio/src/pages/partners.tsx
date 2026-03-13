@@ -21,39 +21,7 @@ import {
   BookOpen, Award, Search, X
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-
-const COUNTRIES = [
-  "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
-  "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia",
-  "Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burma","Burundi","Cabo Verde","Cambodia",
-  "Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica",
-  "Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt",
-  "El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia",
-  "Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras",
-  "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan",
-  "Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein",
-  "Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania",
-  "Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia",
-  "Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway",
-  "Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal",
-  "Qatar","Republic of the Congo","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia",
-  "Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia",
-  "Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea",
-  "South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania",
-  "Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda",
-  "Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City",
-  "Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
-];
-
-const DESTINATIONS = [
-  { value: "UK", label: "United Kingdom" },
-  { value: "USA", label: "United States" },
-  { value: "Canada", label: "Canada" },
-  { value: "Germany", label: "Germany" },
-  { value: "Netherlands", label: "Netherlands" },
-  { value: "Australia", label: "Australia" },
-  { value: "Europe", label: "Europe (general)" },
-];
+import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
 
 const partnerSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -203,11 +171,18 @@ export default function Partners() {
               Partnership Programme
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Become a Universitio Partner</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               Work with us to support international students applying to universities worldwide.
               If you are an education agency, counsellor, introducer, or student recruitment partner,
               we would be glad to learn more about your organisation.
             </p>
+            <Button
+              size="lg"
+              className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white shadow-lg"
+              onClick={() => document.getElementById("partner-form")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Start Partner Enquiry <ArrowLeft className="w-4 h-4 ml-2 rotate-[270deg]" />
+            </Button>
           </div>
 
           {submitted ? (
@@ -259,7 +234,7 @@ export default function Partners() {
               </div>
 
               <div className="lg:col-span-3">
-                <div className="bg-white rounded-3xl border border-border p-6 md:p-8 shadow-xl">
+                <div id="partner-form" className="bg-white rounded-3xl border border-border p-6 md:p-8 shadow-xl scroll-mt-28">
                   <h3 className="text-xl font-bold text-foreground mb-1">Partner Enquiry</h3>
                   <p className="text-sm text-muted-foreground mb-6">Tell us about your organisation and how you work with students.</p>
 
