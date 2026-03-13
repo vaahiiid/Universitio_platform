@@ -212,25 +212,71 @@ export const siteData = {
       quote: "Universitio made what felt like an overwhelming process feel manageable. They guided me every step of the way, and I received an offer from my first-choice university. I couldn't have done it without them.",
       author: "Priya S.",
       origin: "India",
-      program: "MSc Computer Science, University of Manchester"
+      program: "MSc Computer Science, University of Manchester",
+      stars: 5
     },
     {
       quote: "Professional, knowledgeable, and genuinely caring. The team helped me prepare a strong personal statement and I was accepted to three universities. Highly recommended.",
       author: "Ahmed K.",
       origin: "Nigeria",
-      program: "LLB Law, University of Birmingham"
+      program: "LLB Law, University of Birmingham",
+      stars: 5
     },
     {
       quote: "As an international student, I had so many questions about the UK system. Universitio answered everything patiently and helped me navigate the entire application process too.",
       author: "Sara M.",
       origin: "Pakistan",
-      program: "BSc Nursing, University of Leeds"
+      program: "BSc Nursing, University of Leeds",
+      stars: 5
     },
     {
       quote: "The PhD guidance I received was exceptional. They helped me identify the right supervisors and refine my research proposal significantly.",
       author: "Dr. Reza F.",
       origin: "Iran",
-      program: "PhD Engineering, University of Sheffield"
+      program: "PhD Engineering, University of Sheffield",
+      stars: 5
+    },
+    {
+      quote: "I was unsure about which country to study in. Universitio helped me weigh up my options, and I ended up choosing Canada — the best decision I've made. They handled everything brilliantly.",
+      author: "Fatima A.",
+      origin: "Saudi Arabia",
+      program: "MBA, University of Toronto",
+      stars: 5
+    },
+    {
+      quote: "From my first enquiry to receiving my offer letter, the team at Universitio were supportive and responsive. They truly understand what international students need.",
+      author: "Chen W.",
+      origin: "China",
+      program: "BEng Mechanical Engineering, University of Bristol",
+      stars: 5
+    },
+    {
+      quote: "I applied through Universitio for a Master's programme and got accepted within weeks. Their knowledge of UK admissions is outstanding. I felt confident throughout.",
+      author: "Oluwaseun D.",
+      origin: "Nigeria",
+      program: "MSc Finance, University of Warwick",
+      stars: 5
+    },
+    {
+      quote: "Excellent service from start to finish. They helped me with my personal statement, interview preparation, and even pre-departure advice. Very professional team.",
+      author: "Yusuf B.",
+      origin: "Turkey",
+      program: "BSc Architecture, UCL",
+      stars: 5
+    },
+    {
+      quote: "I was nervous about applying to universities abroad, but Universitio made the whole process feel straightforward. They were always available to answer my questions.",
+      author: "Maria G.",
+      origin: "Bangladesh",
+      program: "MSc Public Health, University of Glasgow",
+      stars: 4
+    },
+    {
+      quote: "The team helped my daughter secure a place at a top London school. Their understanding of the UK education system at every level is impressive.",
+      author: "Hassan R.",
+      origin: "Qatar",
+      program: "A-Levels, London School",
+      stars: 5
     }
   ],
 

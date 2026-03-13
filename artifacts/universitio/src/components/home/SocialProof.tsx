@@ -1,16 +1,32 @@
 import { Link } from "wouter";
 import { siteData } from "@/data/siteData";
-import { Mail, Phone, MapPin, CheckCircle2, ArrowRight, ExternalLink } from "lucide-react";
+import { Star, Mail, Phone, MapPin, CheckCircle2, ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+function StarRating({ count = 5 }: { count?: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`w-4 h-4 ${i < count ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}`}
+        />
+      ))}
+    </div>
+  );
+}
 
 export function SocialProof() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const onSubmit = () => setIsSubmitted(true);
+  const autoplayPlugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
 
   useEffect(() => {
     const win = window as unknown as { Trustpilot?: { loadFromElement: (el: Element, b: boolean) => void } };
@@ -31,19 +47,19 @@ export function SocialProof() {
   return (
     <>
       {/* Testimonials */}
-      <section id="testimonials" className="py-24 bg-muted/30">
+      <section id="testimonials" className="py-24 bg-gradient-to-b from-muted/30 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div className="max-w-2xl">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">What Our Students Say</h2>
-              <p className="text-muted-foreground text-lg">Real feedback from students we've helped.</p>
+              <p className="text-muted-foreground text-lg">Real feedback from students we've helped — rated on Trustpilot.</p>
             </div>
-            <a href="https://www.trustpilot.com/review/universitio.co.uk" target="_blank" rel="noopener noreferrer" className="text-secondary font-medium hover:text-primary transition-colors flex items-center gap-1 group">
+            <a href="https://www.trustpilot.com/review/universitio.co.uk" target="_blank" rel="noopener noreferrer" className="text-secondary font-medium hover:text-primary transition-colors flex items-center gap-1 group shrink-0">
               Read all reviews on Trustpilot <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
           </div>
 
-          {/* Trustpilot TrustBox widget — primary review proof */}
+          {/* Trustpilot TrustBox widget */}
           <div className="mb-10">
             <div
               className="trustpilot-widget"
@@ -59,21 +75,37 @@ export function SocialProof() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {siteData.testimonials.map((test, i) => (
-              <div key={i} className="bg-card rounded-2xl p-6 shadow-sm border border-border flex flex-col justify-between hover:shadow-lg transition-shadow">
-                <div>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 italic">
-                    "{test.quote}"
-                  </p>
-                </div>
-                <div className="border-t border-border pt-4">
-                  <p className="font-bold text-foreground text-sm">{test.author}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{test.program}</p>
-                  <p className="text-xs font-medium text-secondary mt-1">{test.origin}</p>
-                </div>
-              </div>
-            ))}
+          {/* Testimonial Carousel */}
+          <div className="relative px-4 md:px-14">
+            <Carousel
+              opts={{ align: "start", loop: true }}
+              plugins={[autoplayPlugin.current]}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-4 md:-ml-6">
+                {siteData.testimonials.map((test, i) => (
+                  <CarouselItem key={i} className="pl-4 md:pl-6 basis-full sm:basis-1/2 lg:basis-1/3">
+                    <div className="bg-card rounded-2xl p-7 shadow-sm border border-border flex flex-col justify-between h-full hover:shadow-lg transition-shadow group">
+                      <div>
+                        <div className="mb-4">
+                          <StarRating count={test.stars} />
+                        </div>
+                        <p className="text-muted-foreground text-sm leading-relaxed mb-6 italic">
+                          &ldquo;{test.quote}&rdquo;
+                        </p>
+                      </div>
+                      <div className="border-t border-border pt-4">
+                        <p className="font-bold text-foreground text-sm">{test.author}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{test.program}</p>
+                        <p className="text-xs font-medium text-secondary mt-1">{test.origin}</p>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-4 md:-left-6 bg-white border-border shadow-md hover:bg-primary hover:text-white hover:border-primary transition-all h-10 w-10" />
+              <CarouselNext className="-right-4 md:-right-6 bg-white border-border shadow-md hover:bg-primary hover:text-white hover:border-primary transition-all h-10 w-10" />
+            </Carousel>
           </div>
         </div>
       </section>
