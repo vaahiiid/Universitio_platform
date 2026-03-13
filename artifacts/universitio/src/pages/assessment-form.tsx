@@ -63,7 +63,7 @@ const COURSE_AREAS = [
   "Business and Management", "Computer Science / IT", "Engineering", "Health and Nursing",
   "Medicine", "Law", "Architecture", "Art and Design", "Education", "Social Sciences",
   "Psychology", "Media and Communications", "Hospitality and Tourism", "Finance and Accounting",
-  "Marketing", "Data Science / AI", "English / Humanities", "Other"
+  "Marketing", "Data Science / AI", "English / Humanities", "Environmental Science", "Other"
 ];
 
 const QUALIFICATION_LEVELS = [
@@ -72,7 +72,7 @@ const QUALIFICATION_LEVELS = [
 
 const LANGUAGE_TYPES = [
   "IELTS Academic", "IELTS General", "TOEFL", "PTE Academic",
-  "Duolingo English Test", "Cambridge English", "German Language Certificate", "Other"
+  "Duolingo English Test", "Cambridge English", "OET", "German Language Certificate", "Other"
 ];
 
 const ENGLISH_LEVELS = [
@@ -122,9 +122,9 @@ const stepSchemas = {
   2: z.object({
     highestQualification: z.string().min(1, "Highest qualification is required"),
     previousEducation: z.array(z.object({
-      qualificationLevel: z.string(),
-      fieldOfStudy: z.string(),
-    })).optional(),
+      qualificationLevel: z.string().min(1, "Please select a qualification level"),
+      fieldOfStudy: z.string().min(1, "Please enter a field of study"),
+    })).min(1, "Please add at least one education entry"),
     academicPerformance: z.string().min(1, "Academic performance is required"),
     fieldAlignment: z.string().min(1, "Please answer this question"),
   }),
@@ -428,13 +428,28 @@ export default function AssessmentForm() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <FormField control={form.control} name="dateOfBirth" render={({ field }) => (
+                      <FormField control={form.control} name="dateOfBirth" render={({ field }) => {
+                        const dob = field.value;
+                        let calculatedAge: number | null = null;
+                        if (dob) {
+                          const birth = new Date(dob);
+                          const now = new Date();
+                          let age = now.getFullYear() - birth.getFullYear();
+                          const m = now.getMonth() - birth.getMonth();
+                          if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+                          if (age >= 0 && age <= 120) calculatedAge = age;
+                        }
+                        return (
                         <FormItem>
                           <FormLabel>Date of Birth <span className="text-red-500">*</span></FormLabel>
                           <FormControl><Input type="date" {...field} /></FormControl>
+                          {calculatedAge !== null && (
+                            <p className="text-xs text-muted-foreground mt-1">Age: {calculatedAge} years</p>
+                          )}
                           <FormMessage />
                         </FormItem>
-                      )} />
+                        );
+                      }} />
                       <FormField control={form.control} name="nationality" render={({ field }) => (
                         <FormItem>
                           <FormLabel>Nationality <span className="text-red-500">*</span></FormLabel>
