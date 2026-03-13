@@ -372,7 +372,7 @@ function generateObservations(profile: AssessmentProfile, scores: {
 function generateExplanations(profile: AssessmentProfile, scores: {
   academic: number; language: number; budget: number;
   alignment: number; profileStrength: number; age: number;
-}, destination: string, finalScore: number): string[] {
+}, destination: string): string[] {
   const reasons: { priority: number; text: string }[] = [];
   const destNames: Record<string, string> = {
     "UK": "the UK", "USA": "the USA", "Canada": "Canada",
@@ -457,8 +457,7 @@ export function computeScores(profile: AssessmentProfile): DestinationScore[] {
     const explanations = generateExplanations(
       profile,
       { academic, language, budget, alignment, profileStrength, age },
-      dest,
-      finalScore
+      dest
     );
 
     return {
