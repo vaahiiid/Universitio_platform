@@ -1,17 +1,23 @@
 import app from "./app";
 
-const rawPort = process.env["PORT"];
-
-if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
+const requiredVars = ["PORT"];
+const dbConfigured = process.env.DATABASE_URL || (process.env.PGHOST && process.env.PGUSER && process.env.PGDATABASE);
+if (!dbConfigured) {
+  console.error("FATAL: No database configuration found. Set DATABASE_URL or PGHOST/PGUSER/PGPASSWORD/PGDATABASE.");
+  process.exit(1);
 }
 
-const port = Number(rawPort);
+const missing = requiredVars.filter((v) => !process.env[v]);
+if (missing.length) {
+  console.error(`FATAL: Missing required environment variables: ${missing.join(", ")}`);
+  process.exit(1);
+}
+
+const port = Number(process.env["PORT"]);
 
 if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
+  console.error(`FATAL: Invalid PORT value: "${process.env["PORT"]}"`);
+  process.exit(1);
 }
 
 app.listen(port, () => {

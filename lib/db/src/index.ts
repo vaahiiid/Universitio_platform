@@ -4,13 +4,30 @@ import * as schema from "./schema";
 
 const { Pool } = pg;
 
-if (!process.env.DATABASE_URL) {
+function getDatabaseUrl(): string {
+  if (process.env.DATABASE_URL) {
+    return process.env.DATABASE_URL;
+  }
+
+  const host = process.env.PGHOST;
+  const port = process.env.PGPORT || "5432";
+  const user = process.env.PGUSER;
+  const password = process.env.PGPASSWORD;
+  const database = process.env.PGDATABASE;
+
+  if (host && user && database) {
+    const encodedPassword = password ? encodeURIComponent(password) : "";
+    const auth = password ? `${user}:${encodedPassword}` : user;
+    return `postgresql://${auth}@${host}:${port}/${database}`;
+  }
+
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "Database connection not configured. Set DATABASE_URL or individual PGHOST/PGUSER/PGPASSWORD/PGDATABASE variables.",
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const connectionString = getDatabaseUrl();
+export const pool = new Pool({ connectionString });
 export const db = drizzle(pool, { schema });
 
 export * from "./schema";
