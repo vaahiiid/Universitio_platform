@@ -26,6 +26,7 @@ export interface DestinationScore {
   restricted: boolean;
   restrictionMessage?: string;
   observations: string[];
+  explanations: string[];
 }
 
 const UK_RESTRICTED_NATIONALITIES = [
@@ -63,8 +64,8 @@ function scoreNationality(nationality: string, destination: string): { score: nu
     message = "U.S. visa issuance may currently be suspended or restricted for your nationality under current policy conditions.";
   }
 
-  if (restricted) return { score: 2, restricted, message };
-  return { score: 15, restricted: false };
+  if (restricted) return { score: 3, restricted, message };
+  return { score: 10, restricted: false };
 }
 
 function getAcademicGap(profile: AssessmentProfile): number {
@@ -101,30 +102,30 @@ function scoreAcademic(profile: AssessmentProfile): number {
 
   let alignmentScore = 0;
   if (gap === 1) alignmentScore = 10;
-  else if (gap === 0) alignmentScore = 8;
-  else if (gap < 0) alignmentScore = 7;
-  else if (gap === 2) alignmentScore = 3;
-  else alignmentScore = 1;
+  else if (gap === 0) alignmentScore = 9;
+  else if (gap < 0) alignmentScore = 8;
+  else if (gap === 2) alignmentScore = 5;
+  else alignmentScore = 3;
 
   const perfMap: Record<string, number> = {
-    "Excellent": 8, "Good": 5, "Average": 3, "Weak": 1
+    "Distinction": 10, "Merit": 7, "Pass": 5, "Needs Improvement": 2
   };
-  let perfScore = perfMap[profile.academicPerformance] || 3;
+  let perfScore = perfMap[profile.academicPerformance] || 5;
 
-  if (gap >= 3) perfScore = Math.min(perfScore, 2);
-  if (gap >= 2) perfScore = Math.min(perfScore, 5);
+  if (gap >= 3) perfScore = Math.min(perfScore, 3);
+  if (gap >= 2) perfScore = Math.min(perfScore, 6);
 
-  return Math.min(20, alignmentScore + perfScore);
+  return Math.min(18, alignmentScore + perfScore);
 }
 
 function scoreLanguage(profile: AssessmentProfile, destination: string): number {
   if (!profile.hasLanguageQualification) {
-    if (!profile.englishLevel) return 1;
+    if (!profile.englishLevel) return 2;
     const levelMap: Record<string, number> = {
-      "Beginner": 1, "Elementary": 2, "Pre-Intermediate": 3,
-      "Intermediate": 5, "Upper-Intermediate": 7, "Advanced": 9
+      "Beginner": 2, "Elementary": 4, "Pre-Intermediate": 6,
+      "Intermediate": 8, "Upper-Intermediate": 10, "Advanced": 13
     };
-    return levelMap[profile.englishLevel] || 2;
+    return levelMap[profile.englishLevel] || 4;
   }
 
   const rawScore = parseFloat(profile.languageScore || "0");
@@ -144,8 +145,8 @@ function scoreLanguage(profile: AssessmentProfile, destination: string): number 
   else if (rawScore >= 6.0) pts = 10;
   else if (rawScore >= 5.5) pts = 8;
   else if (rawScore >= 5.0) pts = 6;
-  else if (rawScore >= 4.5) pts = 4;
-  else pts = 3;
+  else if (rawScore >= 4.5) pts = 5;
+  else pts = 4;
 
   if (isGeneral && pts > 10) pts = 10;
 
@@ -155,7 +156,7 @@ function scoreLanguage(profile: AssessmentProfile, destination: string): number 
     else if (rawScore >= 110) pts = 11;
     else if (rawScore >= 100) pts = 9;
     else if (rawScore >= 90) pts = 7;
-    else pts = 4;
+    else pts = 5;
   }
 
   if (type === "TOEFL") {
@@ -165,7 +166,7 @@ function scoreLanguage(profile: AssessmentProfile, destination: string): number 
     else if (rawScore >= 80) pts = 10;
     else if (rawScore >= 70) pts = 8;
     else if (rawScore >= 60) pts = 6;
-    else pts = 4;
+    else pts = 5;
   }
 
   if (type === "PTE Academic") {
@@ -177,7 +178,7 @@ function scoreLanguage(profile: AssessmentProfile, destination: string): number 
     else pts = 5;
   }
 
-  return Math.min(20, pts);
+  return Math.min(18, pts);
 }
 
 function scoreBudget(budget: string, destination: string): number {
@@ -185,26 +186,26 @@ function scoreBudget(budget: string, destination: string): number {
   const isEuro = euroCountries.includes(destination);
 
   if (budget === "over20k") {
-    return isEuro ? 15 : 13;
+    return isEuro ? 25 : 22;
   }
   if (budget === "10k-20k") {
-    if (isEuro) return 11;
-    if (destination === "Canada") return 7;
-    return 5;
+    if (isEuro) return 20;
+    if (destination === "Canada") return 14;
+    return 12;
   }
-  if (isEuro) return 6;
-  if (destination === "Canada") return 2;
-  return 1;
+  if (isEuro) return 14;
+  if (destination === "Canada") return 8;
+  return 6;
 }
 
 function scoreAlignment(profile: AssessmentProfile): number {
   const map: Record<string, number> = {
     "Yes, same field": 8,
-    "Yes, related field": 5,
-    "No, different field": 2,
-    "Not sure yet": 3
+    "Yes, related field": 6,
+    "No, different field": 3,
+    "Not sure yet": 4
   };
-  return map[profile.fieldAlignment] || 3;
+  return map[profile.fieldAlignment] || 4;
 }
 
 function scoreProfileStrength(profile: AssessmentProfile): number {
@@ -212,8 +213,8 @@ function scoreProfileStrength(profile: AssessmentProfile): number {
   const strengthPoints: Record<string, number> = {
     "GRE": 1.5, "GMAT": 1.5, "SAT": 1.5, "A-Levels": 1.5,
     "Foundation Programme": 1, "Published Research": 2.5,
-    "Research Experience": 1.5, "Work Experience": 1,
-    "Internship Experience": 0.5, "Portfolio": 1.5,
+    "Research Experience": 1.5, "Work Experience": 1.5,
+    "Internship Experience": 1, "Portfolio": 1.5,
     "Relevant Professional Certifications": 1.5
   };
   for (const s of profile.additionalStrengths) {
@@ -221,7 +222,7 @@ function scoreProfileStrength(profile: AssessmentProfile): number {
   }
   if (profile.hasResearchExperience) {
     const isPhd = profile.studyLevel === "PhD / Research";
-    pts += isPhd ? 2 : 1;
+    pts += isPhd ? 2.5 : 1.5;
   }
   return Math.min(10, pts);
 }
@@ -231,27 +232,27 @@ function scoreAge(profile: AssessmentProfile): number {
   const level = profile.studyLevel;
 
   if (level === "Foundation / Pathway" || level === "College" || level === "Bachelor's") {
-    if (age >= 17 && age <= 22) return 10;
-    if (age >= 23 && age <= 25) return 7;
-    if (age >= 26 && age <= 30) return 5;
-    if (age >= 31 && age <= 35) return 4;
-    return 3;
-  }
-  if (level === "Master's") {
-    if (age >= 21 && age <= 28) return 10;
-    if (age >= 29 && age <= 33) return 7;
-    if (age >= 34 && age <= 40) return 5;
-    if (age >= 18 && age <= 20) return 5;
-    return 3;
-  }
-  if (level === "PhD / Research") {
-    if (age >= 23 && age <= 32) return 10;
-    if (age >= 33 && age <= 40) return 7;
-    if (age >= 41 && age <= 50) return 5;
-    if (age >= 18 && age <= 22) return 5;
+    if (age >= 17 && age <= 24) return 10;
+    if (age >= 25 && age <= 28) return 8;
+    if (age >= 29 && age <= 33) return 6;
+    if (age >= 34 && age <= 38) return 5;
     return 4;
   }
-  return 5;
+  if (level === "Master's") {
+    if (age >= 21 && age <= 30) return 10;
+    if (age >= 31 && age <= 36) return 8;
+    if (age >= 37 && age <= 42) return 6;
+    if (age >= 18 && age <= 20) return 6;
+    return 4;
+  }
+  if (level === "PhD / Research") {
+    if (age >= 23 && age <= 35) return 10;
+    if (age >= 36 && age <= 42) return 8;
+    if (age >= 43 && age <= 50) return 6;
+    if (age >= 18 && age <= 22) return 6;
+    return 5;
+  }
+  return 6;
 }
 
 function applyCaps(
@@ -266,58 +267,58 @@ function applyCaps(
   let capped = rawTotal;
 
   if (natResult.restricted) {
-    capped = Math.min(capped, 35);
+    capped = Math.min(capped, 40);
   }
 
   const academicGap = getAcademicGap(profile);
   if (academicGap >= 3) {
-    capped = Math.min(capped, 40);
+    capped = Math.min(capped, 48);
   } else if (academicGap >= 2) {
-    capped = Math.min(capped, 55);
-  } else if (academicScore <= 5) {
-    capped = Math.min(capped, 55);
+    capped = Math.min(capped, 60);
+  } else if (academicScore <= 6) {
+    capped = Math.min(capped, 62);
   }
 
   if (ENGLISH_MEDIUM_DESTINATIONS.includes(destination)) {
     if (!profile.hasLanguageQualification) {
-      if (languageScore <= 5) {
-        capped = Math.min(capped, 45);
+      if (languageScore <= 6) {
+        capped = Math.min(capped, 55);
       } else {
-        capped = Math.min(capped, 58);
+        capped = Math.min(capped, 65);
       }
     } else if (languageScore <= 6) {
-      capped = Math.min(capped, 55);
+      capped = Math.min(capped, 60);
     }
   }
 
   if (profile.budget === "under10k") {
     if (["UK", "USA", "Australia"].includes(destination)) {
-      capped = Math.min(capped, 42);
+      capped = Math.min(capped, 55);
     } else if (destination === "Canada") {
-      capped = Math.min(capped, 48);
+      capped = Math.min(capped, 58);
     }
   }
 
-  const isWeakPerformance = profile.academicPerformance === "Weak";
-  const isWeakLanguage = !profile.hasLanguageQualification && languageScore <= 5;
-  const isWeakBudget = budgetScore <= 2;
+  const isWeakPerformance = profile.academicPerformance === "Needs Improvement";
+  const isWeakLanguage = !profile.hasLanguageQualification && languageScore <= 6;
+  const isWeakBudget = budgetScore <= 8;
 
   let weaknessCount = 0;
   if (isWeakBudget) weaknessCount++;
-  if (languageScore <= 5) weaknessCount++;
-  if (academicScore <= 5 || isWeakPerformance) weaknessCount++;
+  if (languageScore <= 6) weaknessCount++;
+  if (academicScore <= 6 || isWeakPerformance) weaknessCount++;
   if (academicGap >= 2) weaknessCount++;
 
   if (weaknessCount >= 3) {
-    capped = Math.min(capped, 32);
+    capped = Math.min(capped, 40);
   } else if (weaknessCount >= 2) {
-    capped = Math.min(capped, 42);
+    capped = Math.min(capped, 50);
   }
 
   if (isWeakPerformance && isWeakLanguage && isWeakBudget) {
-    capped = Math.min(capped, 28);
-  } else if (isWeakPerformance && (isWeakLanguage || isWeakBudget)) {
     capped = Math.min(capped, 35);
+  } else if (isWeakPerformance && (isWeakLanguage || isWeakBudget)) {
+    capped = Math.min(capped, 42);
   }
 
   return capped;
@@ -331,7 +332,7 @@ function generateObservations(profile: AssessmentProfile, scores: {
 
   if (scores.academic >= 14)
     obs.push("Your academic background appears well aligned with your intended level of study.");
-  else if (scores.academic >= 8)
+  else if (scores.academic >= 9)
     obs.push("Your academic profile is reasonable but could be strengthened for more competitive programmes.");
   else
     obs.push("Your academic profile may need further development before applying to your intended level. A pathway or foundation programme could help.");
@@ -351,12 +352,12 @@ function generateObservations(profile: AssessmentProfile, scores: {
   };
   const destLabel = destNames[destination] || "this destination";
 
-  if (scores.budget >= 10)
-    obs.push(`Your budget level is suitable for study in ${destLabel}.`);
-  else if (scores.budget >= 5)
+  if (scores.budget >= 18)
+    obs.push(`Your budget level is well suited for study in ${destLabel}.`);
+  else if (scores.budget >= 10)
     obs.push(`Your budget is workable for some programmes in ${destLabel} — we can help identify affordable options within your range.`);
   else
-    obs.push(`Your budget may significantly limit your options in ${destLabel}. Exploring scholarships or alternative destinations could be beneficial.`);
+    obs.push(`Your budget may limit your options in ${destLabel}. Exploring scholarships or more affordable programmes could be beneficial.`);
 
   if (scores.alignment >= 6)
     obs.push("Your intended course aligns well with your academic background, which strengthens your application.");
@@ -368,12 +369,56 @@ function generateObservations(profile: AssessmentProfile, scores: {
   return obs.slice(0, 4);
 }
 
+function generateExplanations(profile: AssessmentProfile, scores: {
+  academic: number; language: number; budget: number;
+  alignment: number; profileStrength: number; age: number;
+}, destination: string, finalScore: number): string[] {
+  if (finalScore >= 90) return [];
+
+  const reasons: { priority: number; text: string }[] = [];
+  const destNames: Record<string, string> = {
+    "UK": "the UK", "USA": "the USA", "Canada": "Canada",
+    "Germany": "Germany", "Netherlands": "the Netherlands", "Australia": "Australia"
+  };
+  const destLabel = destNames[destination] || "this destination";
+
+  if (scores.budget < 14) {
+    reasons.push({ priority: 1, text: `Budget is below the typical cost for study in ${destLabel}.` });
+  }
+
+  if (scores.language < 8) {
+    reasons.push({ priority: 2, text: "Language readiness needs strengthening — a recognised test score would help." });
+  } else if (scores.language < 12) {
+    reasons.push({ priority: 3, text: "A higher language test score would open more competitive programme options." });
+  }
+
+  if (scores.academic < 8) {
+    reasons.push({ priority: 2, text: "Academic background may need further development for the intended study level." });
+  } else if (scores.academic < 12) {
+    reasons.push({ priority: 4, text: "Stronger academic grades would improve competitiveness for top programmes." });
+  }
+
+  if (scores.alignment <= 3) {
+    reasons.push({ priority: 5, text: "Changing study field may require a foundation or bridging programme." });
+  }
+
+  if (scores.profileStrength < 3) {
+    reasons.push({ priority: 6, text: "Adding qualifications like work experience, certifications, or test scores would strengthen the profile." });
+  }
+
+  if (scores.age < 6) {
+    reasons.push({ priority: 7, text: "Age relative to the chosen study level may affect some admission decisions." });
+  }
+
+  reasons.sort((a, b) => a.priority - b.priority);
+  return reasons.slice(0, 3).map(r => r.text);
+}
+
 export function getBand(score: number): { band: string; bandColor: string; bandBgColor: string } {
-  if (score >= 90) return { band: "Strong potential", bandColor: "text-green-600", bandBgColor: "bg-green-50" };
-  if (score >= 75) return { band: "Good potential", bandColor: "text-emerald-500", bandBgColor: "bg-emerald-50" };
-  if (score >= 60) return { band: "Moderate potential", bandColor: "text-yellow-600", bandBgColor: "bg-yellow-50" };
-  if (score >= 40) return { band: "Developing profile", bandColor: "text-orange-500", bandBgColor: "bg-orange-50" };
-  return { band: "Low admission readiness", bandColor: "text-red-500", bandBgColor: "bg-red-50" };
+  if (score >= 90) return { band: "Top Shape", bandColor: "text-green-700", bandBgColor: "bg-green-50" };
+  if (score >= 70) return { band: "Strong Potential", bandColor: "text-green-500", bandBgColor: "bg-green-50/70" };
+  if (score >= 50) return { band: "On the Right Track", bandColor: "text-amber-600", bandBgColor: "bg-amber-50" };
+  return { band: "Needs a Boost", bandColor: "text-red-500", bandBgColor: "bg-red-50" };
 }
 
 export function computeScores(profile: AssessmentProfile): DestinationScore[] {
@@ -391,12 +436,19 @@ export function computeScores(profile: AssessmentProfile): DestinationScore[] {
     );
 
     const capped = applyCaps(rawTotal, profile, natResult, language, budget, academic, dest);
-    const finalScore = Math.min(100, Math.max(0, capped));
+    const floored = Math.max(30, capped);
+    const finalScore = Math.min(100, floored);
     const { band, bandColor, bandBgColor } = getBand(finalScore);
     const observations = generateObservations(
       profile,
       { academic, language, budget, alignment, profileStrength, age },
       dest
+    );
+    const explanations = generateExplanations(
+      profile,
+      { academic, language, budget, alignment, profileStrength, age },
+      dest,
+      finalScore
     );
 
     return {
@@ -408,6 +460,7 @@ export function computeScores(profile: AssessmentProfile): DestinationScore[] {
       restricted: natResult.restricted,
       restrictionMessage: natResult.message,
       observations,
+      explanations,
     };
   });
 }

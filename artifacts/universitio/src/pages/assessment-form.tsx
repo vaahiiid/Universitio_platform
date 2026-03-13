@@ -201,10 +201,9 @@ function ScoreRing({ score, size = 160, animated = false }: { score: number; siz
   const { bandColor } = getBand(score);
 
   const colorMap: Record<string, string> = {
-    "text-green-600": "#16a34a",
-    "text-emerald-500": "#10b981",
-    "text-yellow-600": "#ca8a04",
-    "text-orange-500": "#f97316",
+    "text-green-700": "#15803d",
+    "text-green-500": "#22c55e",
+    "text-amber-600": "#d97706",
     "text-red-500": "#ef4444",
   };
   const strokeColor = colorMap[bandColor] || "#6b7280";
@@ -238,7 +237,7 @@ function ScoreRing({ score, size = 160, animated = false }: { score: number; siz
 }
 
 function ResultsView({ results, onReset }: { results: DestinationScore[]; onReset: () => void }) {
-  const anyBelow75 = results.some(r => r.score < 75);
+  const anyBelow70 = results.some(r => r.score < 70);
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="text-center mb-8">
@@ -264,6 +263,16 @@ function ResultsView({ results, onReset }: { results: DestinationScore[]; onRese
                 <p className={`text-sm font-semibold mt-4 text-center ${bandColor}`}>{r.band}</p>
                 {r.restricted && r.restrictionMessage && (
                   <AdvisoryNote variant="warning">{r.restrictionMessage}</AdvisoryNote>
+                )}
+                {r.explanations && r.explanations.length > 0 && (
+                  <div className="mt-4 w-full space-y-1.5">
+                    {r.explanations.map((exp, i) => (
+                      <p key={i} className="text-xs text-muted-foreground flex items-start gap-2">
+                        <Info className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/70" />
+                        {exp}
+                      </p>
+                    ))}
+                  </div>
                 )}
               </div>
             );
@@ -291,7 +300,7 @@ function ResultsView({ results, onReset }: { results: DestinationScore[]; onRese
           </div>
         ))}
 
-        {anyBelow75 && (
+        {anyBelow70 && (
           <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20 text-center">
             <div className="w-14 h-14 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <MessageCircle className="w-7 h-7" />
@@ -743,7 +752,22 @@ export default function AssessmentForm() {
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl><SelectTrigger><SelectValue placeholder="Self-assessed performance" /></SelectTrigger></FormControl>
                           <SelectContent>
-                            {["Excellent", "Good", "Average", "Weak"].map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                            <SelectItem value="Distinction">
+                              <span className="font-medium">Distinction</span>
+                              <span className="text-xs text-muted-foreground ml-1.5">— First-class / 70%+ / GPA 3.7+</span>
+                            </SelectItem>
+                            <SelectItem value="Merit">
+                              <span className="font-medium">Merit</span>
+                              <span className="text-xs text-muted-foreground ml-1.5">— Upper Second / 60–69% / GPA 3.0–3.6</span>
+                            </SelectItem>
+                            <SelectItem value="Pass">
+                              <span className="font-medium">Pass</span>
+                              <span className="text-xs text-muted-foreground ml-1.5">— Lower Second or Third / 50–59% / GPA 2.0–2.9</span>
+                            </SelectItem>
+                            <SelectItem value="Needs Improvement">
+                              <span className="font-medium">Needs Improvement</span>
+                              <span className="text-xs text-muted-foreground ml-1.5">— Below 50% / GPA below 2.0</span>
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
