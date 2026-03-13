@@ -100,66 +100,81 @@ const STEPS = [
   { label: "Results", icon: Award },
 ];
 
+const stepSchemas = {
+  0: z.object({
+    fullName: z.string().min(2, "Full name is required"),
+    mobile: z.string().min(7, "A valid mobile number is required"),
+    email: z.string().email("A valid email address is required"),
+    dateOfBirth: z.string().min(1, "Date of birth is required"),
+    nationality: z.string().min(1, "Nationality is required"),
+    maritalStatus: z.string().min(1, "Marital status is required"),
+  }),
+  1: z.object({
+    destinations: z.array(z.string()).min(1, "Select at least one destination").max(2, "You may choose up to 2"),
+    studyLevel: z.string().min(1, "Study level is required"),
+    courseArea: z.string().min(1, "Course area is required"),
+    courseAreaOther: z.string().optional(),
+  }).superRefine((data, ctx) => {
+    if (data.courseArea === "Other" && (!data.courseAreaOther || data.courseAreaOther.trim().length < 2)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify", path: ["courseAreaOther"] });
+    }
+  }),
+  2: z.object({
+    highestQualification: z.string().min(1, "Highest qualification is required"),
+    previousEducation: z.array(z.object({
+      qualificationLevel: z.string(),
+      fieldOfStudy: z.string(),
+    })).optional(),
+    academicPerformance: z.string().min(1, "Academic performance is required"),
+    fieldAlignment: z.string().min(1, "Please answer this question"),
+  }),
+  3: z.object({
+    hasLanguageQualification: z.enum(["yes", "no"], { required_error: "Required" }),
+    languageQualificationType: z.string().optional(),
+    languageQualificationOther: z.string().optional(),
+    languageScore: z.string().optional(),
+    englishLevel: z.string().optional(),
+  }).superRefine((data, ctx) => {
+    if (data.hasLanguageQualification === "yes") {
+      if (!data.languageQualificationType) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Required", path: ["languageQualificationType"] });
+      if (data.languageQualificationType === "Other" && (!data.languageQualificationOther || data.languageQualificationOther.trim().length < 1))
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify", path: ["languageQualificationOther"] });
+      if (!data.languageScore) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Score is required", path: ["languageScore"] });
+    }
+    if (data.hasLanguageQualification === "no" && !data.englishLevel)
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Required", path: ["englishLevel"] });
+  }),
+  4: z.object({
+    budget: z.string().min(1, "Budget is required"),
+    additionalStrengths: z.array(z.string()).optional(),
+    hasResearchExperience: z.enum(["yes", "no"]).optional(),
+    hasCv: z.enum(["yes", "no"]).optional(),
+    cvFile: z.any().optional(),
+  }).superRefine((data, ctx) => {
+    if (data.hasCv === "yes" && (!data.cvFile || (data.cvFile instanceof FileList && data.cvFile.length === 0)))
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please upload your CV", path: ["cvFile"] });
+  }),
+  5: z.object({
+    preferredContactMethod: z.string().min(1, "Contact method is required"),
+    howDidYouHear: z.string().optional(),
+    howDidYouHearOther: z.string().optional(),
+    wantsSuggestions: z.string().optional(),
+  }).superRefine((data, ctx) => {
+    if (data.howDidYouHear === "Other" && (!data.howDidYouHearOther || data.howDidYouHearOther.trim().length < 1))
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify", path: ["howDidYouHearOther"] });
+  }),
+} as const;
+
 const formSchema = z.object({
-  fullName: z.string().min(2, "Full name is required"),
-  mobile: z.string().min(7, "A valid mobile number is required"),
-  email: z.string().email("A valid email address is required"),
-  dateOfBirth: z.string().min(1, "Date of birth is required"),
-  nationality: z.string().min(1, "Nationality is required"),
-  maritalStatus: z.string().min(1, "Marital status is required"),
-  destinations: z.array(z.string()).min(1, "Select at least one destination").max(2, "You may choose up to 2"),
-  studyLevel: z.string().min(1, "Study level is required"),
-  courseArea: z.string().min(1, "Course area is required"),
-  courseAreaOther: z.string().optional(),
-  highestQualification: z.string().min(1, "Highest qualification is required"),
-  previousEducation: z.array(z.object({
-    qualificationLevel: z.string(),
-    fieldOfStudy: z.string(),
-  })).optional(),
-  academicPerformance: z.string().min(1, "Academic performance is required"),
-  fieldAlignment: z.string().min(1, "Please answer this question"),
-  hasLanguageQualification: z.enum(["yes", "no"], { required_error: "Required" }),
-  languageQualificationType: z.string().optional(),
-  languageQualificationOther: z.string().optional(),
-  languageScore: z.string().optional(),
-  englishLevel: z.string().optional(),
-  budget: z.string().min(1, "Budget is required"),
-  additionalStrengths: z.array(z.string()).optional(),
-  hasResearchExperience: z.enum(["yes", "no"]).optional(),
-  hasCv: z.enum(["yes", "no"]).optional(),
-  cvFile: z.any().optional(),
-  howDidYouHear: z.string().optional(),
-  howDidYouHearOther: z.string().optional(),
-  preferredContactMethod: z.string().min(1, "Contact method is required"),
-  wantsSuggestions: z.string().optional(),
-}).superRefine((data, ctx) => {
-  if (data.courseArea === "Other" && (!data.courseAreaOther || data.courseAreaOther.trim().length < 2)) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify", path: ["courseAreaOther"] });
-  }
-  if (data.hasLanguageQualification === "yes") {
-    if (!data.languageQualificationType) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Required", path: ["languageQualificationType"] });
-    if (data.languageQualificationType === "Other" && (!data.languageQualificationOther || data.languageQualificationOther.trim().length < 1))
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify", path: ["languageQualificationOther"] });
-    if (!data.languageScore) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Score is required", path: ["languageScore"] });
-  }
-  if (data.hasLanguageQualification === "no" && !data.englishLevel)
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Required", path: ["englishLevel"] });
-  if (data.hasCv === "yes" && (!data.cvFile || (data.cvFile instanceof FileList && data.cvFile.length === 0)))
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please upload your CV", path: ["cvFile"] });
-  if (data.howDidYouHear === "Other" && (!data.howDidYouHearOther || data.howDidYouHearOther.trim().length < 1))
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify", path: ["howDidYouHearOther"] });
+  ...stepSchemas[0].shape,
+  ...stepSchemas[1].innerType().shape,
+  ...stepSchemas[2].shape,
+  ...stepSchemas[3].innerType().shape,
+  ...stepSchemas[4].innerType().shape,
+  ...stepSchemas[5].innerType().shape,
 });
 
 type FormValues = z.infer<typeof formSchema>;
-
-const STEP_FIELDS: Record<number, (keyof FormValues)[]> = {
-  0: ["fullName", "mobile", "email", "dateOfBirth", "nationality", "maritalStatus"],
-  1: ["destinations", "studyLevel", "courseArea", "courseAreaOther"],
-  2: ["highestQualification", "academicPerformance", "fieldAlignment"],
-  3: ["hasLanguageQualification", "languageQualificationType", "languageQualificationOther", "languageScore", "englishLevel"],
-  4: ["budget", "additionalStrengths", "hasResearchExperience", "hasCv", "cvFile"],
-  5: ["preferredContactMethod"],
-};
 
 function AdvisoryNote({ children, variant = "warning" }: { children: React.ReactNode; variant?: "warning" | "info" }) {
   const colors = variant === "warning"
@@ -278,10 +293,18 @@ export default function AssessmentForm() {
   }
 
   const validateAndNext = useCallback(async () => {
-    const fieldsToValidate = STEP_FIELDS[currentStep];
-    if (!fieldsToValidate) return;
-    const valid = await form.trigger(fieldsToValidate as any);
-    if (!valid) return;
+    const schema = stepSchemas[currentStep as keyof typeof stepSchemas];
+    if (!schema) return;
+    const values = form.getValues();
+    const result = schema.safeParse(values);
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        const path = issue.path.join(".") as keyof FormValues;
+        form.setError(path, { type: "manual", message: issue.message });
+      }
+      return;
+    }
+    form.clearErrors();
 
     if (currentStep === 4) {
       const values = form.getValues();
@@ -686,9 +709,24 @@ export default function AssessmentForm() {
                           </SelectContent>
                         </Select>
                         <FormMessage />
-                        {watchBudget === "under10k" && (
+                        {watchBudget === "under10k" && watchDestinations && watchDestinations.length > 0 && (
                           <AdvisoryNote>
-                            For study in the UK, this budget is generally not sufficient. For Canada and the USA, options may be limited. Some European destinations may still offer possible pathways at this budget level.
+                            {(() => {
+                              const dests = watchDestinations || [];
+                              const hasUK = dests.includes("UK");
+                              const hasUSA = dests.includes("USA");
+                              const hasCanada = dests.includes("Canada");
+                              const hasAustralia = dests.includes("Australia");
+                              const hasEurope = dests.includes("Germany") || dests.includes("Netherlands");
+                              const parts: string[] = [];
+                              if (hasUK) parts.push("For study in the UK, this budget is generally not sufficient to cover tuition fees.");
+                              if (hasUSA) parts.push("In the USA, options at this budget level are very limited.");
+                              if (hasCanada) parts.push("For Canada, this budget may restrict your programme choices.");
+                              if (hasAustralia) parts.push("In Australia, tuition fees typically exceed this budget range.");
+                              if (hasEurope) parts.push("Some European destinations such as Germany or the Netherlands may still offer possible pathways at this budget level.");
+                              if (parts.length === 0) parts.push("At this budget level, options may be limited. We can help identify suitable pathways.");
+                              return parts.join(" ");
+                            })()}
                           </AdvisoryNote>
                         )}
                       </FormItem>

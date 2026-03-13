@@ -255,18 +255,29 @@ function generateObservations(profile: AssessmentProfile, scores: {
   else
     obs.push("Obtaining a recognised language qualification would significantly strengthen your application.");
 
-  if (scores.budget <= 8) {
+  if (scores.budget >= 13)
+    obs.push("Your budget level is well suited for study in this destination.");
+  else if (scores.budget >= 9)
+    obs.push("Your budget is workable for some programmes in this destination — we can help identify suitable options.");
+  else {
     if (destination === "UK" || destination === "USA")
       obs.push("Your budget may limit some options in this destination, but affordable pathways may still exist.");
     else
-      obs.push("Your budget is workable for some programmes in this destination — we can help identify suitable options.");
+      obs.push("Your budget may require careful programme selection — we can help find options within your range.");
   }
 
-  if (scores.alignment <= 5)
+  if (scores.alignment >= 8)
+    obs.push("Your intended course aligns well with your academic background, which strengthens your application.");
+  else if (scores.alignment <= 5)
     obs.push("Switching to a different field may require additional preparation or a foundation pathway.");
+  else
+    obs.push("Your study field alignment is reasonable — a well-crafted personal statement can bridge any gaps.");
 
   if (scores.profileStrength >= 7)
     obs.push("Your additional qualifications and experience add meaningful value to your profile.");
+
+  if (scores.age >= 9)
+    obs.push("Your age profile is well suited for your intended level of study.");
 
   return obs.slice(0, 4);
 }
