@@ -62,7 +62,7 @@ function cleanHtml(html) {
   if (!html) return '';
   let cleaned = html;
   cleaned = cleaned.replace(/<!--\s*\/?wp:[^>]*-->/g, '');
-  cleaned = cleaned.replace(/\[[\w_]+[^\]]*\]/g, '');
+  cleaned = cleaned.replace(/\[\/?[\w_]+[^\]]*\]/g, '');
 
   cleaned = cleaned.replace(/<div[^>]*>/gi, '');
   cleaned = cleaned.replace(/<\/div>/gi, '');
