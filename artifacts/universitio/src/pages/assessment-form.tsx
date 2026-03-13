@@ -147,8 +147,8 @@ const stepSchemas = {
   4: z.object({
     budget: z.string().min(1, "Budget is required"),
     additionalStrengths: z.array(z.string()).optional(),
-    hasResearchExperience: z.enum(["yes", "no"]).optional(),
-    hasCv: z.enum(["yes", "no"]).optional(),
+    hasResearchExperience: z.enum(["yes", "no"], { required_error: "Please select an option" }),
+    hasCv: z.enum(["yes", "no"], { required_error: "Please select an option" }),
     cvFile: z.any().optional(),
   }).superRefine((data, ctx) => {
     if (data.hasCv === "yes" && (!data.cvFile || (data.cvFile instanceof FileList && data.cvFile.length === 0)))
