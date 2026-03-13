@@ -17,7 +17,7 @@ import fs from "fs";
 
 const router: IRouter = Router();
 
-const CV_UPLOAD_DIR = path.resolve(process.cwd(), "uploads/cvs");
+const CV_UPLOAD_DIR = path.resolve(path.dirname(new URL(import.meta.url).pathname), "../../uploads/cvs");
 if (!fs.existsSync(CV_UPLOAD_DIR)) {
   fs.mkdirSync(CV_UPLOAD_DIR, { recursive: true });
 }
