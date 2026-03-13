@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRoute, useLocation } from "wouter";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { apiFetch } from "@/lib/api";
+import { exportCsvFile } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,8 +10,9 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
 import {
-  ArrowLeft, Search, ChevronLeft, ChevronRight, X, Save, Loader2
+  ArrowLeft, Search, ChevronLeft, ChevronRight, X, Save, Loader2, Trash2, Download
 } from "lucide-react";
+import { DeleteDialog } from "@/components/admin/DeleteDialog";
 
 const STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
 
@@ -56,6 +58,7 @@ function DetailView({ id }: { id: number }) {
   const [status, setStatus] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   useEffect(() => {
     apiFetch<Record<string, unknown>>(`/admin/consultations/${id}`)
@@ -83,6 +86,13 @@ function DetailView({ id }: { id: number }) {
     }
   }
 
+  async function handleDelete() {
+    try {
+      await apiFetch(`/admin/consultations/${id}`, { method: "DELETE" });
+      navigate("/admin/consultations");
+    } catch (e) { console.error(e); }
+  }
+
   if (loading) {
     return (
       <AdminLayout>
@@ -106,9 +116,14 @@ function DetailView({ id }: { id: number }) {
         </button>
 
         <div className="bg-white rounded-xl border border-border">
-          <div className="px-6 py-5 border-b border-border">
-            <h1 className="text-xl font-bold text-foreground">{data.fullName as string}</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">{data.email as string}</p>
+          <div className="px-6 py-5 border-b border-border flex items-start justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-foreground">{data.fullName as string}</h1>
+              <p className="text-sm text-muted-foreground mt-0.5">{data.email as string}</p>
+            </div>
+            <Button variant="outline" size="sm" className="text-red-600 border-red-200 hover:bg-red-50" onClick={() => setDeleteOpen(true)}>
+              <Trash2 className="w-4 h-4 mr-1.5" /> Delete
+            </Button>
           </div>
 
           <div className="px-6 py-4 space-y-0">
@@ -164,7 +179,21 @@ function DetailView({ id }: { id: number }) {
           </div>
         </div>
       </div>
+
+      <DeleteDialog open={deleteOpen} onOpenChange={setDeleteOpen} onConfirm={handleDelete} title="Delete Consultation" description="Are you sure you want to delete this consultation? This action cannot be undone." />
     </AdminLayout>
+  );
+}
+
+function handleExportCsv(items: Record<string, unknown>[]) {
+  exportCsvFile(
+    ["ID", "Full Name", "Email", "Mobile", "Nationality", "Status", "Notes", "Submitted"],
+    items,
+    (item) => [
+      item.id, item.fullName, item.email, item.mobile, item.nationality || "", item.status, item.notes || "",
+      new Date(item.createdAt as string).toISOString(),
+    ],
+    `consultations-${new Date().toISOString().slice(0, 10)}.csv`,
   );
 }
 
@@ -175,6 +204,7 @@ function ListView() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
 
   const fetchData = useCallback(async (page = 1) => {
     setLoading(true);
@@ -196,12 +226,28 @@ function ListView() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    try {
+      await apiFetch(`/admin/consultations/${deleteTarget}`, { method: "DELETE" });
+      setDeleteTarget(null);
+      fetchData(pagination.page);
+    } catch (e) { console.error(e); }
+  }
+
   return (
     <AdminLayout>
       <div className="space-y-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Consultations</h1>
-          <p className="text-sm text-muted-foreground mt-1">{pagination.total} total submissions</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Consultations</h1>
+            <p className="text-sm text-muted-foreground mt-1">{pagination.total} total submissions</p>
+          </div>
+          {items.length > 0 && (
+            <Button variant="outline" size="sm" onClick={() => handleExportCsv(items)}>
+              <Download className="w-4 h-4 mr-1.5" /> Export CSV
+            </Button>
+          )}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -247,20 +293,25 @@ function ListView() {
                     <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Nationality</th>
                     <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                     <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Date</th>
+                    <th className="px-4 py-3 w-10"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {items.map((item) => (
                     <tr
                       key={item.id as number}
-                      onClick={() => navigate(`/admin/consultations/${item.id}`)}
-                      className="hover:bg-muted/20 cursor-pointer transition-colors"
+                      className="hover:bg-muted/20 transition-colors"
                     >
-                      <td className="px-4 py-3 font-medium text-foreground">{item.fullName as string}</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{item.email as string}</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{item.nationality as string}</td>
-                      <td className="px-4 py-3"><StatusBadge status={item.status as string} /></td>
-                      <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell">{formatDate(item.createdAt as string)}</td>
+                      <td className="px-4 py-3 font-medium text-foreground cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{item.fullName as string}</td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{item.email as string}</td>
+                      <td className="px-4 py-3 text-muted-foreground hidden md:table-cell cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{item.nationality as string}</td>
+                      <td className="px-4 py-3 cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}><StatusBadge status={item.status as string} /></td>
+                      <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{formatDate(item.createdAt as string)}</td>
+                      <td className="px-4 py-3">
+                        <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(item.id as number); }} className="text-muted-foreground hover:text-red-600 transition-colors">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -285,6 +336,8 @@ function ListView() {
           </div>
         )}
       </div>
+
+      <DeleteDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)} onConfirm={handleDelete} title="Delete Consultation" description="Are you sure you want to delete this consultation? This action cannot be undone." />
     </AdminLayout>
   );
 }

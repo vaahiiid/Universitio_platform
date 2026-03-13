@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { siteData } from "@/data/siteData";
-import { Star, Mail, MapPin, CheckCircle2, ArrowRight, ExternalLink } from "lucide-react";
+import { Star, Mail, MapPin, CheckCircle2, ArrowRight, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import Autoplay from "embla-carousel-autoplay";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { apiFetch } from "@/lib/api";
 
 function StarRating({ count = 5 }: { count?: number }) {
   return (
@@ -23,10 +25,33 @@ function StarRating({ count = 5 }: { count?: number }) {
 }
 
 export function SocialProof() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const onSubmit = () => setIsSubmitted(true);
+  const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast();
   const autoplayPlugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
+
+  const onSubmit = async (data: Record<string, unknown>) => {
+    setSubmitting(true);
+    try {
+      await apiFetch("/leads/contact", {
+        method: "POST",
+        body: JSON.stringify({
+          fullName: data.name,
+          email: data.email,
+          phone: data.phone || "",
+          subject: data.subject,
+          message: data.message,
+        }),
+      });
+      setIsSubmitted(true);
+      reset();
+    } catch {
+      toast({ title: "Something went wrong", description: "Please try again or contact us directly.", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const win = window as unknown as { Trustpilot?: { loadFromElement: (el: Element, b: boolean) => void } };
@@ -319,8 +344,8 @@ export function SocialProof() {
                       />
                     </div>
 
-                    <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base shadow-md">
-                      Send Message
+                    <Button type="submit" size="lg" disabled={submitting} className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base shadow-md">
+                      {submitting ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Sending...</> : "Send Message"}
                     </Button>
                   </form>
                 )}

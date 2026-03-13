@@ -6,6 +6,7 @@ import {
   partnerRequests,
   studentReferrals,
   blogImportRecords,
+  contactMessages,
 } from "@workspace/db";
 import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
@@ -21,7 +22,8 @@ router.use(requireAdmin);
 
 const CONSULTATION_STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
 const GENERAL_STATUSES = ["New", "Under Review", "Contacted", "Accepted", "Rejected"];
-const ALL_VALID_STATUSES = [...new Set([...CONSULTATION_STATUSES, ...GENERAL_STATUSES])];
+const MESSAGE_STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
+const ALL_VALID_STATUSES = [...new Set([...CONSULTATION_STATUSES, ...GENERAL_STATUSES, ...MESSAGE_STATUSES])];
 const ALLOWED_IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".avif"]);
 const MAX_ZIP_ENTRIES = 500;
 const MAX_UNCOMPRESSED_SIZE = 100 * 1024 * 1024;
@@ -38,22 +40,47 @@ router.get("/admin/stats", async (_req: Request, res: Response) => {
     const [assCount] = await db.select({ value: count() }).from(assessments);
     const [partCount] = await db.select({ value: count() }).from(partnerRequests);
     const [refCount] = await db.select({ value: count() }).from(studentReferrals);
+    const [msgCount] = await db.select({ value: count() }).from(contactMessages);
 
     const [newCons] = await db.select({ value: count() }).from(consultations).where(eq(consultations.status, "New"));
     const [newAss] = await db.select({ value: count() }).from(assessments).where(eq(assessments.status, "New"));
     const [newPart] = await db.select({ value: count() }).from(partnerRequests).where(eq(partnerRequests.status, "New"));
     const [newRef] = await db.select({ value: count() }).from(studentReferrals).where(eq(studentReferrals.status, "New"));
+    const [newMsg] = await db.select({ value: count() }).from(contactMessages).where(eq(contactMessages.status, "New"));
 
     res.json({
       consultations: { total: consCount.value, new: newCons.value },
       assessments: { total: assCount.value, new: newAss.value },
       partnerRequests: { total: partCount.value, new: newPart.value },
       studentReferrals: { total: refCount.value, new: newRef.value },
-      totalNew: newCons.value + newAss.value + newPart.value + newRef.value,
+      contactMessages: { total: msgCount.value, new: newMsg.value },
+      totalNew: newCons.value + newAss.value + newPart.value + newRef.value + newMsg.value,
     });
   } catch (err) {
     console.error("Stats error:", err);
     res.status(500).json({ error: "Failed to fetch stats" });
+  }
+});
+
+router.get("/admin/stats/unread", async (_req: Request, res: Response) => {
+  try {
+    const [newCons] = await db.select({ value: count() }).from(consultations).where(eq(consultations.status, "New"));
+    const [newAss] = await db.select({ value: count() }).from(assessments).where(eq(assessments.status, "New"));
+    const [newPart] = await db.select({ value: count() }).from(partnerRequests).where(eq(partnerRequests.status, "New"));
+    const [newRef] = await db.select({ value: count() }).from(studentReferrals).where(eq(studentReferrals.status, "New"));
+    const [newMsg] = await db.select({ value: count() }).from(contactMessages).where(eq(contactMessages.status, "New"));
+
+    res.json({
+      consultations: newCons.value,
+      assessments: newAss.value,
+      partners: newPart.value,
+      referrals: newRef.value,
+      messages: newMsg.value,
+      total: newCons.value + newAss.value + newPart.value + newRef.value + newMsg.value,
+    });
+  } catch (err) {
+    console.error("Unread stats error:", err);
+    res.status(500).json({ error: "Failed to fetch unread stats" });
   }
 });
 
@@ -174,6 +201,18 @@ router.patch("/admin/consultations/:id", async (req: Request, res: Response) => 
   }
 });
 
+router.delete("/admin/consultations/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.delete(consultations).where(eq(consultations.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete consultation" });
+  }
+});
+
 router.get("/admin/assessments", async (req: Request, res: Response) => {
   try {
     const result = await listRecords(
@@ -210,6 +249,18 @@ router.patch("/admin/assessments/:id", async (req: Request, res: Response) => {
     res.json(row);
   } catch (err) {
     res.status(500).json({ error: "Failed to update assessment" });
+  }
+});
+
+router.delete("/admin/assessments/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.delete(assessments).where(eq(assessments.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete assessment" });
   }
 });
 
@@ -252,6 +303,18 @@ router.patch("/admin/partners/:id", async (req: Request, res: Response) => {
   }
 });
 
+router.delete("/admin/partners/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.delete(partnerRequests).where(eq(partnerRequests.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete partner request" });
+  }
+});
+
 router.get("/admin/referrals", async (req: Request, res: Response) => {
   try {
     const result = await listRecords(
@@ -288,6 +351,69 @@ router.patch("/admin/referrals/:id", async (req: Request, res: Response) => {
     res.json(row);
   } catch (err) {
     res.status(500).json({ error: "Failed to update student referral" });
+  }
+});
+
+router.delete("/admin/referrals/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.delete(studentReferrals).where(eq(studentReferrals.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete student referral" });
+  }
+});
+
+router.get("/admin/messages", async (req: Request, res: Response) => {
+  try {
+    const result = await listRecords(
+      contactMessages, contactMessages.fullName, contactMessages.email,
+      contactMessages.status, contactMessages.createdAt, req.query as Record<string, unknown>
+    );
+    res.json(result);
+  } catch (err) {
+    console.error("List messages error:", err);
+    res.status(500).json({ error: "Failed to list contact messages" });
+  }
+});
+
+router.get("/admin/messages/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.select().from(contactMessages).where(eq(contactMessages.id, id));
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch contact message" });
+  }
+});
+
+router.patch("/admin/messages/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const result = validatePatchBody(req.body as Record<string, unknown>, MESSAGE_STATUSES);
+    if (typeof result === "string") { res.status(400).json({ error: result }); return; }
+    const [row] = await db.update(contactMessages).set({ ...result, updatedAt: new Date() }).where(eq(contactMessages.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update contact message" });
+  }
+});
+
+router.delete("/admin/messages/:id", async (req: Request, res: Response) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.delete(contactMessages).where(eq(contactMessages.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete contact message" });
   }
 });
 
@@ -329,7 +455,16 @@ router.get("/admin/recent", async (_req: Request, res: Response) => {
       createdAt: studentReferrals.createdAt,
     }).from(studentReferrals).orderBy(desc(studentReferrals.createdAt)).limit(10);
 
-    const all = [...recentCons, ...recentAss, ...recentPart, ...recentRef]
+    const recentMsg = await db.select({
+      id: contactMessages.id,
+      type: sql<string>`'message'`,
+      name: contactMessages.fullName,
+      email: contactMessages.email,
+      status: contactMessages.status,
+      createdAt: contactMessages.createdAt,
+    }).from(contactMessages).orderBy(desc(contactMessages.createdAt)).limit(10);
+
+    const all = [...recentCons, ...recentAss, ...recentPart, ...recentRef, ...recentMsg]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 10);
 

@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { apiFetch } from "@/lib/api";
 import {
-  FileText, ClipboardCheck, Handshake, Users,
+  FileText, ClipboardCheck, Handshake, Users, MessageSquare,
   TrendingUp, Clock, ArrowRight
 } from "lucide-react";
 
@@ -12,6 +12,7 @@ interface Stats {
   assessments: { total: number; new: number };
   partnerRequests: { total: number; new: number };
   studentReferrals: { total: number; new: number };
+  contactMessages: { total: number; new: number };
   totalNew: number;
 }
 
@@ -29,6 +30,7 @@ const TYPE_CONFIG: Record<string, { label: string; color: string; path: string }
   assessment: { label: "Assessment", color: "bg-purple-100 text-purple-700", path: "/admin/assessments" },
   partner: { label: "Partner", color: "bg-emerald-100 text-emerald-700", path: "/admin/partners" },
   referral: { label: "Referral", color: "bg-orange-100 text-orange-700", path: "/admin/referrals" },
+  message: { label: "Message", color: "bg-pink-100 text-pink-700", path: "/admin/messages" },
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -79,6 +81,7 @@ export default function AdminDashboard() {
         { label: "Assessments", total: stats.assessments.total, newCount: stats.assessments.new, icon: ClipboardCheck, color: "text-purple-600", bg: "bg-purple-50", path: "/admin/assessments" },
         { label: "Partners", total: stats.partnerRequests.total, newCount: stats.partnerRequests.new, icon: Handshake, color: "text-emerald-600", bg: "bg-emerald-50", path: "/admin/partners" },
         { label: "Referrals", total: stats.studentReferrals.total, newCount: stats.studentReferrals.new, icon: Users, color: "text-orange-600", bg: "bg-orange-50", path: "/admin/referrals" },
+        { label: "Messages", total: stats.contactMessages.total, newCount: stats.contactMessages.new, icon: MessageSquare, color: "text-pink-600", bg: "bg-pink-50", path: "/admin/messages" },
       ]
     : [];
 
@@ -91,8 +94,8 @@ export default function AdminDashboard() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="bg-white rounded-xl border border-border p-5 animate-pulse h-28" />
             ))}
           </div>
@@ -107,7 +110,7 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
               {cards.map((card) => (
                 <Link key={card.label} href={card.path}>
                   <div className="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer">

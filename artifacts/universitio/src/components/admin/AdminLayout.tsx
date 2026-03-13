@@ -2,23 +2,47 @@ import { Link, useLocation } from "wouter";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import {
   LayoutDashboard, FileText, ClipboardCheck, Handshake, Users,
-  Upload, LogOut, Menu, X, ChevronRight
+  Upload, LogOut, Menu, X, ChevronRight, MessageSquare
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { apiFetch } from "@/lib/api";
+
+interface UnreadCounts {
+  consultations: number;
+  assessments: number;
+  partners: number;
+  referrals: number;
+  messages: number;
+  total: number;
+}
 
 const NAV_ITEMS = [
-  { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
-  { label: "Consultations", path: "/admin/consultations", icon: FileText },
-  { label: "Assessments", path: "/admin/assessments", icon: ClipboardCheck },
-  { label: "Partners", path: "/admin/partners", icon: Handshake },
-  { label: "Referrals", path: "/admin/referrals", icon: Users },
-  { label: "Blog Import", path: "/admin/blog-import", icon: Upload },
+  { label: "Dashboard", path: "/admin", icon: LayoutDashboard, unreadKey: null },
+  { label: "Consultations", path: "/admin/consultations", icon: FileText, unreadKey: "consultations" as const },
+  { label: "Assessments", path: "/admin/assessments", icon: ClipboardCheck, unreadKey: "assessments" as const },
+  { label: "Partners", path: "/admin/partners", icon: Handshake, unreadKey: "partners" as const },
+  { label: "Referrals", path: "/admin/referrals", icon: Users, unreadKey: "referrals" as const },
+  { label: "Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const },
+  { label: "Blog Import", path: "/admin/blog-import", icon: Upload, unreadKey: null },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { email, logout } = useAdminAuth();
   const [location] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [unread, setUnread] = useState<UnreadCounts | null>(null);
+
+  const fetchUnread = useCallback(() => {
+    apiFetch<UnreadCounts>("/admin/stats/unread")
+      .then(setUnread)
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 60000);
+    return () => clearInterval(interval);
+  }, [fetchUnread]);
 
   function handleLogout() {
     logout();
@@ -40,6 +64,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.path);
+          const badge = item.unreadKey && unread ? unread[item.unreadKey] : 0;
           return (
             <Link
               key={item.path}
@@ -53,7 +78,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             >
               <item.icon className="w-4.5 h-4.5 shrink-0" />
               {item.label}
-              {active && <ChevronRight className="w-3.5 h-3.5 ml-auto" />}
+              {badge > 0 && (
+                <span className="ml-auto bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                  {badge}
+                </span>
+              )}
+              {active && !badge && <ChevronRight className="w-3.5 h-3.5 ml-auto" />}
             </Link>
           );
         })}
@@ -96,6 +126,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <div className="flex-1" />
+          {unread && unread.total > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {unread.total} new
+            </span>
+          )}
         </header>
 
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>

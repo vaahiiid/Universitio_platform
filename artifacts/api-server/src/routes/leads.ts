@@ -5,11 +5,13 @@ import {
   assessments,
   partnerRequests,
   studentReferrals,
+  contactMessages,
 } from "@workspace/db";
 import type { InsertConsultation } from "@workspace/db";
 import type { InsertAssessment } from "@workspace/db";
 import type { InsertPartnerRequest } from "@workspace/db";
 import type { InsertStudentReferral } from "@workspace/db";
+import type { InsertContactMessage } from "@workspace/db";
 import { computeScores, type AssessmentProfile } from "../lib/assessmentScoring";
 import multer from "multer";
 import path from "path";
@@ -263,6 +265,29 @@ router.post("/leads/referral", async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Error saving student referral:", err);
     res.status(500).json({ error: "Failed to save student referral" });
+  }
+});
+
+router.post("/leads/contact", async (req: Request, res: Response) => {
+  try {
+    const data = req.body as Record<string, unknown>;
+    const err = validateRequired(data, ["fullName", "email", "subject", "message"]);
+    if (err) { res.status(400).json({ error: err }); return; }
+
+    const values: InsertContactMessage = {
+      fullName: data.fullName as string,
+      email: data.email as string,
+      phone: (data.phone as string) || null,
+      subject: data.subject as string,
+      message: data.message as string,
+      status: "New",
+    };
+
+    const [row] = await db.insert(contactMessages).values(values).returning();
+    res.status(201).json({ success: true, data: row });
+  } catch (err) {
+    console.error("Error saving contact message:", err);
+    res.status(500).json({ error: "Failed to save contact message" });
   }
 });
 
