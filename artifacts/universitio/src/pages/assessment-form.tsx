@@ -592,10 +592,16 @@ export default function AssessmentForm() {
                                   {QUALIFICATION_LEVELS.map((q) => <SelectItem key={q} value={q}>{q}</SelectItem>)}
                                 </SelectContent>
                               </Select>
+                              {form.formState.errors.previousEducation?.[index]?.qualificationLevel && (
+                                <p className="text-xs text-red-500 mt-1">{form.formState.errors.previousEducation[index].qualificationLevel?.message}</p>
+                              )}
                             </div>
                             <div className="flex-1 w-full">
                               <label className="text-xs font-medium text-muted-foreground mb-1 block">Field of Study</label>
                               <Input placeholder="e.g. Computer Science" {...form.register(`previousEducation.${index}.fieldOfStudy`)} />
+                              {form.formState.errors.previousEducation?.[index]?.fieldOfStudy && (
+                                <p className="text-xs text-red-500 mt-1">{form.formState.errors.previousEducation[index].fieldOfStudy?.message}</p>
+                              )}
                             </div>
                             {fields.length > 1 && (
                               <Button type="button" variant="ghost" size="icon" className="shrink-0 mt-5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => remove(index)}>

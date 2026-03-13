@@ -57,16 +57,6 @@ export const consultationSchema = z.object({
 
 export type ConsultationInput = z.infer<typeof consultationSchema>;
 
-export const assessmentSchema = z.object({
-  fullName: z.string().min(2, "Full name is required"),
-  email: z.string().email("Valid email is required"),
-  educationLevel: z.string().min(2, "Education level is required"),
-  budget: z.string().min(2, "Budget range is required"),
-  timeline: z.string().min(2, "Timeline is required"),
-});
-
-type AssessmentInput = z.infer<typeof assessmentSchema>;
-
 const mockApiCall = async <T>(data: T, delayMs = 1500) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -96,23 +86,3 @@ export function useSubmitConsultation() {
   });
 }
 
-export function useSubmitAssessment() {
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: async (data: AssessmentInput) => mockApiCall(data),
-    onSuccess: () => {
-      toast({
-        title: "Assessment Received",
-        description: "Thank you for sharing your details. We will review them and reach out.",
-      });
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Submission Failed",
-        description: "Please try again later or contact us directly.",
-      });
-    }
-  });
-}

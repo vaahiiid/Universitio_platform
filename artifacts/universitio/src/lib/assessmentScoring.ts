@@ -284,7 +284,7 @@ function generateObservations(profile: AssessmentProfile, scores: {
 
 export function getBand(score: number): { band: string; bandColor: string } {
   if (score >= 80) return { band: "Strong admission potential", bandColor: "text-green-600" };
-  if (score >= 60) return { band: "Good potential with some improvements recommended", bandColor: "text-blue-600" };
+  if (score >= 60) return { band: "Good potential with minor improvements recommended", bandColor: "text-blue-600" };
   if (score >= 40) return { band: "Moderate potential — profile strengthening recommended", bandColor: "text-amber-600" };
   return { band: "Further preparation is recommended before applying", bandColor: "text-red-600" };
 }
