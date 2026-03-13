@@ -86,7 +86,7 @@ const ADDITIONAL_STRENGTHS = [
 ];
 
 const HOW_HEARD = [
-  "Google Search", "Google Search Ads", "Instagram", "Facebook", "LinkedIn", "Friend Referral", "Other"
+  "Google Search", "Google Search Ads", "Instagram", "Facebook", "LinkedIn", "TikTok", "Friend Referral", "Other"
 ];
 
 const CONTACT_METHODS = ["WhatsApp", "Telegram", "Video Call", "Email"];
@@ -339,6 +339,15 @@ export default function AssessmentForm() {
   }
 
   function onSubmit() {
+    const values = form.getValues();
+    const step5Result = stepSchemas[5].safeParse(values);
+    if (!step5Result.success) {
+      for (const issue of step5Result.error.issues) {
+        const path = issue.path.join(".") as keyof FormValues;
+        form.setError(path, { type: "manual", message: issue.message });
+      }
+      return;
+    }
     setShowSuccessModal(true);
   }
 
@@ -382,7 +391,7 @@ export default function AssessmentForm() {
 
           <ProgressBar currentStep={currentStep} />
 
-          <div className="bg-white rounded-3xl shadow-xl border border-border p-6 md:p-10">
+          <div key={currentStep} className="bg-white rounded-3xl shadow-xl border border-border p-6 md:p-10 animate-in fade-in slide-in-from-right-4 duration-300">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
 
