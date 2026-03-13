@@ -1,0 +1,208 @@
+Please refine and improve the Universitio homepage with the following updates, corrections, and UX improvements. The goal is to make the page cleaner, more minimal, highly user-friendly, and conversion-focused.
+
+Brand and style rules:
+- Primary brand colour: #42147d
+- Maintain a premium, minimal, modern UI
+- Strong UX and conversion-focused layout
+- Avoid clutter
+- Clear hierarchy, spacing, and readability
+- Strong CTA placement based on good UX decisions
+
+Main logo:
+- I have attached the main Universitio logo again
+- Ensure the attached logo is used correctly in the header/navbar and footer
+- It must look professional with proper spacing and alignment
+
+Trustpilot testimonial section:
+Use the following Trustpilot script inside the testimonial section:
+
+<!-- TrustBox script -->
+<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+<!-- End TrustBox script -->
+
+Make sure this Trustpilot section integrates elegantly with the testimonial design.
+
+Assessment section improvement:
+The Assessment section currently feels too crowded.
+
+Please redesign it to be:
+- minimal
+- clean
+- focused
+- easy to understand
+
+The purpose of the Assessment is to estimate the likelihood or percentage chance of receiving a university admission offer based on the student's profile.
+
+This section should:
+- feel intelligent and helpful
+- guide unsure students toward taking the assessment
+- contain a clear CTA button
+
+Possible messaging tone:
+"Find out your estimated chances of admission before you apply."
+
+Do not overload this section with too much text.
+
+Contact section updates:
+Include the following details:
+
+Phone:
++44 121 720 3341
+
+WhatsApp:
+https://web.whatsapp.com/send?phone=447963345465&text=
+
+Instagram:
+https://www.instagram.com/universitio_
+
+Facebook:
+https://www.facebook.com/universitioco
+
+LinkedIn:
+https://www.linkedin.com/company/universitio
+
+Telegram:
+https://t.me/universitio
+
+TikTok and YouTube:
+Display icons only for now (no links yet).
+
+Office address:
+44 Birmingham Road, Birmingham, England, B72 1QQ
+
+The contact section must include:
+- a modern contact form
+- contact details
+- social links
+- address
+- CTA for Free Consultation
+
+Footer improvements:
+Add links for:
+- Privacy Policy
+- Terms and Conditions
+
+Keep the footer organised, elegant, and professional.
+
+ICEF accreditation badge placement:
+Ensure the ICEF badge is placed neatly within the footer layout and aligned properly with the text so the footer looks organised.
+
+Use this code exactly:
+
+<span id='iasBadge' data-account-id='6539'></span><script async defer crossorigin="anonymous" src="https://www-cdn.icef.com/scripts/iasbadgeid.js"></script>
+
+Section merge: "How We Support Your Journey"
+Merge the following sections into ONE clean section:
+
+- How We Support Your Journey
+- Tailored Pathways for Every Student
+
+The headline should emphasise:
+
+"Tailored Pathways for Every Student"
+
+This headline should be visually stronger and more prominent.
+
+Inside this section integrate support services such as:
+- CV preparation
+- Personal Statement preparation
+- PhD proposal guidance
+- university application support
+- course and institution selection
+
+This section must remain minimal and clean with cards or icons.
+
+We will later add links from these items to separate pages.
+
+Countries we support section:
+Create a creative and visually engaging section listing the countries where we support students.
+
+List the following countries using a consistent visual card/grid style:
+
+India
+Nigeria
+Pakistan
+Saudi Arabia
+United Arab Emirates
+Qatar
+Bangladesh
+Iran
+Turkey
+China
+Hong Kong
+
+Also add a final card indicating:
+"Students from many other countries are also welcome."
+
+This section should feel dynamic and global.
+
+Where We Help You Study section redesign:
+The current section feels cluttered.
+
+Redesign it with a more user-friendly layout.
+
+The focus countries/regions must be:
+- United Kingdom
+- United States
+- Canada
+- Europe
+
+Use a creative UI such as:
+- cards
+- flags
+- icons
+- short descriptions
+
+Keep it minimal and visually balanced.
+
+Call-to-action strategy:
+Ensure strong CTA placement across the page.
+
+Important CTAs include:
+- Free Consultation
+- Assessment
+- Become a Partner
+- Refer a Student
+
+Use your UX judgement to place them where they make the most sense.
+
+Partner and Student Referral sections:
+Both sections must include clear CTA buttons.
+
+Partner section CTA examples:
+- Become a Partner
+- Partner With Us
+
+Student referral CTA examples:
+- Refer a Student
+- Join the Referral Programme
+
+Clarify that referral commission is paid only after the referred student successfully enrols.
+
+Design and UX expectations:
+- Extremely user-friendly
+- Clear navigation
+- Minimal but powerful layout
+- Strong readability
+- Elegant animations only where helpful
+- Mobile responsive
+- Modern education brand feel
+
+SEO requirements:
+Maintain strong SEO structure:
+- one H1
+- proper H2/H3 hierarchy
+- semantic HTML
+- descriptive alt tags
+- crawlable structure
+- fast performance
+- indexable content
+
+Final goals:
+- Improve clarity
+- improve UI
+- improve UX
+- strengthen CTAs
+- reduce clutter
+- maintain premium design
+- keep everything conversion-focused
