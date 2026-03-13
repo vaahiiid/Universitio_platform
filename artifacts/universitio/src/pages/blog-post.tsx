@@ -82,10 +82,20 @@ export default function BlogPostPage() {
   useEffect(() => {
     if (post) {
       document.title = `${post.title} | Universitio Blog`;
+
       const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
       meta.setAttribute("name", "description");
       meta.setAttribute("content", post.excerpt.slice(0, 160));
       if (!meta.parentElement) document.head.appendChild(meta);
+
+      let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+      if (!canonical) {
+        canonical = document.createElement("link") as HTMLLinkElement;
+        canonical.setAttribute("rel", "canonical");
+        document.head.appendChild(canonical);
+      }
+      canonical.setAttribute("href", `https://universitio.com/blog/${post.slug}`);
+
       trackEvent("blog_article_view", {
         event_category: "blog",
         event_label: post.title,
@@ -93,6 +103,10 @@ export default function BlogPostPage() {
         page_path: `/blog/${post.slug}`,
       });
     }
+    return () => {
+      const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+      if (canonical) canonical.setAttribute("href", "https://universitio.com/");
+    };
   }, [post]);
 
   const relatedPosts = useMemo(() => {
