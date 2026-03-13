@@ -1,0 +1,181 @@
+I am attaching a WordPress export XML file that contains my current blog from universitio.com.
+
+Please import the blog posts from this file and rebuild the entire blog inside this project.
+
+Important: This blog is very important for SEO, so URLs, structure, and metadata must be preserved as much as possible.
+
+--------------------------------------------------
+IMPORT REQUIREMENTS
+--------------------------------------------------
+
+Parse the attached WordPress XML export file and extract all blog posts.
+
+For each post, preserve:
+
+- title
+- slug
+- publish date
+- full content
+- categories
+- tags
+- excerpt
+- author (if available)
+
+Rebuild these posts inside the blog system.
+
+--------------------------------------------------
+SEO REQUIREMENTS (VERY IMPORTANT)
+--------------------------------------------------
+
+The original slugs must be preserved.
+
+Example:
+
+If the original slug is:
+
+uk-immigration-reforms-2026-breakdown-of-the-new-rules
+
+then the new URL must remain:
+
+/blog/uk-immigration-reforms-2026-breakdown-of-the-new-rules
+
+Do NOT change the slugs.
+
+Ensure the blog structure is SEO friendly with:
+
+- semantic article HTML
+- proper heading hierarchy
+- crawlable URLs
+- metadata placeholders
+- internal linking capability
+
+--------------------------------------------------
+CATEGORIES
+--------------------------------------------------
+
+Create category pages for blog posts.
+
+Example structure:
+
+/blog/category/[category-name]
+
+Each category page should show:
+
+- category title
+- list of related posts
+- clean article cards
+
+Tags should be stored but tag pages should NOT be indexed by default to avoid thin SEO pages.
+
+--------------------------------------------------
+IMAGES
+--------------------------------------------------
+
+If the WordPress export contains a featured image URL, use that image.
+
+If a post does NOT have a featured image:
+
+Automatically select a relevant royalty-free image based on the article topic using sources such as:
+
+- Unsplash
+- Pexels
+
+Use keywords from:
+
+- title
+- slug
+- category
+- main content
+
+Ensure images:
+
+- are high quality
+- landscape orientation
+- optimized for web
+- responsive
+
+Generate SEO-friendly alt text for each image.
+
+--------------------------------------------------
+BLOG DESIGN
+--------------------------------------------------
+
+Build a modern, clean, minimal blog layout aligned with the Universitio website design.
+
+Include:
+
+1. Blog hero section
+
+Title:
+Universitio Blog
+
+Subtitle:
+Insights, guidance, and updates for international students planning to study abroad.
+
+2. Featured article section
+
+3. Latest articles grid
+
+Each article card should include:
+
+- featured image
+- title
+- short excerpt
+- publish date
+- category
+- read more button
+
+4. Pagination or Load More button
+
+5. Category filtering
+
+--------------------------------------------------
+ARTICLE PAGE
+--------------------------------------------------
+
+Each article page should include:
+
+- featured image
+- article title
+- category
+- publish date
+- full content
+- tags
+- share buttons
+- related posts section
+
+Ensure excellent readability with:
+
+- clean typography
+- wide spacing
+- mobile friendly layout
+
+--------------------------------------------------
+PERFORMANCE
+--------------------------------------------------
+
+Optimize images and layout for fast loading.
+
+Use responsive images and lazy loading.
+
+--------------------------------------------------
+FUTURE CONTENT
+--------------------------------------------------
+
+The blog system must allow adding new posts easily in the future.
+
+Posts should be stored in a structured way such as:
+
+- markdown files
+OR
+- JSON data
+OR
+- database entries
+
+so that new blog posts can be added without difficulty.
+
+--------------------------------------------------
+FINAL GOAL
+--------------------------------------------------
+
+Create a modern, scalable, SEO-friendly blog for Universitio by importing all existing WordPress posts from the attached XML file while preserving structure, slugs, and content.

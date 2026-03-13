@@ -1,0 +1,233 @@
+I am attaching a WordPress export XML file that contains the current Universitio blog from universitio.com.
+
+Please import the blog posts from this file and rebuild the entire blog inside this project.
+
+This blog is very important for SEO, so URLs, structure, and metadata must be preserved as much as possible.
+
+---------------------------------------------
+WORDPRESS IMPORT
+---------------------------------------------
+
+Parse the attached WordPress XML export file and extract all blog posts.
+
+For each post, preserve:
+
+- post title
+- slug
+- publish date
+- full content
+- categories
+- tags
+- excerpt
+- author (if available)
+
+Rebuild all posts inside the new blog system.
+
+There are over 250 posts in the XML file, so the import process must support large numbers of articles.
+
+---------------------------------------------
+SEO REQUIREMENTS (VERY IMPORTANT)
+---------------------------------------------
+
+The original post slugs must be preserved exactly.
+
+Example:
+
+If the original slug is:
+
+uk-immigration-reforms-2026-breakdown-of-the-new-rules
+
+then the new URL must remain:
+
+/blog/uk-immigration-reforms-2026-breakdown-of-the-new-rules
+
+Do NOT change the slugs.
+
+Ensure the blog structure is SEO-friendly with:
+
+- semantic article HTML
+- proper heading hierarchy
+- clean URLs
+- metadata placeholders
+- internal linking capability
+- shareable URLs
+
+---------------------------------------------
+BLOG STRUCTURE
+---------------------------------------------
+
+Use this blog structure:
+
+/blog
+
+/blog/[post-slug]
+
+/blog/category/[category-name]
+
+Each category page should show:
+
+- category title
+- list of posts
+- article cards
+- pagination
+
+Tags should be stored but tag pages should NOT be indexed by default to avoid thin SEO pages.
+
+---------------------------------------------
+IMAGE HANDLING (IMPORTANT)
+---------------------------------------------
+
+Do NOT use the existing WordPress image URLs from:
+
+universitio.com/wp-content/uploads/
+
+The old WordPress site may be removed in the future, so the new blog must NOT depend on those URLs.
+
+Instead, for every imported blog post:
+
+1. Analyse the article title, slug, category, tags, and content.
+2. Automatically choose a new relevant royalty-free featured image.
+
+Image selection rules:
+
+- Use royalty-free image sources such as:
+  - Unsplash
+  - Pexels
+
+- Images should be relevant to:
+  - international students
+  - universities
+  - study abroad
+  - higher education
+  - country-specific topics where relevant
+
+Visual style requirements:
+
+- professional
+- modern
+- clean
+- minimal
+- high quality
+- landscape orientation
+- consistent visual style across the blog
+
+Do NOT use random or low-quality images.
+
+---------------------------------------------
+IMAGE STORAGE
+---------------------------------------------
+
+For each selected image:
+
+1. Download the image.
+2. Store it locally inside the project.
+
+Example folder:
+
+/public/blog-images/
+
+3. Use these local images for:
+
+- blog cards
+- article featured images
+
+Do NOT hotlink external images if possible.
+
+---------------------------------------------
+IMAGE SEO
+---------------------------------------------
+
+For every image:
+
+- generate SEO-friendly alt text
+- generate a descriptive file name
+- optimise for web performance
+- ensure responsive sizes
+- enable lazy loading
+
+---------------------------------------------
+BLOG DESIGN
+---------------------------------------------
+
+Build a modern, minimal, premium blog design aligned with the Universitio website style.
+
+Include:
+
+1. Blog hero section
+
+Title:
+Universitio Blog
+
+Subtitle:
+Insights, guidance, and updates for international students planning to study abroad.
+
+2. Featured article section
+
+3. Latest articles grid
+
+Each article card should include:
+
+- featured image
+- title
+- short excerpt
+- category
+- publish date
+- read more button
+
+4. Pagination or Load More button
+
+5. Category filtering
+
+---------------------------------------------
+ARTICLE PAGE
+---------------------------------------------
+
+Each blog article page must include:
+
+- featured image
+- article title
+- publish date
+- category
+- full article content
+- tags
+- share buttons
+- related posts section
+
+Ensure excellent readability with:
+
+- clean typography
+- proper spacing
+- mobile-friendly layout
+
+---------------------------------------------
+PERFORMANCE
+---------------------------------------------
+
+Optimise blog performance:
+
+- compress images
+- lazy load images
+- use responsive images
+- ensure fast page loading
+
+---------------------------------------------
+FUTURE CONTENT
+---------------------------------------------
+
+The blog system must allow adding new blog posts easily later.
+
+Posts should be stored in a structured way such as:
+
+- markdown files
+OR
+- JSON data
+OR
+- database entries
+
+so new articles can be added without difficulty.
+
+---------------------------------------------
+FINAL GOAL
+---------------------------------------------
+
+Create a modern, scalable, SEO-friendly blog for Universitio by importing all posts from the attached WordPress XML file, preserving slugs and content, and generating new locally stored images for each article so the blog remains independent from the old WordPress site.
