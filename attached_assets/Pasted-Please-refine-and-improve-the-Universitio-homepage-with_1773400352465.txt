@@ -1,0 +1,158 @@
+Please refine and improve the Universitio homepage with the following important updates and corrections.
+
+Brand assets and logo placement:
+- I have re-attached the main Universitio logo
+- Please make sure the attached main logo is actually used in the header/navbar and footer
+- Display it professionally with proper spacing, alignment, and sizing
+- The site must feel premium, modern, and trustworthy
+
+ICEF badge footer fix:
+- The ICEF badge/logo in the footer is currently placed badly
+- Please reposition it in a clean, visually balanced way
+- It should sit neatly beside the relevant footer text/content so the layout looks organised and professional
+- The badge must not feel detached, floating, or misaligned
+- Integrate it naturally into the footer design so it looks intentional and polished
+
+Use this exact ICEF code in the footer:
+<span id='iasBadge' data-account-id='6539'></span><script async defer crossorigin="anonymous" src="https://www-cdn.icef.com/scripts/iasbadgeid.js"></script>
+
+Design and UX direction:
+Use your design judgement to improve the homepage based on best practices for:
+- excellent UI
+- excellent UX
+- user-friendly conversion flow
+- readability
+- trust-building
+- modern premium education brand feel
+
+Do not make the page crowded.
+Keep it minimal, elegant, and highly usable.
+
+Primary and secondary CTAs:
+Please decide the best positions for the CTA buttons based on strong UX and conversion logic.
+
+Main CTA:
+- Free Consultation
+
+Important secondary CTA:
+- Assessment
+
+Use your judgment to place these buttons where they make the most sense across the homepage.
+Do not force them everywhere, but place them strategically where they improve user flow and conversion.
+
+Assessment feature:
+The Assessment page is very important.
+This assessment will estimate, based on the student’s submitted information, the likelihood or percentage chance of receiving an admission offer.
+
+Please reflect this purpose clearly in the homepage copy.
+You may also add a dedicated homepage section or highlighted block for Assessment if that improves UX and conversions.
+
+The Assessment messaging should communicate something like:
+- find out your estimated admission potential
+- get an early indication of your chances
+- receive a smarter starting point for your study application journey
+
+Keep the wording professional, helpful, and trustworthy.
+Do not overpromise outcomes.
+
+Partner and Student Referral sections:
+For both of these sections, add clear CTA buttons.
+
+1. Partner section:
+- This is for agents, counsellors, introducers, or collaborators
+- Add a CTA button for this section
+- The button should lead later to a dedicated separate page with a form
+- Use suitable button text such as:
+  - Become a Partner
+  - Partner With Us
+  - Join as a Partner
+
+2. Student Referral section:
+- This is for students who refer other students
+- Add a CTA button for this section
+- The button should lead later to a dedicated separate page with a form
+- Use suitable button text such as:
+  - Refer a Student
+  - Start Referring
+  - Join the Referral Programme
+
+Important referral clarification:
+- Keep the explanation clear that commission is paid only after the referred student successfully enrols at the university
+- This must feel transparent and trustworthy
+
+Assessment, Partner, and Referral future pages:
+Please prepare the homepage architecture so these can later link cleanly to separate dedicated pages:
+- /free-consultation
+- /assessment-form
+- /partners
+- /student-referral
+
+Homepage conversion flow:
+Think carefully about user intent and place CTAs accordingly.
+For example:
+- students ready to talk should be guided toward Free Consultation
+- students unsure about their profile can be guided toward Assessment
+- collaborators can be guided toward Partner
+- students interested in referrals can be guided toward Student Referral
+
+The page should feel intelligently structured around these different user journeys.
+
+Key reminders for content:
+- Do not mention visa services
+- Focus only on educational admissions support
+- Support is for studying in:
+  - United Kingdom
+  - Canada
+  - United States
+  - Europe
+
+Maintain brand and style direction:
+- primary brand colour: #42147d
+- premium
+- minimal
+- modern
+- readable
+- student-friendly
+- strong spacing
+- elegant cards
+- polished sections
+- subtle motion only
+- high trust
+
+Keep these homepage sections strong and well-designed:
+- Hero
+- Trust/accreditation
+- Stats
+- About Us
+- Services
+- Special pathways
+- University logo marquee
+- Why students choose us
+- Countries we support
+- Study destinations
+- Assessment highlight or section
+- Partner section
+- Student referral section
+- Testimonials
+- Latest blog posts
+- Contact section
+- Footer
+
+Contact section reminder:
+It must still include:
+- contact form
+- email
+- WhatsApp
+- Telegram
+- social links
+- office address:
+  44 Birmingham Road, Birmingham, England, B72 1QQ
+
+Final implementation expectations:
+- Actually use the re-attached main logo
+- Fix the ICEF badge placement in the footer
+- Improve CTA placement using your own UX judgment
+- Add strong CTA buttons for Partner and Student Referral sections
+- Add or improve Assessment visibility on the homepage
+- Keep the design polished, premium, and conversion-focused
+- Keep code clean, reusable, responsive, and SEO-friendly

@@ -1,100 +1,134 @@
 import { Link } from "wouter";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Instagram, Facebook, Linkedin } from "lucide-react";
 import { useEffect } from "react";
+import logoImg from "@/assets/universitio_logo.png";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
+    if (document.getElementById("icef-badge-script")) return;
     const script = document.createElement("script");
+    script.id = "icef-badge-script";
     script.src = "https://www-cdn.icef.com/scripts/iasbadgeid.js";
     script.async = true;
     script.defer = true;
     script.crossOrigin = "anonymous";
     document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
+    // Do not remove on unmount — re-injection causes the ICEF script to
+    // re-declare globals and throw a SyntaxError in development.
   }, []);
 
   return (
-    <footer className="bg-primary text-primary-foreground pt-16 pb-8">
+    <footer className="bg-primary text-primary-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          
-          <div className="col-span-1 lg:col-span-1">
-            <span className="font-display font-bold text-2xl tracking-tight text-white mb-4 block">
-              Universitio
-            </span>
-            <p className="text-primary-foreground/70 mb-6 text-sm leading-relaxed">
-              Your global gateway to education abroad. Expert guidance for international students applying to top universities worldwide.
+
+        {/* Main Footer Grid */}
+        <div className="pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+
+          {/* Brand Column */}
+          <div className="lg:col-span-4">
+            <img
+              src={logoImg}
+              alt="Universitio"
+              className="h-10 w-auto object-contain mb-5"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+            <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6 max-w-xs">
+              Your global gateway to education abroad. Expert, personalised guidance for international students applying to top universities worldwide.
             </p>
-            <div className="flex space-x-4 items-center">
-              <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors">
-                <Instagram size={20} />
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3 mb-8">
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
+              >
+                <Instagram size={16} />
               </a>
-              <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors">
-                <Facebook size={20} />
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
+              >
+                <Facebook size={16} />
               </a>
-              <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors">
-                <Linkedin size={20} />
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
+              >
+                <Linkedin size={16} />
               </a>
-              <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors font-bold text-sm flex items-center gap-1 font-serif">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinelinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              <a
+                href="#"
+                aria-label="TikTok"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
               </a>
+            </div>
+
+            {/* ICEF Badge — anchored naturally in the brand/accreditation column */}
+            <div className="flex items-center gap-3">
+              <span id="iasBadge" data-account-id="6539"></span>
             </div>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-white mb-4">Quick Links</h4>
-            <ul className="space-y-3 text-sm text-primary-foreground/80">
+          {/* Quick Links */}
+          <div className="lg:col-span-2">
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5">Quick Links</h4>
+            <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li><Link href="/#about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link href="/#services" className="hover:text-white transition-colors">Our Services</Link></li>
+              <li><Link href="/#pathways" className="hover:text-white transition-colors">Pathways</Link></li>
               <li><Link href="/free-consultation" className="hover:text-white transition-colors">Free Consultation</Link></li>
-              <li><Link href="/assessment-form" className="hover:text-white transition-colors">Assessment Form</Link></li>
+              <li><Link href="/assessment-form" className="hover:text-white transition-colors">Free Assessment</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-white mb-4">Partnerships</h4>
-            <ul className="space-y-3 text-sm text-primary-foreground/80">
-              <li><Link href="/#agents" className="hover:text-white transition-colors">Become an Agent</Link></li>
-              <li><Link href="/#earn" className="hover:text-white transition-colors">Earn as a Student</Link></li>
+          {/* Work With Us */}
+          <div className="lg:col-span-2">
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5">Work With Us</h4>
+            <ul className="space-y-3 text-sm text-primary-foreground/70">
+              <li><Link href="/partners" className="hover:text-white transition-colors">Become a Partner</Link></li>
+              <li><Link href="/student-referral" className="hover:text-white transition-colors">Refer a Student</Link></li>
               <li><Link href="/#contact" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-white mb-4">Contact Info</h4>
-            <ul className="space-y-3 text-sm text-primary-foreground/80">
-              <li>Email: info@universitio.co.uk</li>
-              <li>WhatsApp: +44 7XXX XXXXXX</li>
-              <li>Telegram: @universitio</li>
-              <li>Address: 44 Birmingham Road, Birmingham, England, B72 1QQ</li>
-              <li className="pt-2">
-                <div className="flex gap-2 items-center flex-wrap">
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">ICEF Accredited</span>
-                  <span className="bg-white/10 px-2 py-1 rounded text-xs">British Council Certified</span>
-                </div>
+          {/* Contact Info */}
+          <div className="lg:col-span-4">
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5">Contact</h4>
+            <ul className="space-y-4 text-sm text-primary-foreground/70">
+              <li className="flex items-start gap-3">
+                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <a href="mailto:info@universitio.co.uk" className="hover:text-white transition-colors">info@universitio.co.uk</a>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                <span>WhatsApp & Telegram: @universitio</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="w-4 h-4 mt-0.5 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span>44 Birmingham Road, Birmingham,<br />England, B72 1QQ</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-primary-foreground/60 mb-6">
-          <div className="mb-4 md:mb-0 text-center md:text-left">
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-foreground/50">
+          <div className="text-center md:text-left">
             <p>© {currentYear} Universitio Ltd. All rights reserved.</p>
-            <p className="mt-1">Universitio Ltd is registered in England and Wales. Company No. 15168670.</p>
+            <p className="mt-1">Registered in England and Wales · Company No. 15168670 · ICEF Accredited · British Council Certified · ICO Registered</p>
           </div>
-          <div className="flex space-x-6">
+          <div className="flex gap-6">
             <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
-        </div>
-        
-        <div className="border-t border-white/10 pt-6 pb-4 text-center">
-          <span id="iasBadge" data-account-id="6539"></span>
         </div>
       </div>
     </footer>

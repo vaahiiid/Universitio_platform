@@ -7,6 +7,8 @@ import Home from "@/pages/Home";
 import FreeConsultation from "@/pages/free-consultation";
 import AssessmentForm from "@/pages/assessment-form";
 import BlogPage from "@/pages/blog-page";
+import Partners from "@/pages/partners";
+import StudentReferral from "@/pages/student-referral";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -18,6 +20,8 @@ function Router() {
       <Route path="/free-consultation" component={FreeConsultation} />
       <Route path="/assessment-form" component={AssessmentForm} />
       <Route path="/blog" component={BlogPage} />
+      <Route path="/partners" component={Partners} />
+      <Route path="/student-referral" component={StudentReferral} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoImg from "@/assets/universitio_logo.png";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,7 +19,6 @@ export function Navbar() {
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
-    
     if (href.startsWith("/#")) {
       const targetId = href.replace("/#", "");
       if (location === "/") {
@@ -46,44 +46,52 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || location !== "/"
-          ? "bg-white/90 dark:bg-background/90 backdrop-blur-md shadow-sm border-b"
-          : "bg-transparent border-transparent"
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border/50"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
           <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleNavClick("/")}>
-            <span className="font-display font-bold text-2xl tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Universitio
-            </span>
+            <img
+              src={logoImg}
+              alt="Universitio"
+              className="h-10 w-auto object-contain"
+            />
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className={`text-sm font-medium transition-colors hover:text-secondary ${
-                    isScrolled || location !== "/" ? "text-foreground/80" : "text-foreground/80"
-                  }`}
+                  className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors"
                 >
                   {link.name}
                 </button>
               ))}
             </div>
-            <div className="flex items-center space-x-4 pl-4 border-l border-border">
-              <Button 
-                variant="ghost" 
-                className="font-medium"
+            <div className="flex items-center space-x-3 pl-4 border-l border-border">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="font-medium text-foreground/75 hover:text-primary"
                 onClick={() => setLocation("/blog")}
               >
                 Blog
               </Button>
-              <Button 
-                className="bg-secondary hover:bg-secondary/90 text-white rounded-full px-6 shadow-md hover:shadow-lg transition-all"
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-full px-5 font-medium border-primary/30 text-primary hover:bg-primary/5"
+                onClick={() => setLocation("/assessment-form")}
+              >
+                Free Assessment
+              </Button>
+              <Button
+                size="sm"
+                className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all"
                 onClick={() => setLocation("/free-consultation")}
               >
                 Free Consultation
@@ -91,7 +99,6 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -103,9 +110,8 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-background border-b shadow-lg absolute w-full left-0">
+        <div className="md:hidden bg-white border-b shadow-lg absolute w-full left-0">
           <div className="px-4 pt-2 pb-6 space-y-1">
             {navLinks.map((link) => (
               <button
@@ -122,21 +128,19 @@ export function Navbar() {
             >
               Blog
             </button>
-            <div className="pt-4 pb-2">
-              <Button 
-                className="w-full bg-secondary hover:bg-secondary/90 text-white rounded-xl py-6"
+            <div className="pt-4 space-y-3">
+              <Button
+                className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6"
                 onClick={() => handleNavClick("/free-consultation")}
               >
                 Book Free Consultation
               </Button>
-            </div>
-            <div className="pb-2">
-              <Button 
+              <Button
                 variant="outline"
-                className="w-full rounded-xl py-6"
+                className="w-full rounded-xl py-6 border-primary/30 text-primary"
                 onClick={() => handleNavClick("/assessment-form")}
               >
-                Take Assessment Form
+                Take Free Assessment
               </Button>
             </div>
           </div>
