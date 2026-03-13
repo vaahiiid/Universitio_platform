@@ -1,0 +1,40 @@
+import { pgTable, serial, text, timestamp, jsonb, integer, boolean } from "drizzle-orm/pg-core";
+
+export const assessments = pgTable("assessments", {
+  id: serial("id").primaryKey(),
+  fullName: text("full_name").notNull(),
+  email: text("email").notNull(),
+  mobile: text("mobile").notNull(),
+  dateOfBirth: text("date_of_birth"),
+  nationality: text("nationality"),
+  maritalStatus: text("marital_status"),
+  destinations: jsonb("destinations").$type<string[]>(),
+  studyLevel: text("study_level"),
+  courseArea: text("course_area"),
+  highestQualification: text("highest_qualification"),
+  academicPerformance: text("academic_performance"),
+  fieldAlignment: text("field_alignment"),
+  previousEducation: jsonb("previous_education"),
+  hasLanguageQualification: boolean("has_language_qualification"),
+  languageQualificationType: text("language_qualification_type"),
+  languageScore: text("language_score"),
+  englishLevel: text("english_level"),
+  budget: text("budget"),
+  additionalStrengths: jsonb("additional_strengths").$type<string[]>(),
+  hasResearchExperience: boolean("has_research_experience"),
+  preferredContactMethod: text("preferred_contact_method"),
+  howDidYouHear: text("how_did_you_hear"),
+  cvFileName: text("cv_file_name"),
+  overallScore: integer("overall_score"),
+  scoreBand: text("score_band"),
+  scoreNotes: text("score_notes"),
+  followUpRequested: boolean("follow_up_requested").default(false),
+  rawData: jsonb("raw_data"),
+  status: text("status").notNull().default("New"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type Assessment = typeof assessments.$inferSelect;
+export type InsertAssessment = typeof assessments.$inferInsert;

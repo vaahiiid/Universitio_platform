@@ -1,0 +1,420 @@
+import { Router, type IRouter } from "express";
+import {
+  db,
+  consultations,
+  assessments,
+  partnerRequests,
+  studentReferrals,
+  blogImportRecords,
+} from "@workspace/db";
+import { eq, desc, ilike, or, and, sql, count } from "drizzle-orm";
+import { requireAdmin } from "../middleware/auth";
+import multer from "multer";
+import AdmZip from "adm-zip";
+import path from "path";
+import fs from "fs";
+
+const router: IRouter = Router();
+
+router.use(requireAdmin);
+
+const VALID_STATUSES = ["New", "Reviewed", "Contacted", "In Progress", "Closed", "Archived"];
+const ALLOWED_IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".avif"]);
+const MAX_ZIP_ENTRIES = 500;
+const MAX_UNCOMPRESSED_SIZE = 100 * 1024 * 1024;
+
+function parseId(raw: string): number | null {
+  const id = parseInt(raw, 10);
+  return Number.isFinite(id) && id > 0 ? id : null;
+}
+
+router.get("/admin/stats", async (_req, res) => {
+  try {
+    const [consCount] = await db.select({ value: count() }).from(consultations);
+    const [assCount] = await db.select({ value: count() }).from(assessments);
+    const [partCount] = await db.select({ value: count() }).from(partnerRequests);
+    const [refCount] = await db.select({ value: count() }).from(studentReferrals);
+
+    const [newCons] = await db.select({ value: count() }).from(consultations).where(eq(consultations.status, "New"));
+    const [newAss] = await db.select({ value: count() }).from(assessments).where(eq(assessments.status, "New"));
+    const [newPart] = await db.select({ value: count() }).from(partnerRequests).where(eq(partnerRequests.status, "New"));
+    const [newRef] = await db.select({ value: count() }).from(studentReferrals).where(eq(studentReferrals.status, "New"));
+
+    res.json({
+      consultations: { total: consCount.value, new: newCons.value },
+      assessments: { total: assCount.value, new: newAss.value },
+      partnerRequests: { total: partCount.value, new: newPart.value },
+      studentReferrals: { total: refCount.value, new: newRef.value },
+      totalNew: newCons.value + newAss.value + newPart.value + newRef.value,
+    });
+  } catch (err) {
+    console.error("Stats error:", err);
+    res.status(500).json({ error: "Failed to fetch stats" });
+  }
+});
+
+function buildListCondition(nameCol: any, emailCol: any, statusCol: any, query: any) {
+  const page = Math.max(1, parseInt(query.page as string) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(query.limit as string) || 20));
+  const offset = (page - 1) * limit;
+  const search = query.search as string | undefined;
+  const statusFilter = query.status as string | undefined;
+
+  const conditions: any[] = [];
+  if (search) {
+    conditions.push(or(ilike(nameCol, `%${search}%`), ilike(emailCol, `%${search}%`)));
+  }
+  if (statusFilter) {
+    conditions.push(eq(statusCol, statusFilter));
+  }
+
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+  return { whereClause, page, limit, offset };
+}
+
+async function listRecords(table: any, nameCol: any, emailCol: any, statusCol: any, createdCol: any, query: any) {
+  const { whereClause, page, limit, offset } = buildListCondition(nameCol, emailCol, statusCol, query);
+
+  let baseQuery = db.select().from(table);
+  let countQuery = db.select({ value: count() }).from(table);
+
+  if (whereClause) {
+    baseQuery = baseQuery.where(whereClause) as any;
+    countQuery = countQuery.where(whereClause) as any;
+  }
+
+  const rows = await (baseQuery as any).orderBy(desc(createdCol)).limit(limit).offset(offset);
+  const [total] = await countQuery;
+
+  return {
+    data: rows,
+    pagination: {
+      page,
+      limit,
+      total: total.value,
+      totalPages: Math.ceil(total.value / limit),
+    },
+  };
+}
+
+router.get("/admin/consultations", async (req, res) => {
+  try {
+    const result = await listRecords(
+      consultations, consultations.fullName, consultations.email,
+      consultations.status, consultations.createdAt, req.query
+    );
+    res.json(result);
+  } catch (err) {
+    console.error("List consultations error:", err);
+    res.status(500).json({ error: "Failed to list consultations" });
+  }
+});
+
+router.get("/admin/consultations/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.select().from(consultations).where(eq(consultations.id, id));
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch consultation" });
+  }
+});
+
+router.patch("/admin/consultations/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const updates: any = { updatedAt: new Date() };
+    if (req.body.status) {
+      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
+      updates.status = req.body.status;
+    }
+    if (req.body.notes !== undefined) updates.notes = req.body.notes;
+    const [row] = await db.update(consultations).set(updates).where(eq(consultations.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update consultation" });
+  }
+});
+
+router.get("/admin/assessments", async (req, res) => {
+  try {
+    const result = await listRecords(
+      assessments, assessments.fullName, assessments.email,
+      assessments.status, assessments.createdAt, req.query
+    );
+    res.json(result);
+  } catch (err) {
+    console.error("List assessments error:", err);
+    res.status(500).json({ error: "Failed to list assessments" });
+  }
+});
+
+router.get("/admin/assessments/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.select().from(assessments).where(eq(assessments.id, id));
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch assessment" });
+  }
+});
+
+router.patch("/admin/assessments/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const updates: any = { updatedAt: new Date() };
+    if (req.body.status) {
+      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
+      updates.status = req.body.status;
+    }
+    if (req.body.notes !== undefined) updates.notes = req.body.notes;
+    const [row] = await db.update(assessments).set(updates).where(eq(assessments.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update assessment" });
+  }
+});
+
+router.get("/admin/partners", async (req, res) => {
+  try {
+    const result = await listRecords(
+      partnerRequests, partnerRequests.fullName, partnerRequests.email,
+      partnerRequests.status, partnerRequests.createdAt, req.query
+    );
+    res.json(result);
+  } catch (err) {
+    console.error("List partners error:", err);
+    res.status(500).json({ error: "Failed to list partner requests" });
+  }
+});
+
+router.get("/admin/partners/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.select().from(partnerRequests).where(eq(partnerRequests.id, id));
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch partner request" });
+  }
+});
+
+router.patch("/admin/partners/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const updates: any = { updatedAt: new Date() };
+    if (req.body.status) {
+      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
+      updates.status = req.body.status;
+    }
+    if (req.body.notes !== undefined) updates.notes = req.body.notes;
+    const [row] = await db.update(partnerRequests).set(updates).where(eq(partnerRequests.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update partner request" });
+  }
+});
+
+router.get("/admin/referrals", async (req, res) => {
+  try {
+    const result = await listRecords(
+      studentReferrals, studentReferrals.fullName, studentReferrals.email,
+      studentReferrals.status, studentReferrals.createdAt, req.query
+    );
+    res.json(result);
+  } catch (err) {
+    console.error("List referrals error:", err);
+    res.status(500).json({ error: "Failed to list student referrals" });
+  }
+});
+
+router.get("/admin/referrals/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const [row] = await db.select().from(studentReferrals).where(eq(studentReferrals.id, id));
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch student referral" });
+  }
+});
+
+router.patch("/admin/referrals/:id", async (req, res) => {
+  try {
+    const id = parseId(req.params.id);
+    if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+    const updates: any = { updatedAt: new Date() };
+    if (req.body.status) {
+      if (!VALID_STATUSES.includes(req.body.status)) { res.status(400).json({ error: "Invalid status" }); return; }
+      updates.status = req.body.status;
+    }
+    if (req.body.notes !== undefined) updates.notes = req.body.notes;
+    const [row] = await db.update(studentReferrals).set(updates).where(eq(studentReferrals.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update student referral" });
+  }
+});
+
+router.get("/admin/recent", async (_req, res) => {
+  try {
+    const recentCons = await db.select({
+      id: consultations.id,
+      type: sql<string>`'consultation'`,
+      name: consultations.fullName,
+      email: consultations.email,
+      status: consultations.status,
+      createdAt: consultations.createdAt,
+    }).from(consultations).orderBy(desc(consultations.createdAt)).limit(10);
+
+    const recentAss = await db.select({
+      id: assessments.id,
+      type: sql<string>`'assessment'`,
+      name: assessments.fullName,
+      email: assessments.email,
+      status: assessments.status,
+      createdAt: assessments.createdAt,
+    }).from(assessments).orderBy(desc(assessments.createdAt)).limit(10);
+
+    const recentPart = await db.select({
+      id: partnerRequests.id,
+      type: sql<string>`'partner'`,
+      name: partnerRequests.fullName,
+      email: partnerRequests.email,
+      status: partnerRequests.status,
+      createdAt: partnerRequests.createdAt,
+    }).from(partnerRequests).orderBy(desc(partnerRequests.createdAt)).limit(10);
+
+    const recentRef = await db.select({
+      id: studentReferrals.id,
+      type: sql<string>`'referral'`,
+      name: studentReferrals.fullName,
+      email: studentReferrals.email,
+      status: studentReferrals.status,
+      createdAt: studentReferrals.createdAt,
+    }).from(studentReferrals).orderBy(desc(studentReferrals.createdAt)).limit(10);
+
+    const all = [...recentCons, ...recentAss, ...recentPart, ...recentRef]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 10);
+
+    res.json(all);
+  } catch (err) {
+    console.error("Recent error:", err);
+    res.status(500).json({ error: "Failed to fetch recent submissions" });
+  }
+});
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
+
+router.post("/admin/blog-import", upload.single("file"), async (req, res) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "No file uploaded" });
+      return;
+    }
+
+    const zip = new AdmZip(req.file.buffer);
+    const zipEntries = zip.getEntries();
+
+    if (zipEntries.length > MAX_ZIP_ENTRIES) {
+      res.status(400).json({ error: `ZIP contains too many entries (max ${MAX_ZIP_ENTRIES})` });
+      return;
+    }
+
+    let totalUncompressed = 0;
+    for (const entry of zipEntries) {
+      totalUncompressed += entry.header.size;
+      if (totalUncompressed > MAX_UNCOMPRESSED_SIZE) {
+        res.status(400).json({ error: "ZIP uncompressed size exceeds 100MB limit" });
+        return;
+      }
+    }
+
+    let postsJson: any = null;
+    const imageEntries: AdmZip.IZipEntry[] = [];
+
+    for (const entry of zipEntries) {
+      const name = entry.entryName.toLowerCase();
+      if (name === "posts.json" || name.endsWith("/posts.json")) {
+        postsJson = JSON.parse(entry.getData().toString("utf8"));
+      }
+      if ((name.startsWith("images/") || name.includes("/images/")) && !entry.isDirectory) {
+        const ext = path.extname(entry.entryName).toLowerCase();
+        if (ALLOWED_IMAGE_EXTS.has(ext)) {
+          imageEntries.push(entry);
+        }
+      }
+    }
+
+    if (!postsJson || !postsJson.posts || !Array.isArray(postsJson.posts)) {
+      res.status(400).json({ error: "ZIP must contain a valid posts.json with a \"posts\" array" });
+      return;
+    }
+
+    const blogImagesDir = path.resolve(process.cwd(), "artifacts/universitio/public/blog-images");
+    if (!fs.existsSync(blogImagesDir)) {
+      fs.mkdirSync(blogImagesDir, { recursive: true });
+    }
+
+    let imagesSaved = 0;
+    for (const imgEntry of imageEntries) {
+      const fileName = path.basename(imgEntry.entryName).replace(/[^a-zA-Z0-9._-]/g, "_");
+      if (fileName && !fileName.startsWith(".")) {
+        const dest = path.join(blogImagesDir, fileName);
+        fs.writeFileSync(dest, imgEntry.getData());
+        imagesSaved++;
+      }
+    }
+
+    const [record] = await db.insert(blogImportRecords).values({
+      filename: req.file.originalname || "blog-import.zip",
+      postCount: postsJson.posts.length,
+      imageCount: imagesSaved,
+      importData: postsJson,
+      importedBy: (req as any).admin?.email || "admin",
+    }).returning();
+
+    res.status(201).json({
+      success: true,
+      id: record.id,
+      postCount: postsJson.posts.length,
+      imageCount: imagesSaved,
+    });
+  } catch (err: any) {
+    console.error("Blog import error:", err);
+    res.status(500).json({ error: "Failed to process blog import" });
+  }
+});
+
+router.get("/admin/blog-imports", async (_req, res) => {
+  try {
+    const rows = await db.select({
+      id: blogImportRecords.id,
+      filename: blogImportRecords.filename,
+      postCount: blogImportRecords.postCount,
+      imageCount: blogImportRecords.imageCount,
+      importedBy: blogImportRecords.importedBy,
+      createdAt: blogImportRecords.createdAt,
+    }).from(blogImportRecords).orderBy(desc(blogImportRecords.createdAt));
+    res.json(rows);
+  } catch (err) {
+    console.error("Blog imports list error:", err);
+    res.status(500).json({ error: "Failed to list blog imports" });
+  }
+});
+
+export default router;

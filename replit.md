@@ -72,8 +72,13 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 
 - Entry: `src/index.ts` — reads `PORT`, starts Express
 - App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
-- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
-- Depends on: `@workspace/db`, `@workspace/api-zod`
+- Routes: `src/routes/index.ts` mounts sub-routers:
+  - `src/routes/health.ts` — `GET /api/healthz`
+  - `src/routes/auth.ts` — `POST /api/admin/auth/login`, `GET /api/admin/auth/me`
+  - `src/routes/leads.ts` — `POST /api/leads/consultation`, `/assessment`, `/partners`, `/referral`
+  - `src/routes/admin.ts` — Admin CRUD for all lead types, stats, recent, blog-import (protected by JWT)
+- Auth: JWT-based admin auth in `src/middleware/auth.ts`; credentials default to `info@universitio.com` / `Universitio2002@` (env: ADMIN_EMAIL, ADMIN_PASSWORD, JWT_SECRET)
+- Depends on: `@workspace/db`, `@workspace/api-zod`, `jsonwebtoken`, `multer`, `adm-zip`
 - `pnpm --filter @workspace/api-server run dev` — run the dev server
 - `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
 - Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
@@ -84,7 +89,11 @@ Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client insta
 
 - `src/index.ts` — creates a `Pool` + Drizzle instance, exports schema
 - `src/schema/index.ts` — barrel re-export of all models
-- `src/schema/<modelname>.ts` — table definitions with `drizzle-zod` insert schemas (no models definitions exist right now)
+- `src/schema/consultations.ts` — Free Consultation form submissions
+- `src/schema/assessments.ts` — Free Admissions Assessment submissions (with score fields)
+- `src/schema/partner-requests.ts` — Partner enquiry submissions
+- `src/schema/student-referrals.ts` — Student Referral Programme applications
+- `src/schema/blog-imports.ts` — Blog import records (ZIP upload history)
 - `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
 - Exports: `.` (pool, db, schema), `./schema` (schema only)
 
