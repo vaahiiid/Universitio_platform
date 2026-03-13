@@ -90,7 +90,7 @@ export function Hero() {
                   className="absolute bottom-20 -left-10 bg-white p-4 rounded-2xl shadow-xl border border-border/50 flex items-center gap-3"
                 >
                   <div className="bg-emerald-100 p-2 rounded-lg"><Search className="w-5 h-5 text-emerald-600" /></div>
-                  <div className="text-sm font-semibold">Visa Support</div>
+                  <div className="text-sm font-semibold">Admissions Guidance</div>
                 </motion.div>
 
                 <motion.div 

@@ -50,6 +50,22 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 
 ## Packages
 
+### `artifacts/universitio` (`@workspace/universitio`)
+
+Universitio marketing website — a UK education consultancy homepage for international students.
+
+- **Stack**: React + Vite, Tailwind CSS v4, wouter routing, framer-motion, react-hook-form
+- **Served at**: `/` (preview path root)
+- **Pages**: `/` homepage, `/free-consultation`, `/assessment-form`, `/blog`
+- **Brand colour**: #42147d (deep purple) — primary: 266 72% 28%
+- **Key components**: `src/components/layout/` (Navbar, Footer), `src/components/home/` (Hero, TrustIndicators, AboutAndServices, GlobalReach, StudyDestinations, Partnerships, SocialProof)
+- **Data**: All editable content (stats, services, countries, testimonials, blog posts, study destinations, accreditations) lives in `src/data/siteData.ts`
+- **Assets**: Accreditation logos imported via `@assets/` alias from `attached_assets/`
+- **ICEF badge**: Injected via `useEffect` in Footer using account ID 6539 — renders live badge
+- **SEO**: Full meta tags, Open Graph, Twitter Card, structured data (LD+JSON) in `index.html`
+- **Blog**: Structured for future WordPress API integration
+- Dev: `pnpm --filter @workspace/universitio run dev`
+
 ### `artifacts/api-server` (`@workspace/api-server`)
 
 Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` for request and response validation and `@workspace/db` for persistence.

@@ -71,20 +71,20 @@ export function Partnerships() {
                 <Gift className="w-4 h-4" /> Student Rewards
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Refer a Friend — Earn a Reward
+                Earn a Reward by Referring a Student
               </h2>
               <p className="text-xl text-blue-100 mb-6">
-                Students who refer others to Universitio can earn a reward when their friend completes a successful consultation.
+                Our student referral programme rewards you once the student you referred successfully enrols at their institution.
               </p>
               <p className="text-white/70 mb-10 leading-relaxed">
-                Know someone who wants to study abroad? Share Universitio with your friends, classmates, or family — and when they book a consultation, you both benefit. It's our way of saying thank you for spreading the word about what we do.
+                Know someone planning to study abroad? Refer them to Universitio. If they go on to successfully enrol at a university or college following our guidance, you'll receive a referral reward as our way of saying thank you. This is a genuine programme — no gimmicks, no vague promises.
               </p>
               
               <div className="space-y-6 mb-10">
                 {[
-                  { icon: Share2, text: "Share your referral with a friend" },
-                  { icon: Users, text: "They book a free consultation" },
-                  { icon: Award, text: "You earn your reward" }
+                  { icon: Share2, text: "Refer a friend or contact to Universitio" },
+                  { icon: Users, text: "They receive guidance and submit their application" },
+                  { icon: Award, text: "Once they successfully enrol, your reward is paid" }
                 ].map((step, i) => (
                   <div key={i} className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
                     <div className="w-10 h-10 rounded-full bg-secondary/80 flex items-center justify-center flex-shrink-0 shadow-lg">

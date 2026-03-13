@@ -1,8 +1,21 @@
 import { Link } from "wouter";
 import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { useEffect } from "react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://www-cdn.icef.com/scripts/iasbadgeid.js";
+    script.async = true;
+    script.defer = true;
+    script.crossOrigin = "anonymous";
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <footer className="bg-primary text-primary-foreground pt-16 pb-8">
@@ -16,7 +29,7 @@ export function Footer() {
             <p className="text-primary-foreground/70 mb-6 text-sm leading-relaxed">
               Your global gateway to education abroad. Expert guidance for international students applying to top universities worldwide.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 items-center">
               <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
@@ -26,9 +39,8 @@ export function Footer() {
               <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors">
                 <Linkedin size={20} />
               </a>
-              {/* TikTok placeholder icon using a generic icon or text since Lucide doesn't have official TikTok */}
-              <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors font-bold text-sm flex items-center">
-                TikTok
+              <a href="#" className="text-primary-foreground/60 hover:text-white transition-colors font-bold text-sm flex items-center gap-1 font-serif">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinelinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
               </a>
             </div>
           </div>
@@ -59,6 +71,7 @@ export function Footer() {
               <li>Email: info@universitio.co.uk</li>
               <li>WhatsApp: +44 7XXX XXXXXX</li>
               <li>Telegram: @universitio</li>
+              <li>Address: 44 Birmingham Road, Birmingham, England, B72 1QQ</li>
               <li className="pt-2">
                 <div className="flex gap-2 items-center flex-wrap">
                   <span className="bg-white/10 px-2 py-1 rounded text-xs">ICEF Accredited</span>
@@ -69,7 +82,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-primary-foreground/60">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-primary-foreground/60 mb-6">
           <div className="mb-4 md:mb-0 text-center md:text-left">
             <p>© {currentYear} Universitio Ltd. All rights reserved.</p>
             <p className="mt-1">Universitio Ltd is registered in England and Wales. Company No. 15168670.</p>
@@ -78,6 +91,10 @@ export function Footer() {
             <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
+        </div>
+        
+        <div className="border-t border-white/10 pt-6 pb-4 text-center">
+          <span id="iasBadge" data-account-id="6539"></span>
         </div>
       </div>
     </footer>

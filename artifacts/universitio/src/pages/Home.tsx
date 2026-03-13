@@ -4,6 +4,7 @@ import { Hero } from "@/components/home/Hero";
 import { TrustIndicators } from "@/components/home/TrustIndicators";
 import { AboutAndServices } from "@/components/home/AboutAndServices";
 import { GlobalReach } from "@/components/home/GlobalReach";
+import { StudyDestinations } from "@/components/home/StudyDestinations";
 import { Partnerships } from "@/components/home/Partnerships";
 import { SocialProof } from "@/components/home/SocialProof";
 
@@ -16,6 +17,7 @@ export default function Home() {
         <TrustIndicators />
         <AboutAndServices />
         <GlobalReach />
+        <StudyDestinations />
         <Partnerships />
         <SocialProof />
       </main>

@@ -10,7 +10,7 @@ export const siteData = {
     { value: "1,000+", label: "Students Helped" },
     { value: "20+", label: "Countries Represented" },
     { value: "500+", label: "Successful Applications" },
-    { value: "10+", label: "Years of Expertise" },
+    { value: "5+", label: "Years of Experience" },
     { value: "100%", label: "Application Support" }
   ],
   
@@ -34,10 +34,10 @@ export const siteData = {
       description: "Helping younger students and families navigate school and college applications with confidence."
     },
     {
-      id: "dependant-visa",
-      icon: UserCheck,
-      title: "Dependant Visa Pathway",
-      description: "Specialist advice for students wishing to bring dependants as part of their UK study journey."
+      id: "pre-departure",
+      icon: CheckCircle,
+      title: "Pre-Departure Guidance",
+      description: "Practical preparation support to help students get ready for life as an international student abroad."
     },
     {
       id: "phd-research",
@@ -68,10 +68,10 @@ export const siteData = {
   pathways: [
     {
       id: "dependants",
-      title: "Dependant Visa Route to the UK",
-      description: "Planning to study in the UK and bring family? We provide specialist guidance on the UK Student Visa with Dependant pathways, helping you understand eligibility, documentation, and the application process.",
+      title: "Studying with Family in the UK",
+      description: "Planning to study in the UK alongside family members? We help you understand the options available for accompanying family, navigating the relevant application processes, and ensuring you have all the documentation in order before applying.",
       ctaText: "Explore This Pathway",
-      link: "/free-consultation?interest=dependant-visa"
+      link: "/free-consultation?interest=family-study"
     },
     {
       id: "phd",
@@ -86,6 +86,72 @@ export const siteData = {
       description: "Starting early gives students a real advantage. We support younger students planning ahead — from A-Level and IB course selection to building a strong university application profile.",
       ctaText: "Start Early",
       link: "/free-consultation?interest=school"
+    }
+  ],
+
+  studyDestinations: [
+    {
+      country: "United Kingdom",
+      flag: "🇬🇧",
+      description: "Full guidance for applications to UK schools, colleges, and universities, including specialist support for the UK admissions process.",
+      highlights: ["Russell Group universities", "Further education colleges", "Independent schools", "UCAS applications"]
+    },
+    {
+      country: "United States",
+      flag: "🇺🇸", 
+      description: "Support for students applying to leading institutions across the USA, from Ivy League universities to community colleges.",
+      highlights: ["Common App support", "Undergraduate & postgraduate", "Liberal arts colleges", "Research universities"]
+    },
+    {
+      country: "Canada",
+      flag: "🇨🇦",
+      description: "Personalised admissions support for colleges and universities in Canada, one of the world's most welcoming destinations for international students.",
+      highlights: ["University of Toronto", "McGill University", "College of Applied Arts", "Province-based applications"]
+    },
+    {
+      country: "Europe",
+      flag: "🇪🇺",
+      description: "Guidance for study opportunities across selected European destinations, including English-taught programmes and internationally recognised institutions.",
+      highlights: ["English-taught programmes", "Netherlands, Germany & beyond", "Bachelor's & Master's", "European application systems"]
+    }
+  ],
+
+  accreditations: [
+    {
+      id: "icef",
+      logoKey: "icef",
+      name: "ICEF Accredited",
+      statement: "A global quality benchmark in international student recruitment"
+    },
+    {
+      id: "british-council",
+      logoKey: "british-council",
+      name: "British Council Certified",
+      statement: "Committed to recognised UK education standards and best practices"
+    },
+    {
+      id: "ico",
+      logoKey: "ico",
+      name: "ICO Registered",
+      statement: "Fully compliant with UK GDPR and data protection regulations"
+    },
+    {
+      id: "birmingham-chambers",
+      logoKey: "birmingham-chambers",
+      name: "Greater Birmingham Chambers",
+      statement: "Part of the UK's trusted business network"
+    },
+    {
+      id: "trustpilot",
+      logoKey: "trustpilot",
+      name: "Trustpilot",
+      statement: "Rated 4.6 — based on verified student reviews"
+    },
+    {
+      id: "companies-house",
+      logoKey: "companies-house",
+      name: "UK-Registered Company",
+      statement: "Company No. 15168670 — Registered in England and Wales"
     }
   ],
 
@@ -107,7 +173,7 @@ export const siteData = {
     {
       icon: MapPin,
       title: "UK-Focused Expertise",
-      description: "Deep knowledge of the UK education system, visa requirements, and what universities are really looking for."
+      description: "Deep knowledge of the UK education system, admissions requirements, and what universities are really looking for."
     },
     {
       icon: Globe,
@@ -158,7 +224,7 @@ export const siteData = {
       program: "LLB Law, University of Birmingham"
     },
     {
-      quote: "As an international student, I had so many questions about the UK system. Universitio answered everything patiently and helped me navigate the visa process too.",
+      quote: "As an international student, I had so many questions about the UK system. Universitio answered everything patiently and helped me navigate the entire application process too.",
       author: "Sara M.",
       origin: "Pakistan",
       program: "BSc Nursing, University of Leeds"
@@ -183,8 +249,8 @@ export const siteData = {
       id: 2,
       image: "blog-2.png",
       date: "5 March 2026",
-      title: "UK Student Visa 2026: What International Students Need to Know",
-      excerpt: "A clear overview of the UK Student Visa requirements, application process, and what to expect when applying from abroad."
+      title: "UK Study 2026: What International Students Need to Know",
+      excerpt: "A clear overview of the UK application requirements, documentation process, and what to expect when applying from abroad."
     },
     {
       id: 3,

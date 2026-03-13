@@ -1,35 +1,50 @@
 import { siteData } from "@/data/siteData";
+import icefBadge from "@assets/001bG000006Y3MkQAK_badge_1773399029266.webp";
+import britishCouncilCert from "@assets/Certification_1773399011626.webp";
+import icoLogo from "@assets/Ico_1773399011627.webp";
+import birminghamChambers from "@assets/greater-birmingham_1773399011627.webp";
+import companiesHouse from "@assets/companies-hous_1773399011626.webp";
 
 export function TrustIndicators() {
+  const getLogo = (key: string) => {
+    switch (key) {
+      case "icef": return <img src={icefBadge} alt="ICEF Accredited" className="h-12 md:h-14 w-auto object-contain" />;
+      case "british-council": return <img src={britishCouncilCert} alt="British Council Certified" className="h-12 md:h-14 w-auto object-contain" />;
+      case "ico": return <img src={icoLogo} alt="ICO Registered" className="h-12 md:h-14 w-auto object-contain" />;
+      case "birmingham-chambers": return <img src={birminghamChambers} alt="Greater Birmingham Chambers" className="h-12 md:h-14 w-auto object-contain" />;
+      case "companies-house": return <img src={companiesHouse} alt="UK-Registered Company" className="h-12 md:h-14 w-auto object-contain" />;
+      case "trustpilot": return (
+        <div className="flex flex-col justify-center">
+          <div className="flex text-emerald-500 mb-1">
+            <span className="text-2xl">★</span><span className="text-2xl">★</span><span className="text-2xl">★</span><span className="text-2xl">★</span><span className="text-2xl">★</span>
+          </div>
+          <span className="font-bold text-emerald-600 text-lg">4.6 Trustpilot</span>
+        </div>
+      );
+      default: return null;
+    }
+  };
+
   return (
     <>
       {/* Accreditation Strip */}
-      <section id="accreditation" className="py-12 border-y border-border bg-white">
+      <section id="accreditation" className="py-16 md:py-24 bg-slate-50 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">
-            Trusted, Accredited & Recognised
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Logo placeholders built with UI elements to look premium */}
-            <div className="flex items-center gap-2 font-display font-bold text-xl text-slate-800">
-              <div className="w-8 h-8 rounded bg-slate-800 text-white flex items-center justify-center text-sm">I</div>
-              ICEF
-            </div>
-            <div className="flex items-center gap-2 font-serif font-bold text-xl text-slate-800">
-              <div className="w-6 h-6 rounded-full border-2 border-slate-800 flex items-center justify-center text-xs">●</div>
-              British Council
-            </div>
-            <div className="flex items-center gap-2 font-sans font-bold text-xl text-slate-800">
-              <div className="w-6 h-6 border-b-4 border-slate-800"></div>
-              ICO.
-            </div>
-            <div className="flex items-center gap-2 font-display font-medium text-lg text-slate-800 leading-tight">
-              <div className="w-8 h-8 rounded-full border border-slate-800 p-1 flex flex-wrap"><div className="w-1/2 h-1/2 bg-slate-800"></div></div>
-              Birmingham <br/> Chambers
-            </div>
-            <div className="flex items-center gap-2 font-sans font-bold text-xl text-emerald-600">
-              ★ Trustpilot
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">Recognised Credentials. Real Trust. Global Student Support.</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {siteData.accreditations.map((acc) => (
+              <div key={acc.id} className="bg-white rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                <div className="shrink-0 flex items-center justify-center min-w-[4rem]">
+                  {getLogo(acc.logoKey)}
+                </div>
+                <div>
+                  <h3 className="font-bold text-foreground mb-1">{acc.name}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{acc.statement}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
