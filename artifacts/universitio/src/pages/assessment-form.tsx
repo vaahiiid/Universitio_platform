@@ -22,6 +22,7 @@ import "react-phone-input-2/lib/style.css";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
 import { apiUrl } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
 
@@ -387,6 +388,7 @@ export default function AssessmentForm() {
   }
 
   const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast();
 
   async function handleSubmitAndReveal() {
     const values = form.getValues();
@@ -435,15 +437,24 @@ export default function AssessmentForm() {
 
       if (cvFile) formData.append("cvFile", cvFile);
 
-      await fetch(apiUrl("/leads/assessment"), {
+      const res = await fetch(apiUrl("/leads/assessment"), {
         method: "POST",
         body: formData,
       });
-    } catch {
-      // submission is best-effort; still show results
-    } finally {
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error || "Submission failed");
+      }
+    } catch (err) {
       setSubmitting(false);
+      toast({
+        title: "Submission failed",
+        description: err instanceof Error ? err.message : "Could not submit your assessment. Please try again.",
+        variant: "destructive",
+      });
+      return;
     }
+    setSubmitting(false);
 
     setResults(scores);
     setSubmitted(true);

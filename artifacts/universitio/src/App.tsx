@@ -88,6 +88,9 @@ function Router() {
         <Route path="/admin/blog-import">
           {() => <AdminGuard><BlogImportPage /></AdminGuard>}
         </Route>
+        <Route path="/admin/:rest*">
+          {() => <AdminGuard><Redirect to="/admin" /></AdminGuard>}
+        </Route>
 
         <Route component={NotFound} />
       </Switch>
