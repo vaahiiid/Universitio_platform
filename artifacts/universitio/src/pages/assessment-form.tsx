@@ -11,19 +11,16 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
-} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   CheckCircle2, ChevronRight, ChevronLeft, Plus, Trash2, Upload,
   Info, Award, BookOpen, Globe, Languages, Wallet, User, AlertTriangle,
-  TrendingUp, ArrowRight
+  TrendingUp, ArrowRight, Send, MessageCircle
 } from "lucide-react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { useState, useRef, useCallback } from "react";
-import { computeScores, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
 
 const COUNTRIES = [
   "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
@@ -94,10 +91,10 @@ const CONTACT_METHODS = ["WhatsApp", "Telegram", "Video Call", "Email"];
 const STEPS = [
   { label: "Basic Profile", icon: User },
   { label: "Study Plans", icon: Globe },
-  { label: "Academic Background", icon: BookOpen },
+  { label: "Academic", icon: BookOpen },
   { label: "Language", icon: Languages },
   { label: "Budget & More", icon: Wallet },
-  { label: "Results", icon: Award },
+  { label: "Submit", icon: Send },
 ];
 
 const stepSchemas = {
@@ -224,28 +221,132 @@ function ProgressBar({ currentStep }: { currentStep: number }) {
   );
 }
 
-function ScoreRing({ score, size = 160 }: { score: number; size?: number }) {
+function ScoreRing({ score, size = 160, animated = false }: { score: number; size?: number; animated?: boolean }) {
   const radius = (size - 16) / 2;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
-  let color = "#ef4444";
-  if (score >= 80) color = "#16a34a";
-  else if (score >= 60) color = "#2563eb";
-  else if (score >= 40) color = "#d97706";
+  const [displayOffset, setDisplayOffset] = useState(circumference);
+  const targetOffset = circumference - (score / 100) * circumference;
+  const { bandColor } = getBand(score);
+
+  const colorMap: Record<string, string> = {
+    "text-green-600": "#16a34a",
+    "text-emerald-500": "#10b981",
+    "text-yellow-600": "#ca8a04",
+    "text-orange-500": "#f97316",
+    "text-red-500": "#ef4444",
+  };
+  const strokeColor = colorMap[bandColor] || "#6b7280";
+
+  useEffect(() => {
+    if (animated) {
+      const timer = setTimeout(() => setDisplayOffset(targetOffset), 100);
+      return () => clearTimeout(timer);
+    }
+    setDisplayOffset(targetOffset);
+    return undefined;
+  }, [animated, targetOffset]);
 
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
         <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#e5e7eb" strokeWidth="8" />
         <circle
-          cx={size/2} cy={size/2} r={radius} fill="none" stroke={color} strokeWidth="8"
-          strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset}
+          cx={size/2} cy={size/2} r={radius} fill="none" stroke={strokeColor} strokeWidth="8"
+          strokeLinecap="round" strokeDasharray={circumference}
+          strokeDashoffset={animated ? displayOffset : targetOffset}
           className="transition-all duration-1000 ease-out"
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-4xl font-bold" style={{ color }}>{score}%</span>
+        <span className="text-4xl font-bold" style={{ color: strokeColor }}>{score}%</span>
         <span className="text-xs text-muted-foreground font-medium">Estimated Score</span>
+      </div>
+    </div>
+  );
+}
+
+function ResultsView({ results, onReset }: { results: DestinationScore[]; onReset: () => void }) {
+  const anyBelow75 = results.some(r => r.score < 75);
+  return (
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
+          <Award className="w-8 h-8" />
+        </div>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Your Assessment Results</h1>
+        <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+          Based on the information you provided, here is your estimated admission potential. This is an indicative score — not a guarantee.
+        </p>
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-xl border border-border p-6 md:p-10 space-y-8">
+        <div className={`grid gap-6 ${results.length > 1 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"}`}>
+          {results.map((r) => {
+            const { bandBgColor, bandColor } = r;
+            return (
+              <div key={r.destination} className={`flex flex-col items-center p-8 rounded-2xl border border-border ${bandBgColor}`}>
+                <h3 className="text-lg font-bold text-foreground mb-4">
+                  {DESTINATIONS.find(d => d.value === r.destination)?.label || r.destination}
+                </h3>
+                <ScoreRing score={r.score} animated />
+                <p className={`text-sm font-semibold mt-4 text-center ${bandColor}`}>{r.band}</p>
+                {r.restricted && r.restrictionMessage && (
+                  <AdvisoryNote variant="warning">{r.restrictionMessage}</AdvisoryNote>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {results.map((r) => (
+          <div key={`obs-${r.destination}`} className="bg-slate-50 rounded-2xl p-6 border border-border">
+            <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-primary" />
+              {results.length > 1
+                ? `Key Observations — ${DESTINATIONS.find(d => d.value === r.destination)?.label || r.destination}`
+                : "Key Observations"}
+            </h3>
+            <ul className="space-y-3">
+              {(r.observations || []).map((obs, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-foreground">
+                  <div className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
+                    {i + 1}
+                  </div>
+                  {obs}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        {anyBelow75 && (
+          <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20 text-center">
+            <div className="w-14 h-14 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
+              <MessageCircle className="w-7 h-7" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground mb-2">Want to Strengthen Your Profile?</h3>
+            <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
+              Our consultants can provide personalised guidance to help you improve your admission potential and identify the best pathways for your goals.
+            </p>
+            <a
+              href="/free-consultation"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-full font-semibold shadow-lg hover:bg-primary/90 transition-all"
+            >
+              Book a Free Consultation <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        )}
+
+        <div className="pt-6 border-t border-border flex flex-col sm:flex-row justify-center gap-4">
+          <Button onClick={onReset} variant="outline" className="rounded-full px-8">
+            Start New Assessment
+          </Button>
+          <a href="/free-consultation">
+            <Button className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white w-full sm:w-auto">
+              Get Expert Guidance <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -254,7 +355,7 @@ function ScoreRing({ score, size = 160 }: { score: number; size?: number }) {
 export default function AssessmentForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [results, setResults] = useState<DestinationScore[] | null>(null);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -305,30 +406,6 @@ export default function AssessmentForm() {
       return;
     }
     form.clearErrors();
-
-    if (currentStep === 4) {
-      const values = form.getValues();
-      const profile: AssessmentProfile = {
-        dateOfBirth: values.dateOfBirth,
-        nationality: values.nationality,
-        maritalStatus: values.maritalStatus,
-        destinations: values.destinations,
-        studyLevel: values.studyLevel,
-        courseArea: values.courseArea,
-        highestQualification: values.highestQualification,
-        academicPerformance: values.academicPerformance,
-        fieldAlignment: values.fieldAlignment,
-        hasLanguageQualification: values.hasLanguageQualification === "yes",
-        languageQualificationType: values.languageQualificationType,
-        languageScore: values.languageScore,
-        englishLevel: values.englishLevel,
-        budget: values.budget,
-        additionalStrengths: values.additionalStrengths || [],
-        hasResearchExperience: values.hasResearchExperience === "yes",
-      };
-      const scores = computeScores(profile);
-      setResults(scores);
-    }
     setCurrentStep((prev) => Math.min(prev + 1, STEPS.length - 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep, form]);
@@ -338,7 +415,7 @@ export default function AssessmentForm() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function onSubmit() {
+  function handleSubmitAndReveal() {
     const values = form.getValues();
     const step5Result = stepSchemas[5].safeParse(values);
     if (!step5Result.success) {
@@ -348,16 +425,52 @@ export default function AssessmentForm() {
       }
       return;
     }
-    setShowSuccessModal(true);
+
+    const profile: AssessmentProfile = {
+      dateOfBirth: values.dateOfBirth,
+      nationality: values.nationality,
+      maritalStatus: values.maritalStatus,
+      destinations: values.destinations,
+      studyLevel: values.studyLevel,
+      courseArea: values.courseArea,
+      highestQualification: values.highestQualification,
+      academicPerformance: values.academicPerformance,
+      fieldAlignment: values.fieldAlignment,
+      hasLanguageQualification: values.hasLanguageQualification === "yes",
+      languageQualificationType: values.languageQualificationType,
+      languageScore: values.languageScore,
+      englishLevel: values.englishLevel,
+      budget: values.budget,
+      additionalStrengths: values.additionalStrengths || [],
+      hasResearchExperience: values.hasResearchExperience === "yes",
+    };
+    const scores = computeScores(profile);
+    setResults(scores);
+    setSubmitted(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleReset() {
-    setShowSuccessModal(false);
+    setSubmitted(false);
     setResults(null);
     setCurrentStep(0);
     setUploadedFileName(null);
     form.reset();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  if (submitted && results) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col">
+        <Navbar />
+        <main className="flex-grow pt-28 pb-24">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ResultsView results={results} onReset={handleReset} />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   return (
@@ -366,7 +479,7 @@ export default function AssessmentForm() {
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {currentStep === 0 && !results && (
+          {currentStep === 0 && (
             <div className="text-center mb-8">
               <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Free Admissions Assessment</h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-3">
@@ -377,15 +490,15 @@ export default function AssessmentForm() {
               </p>
             </div>
           )}
-          {currentStep > 0 && currentStep < STEPS.length - 1 && (
+          {currentStep > 0 && currentStep <= 4 && (
             <div className="text-center mb-6">
               <h1 className="text-2xl md:text-3xl font-bold text-foreground">Free Admissions Assessment</h1>
             </div>
           )}
-          {currentStep === STEPS.length - 1 && (
+          {currentStep === 5 && (
             <div className="text-center mb-6">
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground">Your Assessment Results</h1>
-              <p className="text-muted-foreground mt-2">Based on the information you provided, here is your estimated admission potential.</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground">Submit to View Your Result</h1>
+              <p className="text-muted-foreground mt-2">You're almost there — just a few final details before we reveal your score.</p>
             </div>
           )}
 
@@ -393,9 +506,8 @@ export default function AssessmentForm() {
 
           <div key={currentStep} className="bg-white rounded-3xl shadow-xl border border-border p-6 md:p-10 animate-in fade-in slide-in-from-right-4 duration-300">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
+              <form onSubmit={(e) => { e.preventDefault(); }}>
 
-                {/* ── STEP 0: Basic Profile ── */}
                 {currentStep === 0 && (
                   <div className="space-y-5">
                     <h2 className="text-xl font-bold text-foreground mb-1">Basic Profile</h2>
@@ -490,7 +602,6 @@ export default function AssessmentForm() {
                   </div>
                 )}
 
-                {/* ── STEP 1: Study Plans ── */}
                 {currentStep === 1 && (
                   <div className="space-y-5">
                     <h2 className="text-xl font-bold text-foreground mb-1">Study Plans</h2>
@@ -556,7 +667,6 @@ export default function AssessmentForm() {
                   </div>
                 )}
 
-                {/* ── STEP 2: Academic Background ── */}
                 {currentStep === 2 && (
                   <div className="space-y-5">
                     <h2 className="text-xl font-bold text-foreground mb-1">Academic Background</h2>
@@ -644,7 +754,6 @@ export default function AssessmentForm() {
                   </div>
                 )}
 
-                {/* ── STEP 3: Language & Qualifications ── */}
                 {currentStep === 3 && (
                   <div className="space-y-5">
                     <h2 className="text-xl font-bold text-foreground mb-1">Language & Qualifications</h2>
@@ -720,7 +829,6 @@ export default function AssessmentForm() {
                   </div>
                 )}
 
-                {/* ── STEP 4: Budget & Additional ── */}
                 {currentStep === 4 && (
                   <div className="space-y-5">
                     <h2 className="text-xl font-bold text-foreground mb-1">Budget & Additional Factors</h2>
@@ -840,73 +948,19 @@ export default function AssessmentForm() {
                   </div>
                 )}
 
-                {/* ── STEP 5: Results ── */}
-                {currentStep === 5 && results && (
-                  <div className="space-y-8">
-                    {/* Score Cards */}
-                    <div className={`grid gap-6 ${results.length > 1 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"}`}>
-                      {results.map((r) => (
-                        <div key={r.destination} className="flex flex-col items-center p-8 rounded-2xl border border-border bg-gradient-to-b from-white to-slate-50">
-                          <h3 className="text-lg font-bold text-foreground mb-4">
-                            {DESTINATIONS.find(d => d.value === r.destination)?.label || r.destination}
-                          </h3>
-                          <ScoreRing score={r.score} />
-                          <p className={`text-sm font-semibold mt-4 text-center ${r.bandColor}`}>{r.band}</p>
-                          {r.restricted && r.restrictionMessage && (
-                            <AdvisoryNote variant="warning">{r.restrictionMessage}</AdvisoryNote>
-                          )}
-                        </div>
-                      ))}
+                {currentStep === 5 && (
+                  <div className="space-y-6">
+                    <div className="text-center pb-4">
+                      <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Award className="w-8 h-8" />
+                      </div>
+                      <h2 className="text-xl font-bold text-foreground">Your Result Is Ready</h2>
+                      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
+                        Complete the details below and submit to reveal your personalised admission readiness score.
+                      </p>
                     </div>
 
-                    {/* Observations */}
-                    {results.map((r) => (
-                      <div key={`obs-${r.destination}`} className="bg-slate-50 rounded-2xl p-6 border border-border">
-                        <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                          <TrendingUp className="w-5 h-5 text-primary" />
-                          {results.length > 1
-                            ? `Key Observations — ${DESTINATIONS.find(d => d.value === r.destination)?.label || r.destination}`
-                            : "Key Observations"}
-                        </h3>
-                        <ul className="space-y-3">
-                          {(r.observations || []).map((obs, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-foreground">
-                              <div className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
-                                {i + 1}
-                              </div>
-                              {obs}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-
-                    {/* Improvement CTA (shown if any score < 60) */}
-                    {results.some(r => r.score < 60) && (
-                      <div className="bg-primary/5 rounded-2xl p-6 border border-primary/20 text-center">
-                        <h3 className="text-lg font-bold text-foreground mb-2">Want to Improve Your Score?</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Would you like us to contact you with personalised suggestions to help improve your profile and increase your admission potential?
-                        </p>
-                        <FormField control={form.control} name="wantsSuggestions" render={({ field }) => (
-                          <FormItem>
-                            <div className="flex justify-center gap-4">
-                              {[{ value: "yes", label: "Yes, contact me" }, { value: "no", label: "No, thanks" }].map((opt) => (
-                                <button key={opt.value} type="button" onClick={() => field.onChange(opt.value)}
-                                  className={`px-6 py-2.5 rounded-full border-2 text-sm font-medium transition-all ${
-                                    field.value === opt.value ? "bg-primary text-white border-primary shadow-md" : "bg-white text-foreground border-border hover:border-primary"
-                                  }`}>{opt.label}</button>
-                              ))}
-                            </div>
-                          </FormItem>
-                        )} />
-                      </div>
-                    )}
-
-                    {/* Lead follow-up fields */}
-                    <div className="space-y-5 pt-4 border-t border-border">
-                      <h3 className="text-lg font-bold text-foreground">Almost Done — A Few Final Details</h3>
-
+                    <div className="space-y-5 bg-slate-50 rounded-2xl p-6 border border-border">
                       <FormField control={form.control} name="howDidYouHear" render={({ field }) => (
                         <FormItem>
                           <FormLabel>How did you hear about us?</FormLabel>
@@ -943,17 +997,26 @@ export default function AssessmentForm() {
                           <FormMessage />
                         </FormItem>
                       )} />
+
+                      <FormField control={form.control} name="wantsSuggestions" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Would you like us to contact you with personalised suggestions?</FormLabel>
+                          <div className="flex gap-4 mt-2">
+                            {[{ value: "yes", label: "Yes, please" }, { value: "no", label: "No, thanks" }].map((opt) => (
+                              <button key={opt.value} type="button" onClick={() => field.onChange(opt.value)}
+                                className={`px-6 py-2.5 rounded-full border-2 text-sm font-medium transition-all ${
+                                  field.value === opt.value ? "bg-primary text-white border-primary shadow-md" : "bg-white text-foreground border-border hover:border-primary"
+                                }`}>{opt.label}</button>
+                            ))}
+                          </div>
+                        </FormItem>
+                      )} />
                     </div>
                   </div>
                 )}
 
-                {/* ── Navigation ── */}
                 <div className="flex justify-between items-center mt-10 pt-6 border-t border-border">
-                  {currentStep > 0 && currentStep < STEPS.length - 1 ? (
-                    <Button type="button" variant="outline" onClick={goBack} className="rounded-full px-6">
-                      <ChevronLeft className="w-4 h-4 mr-1" /> Back
-                    </Button>
-                  ) : currentStep === STEPS.length - 1 ? (
+                  {currentStep > 0 ? (
                     <Button type="button" variant="outline" onClick={goBack} className="rounded-full px-6">
                       <ChevronLeft className="w-4 h-4 mr-1" /> Back
                     </Button>
@@ -964,8 +1027,8 @@ export default function AssessmentForm() {
                       Continue <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   ) : (
-                    <Button type="submit" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white shadow-lg">
-                      Submit Assessment <ArrowRight className="w-4 h-4 ml-1" />
+                    <Button type="button" onClick={handleSubmitAndReveal} className="rounded-full px-8 py-3 bg-primary hover:bg-primary/90 text-white shadow-lg text-base font-semibold">
+                      Submit and View My Result <ArrowRight className="w-5 h-5 ml-2" />
                     </Button>
                   )}
                 </div>
@@ -976,23 +1039,6 @@ export default function AssessmentForm() {
         </div>
       </main>
       <Footer />
-
-      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-        <DialogContent className="sm:max-w-md text-center">
-          <DialogHeader className="items-center">
-            <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-10 h-10" />
-            </div>
-            <DialogTitle className="text-2xl font-bold">Thank You!</DialogTitle>
-            <DialogDescription className="text-base text-muted-foreground mt-3 leading-relaxed">
-              Your assessment has been submitted successfully. We will review your information and contact you within up to 24 hours using your preferred method.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-6">
-            <Button onClick={handleReset} className="rounded-full px-8">Start New Assessment</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
