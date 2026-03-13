@@ -67,6 +67,18 @@ function scoreNationality(nationality: string, destination: string): { score: nu
   return { score: 15, restricted: false };
 }
 
+function getAcademicGap(profile: AssessmentProfile): number {
+  const qualMap: Record<string, number> = {
+    "High School": 1, "Diploma / College Diploma": 2,
+    "Bachelor's Degree": 3, "Master's Degree": 4, "Other": 1
+  };
+  const levelMap: Record<string, number> = {
+    "Foundation / Pathway": 1, "College": 1, "Bachelor's": 2,
+    "Master's": 3, "PhD / Research": 4
+  };
+  return (levelMap[profile.studyLevel] || 2) - (qualMap[profile.highestQualification] || 1);
+}
+
 function scoreAcademic(profile: AssessmentProfile): number {
   const qualMap: Record<string, number> = {
     "High School": 1,
@@ -91,13 +103,16 @@ function scoreAcademic(profile: AssessmentProfile): number {
   if (gap === 1) alignmentScore = 10;
   else if (gap === 0) alignmentScore = 8;
   else if (gap < 0) alignmentScore = 7;
-  else if (gap === 2) alignmentScore = 4;
-  else alignmentScore = 2;
+  else if (gap === 2) alignmentScore = 3;
+  else alignmentScore = 1;
 
   const perfMap: Record<string, number> = {
     "Excellent": 8, "Good": 5, "Average": 3, "Weak": 1
   };
-  const perfScore = perfMap[profile.academicPerformance] || 3;
+  let perfScore = perfMap[profile.academicPerformance] || 3;
+
+  if (gap >= 3) perfScore = Math.min(perfScore, 2);
+  if (gap >= 2) perfScore = Math.min(perfScore, 5);
 
   return Math.min(20, alignmentScore + perfScore);
 }
@@ -254,7 +269,12 @@ function applyCaps(
     capped = Math.min(capped, 35);
   }
 
-  if (academicScore <= 5) {
+  const academicGap = getAcademicGap(profile);
+  if (academicGap >= 3) {
+    capped = Math.min(capped, 40);
+  } else if (academicGap >= 2) {
+    capped = Math.min(capped, 55);
+  } else if (academicScore <= 5) {
     capped = Math.min(capped, 55);
   }
 
@@ -272,10 +292,22 @@ function applyCaps(
 
   if (profile.budget === "under10k") {
     if (["UK", "USA", "Australia"].includes(destination)) {
-      capped = Math.min(capped, 45);
+      capped = Math.min(capped, 42);
     } else if (destination === "Canada") {
-      capped = Math.min(capped, 50);
+      capped = Math.min(capped, 48);
     }
+  }
+
+  let weaknessCount = 0;
+  if (budgetScore <= 2) weaknessCount++;
+  if (languageScore <= 5) weaknessCount++;
+  if (academicScore <= 5) weaknessCount++;
+  if (academicGap >= 2) weaknessCount++;
+
+  if (weaknessCount >= 3) {
+    capped = Math.min(capped, 35);
+  } else if (weaknessCount >= 2) {
+    capped = Math.min(capped, 45);
   }
 
   return capped;
