@@ -44,6 +44,7 @@ export function SocialProof() {
           message: data.message,
         }),
       });
+      toast({ title: "Thank you!", description: "Your message has been sent successfully." });
       setIsSubmitted(true);
       reset();
     } catch {

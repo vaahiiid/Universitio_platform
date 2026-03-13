@@ -13,7 +13,7 @@ function sanitizeCsvCell(value: string): string {
   return `"${v.replace(/"/g, '""')}"`;
 }
 
-export function exportCsvFile(
+export function downloadCsv(
   headers: string[],
   items: Record<string, unknown>[],
   mapRow: (item: Record<string, unknown>) => unknown[],

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRoute, useLocation } from "wouter";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { apiFetch } from "@/lib/api";
-import { exportCsvFile } from "@/lib/utils";
+import { downloadCsv } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -185,10 +185,14 @@ function DetailView({ id }: { id: number }) {
   );
 }
 
-function handleExportCsv(items: Record<string, unknown>[]) {
-  exportCsvFile(
+async function handleExportCsv(search: string, statusFilter: string) {
+  const params = new URLSearchParams({ page: "1", limit: "10000" });
+  if (search) params.set("search", search);
+  if (statusFilter && statusFilter !== "all") params.set("status", statusFilter);
+  const res = await apiFetch<{ data: Record<string, unknown>[] }>(`/admin/consultations?${params}`);
+  downloadCsv(
     ["ID", "Full Name", "Email", "Mobile", "Nationality", "Status", "Notes", "Submitted"],
-    items,
+    res.data,
     (item) => [
       item.id, item.fullName, item.email, item.mobile, item.nationality || "", item.status, item.notes || "",
       new Date(item.createdAt as string).toISOString(),
@@ -244,7 +248,7 @@ function ListView() {
             <p className="text-sm text-muted-foreground mt-1">{pagination.total} total submissions</p>
           </div>
           {items.length > 0 && (
-            <Button variant="outline" size="sm" onClick={() => handleExportCsv(items)}>
+            <Button variant="outline" size="sm" onClick={() => handleExportCsv(search, statusFilter)}>
               <Download className="w-4 h-4 mr-1.5" /> Export CSV
             </Button>
           )}
