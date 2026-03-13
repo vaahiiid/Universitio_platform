@@ -1,0 +1,135 @@
+Please apply the following front-end fixes and UX improvements across the Universitio website.
+
+These are important usability and navigation updates.
+
+---------------------------------------------
+1. CLICKABLE ELEMENTS MUST SHOW POINTER CURSOR
+---------------------------------------------
+
+Currently, many clickable elements still show the normal arrow cursor instead of the hand pointer.
+
+Please fix this across the whole site.
+
+Apply pointer cursor to all interactive/clickable elements, including:
+- buttons
+- links
+- navbar items
+- cards that are clickable
+- CTAs
+- social icons
+- footer links
+- expandable elements
+- tabs
+- sliders/carousels controls
+- any clickable blog cards or article cards
+
+The user should immediately understand what is clickable.
+
+---------------------------------------------
+2. REMOVE +44 121 720 3341 EVERYWHERE
+---------------------------------------------
+
+Remove the phone number:
+
++44 121 720 3341
+
+from everywhere on the website.
+
+Use the WhatsApp number as the main contact number instead.
+
+Please use this as the contact number link wherever a phone/contact number is shown:
+
+https://web.whatsapp.com/send?phone=447963345465&text=
+
+If needed in visible text, use the WhatsApp number format consistently.
+
+The site should no longer display +44 121 720 3341.
+
+---------------------------------------------
+3. FIX NAVIGATION FROM OTHER PAGES TO SPECIFIC HOMEPAGE SECTIONS
+---------------------------------------------
+
+Right now, when users are on another page and click navbar items such as About Us, Contact Us, Services, etc., they are taken back to the homepage hero section instead of the correct section.
+
+This must be fixed.
+
+Expected behaviour:
+- if the user is on another page
+- and clicks a menu item linked to a homepage section
+- they should go directly to the correct section on the homepage
+- not just to the top of the homepage
+
+Example:
+- clicking “About Us” should go to homepage + scroll to About Us section
+- clicking “Contact Us” should go to homepage + scroll to Contact section
+- clicking “Agents” should go to the Agents section
+- etc.
+
+Please implement proper anchor/section linking so this works correctly across pages.
+
+---------------------------------------------
+4. EVERY PAGE MUST OPEN FROM THE TOP
+---------------------------------------------
+
+Currently, if the user is scrolled down on one page and clicks to another page such as Free Consultation, the new page sometimes opens at the same scroll position instead of starting from the top.
+
+This must be fixed globally.
+
+Expected behaviour:
+- every time the user navigates to a new page
+- the new page should start from the top automatically
+
+Apply this to all pages, including:
+- Free Consultation
+- Assessment
+- Blog
+- Partner page
+- Student Referral page
+- any future pages
+
+If needed, add a route-change scroll-to-top behaviour globally.
+
+---------------------------------------------
+5. ADD “CAREERS” TO FOOTER
+---------------------------------------------
+
+Add a new footer link/section called:
+
+Careers
+
+When the user clicks it, show a dedicated Careers page or simple Careers section/page with this message in polished British English:
+
+“At the moment, we do not have any open roles. However, if you are interested in working with us, we would be glad to hear from you. Please send your CV, along with a cover letter outlining your proposed collaboration, to info@universitio.com.”
+
+Make the page feel clean, professional, and on-brand.
+
+Suggested route:
+- /careers
+
+The page should include:
+- title: Careers
+- short supporting text
+- the above message
+- clickable email link to info@universitio.com
+
+Keep it minimal, elegant, and consistent with the rest of the site.
+
+---------------------------------------------
+GENERAL EXPECTATIONS
+---------------------------------------------
+
+Please make these fixes carefully and consistently across the site.
+
+Important:
+- maintain the current design quality
+- improve UX
+- do not break the existing layout
+- keep everything responsive
+- keep interactions clear and polished
+
+Final goals:
+- better usability
+- clearer clickable behaviour
+- correct section navigation
+- proper page scroll behaviour
+- footer expanded with Careers page
