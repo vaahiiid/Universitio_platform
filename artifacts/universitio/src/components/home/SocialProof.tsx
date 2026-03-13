@@ -13,7 +13,14 @@ export function SocialProof() {
   const onSubmit = () => setIsSubmitted(true);
 
   useEffect(() => {
-    if (document.getElementById("tp-widget-script")) return;
+    const win = window as unknown as { Trustpilot?: { loadFromElement: (el: Element, b: boolean) => void } };
+    if (document.getElementById("tp-widget-script")) {
+      if (win.Trustpilot) {
+        const el = document.querySelector(".trustpilot-widget");
+        if (el) win.Trustpilot.loadFromElement(el, true);
+      }
+      return;
+    }
     const script = document.createElement("script");
     script.id = "tp-widget-script";
     script.src = "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
