@@ -269,7 +269,7 @@ export const siteData = {
       author: "Maria G.",
       origin: "Bangladesh",
       program: "MSc Public Health, University of Glasgow",
-      stars: 4
+      stars: 5
     },
     {
       quote: "The team helped my daughter secure a place at a top London school. Their understanding of the UK education system at every level is impressive.",
