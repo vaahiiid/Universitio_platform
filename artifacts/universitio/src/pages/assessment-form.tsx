@@ -830,21 +830,26 @@ export default function AssessmentForm() {
                     </div>
 
                     {/* Observations */}
-                    <div className="bg-slate-50 rounded-2xl p-6 border border-border">
-                      <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                        <TrendingUp className="w-5 h-5 text-primary" /> Key Observations
-                      </h3>
-                      <ul className="space-y-3">
-                        {(results[0]?.observations || []).map((obs, i) => (
-                          <li key={i} className="flex items-start gap-3 text-sm text-foreground">
-                            <div className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
-                              {i + 1}
-                            </div>
-                            {obs}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {results.map((r) => (
+                      <div key={`obs-${r.destination}`} className="bg-slate-50 rounded-2xl p-6 border border-border">
+                        <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5 text-primary" />
+                          {results.length > 1
+                            ? `Key Observations — ${DESTINATIONS.find(d => d.value === r.destination)?.label || r.destination}`
+                            : "Key Observations"}
+                        </h3>
+                        <ul className="space-y-3">
+                          {(r.observations || []).map((obs, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm text-foreground">
+                              <div className="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
+                                {i + 1}
+                              </div>
+                              {obs}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
 
                     {/* Improvement CTA (shown if any score < 60) */}
                     {results.some(r => r.score < 60) && (
