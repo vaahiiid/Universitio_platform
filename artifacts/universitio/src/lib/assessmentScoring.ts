@@ -186,12 +186,12 @@ function scoreBudget(budget: string, destination: string): number {
   const isEuro = euroCountries.includes(destination);
 
   if (budget === "over20k") {
-    return isEuro ? 25 : 22;
+    return 25;
   }
   if (budget === "10k-20k") {
     if (isEuro) return 20;
-    if (destination === "Canada") return 14;
-    return 12;
+    if (destination === "Canada") return 16;
+    return 14;
   }
   if (isEuro) return 14;
   if (destination === "Canada") return 8;
