@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function AssessmentCTA() {
@@ -8,17 +8,12 @@ export function AssessmentCTA() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/15 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-1.5 rounded-full text-sm font-semibold mb-8 text-blue-200">
-          <Sparkles className="w-4 h-4" />
-          Free Admissions Assessment
-        </div>
-
         <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
-          Find out your estimated chances of admission before you apply.
+          Free Admissions Assessment
         </h2>
 
         <p className="text-lg text-white/70 mb-10 max-w-xl mx-auto leading-relaxed">
-          Answer a few simple questions about your background and goals. Our assessment gives you a smarter starting point — completely free, no commitment.
+          Find out your estimated chances of admission before you apply.
         </p>
 
         <Link href="/assessment-form">
@@ -30,10 +25,6 @@ export function AssessmentCTA() {
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Button>
         </Link>
-
-        <p className="text-xs text-white/35 mt-6">
-          Takes under 5 minutes · No account needed · UK GDPR compliant
-        </p>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { siteData } from "@/data/siteData";
-import { Star, Mail, Phone, MapPin, CheckCircle2, ArrowRight, ExternalLink } from "lucide-react";
+import { Mail, Phone, MapPin, CheckCircle2, ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,25 +29,33 @@ export function SocialProof() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div className="max-w-2xl">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">What Our Students Say</h2>
-              <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-sm border border-border inline-flex">
-                <div className="flex text-emerald-500">
-                  {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-current" />)}
-                </div>
-                <span className="text-sm font-semibold">Rated 4.6 on Trustpilot</span>
-              </div>
+              <p className="text-muted-foreground text-lg">Real feedback from students we've helped.</p>
             </div>
-            <a href="https://www.trustpilot.com" target="_blank" rel="noopener noreferrer" className="text-secondary font-medium hover:text-primary transition-colors flex items-center gap-1 group">
-              Read all reviews <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            <a href="https://www.trustpilot.com/review/universitio.co.uk" target="_blank" rel="noopener noreferrer" className="text-secondary font-medium hover:text-primary transition-colors flex items-center gap-1 group">
+              Read all reviews on Trustpilot <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* Trustpilot TrustBox widget — primary review proof */}
+          <div className="mb-10">
+            <div
+              className="trustpilot-widget"
+              data-locale="en-GB"
+              data-template-id="56278e9abfbbba0bdcd568bc"
+              data-businessunit-id="universitio.co.uk"
+              data-style-height="52px"
+              data-style-width="100%"
+            >
+              <a href="https://www.trustpilot.com/review/universitio.co.uk" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground">
+                Universitio is rated on Trustpilot
+              </a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {siteData.testimonials.map((test, i) => (
               <div key={i} className="bg-card rounded-2xl p-6 shadow-sm border border-border flex flex-col justify-between hover:shadow-lg transition-shadow">
                 <div>
-                  <div className="flex text-amber-400 mb-4">
-                    {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-current" />)}
-                  </div>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-6 italic">
                     "{test.quote}"
                   </p>
@@ -59,22 +67,6 @@ export function SocialProof() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Trustpilot TrustBox widget */}
-          <div className="flex justify-center">
-            <div
-              className="trustpilot-widget"
-              data-locale="en-GB"
-              data-template-id="56278e9abfbbba0bdcd568bc"
-              data-businessunit-id="universitio.co.uk"
-              data-style-height="52px"
-              data-style-width="100%"
-            >
-              <a href="https://www.trustpilot.com/review/universitio.co.uk" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground">
-                See our reviews on Trustpilot
-              </a>
-            </div>
           </div>
         </div>
       </section>
