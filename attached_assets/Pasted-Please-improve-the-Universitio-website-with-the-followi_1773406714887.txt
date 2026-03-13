@@ -1,0 +1,339 @@
+Please improve the Universitio website with the following important homepage and free consultation form updates.
+
+Overall design direction:
+- Keep the website modern, premium, minimal, and highly user-friendly
+- Strong UI and UX are extremely important
+- The website must remain clean, readable, conversion-focused, and visually polished
+- Use the main brand colour #42147d
+- Keep strong CTA visibility without making the page crowded
+- Maintain excellent responsiveness across desktop and mobile
+
+PART 1 — HOMEPAGE IMPROVEMENTS
+
+1. Free Admissions Assessment section redesign
+The current “Free Admissions Assessment” section has become too simple and visually flat.
+Problems:
+- it is too plain
+- its background colour blends too much with the section below
+- it needs to feel more creative, premium, minimal, and user-friendly
+
+Please redesign this section so that:
+- it stands out clearly from surrounding sections
+- it feels modern and intelligent
+- it remains minimal and not overcrowded
+- it has stronger visual hierarchy
+- it communicates value immediately
+- it includes a strong CTA button
+
+The purpose of this section is:
+to help students estimate their chances of receiving admission based on their academic and personal profile.
+
+The copy should communicate something like:
+- Find out your estimated chances of admission
+- Get a clearer starting point before you apply
+- Share your profile and receive a more informed view of your study options
+
+Do not make unrealistic promises.
+Make the section visually stronger using layout, spacing, cards, subtle gradients, icons, or other premium design solutions.
+
+2. “Where We Help You Study” section redesign
+This section was more creative before and has now become too simple.
+Please redesign it to make it:
+- creative
+- minimal
+- attractive
+- easy to understand
+- visually engaging
+- premium and modern
+
+It should still clearly highlight the destinations:
+- United Kingdom
+- United States
+- Canada
+- Europe
+
+Possible UI ideas:
+- elegant cards
+- subtle destination panels
+- modern icon or flag-inspired visuals
+- hover interactions
+- expandable minimal content
+- strong hierarchy with short descriptions
+
+It should not feel cluttered, but it should definitely not feel generic or boring.
+
+3. Testimonials section improvement
+The testimonials section needs improvement:
+- bring back the stars
+- increase the number of testimonials
+- make it a slider/carousel
+- make it more creative and visually polished
+- keep it premium and trustworthy
+
+Requirements:
+- each testimonial should include star rating visuals
+- use a smooth carousel/slider interaction
+- include more testimonial entries
+- maintain Trustpilot credibility visually
+- make the section feel more dynamic but not noisy
+
+PART 2 — FREE CONSULTATION FORM PAGE
+
+Create or update the Free Consultation form page to be extremely user-friendly, clean, and conversion-focused.
+
+Top intro text:
+At the top of the form, include a short helpful explanation telling users that:
+- the more accurately they complete the form
+- the better we can understand their profile
+- and the better we can guide them
+
+Use polished, supportive British English.
+
+The form should feel modern, structured, and easy to complete.
+Use clear grouped sections, spacing, progress-friendly layout, and excellent mobile UX.
+
+Important:
+Some fields are required, and some have conditional logic.
+
+FORM FIELDS AND LOGIC
+
+1. Full Name
+- Required
+
+2. Mobile Number
+- Required
+- Must include country code selector/dropdown
+- Should feel modern and international-user friendly
+
+3. Email Address
+- Required
+
+4. Date of Birth
+- Required
+
+5. Previous Education
+Ask the user to enter:
+- field of study previously studied
+- level of study previously completed
+
+The user must be able to add more than one previous qualification/education entry if needed.
+For example:
+- Bachelor’s in Business
+- Diploma in IT
+Use a repeatable input/group system.
+
+6. Intended Course Area
+Ask what subject/course area they want to study.
+- Required
+- Include a list of major course areas
+- Also include “Other”
+- If “Other” is selected, the user must type their intended field manually
+
+Include a good list of common course areas such as:
+- Business and Management
+- Computer Science / IT
+- Engineering
+- Health and Nursing
+- Medicine
+- Law
+- Architecture
+- Art and Design
+- Education
+- Social Sciences
+- Psychology
+- Media and Communications
+- Hospitality and Tourism
+- Finance and Accounting
+- Marketing
+- Data Science / AI
+- English / Humanities
+- Other
+
+7. Nationality
+- Required
+- Use a complete country list dropdown
+
+8. Preferred Study Destination
+- Required
+- User can select maximum 2 countries only
+- Use these options:
+  - United Kingdom
+  - United States
+  - Canada
+  - Germany
+  - Netherlands
+  - Australia
+
+Make this clear in the UI:
+- “You may choose up to 2 destinations”
+
+9. English Language Qualification
+- Required
+Ask:
+Do you have an English language qualification?
+
+Options:
+- Yes
+- No
+
+If Yes:
+Ask:
+- Which qualification do you have?
+Use options such as:
+  - IELTS Academic
+  - TOEFL
+  - PTE Academic
+  - Duolingo English Test
+  - Cambridge English
+  - Other
+
+If “Other” is selected, ask them to specify.
+Also ask:
+- Overall score
+Only ask for overall score, not sub-scores.
+
+If No:
+Ask:
+- What is your current English level?
+Required
+Use selectable options such as:
+  - Beginner
+  - Elementary
+  - Pre-Intermediate
+  - Intermediate
+  - Upper-Intermediate
+  - Advanced
+
+10. Tuition Budget
+- Required
+
+Add a short helper note making it clear that users should provide realistic information so that we can guide them properly and recommend suitable options.
+
+Budget options:
+- Under $10,000
+- Between $10,000 and $20,000
+- Over $20,000
+
+If user selects “Under $10,000” show an important informational note:
+- for study in the UK, this budget is generally not sufficient
+- for Canada and the USA, options may be limited
+- for some European destinations, there may still be possible pathways
+
+This should be presented as a helpful advisory note, not an error.
+
+11. CV
+Ask:
+Do you have a CV?
+Options:
+- Yes
+- No
+
+Important note to display:
+“Providing a CV at this stage is not mandatory, but it can help us assist you more effectively.”
+
+If user selects Yes:
+- require file upload
+- file upload becomes mandatory in that case
+
+12. Marital Status
+- Required
+Ask:
+Are you single or married?
+
+Explain briefly why this is being asked:
+This information helps us understand suitability for certain study pathways, especially because some countries, such as the UK, have restrictions around dependant visas in some study categories.
+
+Options:
+- Single
+- Married
+
+Conditional logic:
+If user selects:
+- Married
+AND
+- United Kingdom is one of the preferred study destinations
+
+Then show an important advisory note:
+For study in the UK, if you need a dependant visa route, you may need to apply through eligible research-based programmes, which typically require a research proposal.
+
+This should be informative and clearly visible.
+
+13. How did you hear about us?
+- Optional
+
+Options:
+- Google Search
+- Google Search Ads
+- Instagram
+- Facebook
+- LinkedIn
+- Friend Referral
+- Other
+
+If Other is selected:
+- ask them to explain
+
+14. Preferred consultation/contact method
+- Required
+
+Question text:
+What is the preferred method to consult and contact you?
+
+Options:
+- WhatsApp
+- Telegram
+- Video call
+- Email
+
+15. Submit action and thank-you popup
+When the user submits the form:
+- show an attractive success popup/modal
+- message should say something like:
+
+“Thank you. Your request has been received successfully.
+We will contact you within up to 24 hours using your preferred method of contact.”
+
+The popup should feel polished, friendly, and premium.
+
+UX REQUIREMENTS FOR THE FORM
+- Break long form into clear grouped sections or visually separated blocks
+- Make it easy to complete
+- Excellent spacing and form hierarchy
+- Strong labels and helper text
+- Clear required field indicators
+- Great mobile UX
+- Smart conditional logic
+- Avoid overwhelming the user even though the form is detailed
+- Consider using cards, step-like grouping, or smart sections while keeping it all smooth
+- Make the page highly conversion-focused and trustworthy
+
+CTA / content tone
+- Encourage honesty and accuracy in the form
+- Make it clear that better information leads to better guidance
+- Tone should be supportive, professional, and student-friendly
+- Use polished British English
+
+TECHNICAL / STRUCTURE REQUIREMENTS
+- Clean reusable components
+- Proper validation for required fields
+- Conditional rendering for dependent questions
+- File upload support for CV
+- Country code selector for mobile number
+- Max 2 selection logic for preferred study destination
+- Accessible form structure
+- SEO-friendly page structure
+- Strong visual consistency with the homepage
+- Keep the design premium and brand-aligned with Universitio
+
+Please improve both:
+1. the homepage sections mentioned above
+2. the Free Consultation / Assessment form experience
+
+The final result must feel:
+- highly visible
+- strongly conversion-oriented
+- user-friendly
+- modern
+- premium
+- trustworthy
+- easy to use
