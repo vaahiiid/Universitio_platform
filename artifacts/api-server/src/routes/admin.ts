@@ -30,10 +30,6 @@ function parseId(raw: string | string[]): number | null {
   return Number.isFinite(id) && id > 0 ? id : null;
 }
 
-interface AdminRequest extends Request {
-  admin?: { email: string };
-}
-
 router.get("/admin/stats", async (_req: Request, res: Response) => {
   try {
     const [consCount] = await db.select({ value: count() }).from(consultations);
@@ -344,7 +340,7 @@ router.get("/admin/recent", async (_req: Request, res: Response) => {
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
-router.post("/admin/blog-import", upload.single("file"), async (req: AdminRequest, res: Response) => {
+router.post("/admin/blog-import", upload.single("file"), async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       res.status(400).json({ error: "No file uploaded" });

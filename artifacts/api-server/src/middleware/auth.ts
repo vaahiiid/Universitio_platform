@@ -33,7 +33,7 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction): v
   const token = authHeader.slice(7);
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as AdminPayload;
-    (req as any).admin = decoded;
+    req.admin = decoded;
     next();
   } catch {
     res.status(401).json({ error: "Invalid or expired token" });

@@ -10,6 +10,7 @@ import type { InsertConsultation } from "@workspace/db";
 import type { InsertAssessment } from "@workspace/db";
 import type { InsertPartnerRequest } from "@workspace/db";
 import type { InsertStudentReferral } from "@workspace/db";
+import { computeScores, type AssessmentProfile } from "../lib/assessmentScoring";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -137,6 +138,38 @@ router.post("/leads/assessment", cvUpload.single("cvFile"), async (req: Request,
 
     const cvFileName = req.file ? req.file.filename : (data.cvFileName as string | undefined) || null;
 
+    const hasLangQual = toBool(data.hasLanguageQualification);
+    const hasResearch = toBool(data.hasResearchExperience);
+
+    const profile: AssessmentProfile = {
+      dateOfBirth: (data.dateOfBirth as string) || "",
+      nationality: (data.nationality as string) || "",
+      maritalStatus: (data.maritalStatus as string) || "",
+      destinations: (data.destinations as string[]) || [],
+      studyLevel: (data.studyLevel as string) || "",
+      courseArea: (data.courseArea as string) || "",
+      highestQualification: (data.highestQualification as string) || "",
+      academicPerformance: (data.academicPerformance as string) || "",
+      fieldAlignment: (data.fieldAlignment as string) || "",
+      hasLanguageQualification: hasLangQual,
+      languageQualificationType: data.languageQualificationType as string | undefined,
+      languageScore: data.languageScore as string | undefined,
+      englishLevel: data.englishLevel as string | undefined,
+      budget: (data.budget as string) || "",
+      additionalStrengths: (data.additionalStrengths as string[]) || [],
+      hasResearchExperience: hasResearch,
+    };
+
+    const destinationScores = computeScores(profile);
+    const bestScore = destinationScores.reduce(
+      (best, ds) => (ds.score > best.score ? ds : best),
+      destinationScores[0] || { score: 0, band: "N/A" },
+    );
+
+    const scoreNotes = destinationScores
+      .map((ds) => `${ds.destination}: ${ds.score}/100 (${ds.band})`)
+      .join("; ");
+
     const values: InsertAssessment = {
       fullName: data.fullName as string,
       email: data.email as string,
@@ -151,26 +184,26 @@ router.post("/leads/assessment", cvUpload.single("cvFile"), async (req: Request,
       academicPerformance: data.academicPerformance as string,
       fieldAlignment: data.fieldAlignment as string,
       previousEducation: data.previousEducation as Record<string, unknown>,
-      hasLanguageQualification: toBool(data.hasLanguageQualification),
+      hasLanguageQualification: hasLangQual,
       languageQualificationType: data.languageQualificationType as string,
       languageScore: data.languageScore as string,
       englishLevel: data.englishLevel as string,
       budget: data.budget as string,
       additionalStrengths: data.additionalStrengths as string[],
-      hasResearchExperience: toBool(data.hasResearchExperience),
+      hasResearchExperience: hasResearch,
       preferredContactMethod: data.preferredContactMethod as string,
       howDidYouHear: data.howDidYouHear as string,
       cvFileName,
-      overallScore: typeof data.overallScore === "number" ? data.overallScore : null,
-      scoreBand: (data.scoreBand as string) ?? null,
-      scoreNotes: (data.scoreNotes as string) ?? null,
+      overallScore: bestScore.score,
+      scoreBand: bestScore.band,
+      scoreNotes,
       followUpRequested: toBool(data.followUpRequested),
       rawData: data,
       status: "New",
     };
 
     const [row] = await db.insert(assessments).values(values).returning();
-    res.status(201).json({ success: true, data: row });
+    res.status(201).json({ success: true, data: row, scores: destinationScores });
   } catch (err) {
     console.error("Error saving assessment:", err);
     res.status(500).json({ error: "Failed to save assessment" });
