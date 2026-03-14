@@ -21,22 +21,6 @@ interface MembersResponse {
   members: Member[];
 }
 
-const SOURCE_COLORS: Record<string, string> = {
-  "Consultation": "bg-blue-100 text-blue-700",
-  "Assessment": "bg-purple-100 text-purple-700",
-  "Partner": "bg-emerald-100 text-emerald-700",
-  "Referral": "bg-orange-100 text-orange-700",
-  "Contact": "bg-pink-100 text-pink-700",
-  "Service Request": "bg-indigo-100 text-indigo-700",
-  "imported": "bg-amber-100 text-amber-700",
-};
-
-function sourceColor(source: string) {
-  if (SOURCE_COLORS[source]) return SOURCE_COLORS[source];
-  if (source === "imported" || source.toLowerCase().includes("import")) return SOURCE_COLORS["imported"];
-  return "bg-gray-100 text-gray-600";
-}
-
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
@@ -150,11 +134,6 @@ export default function MembersPage() {
     }
   }
 
-  const sourceCounts = Object.keys(SOURCE_COLORS).reduce<Record<string, number>>((acc, s) => {
-    acc[s] = members.filter(m => m.source === s || (s === "imported" && !SOURCE_COLORS[m.source])).length;
-    return acc;
-  }, {});
-
   return (
     <AdminLayout>
       <div className="p-6 md:p-8 max-w-7xl mx-auto">
@@ -163,8 +142,7 @@ export default function MembersPage() {
           <div>
             <h1 className="text-2xl font-bold text-foreground">Members</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              All contacts from every source —{" "}
-              <span className="font-semibold text-primary">{total.toLocaleString()}</span> total
+              <span className="font-semibold text-primary">{total.toLocaleString()}</span> total members
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -213,20 +191,6 @@ export default function MembersPage() {
           />
         </div>
 
-        {/* Source counts */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
-          <div className="bg-white rounded-xl border border-border p-3 text-center col-span-2 sm:col-span-1 lg:col-span-1">
-            <div className="text-2xl font-bold text-primary">{total.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground mt-0.5">All Members</div>
-          </div>
-          {Object.entries(SOURCE_COLORS).map(([source, cls]) => (
-            <div key={source} className="bg-white rounded-xl border border-border p-3 text-center">
-              <div className="text-2xl font-bold text-foreground">{sourceCounts[source] ?? 0}</div>
-              <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${cls}`}>{source}</span>
-            </div>
-          ))}
-        </div>
-
         {/* Error */}
         {error && (
           <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm mb-4">
@@ -260,22 +224,16 @@ export default function MembersPage() {
                     <th className="text-left px-4 py-3 font-semibold text-foreground">Name</th>
                     <th className="text-left px-4 py-3 font-semibold text-foreground">Email</th>
                     <th className="text-left px-4 py-3 font-semibold text-foreground hidden md:table-cell">Phone</th>
-                    <th className="text-left px-4 py-3 font-semibold text-foreground">Source</th>
-                    <th className="text-left px-4 py-3 font-semibold text-foreground">Date</th>
+                    <th className="text-left px-4 py-3 font-semibold text-foreground">Date Added</th>
                     <th className="text-left px-4 py-3 font-semibold text-foreground w-10"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {members.map((m, i) => (
-                    <tr key={`${m.source}-${m.id}-${i}`} className="hover:bg-muted/20 transition-colors group">
+                    <tr key={`${m.id}-${i}`} className="hover:bg-muted/20 transition-colors group">
                       <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">{m.fullName}</td>
                       <td className="px-4 py-3 text-muted-foreground text-sm">{m.email}</td>
                       <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{m.phone || "—"}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${sourceColor(m.source)}`}>
-                          {m.source}
-                        </span>
-                      </td>
                       <td className="px-4 py-3 text-muted-foreground whitespace-nowrap text-xs">{formatDate(m.createdAt)}</td>
                       <td className="px-4 py-3">
                         {m.isDeletable && (
