@@ -28,7 +28,7 @@ export function TrustIndicators() {
   return (
     <>
       {/* Accreditation Strip */}
-      <section id="accreditation" className="py-16 md:py-24 bg-slate-50 border-y border-border">
+      <section id="accreditation" className="py-10 md:py-16 bg-slate-50 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">Recognised Credentials. Real Trust. Global Student Support.</h2>
@@ -69,7 +69,7 @@ export function TrustIndicators() {
       </section>
 
       {/* Universities Marquee */}
-      <section id="universities" className="py-24 bg-background overflow-hidden">
+      <section id="universities" className="py-12 md:py-20 bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Pathways to Leading Institutions</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

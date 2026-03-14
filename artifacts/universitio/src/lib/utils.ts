@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-function sanitizeCsvCell(value: string): string {
+export function sanitizeCsvCell(value: string): string {
   let v = value;
   if (/^[=+\-@\t\r]/.test(v)) {
     v = "'" + v;

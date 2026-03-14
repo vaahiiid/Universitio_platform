@@ -116,14 +116,14 @@ export const siteData = {
     {
       id: "icef",
       logoKey: "icef",
-      name: "ICEF Accredited",
-      statement: "A global quality benchmark in international student recruitment"
+      name: "ICEF Accredited Education Agent",
+      statement: "Recognised by ICEF for meeting global standards in international student recruitment and ethical education practices."
     },
     {
       id: "british-council",
       logoKey: "british-council",
-      name: "British Council Agent",
-      statement: "Certification award as an agent of the British Council"
+      name: "British Council Certified Education Agent",
+      statement: "The founder of Universitio holds British Council Agent Certification, recognising professional standards in international student advising."
     },
     {
       id: "ico",
@@ -134,8 +134,8 @@ export const siteData = {
     {
       id: "birmingham-chambers",
       logoKey: "birmingham-chambers",
-      name: "Greater Birmingham Chambers",
-      statement: "Part of the UK's trusted business network"
+      name: "Proud Member of the Greater Birmingham Chambers of Commerce",
+      statement: "Part of the UK's trusted regional business network supporting ethical international education partnerships."
     },
     {
       id: "trustpilot",
@@ -194,17 +194,12 @@ export const siteData = {
   ],
 
   countries: [
-    { name: "India", flag: "🇮🇳" },
+    { name: "Hong Kong", flag: "🇭🇰" },
+    { name: "China", flag: "🇨🇳" },
     { name: "Nigeria", flag: "🇳🇬" },
     { name: "Pakistan", flag: "🇵🇰" },
-    { name: "Saudi Arabia", flag: "🇸🇦" },
-    { name: "United Arab Emirates", flag: "🇦🇪" },
-    { name: "Qatar", flag: "🇶🇦" },
-    { name: "Bangladesh", flag: "🇧🇩" },
-    { name: "Iran", flag: "🇮🇷" },
-    { name: "Turkey", flag: "🇹🇷" },
-    { name: "China", flag: "🇨🇳" },
-    { name: "Hong Kong", flag: "🇭🇰" }
+    { name: "India", flag: "🇮🇳" },
+    { name: "Middle East", flag: "🌍" },
   ],
 
   testimonials: [

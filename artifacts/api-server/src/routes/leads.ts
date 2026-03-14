@@ -6,12 +6,14 @@ import {
   partnerRequests,
   studentReferrals,
   contactMessages,
+  serviceRequests,
 } from "@workspace/db";
 import type { InsertConsultation } from "@workspace/db";
 import type { InsertAssessment } from "@workspace/db";
 import type { InsertPartnerRequest } from "@workspace/db";
 import type { InsertStudentReferral } from "@workspace/db";
 import type { InsertContactMessage } from "@workspace/db";
+import type { InsertServiceRequest } from "@workspace/db";
 import { computeScores, type AssessmentProfile } from "../lib/assessmentScoring";
 import multer from "multer";
 import path from "path";
@@ -288,6 +290,48 @@ router.post("/leads/contact", async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Error saving contact message:", err);
     res.status(500).json({ error: "Failed to save contact message" });
+  }
+});
+
+/* ---- Service Requests ---- */
+router.post("/leads/service-request", async (req: Request, res: Response) => {
+  try {
+    const data = normaliseBody(req.body as Record<string, unknown>);
+    if (!data.email || !data.fullName || !data.serviceType) {
+      res.status(400).json({ error: "fullName, email and serviceType are required" });
+      return;
+    }
+    const values: InsertServiceRequest = {
+      serviceType: data.serviceType as string,
+      fullName: data.fullName as string,
+      email: data.email as string,
+      phone: (data.phone as string) || null,
+      preferredContact: (data.preferredContact as string) || null,
+      howDidYouHear: (data.howDidYouHear as string) || null,
+      studyLevel: (data.studyLevel as string) || null,
+      currentEducation: (data.currentEducation as string) || null,
+      fieldOfStudy: (data.fieldOfStudy as string) || null,
+      targetScore: (data.targetScore as string) || null,
+      interviewType: (data.interviewType as string) || null,
+      universityName: (data.universityName as string) || null,
+      universities: (data.universities as string) || null,
+      programme: (data.programme as string) || null,
+      serviceNeeded: (data.serviceNeeded as string) || null,
+      city: (data.city as string) || null,
+      intakeTerm: (data.intakeTerm as string) || null,
+      year: (data.year as string) || null,
+      budget: (data.budget as string) || null,
+      arrivalAirport: (data.arrivalAirport as string) || null,
+      destinationCity: (data.destinationCity as string) || null,
+      passengers: (data.passengers as string) || null,
+      notes: (data.notes as string) || null,
+      status: "New",
+    };
+    const [row] = await db.insert(serviceRequests).values(values).returning();
+    res.status(201).json({ success: true, data: row });
+  } catch (err) {
+    console.error("Error saving service request:", err);
+    res.status(500).json({ error: "Failed to save service request" });
   }
 });
 

@@ -1,6 +1,3 @@
-import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const destinations = [
@@ -10,7 +7,7 @@ const destinations = [
     colour: "from-[#42147d] to-[#6b3fa0]",
     image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80&fit=crop",
     tagline: "World-Class Education, Endless Opportunity",
-    description: "Home to Oxford, Cambridge, and the Russell Group — the UK offers globally respected degrees, rich cultural diversity, and strong post-study career pathways. We guide you through UCAS applications, personal statements, and admissions interviews.",
+    description: "Home to Oxford, Cambridge, and the Russell Group — the UK offers globally respected degrees, rich cultural diversity, and strong post-study career pathways. We guide you through UCAS applications, personal statements, and admissions interviews. We also assist with research-based programmes that allow international students to bring dependants.",
     highlights: ["Russell Group universities", "UCAS & clearing support", "1–3 year programmes"],
   },
   {
@@ -47,9 +44,9 @@ export function StudyDestinations() {
   const dest = destinations[active];
 
   return (
-    <section id="destinations" className="py-24 bg-slate-50">
+    <section id="destinations" className="py-12 md:py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground tracking-tight">Where We Help You Study</h2>
           <p className="text-lg text-muted-foreground">
             Expert admissions guidance for the world's most sought-after study destinations.
@@ -109,12 +106,6 @@ export function StudyDestinations() {
                   ))}
                 </div>
 
-                <Link href="/free-consultation">
-                  <Button className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 h-12 shadow-md hover:shadow-lg transition-all group w-fit">
-                    Get Guidance for {dest.country === "Europe" ? "Europe" : `the ${dest.country.replace("United ", "")}`}
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
@@ -135,17 +126,11 @@ export function StudyDestinations() {
               <div className="p-6">
                 <p className="text-sm font-semibold text-primary mb-2">{d.tagline}</p>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">{d.description}</p>
-                <div className="flex flex-wrap gap-2 mb-5">
+                <div className="flex flex-wrap gap-2">
                   {d.highlights.map((h, j) => (
                     <span key={j} className="bg-primary/5 text-primary border border-primary/15 px-3 py-1 rounded-full text-xs font-medium">{h}</span>
                   ))}
                 </div>
-                <Link href="/free-consultation">
-                  <Button size="sm" className="rounded-full bg-primary hover:bg-primary/90 text-white px-6 group">
-                    Learn More
-                    <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
             </div>
           ))}

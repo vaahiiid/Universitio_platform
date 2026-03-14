@@ -7,6 +7,7 @@ import {
   studentReferrals,
   blogImportRecords,
   contactMessages,
+  serviceRequests,
 } from "@workspace/db";
 import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
@@ -41,12 +42,14 @@ router.get("/admin/stats", async (_req: Request, res: Response) => {
     const [partCount] = await db.select({ value: count() }).from(partnerRequests);
     const [refCount] = await db.select({ value: count() }).from(studentReferrals);
     const [msgCount] = await db.select({ value: count() }).from(contactMessages);
+    const [srvCount] = await db.select({ value: count() }).from(serviceRequests);
 
     const [newCons] = await db.select({ value: count() }).from(consultations).where(eq(consultations.status, "New"));
     const [newAss] = await db.select({ value: count() }).from(assessments).where(eq(assessments.status, "New"));
     const [newPart] = await db.select({ value: count() }).from(partnerRequests).where(eq(partnerRequests.status, "New"));
     const [newRef] = await db.select({ value: count() }).from(studentReferrals).where(eq(studentReferrals.status, "New"));
     const [newMsg] = await db.select({ value: count() }).from(contactMessages).where(eq(contactMessages.status, "New"));
+    const [newSrv] = await db.select({ value: count() }).from(serviceRequests).where(eq(serviceRequests.status, "New"));
 
     res.json({
       consultations: { total: consCount.value, new: newCons.value },
@@ -54,7 +57,8 @@ router.get("/admin/stats", async (_req: Request, res: Response) => {
       partnerRequests: { total: partCount.value, new: newPart.value },
       studentReferrals: { total: refCount.value, new: newRef.value },
       contactMessages: { total: msgCount.value, new: newMsg.value },
-      totalNew: newCons.value + newAss.value + newPart.value + newRef.value + newMsg.value,
+      serviceRequests: { total: srvCount.value, new: newSrv.value },
+      totalNew: newCons.value + newAss.value + newPart.value + newRef.value + newMsg.value + newSrv.value,
     });
   } catch (err) {
     console.error("Stats error:", err);
@@ -69,6 +73,7 @@ router.get("/admin/stats/unread", async (_req: Request, res: Response) => {
     const [newPart] = await db.select({ value: count() }).from(partnerRequests).where(eq(partnerRequests.status, "New"));
     const [newRef] = await db.select({ value: count() }).from(studentReferrals).where(eq(studentReferrals.status, "New"));
     const [newMsg] = await db.select({ value: count() }).from(contactMessages).where(eq(contactMessages.status, "New"));
+    const [newSrv] = await db.select({ value: count() }).from(serviceRequests).where(eq(serviceRequests.status, "New"));
 
     res.json({
       consultations: newCons.value,
@@ -76,7 +81,8 @@ router.get("/admin/stats/unread", async (_req: Request, res: Response) => {
       partners: newPart.value,
       referrals: newRef.value,
       messages: newMsg.value,
-      total: newCons.value + newAss.value + newPart.value + newRef.value + newMsg.value,
+      serviceRequests: newSrv.value,
+      total: newCons.value + newAss.value + newPart.value + newRef.value + newMsg.value + newSrv.value,
     });
   } catch (err) {
     console.error("Unread stats error:", err);
@@ -574,6 +580,115 @@ router.get("/admin/blog-imports", async (_req: Request, res: Response) => {
   } catch (err) {
     console.error("Blog imports list error:", err);
     res.status(500).json({ error: "Failed to list blog imports" });
+  }
+});
+
+/* =========================================================
+   SERVICE REQUESTS admin routes
+   ========================================================= */
+
+router.get("/admin/service-requests", async (req: Request, res: Response) => {
+  try {
+    const search = req.query.search as string | undefined;
+    const conditions: SQL[] = [];
+    if (search) {
+      conditions.push(
+        or(
+          ilike(serviceRequests.fullName, `%${search}%`),
+          ilike(serviceRequests.email, `%${search}%`),
+          ilike(serviceRequests.serviceType, `%${search}%`),
+        ) as SQL,
+      );
+    }
+    const rows = await db
+      .select()
+      .from(serviceRequests)
+      .where(conditions.length ? and(...conditions) : undefined)
+      .orderBy(desc(serviceRequests.createdAt));
+    res.json(rows);
+  } catch (err) {
+    console.error("Service requests list error:", err);
+    res.status(500).json({ error: "Failed to list service requests" });
+  }
+});
+
+router.get("/admin/service-requests/:id", async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
+  if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
+  try {
+    const [row] = await db.select().from(serviceRequests).where(eq(serviceRequests.id, id));
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    console.error("Service request get error:", err);
+    res.status(500).json({ error: "Failed to fetch service request" });
+  }
+});
+
+router.patch("/admin/service-requests/:id", async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
+  if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
+  const { status, adminNotes } = req.body as { status?: string; adminNotes?: string };
+  try {
+    const updates: Record<string, unknown> = { updatedAt: new Date() };
+    if (status) updates.status = status;
+    if (adminNotes !== undefined) updates.adminNotes = adminNotes;
+    const [row] = await db.update(serviceRequests).set(updates).where(eq(serviceRequests.id, id)).returning();
+    if (!row) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(row);
+  } catch (err) {
+    console.error("Service request update error:", err);
+    res.status(500).json({ error: "Failed to update service request" });
+  }
+});
+
+router.delete("/admin/service-requests/:id", async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
+  if (!id) { res.status(400).json({ error: "Invalid id" }); return; }
+  try {
+    await db.delete(serviceRequests).where(eq(serviceRequests.id, id));
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Service request delete error:", err);
+    res.status(500).json({ error: "Failed to delete service request" });
+  }
+});
+
+/* =========================================================
+   MEMBERS — unified view across all form types
+   ========================================================= */
+
+router.get("/admin/members", async (req: Request, res: Response) => {
+  try {
+    const search = (req.query.search as string | undefined) || "";
+
+    const [cons, asss, parts, refs, msgs, srvs] = await Promise.all([
+      db.select({ id: consultations.id, fullName: consultations.fullName, email: consultations.email, phone: consultations.mobile, nationality: consultations.nationality, source: sql<string>`'Consultation'`, service: sql<string>`'Free Consultation'`, createdAt: consultations.createdAt }).from(consultations).orderBy(desc(consultations.createdAt)),
+      db.select({ id: assessments.id, fullName: assessments.fullName, email: assessments.email, phone: assessments.mobile, nationality: assessments.nationality, source: sql<string>`'Assessment'`, service: sql<string>`'Free Assessment'`, createdAt: assessments.createdAt }).from(assessments).orderBy(desc(assessments.createdAt)),
+      db.select({ id: partnerRequests.id, fullName: partnerRequests.contactName, email: partnerRequests.email, phone: partnerRequests.phone, nationality: sql<string>`NULL`, source: sql<string>`'Partner'`, service: sql<string>`'Partner Application'`, createdAt: partnerRequests.createdAt }).from(partnerRequests).orderBy(desc(partnerRequests.createdAt)),
+      db.select({ id: studentReferrals.id, fullName: studentReferrals.studentName, email: studentReferrals.studentEmail, phone: studentReferrals.studentPhone, nationality: sql<string>`NULL`, source: sql<string>`'Referral'`, service: sql<string>`'Student Referral'`, createdAt: studentReferrals.createdAt }).from(studentReferrals).orderBy(desc(studentReferrals.createdAt)),
+      db.select({ id: contactMessages.id, fullName: contactMessages.name, email: contactMessages.email, phone: contactMessages.phone, nationality: sql<string>`NULL`, source: sql<string>`'Contact'`, service: sql<string>`'Contact Message'`, createdAt: contactMessages.createdAt }).from(contactMessages).orderBy(desc(contactMessages.createdAt)),
+      db.select({ id: serviceRequests.id, fullName: serviceRequests.fullName, email: serviceRequests.email, phone: serviceRequests.phone, nationality: sql<string>`NULL`, source: sql<string>`'Service Request'`, service: serviceRequests.serviceType, createdAt: serviceRequests.createdAt }).from(serviceRequests).orderBy(desc(serviceRequests.createdAt)),
+    ]);
+
+    type MemberRow = { id: number; fullName: string; email: string; phone: string | null; nationality: string | null; source: string; service: string; createdAt: Date };
+    const all: MemberRow[] = [
+      ...cons, ...asss, ...parts, ...refs, ...msgs, ...srvs,
+    ] as MemberRow[];
+
+    all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    const filtered = search
+      ? all.filter(m =>
+          (m.fullName ?? "").toLowerCase().includes(search.toLowerCase()) ||
+          (m.email ?? "").toLowerCase().includes(search.toLowerCase()),
+        )
+      : all;
+
+    res.json({ total: filtered.length, members: filtered });
+  } catch (err) {
+    console.error("Members list error:", err);
+    res.status(500).json({ error: "Failed to list members" });
   }
 });
 

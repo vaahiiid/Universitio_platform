@@ -1,0 +1,273 @@
+Update the Universitio website with the following structural and content improvements while preserving the current visual identity and overall design quality. Do not simplify the design excessively. The site must remain modern, premium, and mobile-optimised.
+
+---
+
+1. TRUST & CREDENTIALS SECTION
+
+Update the section titled:
+
+"Recognised Credentials. Real Trust. Global Student Support."
+
+Update the three credential blocks with the following:
+
+ICEF
+
+Title:
+ICEF Accredited Education Agent
+
+Description:
+Recognised by ICEF for meeting global standards in international student recruitment and ethical education practices.
+
+British Council
+
+Title:
+British Council Certified Education Agent
+
+Description:
+The founder of Universitio holds British Council Agent Certification, recognising professional standards in international student advising.
+
+Greater Birmingham Chambers
+
+Title:
+Proud Member of the Greater Birmingham Chambers of Commerce
+
+Description:
+Part of the UK's trusted regional business network supporting ethical international education partnerships.
+
+---
+
+2. SERVICES SECTION REDESIGN
+
+Transform the services section into a professional services structure.
+
+Each service should:
+
+• Have its own page
+• Be shown as an accordion card on the services section
+• Expand when clicked
+• Include a "Request Service" button that opens a form modal
+
+Services:
+
+Study Admissions
+
+Include:
+
+School & College Admissions
+Bachelor's Degrees
+Master's Degrees
+Research-based programmes suitable for UK dependant visas
+PhD programmes
+
+Service Request Form Fields:
+
+Full name
+Email (required)
+Phone (optional)
+Which level are you applying for
+Current level of education
+What did you study
+Notes (optional)
+How did you hear about us
+Preferred contact method
+
+---
+
+IELTS Preparation
+
+Description:
+
+Private IELTS preparation for students planning to study in English-speaking countries.
+Personalised training designed to help students reach their target band score as efficiently as possible.
+
+Form fields:
+
+Full name
+Email
+Phone
+Preferred contact method
+How did you hear about us
+Target IELTS score
+Notes
+
+---
+
+University & Embassy Interview Preparation
+
+Description:
+
+Mock interview preparation for university credibility interviews and visa interviews.
+Students practice with realistic questions and structured guidance.
+
+Form fields:
+
+Full name
+Email
+Phone
+Interview type:
+
+University
+Embassy
+Both
+
+University name
+Programme / subject
+Level of study
+Notes
+
+---
+
+SOP & CV Guidance
+
+Description:
+
+We guide students step-by-step in crafting strong Statements of Purpose and academic CVs.
+Our role is to mentor and review — helping students present their story clearly and professionally.
+
+Form fields:
+
+Full name
+Email
+Phone
+Service needed:
+
+SOP
+CV
+Both
+
+University / universities
+Programme
+Level of study
+Notes
+
+---
+
+Student Accommodation
+
+Description:
+
+We assist students in finding and reserving accommodation in the UK.
+This service is available only for single students.
+
+Form fields:
+
+Full name
+Email
+Phone
+University name
+City
+Intake term
+Year
+Weekly accommodation budget range
+Notes
+
+---
+
+Airport Transfer
+
+Description:
+
+Airport pickup service from UK airports to the student’s city of residence.
+
+Form fields:
+
+Full name
+Email
+Phone
+Arrival airport
+Destination city
+Number of passengers
+Notes
+
+---
+
+3. MASTER SERVICE REQUEST FORM
+
+Create a combined request form where students can select multiple services.
+
+The form should dynamically show questions depending on selected services.
+
+---
+
+4. ADMIN PANEL UPDATES
+
+Create a centralised request management system.
+
+Admin structure:
+
+Admin
+Members
+Requests
+Service
+Consultation
+Assessment
+Contact
+
+Members list should automatically include anyone who submits any form.
+
+Members list fields:
+
+Name
+Email
+Phone
+Country
+Source
+Service requested
+Date
+
+Admin features:
+
+• View requests
+• Delete entries
+• Add manual entries
+• Export CSV
+• Import CSV
+• Display total member count
+
+---
+
+5. GLOBAL STUDENT SECTION
+
+Update "Supporting Students from Around the World".
+
+Order countries:
+
+Hong Kong
+China
+Nigeria
+Pakistan
+India
+Middle East
+
+Design should be more visual with flags or graphical indicators.
+
+---
+
+6. WHERE WE HELP YOU STUDY
+
+This section should be purely visual.
+
+Remove call-to-action buttons.
+
+UK description should include:
+
+"We also assist with research-based programmes that allow international students to bring dependants."
+
+---
+
+7. MOBILE UX IMPROVEMENT
+
+Reduce vertical scroll on the homepage without damaging design quality.
+
+Do this by:
+
+• reducing spacing between sections
+• collapsing long sections
+• using accordion layouts
+• optimising mobile layout first
+
+The homepage should remain visually premium but significantly shorter on mobile devices.
+
+---
+
+Maintain full responsiveness and SEO integrity during implementation.

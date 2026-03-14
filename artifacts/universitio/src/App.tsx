@@ -25,6 +25,8 @@ import AdminPartnersPage from "@/pages/admin/admin-partners";
 import ReferralsPage from "@/pages/admin/referrals";
 import MessagesPage from "@/pages/admin/messages";
 import BlogImportPage from "@/pages/admin/blog-import";
+import MembersPage from "@/pages/admin/members";
+import ServiceRequestsPage from "@/pages/admin/service-requests";
 
 const queryClient = new QueryClient();
 
@@ -93,6 +95,12 @@ function Router() {
         </Route>
         <Route path="/admin/blog-import">
           {() => <AdminGuard><BlogImportPage /></AdminGuard>}
+        </Route>
+        <Route path="/admin/members">
+          {() => <AdminGuard><MembersPage /></AdminGuard>}
+        </Route>
+        <Route path="/admin/service-requests/:id?">
+          {() => <AdminGuard><ServiceRequestsPage /></AdminGuard>}
         </Route>
         <Route path="/admin/:rest*">
           {() => <AdminGuard><Redirect to="/admin" /></AdminGuard>}

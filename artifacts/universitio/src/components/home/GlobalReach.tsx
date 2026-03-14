@@ -5,9 +5,9 @@ export function GlobalReach() {
   return (
     <>
       {/* Why Choose Us */}
-      <section id="why-us" className="py-24 bg-primary text-primary-foreground">
+      <section id="why-us" className="py-12 md:py-20 bg-primary text-primary-foreground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Students Choose Universitio</h2>
             <p className="text-lg text-primary-foreground/80">
               We stand out by providing genuine, expert, and deeply personalised support.
@@ -35,9 +35,9 @@ export function GlobalReach() {
       </section>
 
       {/* Countries Section — Flag Grid */}
-      <section id="countries" className="py-24 bg-muted/30">
+      <section id="countries" className="py-12 md:py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Supporting Students from Around the World</h2>
             <p className="text-lg text-muted-foreground">
               Wherever you're from, we're here to help you take the next step.

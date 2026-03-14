@@ -6,7 +6,7 @@ export function Partnerships() {
   return (
     <>
       {/* Agent / Partner Section */}
-      <section id="agents" className="py-24 bg-white relative overflow-hidden">
+      <section id="agents" className="py-12 md:py-20 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
@@ -66,7 +66,7 @@ export function Partnerships() {
       </section>
 
       {/* Student Referral Section */}
-      <section id="earn" className="py-24 bg-gradient-to-br from-primary to-slate-900 text-white">
+      <section id="earn" className="py-12 md:py-20 bg-gradient-to-br from-primary to-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>

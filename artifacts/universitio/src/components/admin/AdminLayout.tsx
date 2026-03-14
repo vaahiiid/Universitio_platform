@@ -2,7 +2,8 @@ import { Link, useLocation } from "wouter";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import {
   LayoutDashboard, FileText, ClipboardCheck, Handshake, Users,
-  Upload, LogOut, Menu, X, ChevronRight, MessageSquare
+  Upload, LogOut, Menu, X, ChevronRight, MessageSquare, ClipboardList,
+  UserRound
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "@/lib/api";
@@ -13,17 +14,20 @@ interface UnreadCounts {
   partners: number;
   referrals: number;
   messages: number;
+  serviceRequests: number;
   total: number;
 }
 
 const NAV_ITEMS = [
-  { label: "Dashboard", path: "/admin", icon: LayoutDashboard, unreadKey: null },
-  { label: "Consultations", path: "/admin/consultations", icon: FileText, unreadKey: "consultations" as const },
-  { label: "Assessments", path: "/admin/assessments", icon: ClipboardCheck, unreadKey: "assessments" as const },
-  { label: "Partners", path: "/admin/partners", icon: Handshake, unreadKey: "partners" as const },
-  { label: "Referrals", path: "/admin/referrals", icon: Users, unreadKey: "referrals" as const },
-  { label: "Contact Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const },
-  { label: "Blog Import", path: "/admin/blog-import", icon: Upload, unreadKey: null },
+  { label: "Dashboard", path: "/admin", icon: LayoutDashboard, unreadKey: null, section: null },
+  { label: "Members", path: "/admin/members", icon: UserRound, unreadKey: null, section: null },
+  { label: "Service Requests", path: "/admin/service-requests", icon: ClipboardList, unreadKey: "serviceRequests" as const, section: "Requests" },
+  { label: "Consultations", path: "/admin/consultations", icon: FileText, unreadKey: "consultations" as const, section: "Requests" },
+  { label: "Assessments", path: "/admin/assessments", icon: ClipboardCheck, unreadKey: "assessments" as const, section: "Requests" },
+  { label: "Partners", path: "/admin/partners", icon: Handshake, unreadKey: "partners" as const, section: "Requests" },
+  { label: "Referrals", path: "/admin/referrals", icon: Users, unreadKey: "referrals" as const, section: "Requests" },
+  { label: "Contact Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const, section: "Requests" },
+  { label: "Blog Import", path: "/admin/blog-import", icon: Upload, unreadKey: null, section: null },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -61,30 +65,38 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <p className="text-xs text-white/50 mt-0.5">Admin Panel</p>
       </div>
 
-      <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map((item) => {
+      <nav className="flex-1 py-4 px-3 overflow-y-auto">
+        {NAV_ITEMS.map((item, idx) => {
           const active = isActive(item.path);
-          const badge = item.unreadKey && unread ? unread[item.unreadKey] : 0;
+          const badge = item.unreadKey && unread ? (unread[item.unreadKey] ?? 0) : 0;
+          const prevSection = idx > 0 ? NAV_ITEMS[idx - 1].section : null;
+          const showSectionHeader = item.section && item.section !== prevSection;
           return (
-            <Link
-              key={item.path}
-              href={item.path}
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                active
-                  ? "bg-white/15 text-white"
-                  : "text-white/60 hover:bg-white/8 hover:text-white/90"
-              }`}
-            >
-              <item.icon className="w-4.5 h-4.5 shrink-0" />
-              {item.label}
-              {badge > 0 && (
-                <span className="ml-auto bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                  {badge}
-                </span>
+            <div key={item.path}>
+              {showSectionHeader && (
+                <p className="text-xs font-semibold text-white/30 uppercase tracking-wider px-3 mt-4 mb-1">
+                  {item.section}
+                </p>
               )}
-              {active && !badge && <ChevronRight className="w-3.5 h-3.5 ml-auto" />}
-            </Link>
+              <Link
+                href={item.path}
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all mb-0.5 ${
+                  active
+                    ? "bg-white/15 text-white"
+                    : "text-white/60 hover:bg-white/8 hover:text-white/90"
+                }`}
+              >
+                <item.icon className="w-4 h-4 shrink-0" />
+                {item.label}
+                {badge > 0 && (
+                  <span className="ml-auto bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                    {badge}
+                  </span>
+                )}
+                {active && !badge && <ChevronRight className="w-3.5 h-3.5 ml-auto" />}
+              </Link>
+            </div>
           );
         })}
       </nav>

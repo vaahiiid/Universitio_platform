@@ -75,7 +75,7 @@ export function SocialProof() {
   return (
     <>
       {/* Testimonials */}
-      <section id="testimonials" className="py-24 bg-gradient-to-b from-muted/30 to-white">
+      <section id="testimonials" className="py-12 md:py-20 bg-gradient-to-b from-muted/30 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div className="max-w-2xl">
@@ -141,7 +141,7 @@ export function SocialProof() {
       {/* Blog Section */}
       <section id="blog" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Latest Insights & Guidance</h2>
             <p className="text-lg text-muted-foreground">
               Expert advice on studying abroad, UK university applications, and student life.
@@ -185,7 +185,7 @@ export function SocialProof() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-slate-50 border-t border-border">
+      <section id="contact" className="py-12 md:py-20 bg-slate-50 border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
 
