@@ -116,38 +116,38 @@ export const siteData = {
     {
       id: "icef",
       logoKey: "icef",
-      name: "ICEF Accredited Education Agent",
-      statement: "Recognised by ICEF for meeting global standards in international student recruitment and ethical education practices."
+      name: "Accredited by ICEF",
+      statement: "A global quality benchmark in international student recruitment and ethical education practices."
     },
     {
       id: "british-council",
       logoKey: "british-council",
-      name: "British Council Certified Education Agent",
-      statement: "The founder of Universitio holds British Council Agent Certification, recognising professional standards in international student advising."
+      name: "British Council Certified Agent",
+      statement: "Committed to recognised UK education standards and best practices in international student advising."
     },
     {
       id: "ico",
       logoKey: "ico",
-      name: "ICO Registered",
-      statement: "Fully compliant with UK GDPR and data protection regulations"
+      name: "Registered with the ICO",
+      statement: "Fully compliant with UK GDPR and data protection regulations."
     },
     {
       id: "birmingham-chambers",
       logoKey: "birmingham-chambers",
-      name: "Proud Member of the Greater Birmingham Chambers of Commerce",
-      statement: "Part of the UK's trusted regional business network supporting ethical international education partnerships."
+      name: "Member of Birmingham Chambers of Commerce",
+      statement: "Part of the UK's trusted business network supporting ethical international education partnerships."
     },
     {
       id: "trustpilot",
       logoKey: "trustpilot",
-      name: "Trustpilot",
-      statement: "Rated 4.6 — based on verified student reviews"
+      name: "Rated 4.6 on Trustpilot",
+      statement: "Based on verified student reviews — a reflection of our commitment to quality and care."
     },
     {
       id: "companies-house",
       logoKey: "companies-house",
       name: "UK-Registered Company",
-      statement: "Company No. 15168670 — Registered in England and Wales"
+      statement: "Company No. 15168670 — Registered in England and Wales."
     }
   ],
 

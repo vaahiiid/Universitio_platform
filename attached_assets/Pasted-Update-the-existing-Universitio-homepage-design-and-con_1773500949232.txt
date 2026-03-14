@@ -1,0 +1,186 @@
+Update the existing Universitio homepage design and content with the following important brand, content, and structure changes.
+
+Brand and style updates:
+- The main brand colour must be: #42147d
+- Use this as the primary accent colour across buttons, highlights, links, icons, and key UI elements
+- Keep the overall design modern, minimal, premium, readable, and conversion-focused
+- Do not make the page crowded
+- Maintain strong spacing, elegant typography, rounded cards, subtle motion, and polished layout
+
+Logo usage:
+- I have attached the Universitio logo
+- Please use the attached logo in the website header/navbar and footer
+- Make sure the logo is displayed professionally and clearly, with good sizing and spacing
+- Use the attached accreditation logos as well in the trust/accreditation section
+
+Very important content correction:
+- Do NOT mention visa services
+- Do NOT say we provide visa services
+- We do NOT offer visa services
+- Our services are focused on international student admissions and study applications only
+- Make this clear in the copy
+- We provide full support for educational admissions and study applications for destinations including:
+  - United Kingdom
+  - Canada
+  - United States
+  - Europe
+
+Core service positioning:
+Universitio is a UK-registered international education consultancy that supports students with study applications to schools, colleges, and universities abroad, especially in the UK, Canada, the USA, and Europe.
+
+We help students with:
+- choosing the right country
+- choosing the right course
+- choosing the right institution
+- preparing strong applications
+- admissions guidance
+- documentation and application support
+- interview and preparation guidance where relevant
+
+Trust / accreditation section update:
+Rename the section “Trusted, Accredited & Recognised” into something more creative, premium, and trust-building.
+Examples of the tone expected:
+- “Trusted by Students. Backed by Recognised Standards.”
+- “Confidence Built on Recognition, Standards, and Results.”
+- “Recognised Credentials. Real Trust. Global Student Support.”
+Choose the best wording and make it feel premium and confidence-building.
+
+Accreditation logos:
+- I have attached the accreditation logos
+- Use the attached logos in this section
+- Each logo must be paired with the correct explanatory sentence
+- Present them in an elegant and readable way, not just as floating logos
+- Each accreditation/membership item should visually connect the logo with its short credibility statement
+
+Use these trust statements with the attached logos:
+- Accredited by ICEF — A global quality benchmark in international student recruitment
+- Certification award as the agent of British Council — Committed to recognised UK education standards and best practices
+- Registered with the ICO — Fully compliant with UK GDPR and data protection regulations
+- Member of the Birmingham Chambers of Commerce — Part of the UK’s trusted business network
+- Rated 4.6 on Trustpilot — Based on verified student reviews
+- UK-Registered Company (Company No. 15168670)
+
+Experience update:
+- Replace “10+ Years of Expertise” with “5+ Years of Experience”
+- Keep stats editable from a central data file if possible
+
+Student referral / earn as a student section update:
+This section must clearly explain that:
+- students can refer friends or potential applicants
+- the referred student must successfully enrol at the university
+- after enrolment is completed, a commission/referral reward is paid
+Make this section feel trustworthy, clear, and professional
+Avoid any wording that sounds spammy or misleading
+
+Contact section update:
+The Contact Us section must include:
+- a clean, modern contact form
+- email details
+- WhatsApp contact
+- Telegram contact
+- social links
+- office address
+
+Use this exact address:
+44 Birmingham Road, Birmingham, England, B72 1QQ
+
+The contact form should look polished and modern, and include fields such as:
+- Full Name
+- Email Address
+- Phone Number
+- Subject
+- Message
+
+Footer update:
+Add the following ICEF accreditation badge code in the footer exactly as provided below, and make sure it is placed properly in a professional way:
+
+<span id='iasBadge' data-account-id='6539'></span><script async defer crossorigin="anonymous" src="https://www-cdn.icef.com/scripts/iasbadgeid.js"></script>
+
+The footer should remain elegant and well-structured, and include:
+- Universitio short company description
+- quick links
+- contact details
+- social links
+- company number
+- blog link
+- assessment form link
+- free consultation link/button
+- the ICEF badge code block integrated properly
+
+New section to add:
+Add a specially designed section that clearly shows the destinations/countries/regions we work with.
+
+This section must highlight:
+- United Kingdom
+- United States
+- Canada
+- Europe
+
+Design direction:
+- This section should have a distinct visual treatment so it stands out
+- It should feel premium and modern
+- It can use cards, flags, region blocks, or elegant icons
+- Each destination should have a short description that explains we provide full admissions support for studying there
+- Make it visually engaging but not cluttered
+
+Example service descriptions:
+- United Kingdom: Full guidance for applications to UK schools, colleges, and universities
+- United States: Support for students applying to leading institutions across the USA
+- Canada: Personalised admissions support for colleges and universities in Canada
+- Europe: Guidance for study opportunities across selected European destinations
+
+Homepage content quality rules:
+- Use polished British English
+- Keep it trustworthy, clear, supportive, and premium
+- Do not mention visa services
+- Focus on admissions, study applications, and international education support
+- Keep the tone professional and student-friendly
+- Avoid filler text
+- Avoid overclaiming
+- Keep the page conversion-focused toward Free Consultation
+
+Main CTA:
+- Free Consultation remains the main CTA across the homepage
+
+Reminder of homepage structure:
+Keep the homepage one-page with sections such as:
+- Hero
+- Trust/accreditation
+- Stats
+- About Us
+- Services
+- Special pathways
+- University logo marquee
+- Why students choose us
+- Countries we support
+- Study destinations section (UK, USA, Canada, Europe)
+- Agents
+- Earn as a Student
+- Testimonials
+- Latest Blog Posts
+- Contact Us with form
+- Footer
+
+SEO and technical requirements:
+- Keep the homepage highly SEO-friendly
+- Maintain one H1 only
+- Proper H2/H3 hierarchy
+- Semantic HTML
+- Strong internal linking structure
+- Fast loading
+- Clean responsive layout
+- Indexable content
+- Good metadata placeholders
+- Descriptive alt text for attached images/logos
+- Build clean reusable components
+- Keep all editable content in structured data/config files if possible
+
+Important implementation notes:
+- Use the attached Universitio logo in header and footer
+- Use attached accreditation logos in the trust section
+- Match each accreditation logo with its explanatory sentence
+- Add the ICEF badge script exactly in the footer
+- Include the contact form and address
+- Remove any suggestion of visa services
+- Emphasise admissions support for the UK, Canada, USA, and Europe
+- Keep the site minimal, modern, elegant, readable, and trustworthy

@@ -378,8 +378,8 @@ const SERVICES: ServiceDef[] = [
     id: "interview",
     icon: Mic2,
     title: "Interview Preparation",
-    short: "Mock sessions for university credibility interviews and visa interviews with structured feedback.",
-    description: "Mock interview preparation for university credibility interviews and visa interviews. Students practise with realistic questions and structured guidance.",
+    short: "Mock sessions for university credibility and embassy interviews with structured, realistic feedback.",
+    description: "Mock interview preparation for university credibility interviews and embassy interviews. Students practise with realistic questions and structured guidance.",
     FormContent: InterviewForm,
   },
   {
@@ -464,7 +464,7 @@ export function AboutAndServices() {
             {/* Right — trust credential cards with real logos */}
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-5">
-                Recognised Credentials &amp; Trusted Accreditations
+                Trusted by Students. Backed by Recognised Standards.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {siteData.accreditations
