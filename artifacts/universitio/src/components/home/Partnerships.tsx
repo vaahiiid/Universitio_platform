@@ -11,8 +11,8 @@ export function Partnerships() {
           <div className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[360px] md:min-h-[420px] flex items-end">
             {/* Background image */}
             <img
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&q=80&fit=crop"
-              alt="Education professionals collaborating"
+              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&q=80&fit=crop"
+              alt="Education professionals collaborating in a meeting"
               className="absolute inset-0 w-full h-full object-cover"
             />
             {/* Gradient overlay */}

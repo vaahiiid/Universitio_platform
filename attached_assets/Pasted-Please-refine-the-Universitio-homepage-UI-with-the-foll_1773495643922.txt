@@ -1,0 +1,112 @@
+Please refine the Universitio homepage UI with the following exact changes.
+
+Important:
+Do not simplify the site too much.
+Keep the design modern, premium, visually rich, and mobile-friendly.
+The goal is to improve structure, clarity, and visual quality without losing content or trust signals.
+
+==================================================
+1. MERGE THESE 3 SECTIONS INTO ONE STRONG “ABOUT” SECTION
+==================================================
+
+Merge these three sections together into one unified, premium, complete, and visually engaging section:
+
+- Recognised Credentials. Real Trust. Global Student Support.
+- About Universitio / Your Global Gateway to Education Abroad
+- Why Universitio
+
+This new combined section should become the main “About Universitio” section.
+
+Requirements:
+- It must feel complete, trustworthy, and impressive
+- It should include:
+  - the brand story / who we are
+  - why students choose Universitio
+  - the trust/recognition credentials
+- It should not feel like three separate stacked sections anymore
+- It should be designed as one strong, polished section with better hierarchy and less vertical scrolling
+
+Suggested structure:
+Left / top:
+- About Universitio
+- Your Global Gateway to Education Abroad
+- strong introductory text
+
+Right / below / alongside:
+- trust credentials as premium icon cards or trust badges
+- key “Why Universitio” reasons as compact feature points
+
+This section must include all the important trust and brand points, but in a more elegant, unified way.
+
+==================================================
+2. SUPPORTING STUDENTS FROM AROUND THE WORLD
+==================================================
+
+The countries in this section must return to the previous full list.
+No country that was previously shown should be removed.
+
+Important:
+- Restore all previously listed countries
+- China and Hong Kong should still appear first / have visual priority
+- The section should have a more modern, attractive, and engaging design
+- The previous reduction/removal of countries was incorrect
+
+Design goal:
+- stronger UI
+- more visually engaging
+- more modern and international
+- possibly with subtle animation, flag cues, card effects, or hover interactions
+- still compact enough for mobile
+
+Do NOT remove countries.
+Do NOT simplify this section too much.
+
+==================================================
+3. WHERE WE HELP YOU STUDY
+==================================================
+
+Fix the United States destination image.
+
+Problem:
+The current image shown for the USA is incorrect and appears to show Paris.
+
+Requirements:
+- Replace it with a proper USA-related image
+- It should clearly represent the United States
+- Use a professional, high-quality, visually relevant image
+- Keep the style consistent with the other destination cards
+
+==================================================
+4. PARTNER WITH UNIVERSITIO
+==================================================
+
+The layout/design of this section is good, but the background image is not suitable.
+
+Please replace the current background image with a more professional and context-appropriate image for that box.
+
+The new image should feel relevant to:
+- partnerships
+- education professionals
+- collaboration
+- international recruitment
+- business relationships
+
+It should look polished and premium inside that section and fit the box composition properly.
+
+==================================================
+5. GENERAL DESIGN EXPECTATIONS
+==================================================
+
+While making these changes:
+- preserve the current premium design direction
+- reduce unnecessary vertical scroll where possible
+- improve section cohesion
+- keep mobile UX strong
+- do not over-simplify the visuals
+- keep the site modern, credible, and attractive
+
+Final goals:
+- the About section should feel richer, more complete, and more impressive
+- the global student countries section should restore all countries and feel more dynamic
+- the USA card should use the correct image
+- the Partner With Universitio image should feel professional and relevant

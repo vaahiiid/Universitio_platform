@@ -2,11 +2,17 @@ import { useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowRight, CheckCircle2, GraduationCap, BookOpen, Mic2, FileText,
-  Home, PlaneTakeoff, BadgeCheck, ShieldCheck, Globe, Users2,
+  Home, PlaneTakeoff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { apiFetch } from "@/lib/api";
+import { siteData } from "@/data/siteData";
+import icefBadge from "@assets/001bG000006Y3MkQAK_badge_1773399029266.webp";
+import britishCouncilCert from "@assets/Certification_1773399011626.webp";
+import icoLogo from "@assets/Ico_1773399011627.webp";
+import birminghamChambers from "@assets/greater-birmingham_1773399011627.webp";
+import companiesHouse from "@assets/companies-hous_1773399011626.webp";
 
 /* ---------- Shared helpers ---------- */
 
@@ -402,30 +408,15 @@ const SERVICES: ServiceDef[] = [
   },
 ];
 
-/* ---------- Trust credentials for the About section ---------- */
+/* ---------- Credential logo helper ---------- */
 
-const TRUST_POINTS = [
-  {
-    icon: BadgeCheck,
-    label: "ICEF Accredited",
-    detail: "Internationally recognised accreditation for education agencies — your assurance of quality.",
-  },
-  {
-    icon: ShieldCheck,
-    label: "British Council Certified",
-    detail: "Approved by the British Council, the gold standard for UK education professionals.",
-  },
-  {
-    icon: Users2,
-    label: "Birmingham Chambers Member",
-    detail: "Proud member of the Greater Birmingham Chambers of Commerce.",
-  },
-  {
-    icon: Globe,
-    label: "Global Student Support",
-    detail: "Serving students from Hong Kong, China, Nigeria, Pakistan, India, the Middle East, and beyond.",
-  },
-];
+const CRED_LOGOS: Record<string, { img: string; alt: string }> = {
+  icef: { img: icefBadge, alt: "ICEF Accredited" },
+  "british-council": { img: britishCouncilCert, alt: "British Council Certified" },
+  ico: { img: icoLogo, alt: "ICO Registered" },
+  "birmingham-chambers": { img: birminghamChambers, alt: "Birmingham Chambers" },
+  "companies-house": { img: companiesHouse, alt: "UK-Registered Company" },
+};
 
 /* ---------- Main component ---------- */
 
@@ -435,12 +426,13 @@ export function AboutAndServices() {
 
   return (
     <>
-      {/* ── About + Why Choose Us (merged two-column trust section) ── */}
-      <section id="about" className="py-12 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+      {/* ── Unified About Section: story + credentials + why us ── */}
+      <section id="about" className="py-14 md:py-22 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 md:space-y-20">
 
-            {/* Left — About text */}
+          {/* Row 1: brand story (left) + credential logos (right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
+            {/* Left — brand story */}
             <div>
               <div className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-semibold mb-5">
                 About Universitio
@@ -448,38 +440,89 @@ export function AboutAndServices() {
               <h2 className="text-3xl md:text-4xl font-bold mb-5 text-foreground leading-tight">
                 Your Global Gateway to Education Abroad
               </h2>
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
-                At Universitio, we help students from all around the world apply to trusted schools, colleges, and universities abroad. Whether you're aiming for the world's top-ranked institutions or exploring the right fit for your ambitions, we make the application process simple, personal, and stress-free.
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-4">
+                At Universitio, we help students from all around the world apply to trusted schools, colleges, and universities abroad. Whether you're aiming for the world's top-ranked institutions or finding the perfect fit for your ambitions, we make the application process simple, personal, and stress-free.
               </p>
-              <p className="text-sm text-muted-foreground mb-8">
-                UK-registered education consultancy · Company No. 15168670 · ICO Registered
+              <p className="text-base text-muted-foreground leading-relaxed mb-8">
+                We're a UK-registered education consultancy, proudly approved by the British Council, accredited by ICEF, and a member of the Greater Birmingham Chambers of Commerce. Your privacy matters — we're also registered with the Information Commissioner's Office (ICO).
               </p>
-              <Link href="/free-consultation">
-                <Button className="rounded-full bg-primary hover:bg-primary/90 px-8 shadow-md hover:shadow-lg transition-all">
-                  Book Your Free Consultation
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/free-consultation">
+                  <Button className="rounded-full bg-primary hover:bg-primary/90 px-8 shadow-md hover:shadow-lg transition-all">
+                    Book a Free Consultation
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href="/free-assessment">
+                  <Button variant="outline" className="rounded-full px-8 border-primary/30 hover:border-primary/60 transition-all">
+                    Take Our Free Assessment
+                  </Button>
+                </Link>
+              </div>
             </div>
 
-            {/* Right — Trust credential points */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {TRUST_POINTS.map((tp) => (
+            {/* Right — trust credential cards with real logos */}
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-5">
+                Recognised Credentials &amp; Trusted Accreditations
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {siteData.accreditations
+                  .filter(acc => acc.logoKey !== "trustpilot")
+                  .map((acc) => {
+                    const logo = CRED_LOGOS[acc.logoKey];
+                    return (
+                      <div
+                        key={acc.id}
+                        className="flex items-center gap-4 bg-slate-50 rounded-2xl p-4 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all"
+                      >
+                        {logo && (
+                          <img src={logo.img} alt={logo.alt} className="h-10 w-auto object-contain shrink-0" />
+                        )}
+                        <div>
+                          <p className="font-semibold text-foreground text-xs leading-snug">{acc.name}</p>
+                          <p className="text-[11px] text-muted-foreground leading-snug mt-0.5 line-clamp-2">{acc.statement}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                {/* Trustpilot stars */}
+                <div className="flex items-center gap-4 bg-slate-50 rounded-2xl p-4 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all sm:col-span-2">
+                  <div className="shrink-0">
+                    <div className="flex text-emerald-500 mb-0.5">{"★★★★★"}</div>
+                    <span className="font-bold text-emerald-600 text-sm">4.6 / 5 on Trustpilot</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-snug">Rated 4.6 out of 5 based on verified student reviews.</p>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-4">UK Company No. 15168670</p>
+            </div>
+          </div>
+
+          {/* Row 2: Why Students Choose Universitio */}
+          <div>
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Why Students Choose Universitio</h3>
+              <p className="text-muted-foreground text-base">We stand out by providing genuine, expert, and deeply personalised support.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {siteData.whyChooseUs.map((item, i) => (
                 <div
-                  key={tp.label}
-                  className="flex gap-4 items-start bg-muted/40 rounded-2xl p-5 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all"
+                  key={i}
+                  className="flex gap-4 items-start bg-slate-50 rounded-2xl p-5 border border-border/60 hover:border-primary/20 hover:shadow-md transition-all"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <tp.icon className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <item.icon className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground text-sm mb-0.5">{tp.label}</p>
-                    <p className="text-xs text-muted-foreground leading-snug">{tp.detail}</p>
+                    <p className="font-bold text-foreground text-sm mb-1">{item.title}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
         </div>
       </section>
 
