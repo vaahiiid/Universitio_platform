@@ -8,6 +8,7 @@ import {
   blogImportRecords,
   contactMessages,
   serviceRequests,
+  members,
 } from "@workspace/db";
 import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
@@ -655,33 +656,49 @@ router.delete("/admin/service-requests/:id", async (req: Request, res: Response)
 });
 
 /* =========================================================
-   MEMBERS — unified view across all form types
+   MEMBERS — unified view across all form types + imported list
    ========================================================= */
+
+type UnifiedMember = {
+  id: number;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  source: string;
+  createdAt: Date;
+  isDeletable: boolean;
+};
 
 router.get("/admin/members", async (req: Request, res: Response) => {
   try {
-    const search = (req.query.search as string | undefined) || "";
+    const search = ((req.query.search as string) || "").toLowerCase();
 
-    const [cons, asss, parts, refs, msgs, srvs] = await Promise.all([
-      db.select({ id: consultations.id, fullName: consultations.fullName, email: consultations.email, phone: consultations.mobile, nationality: consultations.nationality, source: sql<string>`'Consultation'`, service: sql<string>`'Free Consultation'`, createdAt: consultations.createdAt }).from(consultations).orderBy(desc(consultations.createdAt)),
-      db.select({ id: assessments.id, fullName: assessments.fullName, email: assessments.email, phone: assessments.mobile, nationality: assessments.nationality, source: sql<string>`'Assessment'`, service: sql<string>`'Free Assessment'`, createdAt: assessments.createdAt }).from(assessments).orderBy(desc(assessments.createdAt)),
-      db.select({ id: partnerRequests.id, fullName: partnerRequests.contactName, email: partnerRequests.email, phone: partnerRequests.phone, nationality: sql<string>`NULL`, source: sql<string>`'Partner'`, service: sql<string>`'Partner Application'`, createdAt: partnerRequests.createdAt }).from(partnerRequests).orderBy(desc(partnerRequests.createdAt)),
-      db.select({ id: studentReferrals.id, fullName: studentReferrals.studentName, email: studentReferrals.studentEmail, phone: studentReferrals.studentPhone, nationality: sql<string>`NULL`, source: sql<string>`'Referral'`, service: sql<string>`'Student Referral'`, createdAt: studentReferrals.createdAt }).from(studentReferrals).orderBy(desc(studentReferrals.createdAt)),
-      db.select({ id: contactMessages.id, fullName: contactMessages.name, email: contactMessages.email, phone: contactMessages.phone, nationality: sql<string>`NULL`, source: sql<string>`'Contact'`, service: sql<string>`'Contact Message'`, createdAt: contactMessages.createdAt }).from(contactMessages).orderBy(desc(contactMessages.createdAt)),
-      db.select({ id: serviceRequests.id, fullName: serviceRequests.fullName, email: serviceRequests.email, phone: serviceRequests.phone, nationality: sql<string>`NULL`, source: sql<string>`'Service Request'`, service: serviceRequests.serviceType, createdAt: serviceRequests.createdAt }).from(serviceRequests).orderBy(desc(serviceRequests.createdAt)),
+    const [cons, asss, parts, refs, msgs, srvs, imported] = await Promise.all([
+      db.select({ id: consultations.id, fullName: consultations.fullName, email: consultations.email, phone: consultations.mobile, createdAt: consultations.createdAt }).from(consultations),
+      db.select({ id: assessments.id, fullName: assessments.fullName, email: assessments.email, phone: assessments.mobile, createdAt: assessments.createdAt }).from(assessments),
+      db.select({ id: partnerRequests.id, fullName: partnerRequests.fullName, email: partnerRequests.email, phone: partnerRequests.phone, createdAt: partnerRequests.createdAt }).from(partnerRequests),
+      db.select({ id: studentReferrals.id, fullName: studentReferrals.fullName, email: studentReferrals.email, createdAt: studentReferrals.createdAt }).from(studentReferrals),
+      db.select({ id: contactMessages.id, fullName: contactMessages.fullName, email: contactMessages.email, phone: contactMessages.phone, createdAt: contactMessages.createdAt }).from(contactMessages),
+      db.select({ id: serviceRequests.id, fullName: serviceRequests.fullName, email: serviceRequests.email, phone: serviceRequests.phone, createdAt: serviceRequests.createdAt }).from(serviceRequests),
+      db.select({ id: members.id, fullName: members.fullName, email: members.email, phone: members.phone, source: members.source, createdAt: members.createdAt }).from(members),
     ]);
 
-    type MemberRow = { id: number; fullName: string; email: string; phone: string | null; nationality: string | null; source: string; service: string; createdAt: Date };
-    const all: MemberRow[] = [
-      ...cons, ...asss, ...parts, ...refs, ...msgs, ...srvs,
-    ] as MemberRow[];
+    const all: UnifiedMember[] = [
+      ...cons.map(r => ({ ...r, source: "Consultation", isDeletable: false })),
+      ...asss.map(r => ({ ...r, source: "Assessment", isDeletable: false })),
+      ...parts.map(r => ({ ...r, source: "Partner", isDeletable: false })),
+      ...refs.map(r => ({ ...r, phone: null as string | null, source: "Referral", isDeletable: false })),
+      ...msgs.map(r => ({ ...r, source: "Contact", isDeletable: false })),
+      ...srvs.map(r => ({ ...r, source: "Service Request", isDeletable: false })),
+      ...imported.map(r => ({ ...r, isDeletable: true })),
+    ];
 
     all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     const filtered = search
       ? all.filter(m =>
-          (m.fullName ?? "").toLowerCase().includes(search.toLowerCase()) ||
-          (m.email ?? "").toLowerCase().includes(search.toLowerCase()),
+          (m.fullName ?? "").toLowerCase().includes(search) ||
+          (m.email ?? "").toLowerCase().includes(search),
         )
       : all;
 
@@ -689,6 +706,54 @@ router.get("/admin/members", async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Members list error:", err);
     res.status(500).json({ error: "Failed to list members" });
+  }
+});
+
+router.delete("/admin/members/:id", async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
+  if (!id) { res.status(400).json({ error: "Invalid ID" }); return; }
+  try {
+    await db.delete(members).where(eq(members.id, id));
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Member delete error:", err);
+    res.status(500).json({ error: "Failed to delete member" });
+  }
+});
+
+router.post("/admin/members/import", async (req: Request, res: Response) => {
+  try {
+    const rows = req.body as Array<{ fullName: string; email: string; phone?: string; source?: string; createdAt?: string }>;
+    if (!Array.isArray(rows) || rows.length === 0) {
+      res.status(400).json({ error: "Expected a non-empty array of member objects" });
+      return;
+    }
+
+    const existing = await db.select({ email: members.email }).from(members);
+    const existingEmails = new Set(existing.map(r => r.email.toLowerCase()));
+
+    const toInsert = rows
+      .filter(r => r.email && r.fullName)
+      .filter(r => !existingEmails.has(r.email.toLowerCase()))
+      .map(r => ({
+        fullName: r.fullName.trim(),
+        email: r.email.trim().toLowerCase(),
+        phone: r.phone?.trim() || null,
+        source: (r.source || "imported").trim(),
+        createdAt: r.createdAt ? new Date(r.createdAt) : new Date(),
+        updatedAt: new Date(),
+      }));
+
+    if (toInsert.length === 0) {
+      res.json({ inserted: 0, skipped: rows.length, message: "All records already exist or are invalid" });
+      return;
+    }
+
+    await db.insert(members).values(toInsert);
+    res.json({ inserted: toInsert.length, skipped: rows.length - toInsert.length });
+  } catch (err) {
+    console.error("Member import error:", err);
+    res.status(500).json({ error: "Failed to import members" });
   }
 });
 

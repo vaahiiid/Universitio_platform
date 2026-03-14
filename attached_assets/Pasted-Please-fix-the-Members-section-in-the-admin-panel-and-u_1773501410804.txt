@@ -1,0 +1,109 @@
+Please fix the Members section in the admin panel and update its logic.
+
+Important:
+The Members section should show ALL members in one unified list.
+I do NOT want members separated by form type or source in the Members page itself.
+
+==================================================
+1. FIX THE CURRENT MEMBERS ERROR
+==================================================
+
+Right now the Members page shows:
+
+"Failed to load members. Please try again."
+
+Please fix this issue properly.
+
+Tasks:
+- identify why the Members API or admin page is failing
+- fix the backend or frontend data loading issue
+- make sure the Members page loads successfully
+- show an empty state only if there are truly no members
+- do not show an error unless there is a real backend failure
+
+==================================================
+2. MEMBERS PAGE SHOULD BE ONE UNIFIED LIST
+==================================================
+
+The Members page must show all members together in one list.
+
+Do NOT separate them by:
+- consultation
+- assessment
+- contact
+- services
+- referral
+- partner
+
+The source/type of submission can still exist in the data, but the Members page itself should display one clean combined list of all people.
+
+The page should show:
+- total member count
+- full name
+- email
+- phone (if available)
+- source / member origin
+- created date
+
+Optional:
+- country if available
+- preferred contact method if available
+
+Important:
+The exact reason/service/form that made them a member does NOT need to be shown prominently on the Members main page, because that detail is already visible in the other admin sections.
+
+==================================================
+3. IMPORT THE ATTACHED LIST INTO MEMBERS
+==================================================
+
+I want the attached list/file to be imported into the Members database/list.
+
+Tasks:
+- read the attached file
+- map its rows into the Members structure
+- add them to the unified Members list
+- avoid duplicate creation if the same member already exists (prefer matching by email, and if no email then use full name + phone where possible)
+- keep the import clean and consistent
+
+If some fields in the attached file do not match perfectly:
+- map them to the closest suitable member fields
+- keep any extra info in notes or metadata if needed
+
+==================================================
+4. MEMBERS PAGE FEATURES
+==================================================
+
+The Members page should support:
+- total count at the top
+- search
+- delete
+- export
+- import
+
+But the list itself should remain unified and simple.
+
+==================================================
+5. KEEP MEMBER SOURCE IN THE DATA
+==================================================
+
+Even though the Members page is unified, still keep the internal source of each member in the database, such as:
+- consultation
+- assessment
+- contact
+- service request
+- referral
+- partner
+- imported list
+
+This is useful internally, but it should not fragment the Members page.
+
+==================================================
+6. FINAL GOAL
+==================================================
+
+After this update:
+- the Members page loads correctly
+- the attached list is imported into Members
+- all members appear in one unified list
+- total member count is visible
+- no separation by category is shown in the Members page
