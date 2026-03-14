@@ -5,70 +5,66 @@ import { Button } from "@/components/ui/button";
 export function Partnerships() {
   return (
     <>
-      {/* Agent / Partner Section */}
-      <section id="agents" className="py-12 md:py-20 bg-white relative overflow-hidden">
+      {/* ── Agent / Partner Section — hero card with background image ── */}
+      <section id="agents" className="py-12 md:py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&fit=crop"
-                  alt="Education professionals collaborating"
-                  className="w-full h-auto object-cover"
-                />
-                <div className="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[360px] md:min-h-[420px] flex items-end">
+            {/* Background image */}
+            <img
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&q=80&fit=crop"
+              alt="Education professionals collaborating"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d40] via-[#1a0d40]/70 to-transparent" />
+
+            {/* Text overlay */}
+            <div className="relative z-10 w-full p-8 md:p-12">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-semibold mb-4 text-white/90">
+                  <Users className="w-4 h-4" />
+                  For Agents & Professionals
+                </div>
+                <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 leading-tight">
+                  Partner With Universitio
+                </h2>
+                <p className="text-white/80 mb-6 text-sm md:text-base max-w-xl leading-relaxed">
+                  Are you an education agent, school counsellor, or student mentor? Join our growing network and benefit from a transparent referral structure, dedicated support, and full access to our application resources.
+                </p>
+                <ul className="flex flex-wrap gap-x-6 gap-y-2 mb-7">
+                  {[
+                    "Competitive commission",
+                    "Dedicated partner support",
+                    "Application resources",
+                    "Co-branding materials",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-white/85 text-sm font-medium">
+                      <div className="w-4 h-4 rounded-full bg-secondary/30 flex items-center justify-center shrink-0">
+                        <Check className="w-2.5 h-2.5 text-secondary" />
+                      </div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/partners">
+                  <Button
+                    size="lg"
+                    className="rounded-full bg-white text-primary hover:bg-white/90 font-bold px-8 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all group"
+                  >
+                    Become a Partner
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
-            </div>
-
-            <div className="order-1 lg:order-2">
-              <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-3 py-1.5 rounded-full text-sm font-semibold mb-6">
-                <Users className="w-4 h-4" />
-                For Agents & Professionals
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Partner With Universitio
-              </h2>
-              <p className="text-xl text-muted-foreground mb-6">
-                Join our growing network of education agents, counsellors, and student introducers.
-              </p>
-              <p className="text-muted-foreground mb-8 leading-relaxed">
-                Are you an education agent, school counsellor, or student mentor? We welcome partnerships with trusted professionals who share our commitment to helping international students achieve their university ambitions. As a Universitio partner, you'll benefit from a fair, transparent referral structure and dedicated support.
-              </p>
-
-              <ul className="space-y-4 mb-10">
-                {[
-                  "Competitive, transparent commission structure",
-                  "Dedicated partner support team",
-                  "Access to our full application resources",
-                  "Professional partnership terms and co-branding materials",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-foreground font-medium">
-                    <div className="mt-1 bg-secondary/15 p-0.5 rounded-full text-secondary shrink-0">
-                      <Check className="w-4 h-4" />
-                    </div>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <Link href="/partners">
-                <Button
-                  size="lg"
-                  className="rounded-full bg-primary hover:bg-primary/90 px-8 h-14 text-base shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all group"
-                >
-                  Become a Partner
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Student Referral Section */}
+      {/* ── Student Referral Section ── */}
       <section id="earn" className="py-12 md:py-20 bg-gradient-to-br from-primary to-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-1.5 rounded-full text-sm font-semibold mb-6 text-blue-200">
                 <Gift className="w-4 h-4" />
@@ -77,38 +73,36 @@ export function Partnerships() {
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Earn a Reward by Referring a Student
               </h2>
-              <p className="text-xl text-white/80 mb-6 leading-relaxed">
+              <p className="text-lg text-white/80 mb-6 leading-relaxed">
                 Know someone planning to study abroad? Refer them — and receive a reward once they successfully enrol.
               </p>
-              <p className="text-white/65 mb-10 leading-relaxed">
-                This is a genuine, transparent programme. No gimmicks, no vague promises. Your referral reward is paid only after the student you referred has successfully enrolled at their university or college through our guidance. We believe in being upfront about how this works.
+              <p className="text-white/60 mb-8 leading-relaxed text-sm">
+                No gimmicks, no vague promises. Your reward is paid only after the referred student successfully enrols through our guidance.
               </p>
 
-              <div className="space-y-4 mb-10">
+              <div className="space-y-3 mb-8">
                 {[
-                  { icon: Share2, step: "01", text: "Refer a friend or contact who is considering studying abroad" },
+                  { icon: Share2, step: "01", text: "Refer a friend or contact considering studying abroad" },
                   { icon: Users, step: "02", text: "They apply with Universitio's expert guidance and support" },
                   { icon: Award, step: "03", text: "Once they successfully enrol, your reward is paid out" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-5 bg-white/5 px-6 py-4 rounded-2xl border border-white/10">
                     <div className="text-xs font-bold text-secondary/80 tracking-widest w-6 shrink-0">{item.step}</div>
-                    <p className="font-medium text-white/90 flex-1">{item.text}</p>
-                    <item.icon className="w-5 h-5 text-white/30 shrink-0" />
+                    <p className="font-medium text-white/90 flex-1 text-sm">{item.text}</p>
+                    <item.icon className="w-4 h-4 text-white/30 shrink-0" />
                   </div>
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/student-referral">
-                  <Button
-                    size="lg"
-                    className="rounded-full bg-secondary hover:bg-secondary/90 text-white px-8 h-14 text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all group"
-                  >
-                    Join the Referral Programme
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
+              <Link href="/student-referral">
+                <Button
+                  size="lg"
+                  className="rounded-full bg-secondary hover:bg-secondary/90 text-white px-8 h-12 text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all group"
+                >
+                  Join the Referral Programme
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <p className="text-xs text-white/35 mt-4">
                 Reward paid only after successful enrolment. Full terms provided on sign-up.
               </p>

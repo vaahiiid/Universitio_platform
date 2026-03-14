@@ -14,7 +14,7 @@ const destinations = [
     country: "United States",
     flag: "🇺🇸",
     colour: "from-[#1e3a5f] to-[#2d5f8a]",
-    image: "https://images.unsplash.com/photo-1485738422979-f5c462d49f04?w=800&q=80&fit=crop",
+    image: "https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=800&q=80&fit=crop",
     tagline: "Innovation Meets Ambition",
     description: "From Ivy League institutions to leading research universities, the US offers unmatched academic breadth and campus life. We support Common App, SAT/ACT prep guidance, and scholarship strategies.",
     highlights: ["Ivy League & top 100 unis", "Common App support", "Flexible major systems"],

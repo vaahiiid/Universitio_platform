@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight, CheckCircle2, ChevronDown, GraduationCap, BookOpen, Mic2, FileText, Home, PlaneTakeoff } from "lucide-react";
+import {
+  ArrowRight, CheckCircle2, GraduationCap, BookOpen, Mic2, FileText,
+  Home, PlaneTakeoff, BadgeCheck, ShieldCheck, Globe, Users2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { apiFetch } from "@/lib/api";
@@ -335,6 +338,7 @@ interface ServiceDef {
   id: string;
   icon: React.ElementType;
   title: string;
+  short: string;
   description: string;
   includes?: string[];
   FormContent: React.FC<{ onClose: () => void }>;
@@ -345,6 +349,7 @@ const SERVICES: ServiceDef[] = [
     id: "admissions",
     icon: GraduationCap,
     title: "Study Admissions",
+    short: "End-to-end application support from school placements to postgraduate and PhD programmes.",
     description: "Full admissions support from school and college placements to postgraduate and research programmes. We guide you through every step of the application process.",
     includes: [
       "School & College Admissions",
@@ -359,13 +364,15 @@ const SERVICES: ServiceDef[] = [
     id: "ielts",
     icon: BookOpen,
     title: "IELTS Preparation",
+    short: "Private, personalised IELTS training designed to hit your target band score efficiently.",
     description: "Private IELTS preparation for students planning to study in English-speaking countries. Personalised training designed to help students reach their target band score as efficiently as possible.",
     FormContent: IeltsForm,
   },
   {
     id: "interview",
     icon: Mic2,
-    title: "University & Embassy Interview Preparation",
+    title: "Interview Preparation",
+    short: "Mock sessions for university credibility interviews and visa interviews with structured feedback.",
     description: "Mock interview preparation for university credibility interviews and visa interviews. Students practise with realistic questions and structured guidance.",
     FormContent: InterviewForm,
   },
@@ -373,6 +380,7 @@ const SERVICES: ServiceDef[] = [
     id: "sop-cv",
     icon: FileText,
     title: "SOP & CV Guidance",
+    short: "Mentored guidance to craft a compelling Statement of Purpose and academic CV.",
     description: "We guide students step-by-step in crafting strong Statements of Purpose and academic CVs. Our role is to mentor and review — helping students present their story clearly and professionally.",
     FormContent: SopCvForm,
   },
@@ -380,6 +388,7 @@ const SERVICES: ServiceDef[] = [
     id: "accommodation",
     icon: Home,
     title: "Student Accommodation",
+    short: "Assistance finding and reserving the right UK accommodation before you arrive.",
     description: "We assist students in finding and reserving accommodation in the UK. This service is available only for single students.",
     FormContent: AccommodationForm,
   },
@@ -387,25 +396,51 @@ const SERVICES: ServiceDef[] = [
     id: "airport",
     icon: PlaneTakeoff,
     title: "Airport Transfer",
+    short: "Reliable UK airport pickup to your city of residence — no stress on arrival day.",
     description: "Airport pickup service from UK airports to the student's city of residence.",
     FormContent: AirportForm,
+  },
+];
+
+/* ---------- Trust credentials for the About section ---------- */
+
+const TRUST_POINTS = [
+  {
+    icon: BadgeCheck,
+    label: "ICEF Accredited",
+    detail: "Internationally recognised accreditation for education agencies — your assurance of quality.",
+  },
+  {
+    icon: ShieldCheck,
+    label: "British Council Certified",
+    detail: "Approved by the British Council, the gold standard for UK education professionals.",
+  },
+  {
+    icon: Users2,
+    label: "Birmingham Chambers Member",
+    detail: "Proud member of the Greater Birmingham Chambers of Commerce.",
+  },
+  {
+    icon: Globe,
+    label: "Global Student Support",
+    detail: "Serving students from Hong Kong, China, Nigeria, Pakistan, India, the Middle East, and beyond.",
   },
 ];
 
 /* ---------- Main component ---------- */
 
 export function AboutAndServices() {
-  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState<string | null>(null);
-
   const activeService = SERVICES.find(s => s.id === openModal);
 
   return (
     <>
-      {/* About Section */}
-      <section id="about" className="py-14 md:py-20 bg-white relative">
+      {/* ── About + Why Choose Us (merged two-column trust section) ── */}
+      <section id="about" className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+
+            {/* Left — About text */}
             <div>
               <div className="inline-block bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-semibold mb-5">
                 About Universitio
@@ -413,119 +448,92 @@ export function AboutAndServices() {
               <h2 className="text-3xl md:text-4xl font-bold mb-5 text-foreground leading-tight">
                 Your Global Gateway to Education Abroad
               </h2>
-              <div className="space-y-4 text-base md:text-lg text-muted-foreground">
-                <p>
-                  At Universitio, we help students from all around the world apply to trusted schools, colleges, and universities abroad. Whether you're aiming for the world's top-ranked institutions or exploring the right fit for your ambitions, we make the application process simple, personal, and stress-free.
-                </p>
-                <p>
-                  We're a UK-registered education consultancy, proudly approved by the British Council, accredited by ICEF, and a member of the Greater Birmingham Chambers of Commerce. Your privacy matters — we're also registered with the Information Commissioner's Office (ICO).
-                </p>
-              </div>
-              <div className="mt-7 pt-7 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                <div className="text-sm font-medium text-foreground">UK Company No. 15168670</div>
-                <Link href="/free-consultation">
-                  <Button className="rounded-full bg-primary hover:bg-primary/90 px-8 shadow-md hover:shadow-lg transition-all">
-                    Book Your Free Consultation
-                  </Button>
-                </Link>
-              </div>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-5">
+                At Universitio, we help students from all around the world apply to trusted schools, colleges, and universities abroad. Whether you're aiming for the world's top-ranked institutions or exploring the right fit for your ambitions, we make the application process simple, personal, and stress-free.
+              </p>
+              <p className="text-sm text-muted-foreground mb-8">
+                UK-registered education consultancy · Company No. 15168670 · ICO Registered
+              </p>
+              <Link href="/free-consultation">
+                <Button className="rounded-full bg-primary hover:bg-primary/90 px-8 shadow-md hover:shadow-lg transition-all">
+                  Book Your Free Consultation
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
             </div>
 
-            <div className="relative hidden md:block">
-              <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-slate-100 relative">
-                <img
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80&fit=crop"
-                  alt="Student smiling on campus"
-                  className="object-cover w-full h-full"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl">
-                    <div className="flex gap-4 items-start">
-                      <div className="bg-secondary/20 p-3 rounded-xl shrink-0">
-                        <CheckCircle2 className="w-7 h-7 text-secondary" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-foreground">Tailored Support</h4>
-                        <p className="text-sm text-muted-foreground mt-1">Every student journey is unique. We provide bespoke application strategies.</p>
-                      </div>
-                    </div>
+            {/* Right — Trust credential points */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {TRUST_POINTS.map((tp) => (
+                <div
+                  key={tp.label}
+                  className="flex gap-4 items-start bg-muted/40 rounded-2xl p-5 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <tp.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground text-sm mb-0.5">{tp.label}</p>
+                    <p className="text-xs text-muted-foreground leading-snug">{tp.detail}</p>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Accordion Section */}
+      {/* ── Services Card Grid ── */}
       <section id="services" className="py-12 md:py-20 bg-muted/40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10 md:mb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">Our Services</h2>
             <p className="text-base md:text-lg text-muted-foreground">
-              Comprehensive support at every stage of your journey — from application to arrival.
+              Comprehensive support at every stage — from application to arrival.
             </p>
           </div>
 
-          <div className="space-y-3">
-            {SERVICES.map((service) => {
-              const isOpen = openAccordion === service.id;
-              return (
-                <div
-                  key={service.id}
-                  className={`bg-white rounded-2xl border shadow-sm overflow-hidden transition-all duration-300 ${isOpen ? "border-primary/30 shadow-md" : "border-border"}`}
-                >
-                  <button
-                    onClick={() => setOpenAccordion(isOpen ? null : service.id)}
-                    className="w-full flex items-center gap-4 px-5 md:px-7 py-5 text-left group"
-                  >
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300 ${isOpen ? "bg-primary text-white" : "bg-primary/8 text-primary group-hover:bg-primary/15"}`}>
-                      <service.icon className="w-5 h-5" />
-                    </div>
-                    <span className="flex-1 text-base font-semibold text-foreground text-left">{service.title}</span>
-                    <ChevronDown className={`w-5 h-5 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 text-primary" : ""}`} />
-                  </button>
-
-                  {isOpen && (
-                    <div className="px-5 md:px-7 pb-6 border-t border-border/60">
-                      <p className="text-muted-foreground text-sm leading-relaxed mt-4 mb-4">
-                        {service.description}
-                      </p>
-                      {service.includes && (
-                        <ul className="space-y-1.5 mb-5">
-                          {service.includes.map((item) => (
-                            <li key={item} className="flex items-start gap-2 text-sm text-foreground">
-                              <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      <Button
-                        onClick={() => setOpenModal(service.id)}
-                        className="rounded-full bg-primary hover:bg-primary/90 text-white px-6"
-                        size="sm"
-                      >
-                        Request This Service
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </div>
-                  )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {SERVICES.map((service) => (
+              <button
+                key={service.id}
+                onClick={() => setOpenModal(service.id)}
+                className="group text-left bg-white rounded-2xl border border-border shadow-sm p-6 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-200">
+                  <service.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors duration-200" />
                 </div>
-              );
-            })}
+                <h3 className="font-bold text-foreground mb-2 text-base leading-snug">{service.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{service.short}</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
+                  Request this service <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Service Request Modal */}
+      {/* ── Service Request Modal ── */}
       <Dialog open={!!openModal} onOpenChange={(open) => { if (!open) setOpenModal(null); }}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">
               {activeService ? `Request: ${activeService.title}` : "Service Request"}
             </DialogTitle>
+            {activeService && (
+              <p className="text-sm text-muted-foreground mt-1">{activeService.description}</p>
+            )}
+            {activeService?.includes && (
+              <ul className="mt-2 space-y-1">
+                {activeService.includes.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-xs text-muted-foreground">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
           </DialogHeader>
           <div className="mt-2">
             {activeService && <activeService.FormContent onClose={() => setOpenModal(null)} />}

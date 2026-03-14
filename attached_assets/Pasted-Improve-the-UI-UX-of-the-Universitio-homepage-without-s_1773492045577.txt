@@ -1,0 +1,131 @@
+Improve the UI/UX of the Universitio homepage without simplifying the design or removing any sections. The goal is to make the layout more compact, visually modern, and mobile-optimised.
+
+Do NOT remove content. Focus on layout improvements, spacing optimisation, and visual hierarchy.
+
+---
+
+1. SERVICES SECTION
+
+The services section currently stacks vertically and creates excessive scroll on mobile.
+
+Redesign the layout as follows:
+
+Desktop:
+• Display services as card grid (2 or 3 columns)
+• Each service card shows icon + title + short description
+• Clicking the card expands an accordion panel or opens a modal with full details and request form
+
+Mobile:
+• Use 1 column card layout
+• Reduce vertical padding
+• Cards should be compact but still visually attractive
+
+Goal:
+Reduce vertical scrolling while keeping services visually premium.
+
+---
+
+2. MERGE SECTIONS
+
+Merge the following sections:
+
+"About Universitio"
++
+"Why Students Choose Universitio"
+
+New layout:
+
+Left side:
+About Universitio text
+
+Right side:
+Key trust points displayed as icon features:
+
+• ICEF Accredited
+• British Council Certified
+• Birmingham Chambers Member
+• Global student support
+
+This should visually resemble a modern two-column trust section.
+
+---
+
+3. FOR AGENTS & PROFESSIONALS SECTION
+
+This section currently takes too much vertical space.
+
+Improve it by:
+
+• Using a strong background image
+• Overlaying the text on the image
+• Reducing paragraph length
+• Keeping the section visually powerful but more compact
+
+The design should resemble a hero card with:
+
+image background
+headline
+short description
+CTA button
+
+Optimise spacing for mobile.
+
+---
+
+4. WHERE WE HELP YOU STUDY
+
+Fix the issue where the United States image does not load.
+
+Ensure:
+
+• All destination images load correctly
+• Images use stable asset paths
+• No external CDN that may fail in some countries
+
+Keep the section visually rich with destination cards.
+
+---
+
+5. SUPPORTING STUDENTS FROM AROUND THE WORLD
+
+Do NOT remove any countries.
+
+Instead redesign the UI to be more visually engaging.
+
+Requirements:
+
+• China and Hong Kong appear first
+• Use flag icons or country visuals
+• Cards should have subtle animation (hover glow or slight lift)
+• Layout should feel modern and international
+
+Possible design:
+
+Country cards grid with:
+
+flag
+country name
+subtle animation
+hover interaction
+
+Mobile:
+Cards should remain compact.
+
+---
+
+6. MOBILE SCROLL OPTIMISATION
+
+Reduce homepage scroll length by:
+
+• reducing excessive vertical spacing
+• combining related sections
+• converting long blocks to cards
+• using expandable UI patterns
+
+The site must remain premium, not minimal.
+
+Maintain strong visual design but optimise for mobile users.
+
+---
+
+Ensure the design remains consistent with the existing brand identity and modern UX patterns.
