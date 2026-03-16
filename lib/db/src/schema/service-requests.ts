@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const serviceRequests = pgTable("service_requests", {
   id: serial("id").primaryKey(),
@@ -25,6 +25,9 @@ export const serviceRequests = pgTable("service_requests", {
   destinationCity: text("destination_city"),
   passengers: text("passengers"),
   notes: text("notes"),
+  marketingOptOut: boolean("marketing_opt_out").notNull().default(false),
+  termsAccepted: boolean("terms_accepted").notNull().default(false),
+  consentVersion: text("consent_version").default("v1.0"),
   status: text("status").notNull().default("New"),
   adminNotes: text("admin_notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),

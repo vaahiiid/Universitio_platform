@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
 
 export const consultations = pgTable("consultations", {
   id: serial("id").primaryKey(),
@@ -20,6 +20,9 @@ export const consultations = pgTable("consultations", {
   howDidYouHear: text("how_did_you_hear"),
   cvFileName: text("cv_file_name"),
   rawData: jsonb("raw_data"),
+  marketingOptOut: boolean("marketing_opt_out").notNull().default(false),
+  termsAccepted: boolean("terms_accepted").notNull().default(false),
+  consentVersion: text("consent_version").default("v1.0"),
   status: text("status").notNull().default("New"),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),

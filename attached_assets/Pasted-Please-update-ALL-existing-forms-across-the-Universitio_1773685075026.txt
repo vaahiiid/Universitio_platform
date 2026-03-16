@@ -1,0 +1,134 @@
+Please update ALL existing forms across the Universitio website to include two consent checkboxes and store them properly in the database/admin as evidence.
+
+Important:
+This must be applied consistently to every existing form on the site, including but not limited to:
+- Free Consultation
+- Assessment
+- Contact Us
+- Service Request forms
+- Combined Services form
+- IELTS form
+- Interview Preparation form
+- SOP & CV Guidance form
+- Accommodation form
+- Airport Transfer form
+- Partner form
+- Student Referral form
+- Any other live lead/contact form
+
+==================================================
+1. ADD TWO CONSENT CHECKBOXES TO ALL FORMS
+==================================================
+
+Every form must include these two consent items near the submit button.
+
+--------------------------------------------------
+A. Marketing consent checkbox
+--------------------------------------------------
+
+This checkbox must NOT be required.
+
+Label text:
+
+"If you do NOT want to receive helpful updates, opportunities, and marketing emails from Universitio, please tick this box."
+
+Important logic:
+- By default, this box is unchecked
+- If the user leaves it unchecked, it means they are happy to receive marketing emails
+- If the user ticks it, it means they opt out of marketing emails
+
+Store this clearly in the backend as a boolean field, for example:
+- marketingOptOut = true/false
+
+--------------------------------------------------
+B. Terms / Privacy acknowledgement checkbox
+--------------------------------------------------
+
+This checkbox MUST be required.
+
+Label text:
+
+"I have read and agree to the Terms and Conditions and Privacy Policy."
+
+Requirements:
+- "Terms and Conditions" must be a clickable link
+- "Privacy Policy" must be a clickable link
+- Open links appropriately (same tab or new tab if consistent with current site UX)
+- The form must not submit unless this checkbox is ticked
+
+Store this clearly in the backend as a boolean field, for example:
+- termsAccepted = true/false
+
+==================================================
+2. LOG CONSENT AS EVIDENCE
+==================================================
+
+These consent fields must be stored in the database for every submission as evidence.
+
+For each form submission, store:
+- marketingOptOut
+- termsAccepted
+- submittedAt timestamp
+- form type / source
+- if possible, also store the form/page identifier
+- if possible, also store the current privacy policy / terms version or at least a consent version string
+
+Suggested extra fields:
+- consentVersion
+- submissionSource
+- consentCapturedAt
+
+This should be visible in admin when reviewing a submission, so there is proof the user gave the relevant acknowledgement.
+
+==================================================
+3. ADMIN PANEL DISPLAY
+==================================================
+
+In admin, for every submission record, show the two consent values clearly:
+
+- Marketing emails allowed OR opted out
+- Terms accepted
+
+Do not make the admin UI messy, but make the consent status visible enough for compliance.
+
+==================================================
+4. FORM UX REQUIREMENTS
+==================================================
+
+Design requirements:
+- Keep the consent area visually clean and compact
+- Do not make forms feel heavy or cluttered
+- Use consistent styling across all forms
+- Place the consent section just above the submit button
+- On mobile, ensure the text remains readable and the links are easy to tap
+
+==================================================
+5. VALIDATION REQUIREMENTS
+==================================================
+
+Validation rules:
+- Terms/Privacy checkbox is required
+- Marketing checkbox is optional
+- If termsAccepted is false, form submission must be blocked with a clear validation message
+
+==================================================
+6. LEGAL / COMPLIANCE INTENT
+==================================================
+
+The goal is:
+- to support GDPR/ICO-friendly lead capture
+- to capture explicit acknowledgement of Terms and Privacy
+- to capture clear marketing preference
+- to keep evidence stored in the system for future reference
+
+==================================================
+7. FINAL GOAL
+==================================================
+
+After implementation:
+- every live form includes these two consent checkboxes
+- Terms/Privacy is required
+- marketing opt-out is optional
+- both values are stored and visible in admin
+- consent is logged as evidence
+- the design remains clean and user-friendly
