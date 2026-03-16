@@ -109,8 +109,8 @@ export function Footer() {
             <p className="mt-1">Registered in England and Wales &middot; Company No. 15168670 &middot; ICEF Accredited &middot; British Council Agent &middot; ICO Registered</p>
           </div>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>

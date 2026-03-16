@@ -123,6 +123,9 @@ router.post("/leads/consultation", cvUpload.single("cvFile"), async (req: Reques
       howDidYouHear,
       cvFileName,
       rawData: data,
+      marketingOptOut: toBool(data.marketingOptOut),
+      termsAccepted: toBool(data.termsAccepted),
+      consentVersion: "v1.0",
       status: "New",
     };
 
@@ -203,6 +206,9 @@ router.post("/leads/assessment", cvUpload.single("cvFile"), async (req: Request,
       scoreNotes,
       followUpRequested: toBool(data.followUpRequested),
       rawData: data,
+      marketingOptOut: toBool(data.marketingOptOut),
+      termsAccepted: toBool(data.termsAccepted),
+      consentVersion: "v1.0",
       status: "New",
     };
 
@@ -233,6 +239,9 @@ router.post("/leads/partners", async (req: Request, res: Response) => {
       destinations: data.destinations as string[],
       additionalNotes: (data.notes ?? data.additionalNotes) as string,
       rawData: data,
+      marketingOptOut: toBool(data.marketingOptOut),
+      termsAccepted: toBool(data.termsAccepted),
+      consentVersion: "v1.0",
       status: "New",
     };
 
@@ -259,6 +268,9 @@ router.post("/leads/referral", async (req: Request, res: Response) => {
       destinations: data.destinations as string[],
       additionalNotes: (data.notes ?? data.additionalNotes) as string,
       rawData: data,
+      marketingOptOut: toBool(data.marketingOptOut),
+      termsAccepted: toBool(data.termsAccepted),
+      consentVersion: "v1.0",
       status: "New",
     };
 
@@ -282,6 +294,9 @@ router.post("/leads/contact", async (req: Request, res: Response) => {
       phone: (data.phone as string) || null,
       subject: data.subject as string,
       message: data.message as string,
+      marketingOptOut: toBool(data.marketingOptOut),
+      termsAccepted: toBool(data.termsAccepted),
+      consentVersion: "v1.0",
       status: "New",
     };
 
@@ -325,6 +340,9 @@ router.post("/leads/service-request", async (req: Request, res: Response) => {
       destinationCity: (data.destinationCity as string) || null,
       passengers: (data.passengers as string) || null,
       notes: (data.notes as string) || null,
+      marketingOptOut: toBool(data.marketingOptOut),
+      termsAccepted: toBool(data.termsAccepted),
+      consentVersion: "v1.0",
       status: "New",
     };
     const [row] = await db.insert(serviceRequests).values(values).returning();

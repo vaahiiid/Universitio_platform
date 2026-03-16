@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch } from "@/lib/api";
+import { ConsentFields } from "@/components/ui/ConsentFields";
 
 function StarRating({ count = 5 }: { count?: number }) {
   return (
@@ -30,10 +31,18 @@ export function SocialProof() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [marketingOptOut, setMarketingOptOut] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState("");
   const { toast } = useToast();
   const autoplayPlugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
 
   const onSubmit = async (data: Record<string, unknown>) => {
+    if (!termsAccepted) {
+      setTermsError("You must accept the Terms and Conditions and Privacy Policy to continue.");
+      return;
+    }
+    setTermsError("");
     setSubmitting(true);
     try {
       await apiFetch("/leads/contact", {
@@ -44,6 +53,8 @@ export function SocialProof() {
           phone: data.phone || "",
           subject: data.subject,
           message: data.message,
+          marketingOptOut,
+          termsAccepted,
         }),
       });
       toast({ title: "Thank you!", description: "Your message has been sent successfully." });
@@ -348,6 +359,8 @@ export function SocialProof() {
                         placeholder="Please provide details about your inquiry..."
                       />
                     </div>
+
+                    <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
 
                     <Button type="submit" size="lg" disabled={submitting} className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base shadow-md">
                       {submitting ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Sending...</> : "Send Message"}

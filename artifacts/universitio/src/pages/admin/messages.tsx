@@ -99,6 +99,20 @@ function DetailView({ id }: { id: number }) {
               <p className="whitespace-pre-wrap">{data.message as string}</p>
             } />
             <FieldRow label="Submitted" value={formatDate(data.createdAt as string)} />
+            <FieldRow
+              label="Consent"
+              value={
+                <div className="flex flex-wrap gap-2">
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.termsAccepted ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                    {data.termsAccepted ? "✓ Terms Accepted" : "✗ Terms Not Accepted"}
+                  </span>
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.marketingOptOut ? "bg-gray-100 text-gray-600" : "bg-blue-100 text-blue-700"}`}>
+                    {data.marketingOptOut ? "Opted Out of Marketing" : "✓ Marketing Emails OK"}
+                  </span>
+                  {data.consentVersion && <span className="text-xs text-muted-foreground">v{data.consentVersion}</span>}
+                </div>
+              }
+            />
           </div>
 
           <div className="px-6 py-5 border-t border-border space-y-4">

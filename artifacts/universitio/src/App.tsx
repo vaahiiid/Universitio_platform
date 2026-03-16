@@ -15,6 +15,8 @@ import BlogCategoryPage from "@/pages/blog-category";
 import Partners from "@/pages/partners";
 import StudentReferral from "@/pages/student-referral";
 import Careers from "@/pages/careers";
+import TermsAndConditions from "@/pages/terms-and-conditions";
+import PrivacyPolicy from "@/pages/privacy-policy";
 import NotFound from "@/pages/not-found";
 
 import AdminLogin from "@/pages/admin/login";
@@ -73,6 +75,8 @@ function Router() {
         <Route path="/partners" component={Partners} />
         <Route path="/student-referral" component={StudentReferral} />
         <Route path="/careers" component={Careers} />
+        <Route path="/terms-and-conditions" component={TermsAndConditions} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
 
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin">

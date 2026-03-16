@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { apiFetch } from "@/lib/api";
 import { siteData } from "@/data/siteData";
+import { ConsentFields } from "@/components/ui/ConsentFields";
 import icefBadge from "@assets/001bG000006Y3MkQAK_badge_1773399029266.webp";
 import britishCouncilCert from "@assets/Certification_1773399011626.webp";
 import icoLogo from "@assets/Ico_1773399011627.webp";
@@ -98,13 +99,21 @@ function useServiceForm(serviceType: string, onClose: () => void) {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [marketingOptOut, setMarketingOptOut] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!termsAccepted) {
+      setTermsError("You must accept the Terms and Conditions and Privacy Policy to continue.");
+      return;
+    }
+    setTermsError("");
     setLoading(true);
     setError("");
     const fd = new FormData(e.currentTarget);
-    const body: Record<string, string> = { serviceType };
+    const body: Record<string, unknown> = { serviceType, marketingOptOut, termsAccepted };
     fd.forEach((v, k) => { body[k] = v as string; });
     try {
       await apiFetch("/leads/service-request", { method: "POST", body: JSON.stringify(body) });
@@ -116,13 +125,13 @@ function useServiceForm(serviceType: string, onClose: () => void) {
     }
   }
 
-  return { loading, sent, error, handleSubmit };
+  return { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError };
 }
 
 /* ---------- Per-service forms ---------- */
 
 function AdmissionsForm({ onClose }: { onClose: () => void }) {
-  const { loading, sent, error, handleSubmit } = useServiceForm("Study Admissions", onClose);
+  const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("Study Admissions", onClose);
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -146,6 +155,7 @@ function AdmissionsForm({ onClose }: { onClose: () => void }) {
       <Field label="Additional notes">
         <textarea name="notes" rows={3} className={inputCls} placeholder="Any other details…" />
       </Field>
+      <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <SubmitButton loading={loading} />
     </form>
@@ -153,7 +163,7 @@ function AdmissionsForm({ onClose }: { onClose: () => void }) {
 }
 
 function IeltsForm({ onClose }: { onClose: () => void }) {
-  const { loading, sent, error, handleSubmit } = useServiceForm("IELTS Preparation", onClose);
+  const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("IELTS Preparation", onClose);
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -171,6 +181,7 @@ function IeltsForm({ onClose }: { onClose: () => void }) {
       <Field label="Additional notes">
         <textarea name="notes" rows={3} className={inputCls} placeholder="Tell us your current level or specific concerns…" />
       </Field>
+      <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <SubmitButton loading={loading} />
     </form>
@@ -178,7 +189,7 @@ function IeltsForm({ onClose }: { onClose: () => void }) {
 }
 
 function InterviewForm({ onClose }: { onClose: () => void }) {
-  const { loading, sent, error, handleSubmit } = useServiceForm("Interview Preparation", onClose);
+  const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("Interview Preparation", onClose);
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -208,6 +219,7 @@ function InterviewForm({ onClose }: { onClose: () => void }) {
       <Field label="Additional notes">
         <textarea name="notes" rows={3} className={inputCls} />
       </Field>
+      <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <SubmitButton loading={loading} />
     </form>
@@ -215,7 +227,7 @@ function InterviewForm({ onClose }: { onClose: () => void }) {
 }
 
 function SopCvForm({ onClose }: { onClose: () => void }) {
-  const { loading, sent, error, handleSubmit } = useServiceForm("SOP & CV Guidance", onClose);
+  const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("SOP & CV Guidance", onClose);
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -245,6 +257,7 @@ function SopCvForm({ onClose }: { onClose: () => void }) {
       <Field label="Additional notes">
         <textarea name="notes" rows={3} className={inputCls} />
       </Field>
+      <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <SubmitButton loading={loading} />
     </form>
@@ -252,7 +265,7 @@ function SopCvForm({ onClose }: { onClose: () => void }) {
 }
 
 function AccommodationForm({ onClose }: { onClose: () => void }) {
-  const { loading, sent, error, handleSubmit } = useServiceForm("Student Accommodation", onClose);
+  const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("Student Accommodation", onClose);
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -290,6 +303,7 @@ function AccommodationForm({ onClose }: { onClose: () => void }) {
       <Field label="Additional notes">
         <textarea name="notes" rows={3} className={inputCls} />
       </Field>
+      <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <SubmitButton loading={loading} />
     </form>
@@ -297,7 +311,7 @@ function AccommodationForm({ onClose }: { onClose: () => void }) {
 }
 
 function AirportForm({ onClose }: { onClose: () => void }) {
-  const { loading, sent, error, handleSubmit } = useServiceForm("Airport Transfer", onClose);
+  const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("Airport Transfer", onClose);
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -332,6 +346,7 @@ function AirportForm({ onClose }: { onClose: () => void }) {
       <Field label="Additional notes">
         <textarea name="notes" rows={2} className={inputCls} placeholder="Arrival date/time, luggage details…" />
       </Field>
+      <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <SubmitButton loading={loading} />
     </form>

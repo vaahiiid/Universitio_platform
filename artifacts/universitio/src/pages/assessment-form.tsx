@@ -20,6 +20,7 @@ import {
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { ConsentFields } from "@/components/ui/ConsentFields";
 import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
 import { apiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
@@ -396,9 +397,17 @@ export default function AssessmentForm() {
   }
 
   const [submitting, setSubmitting] = useState(false);
+  const [marketingOptOut, setMarketingOptOut] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState("");
   const { toast } = useToast();
 
   async function handleSubmitAndReveal() {
+    if (!termsAccepted) {
+      setTermsError("You must accept the Terms and Conditions and Privacy Policy to continue.");
+      return;
+    }
+    setTermsError("");
     const values = form.getValues();
     const step5Result = stepSchemas[5].safeParse(values);
     if (!step5Result.success) {
@@ -444,6 +453,8 @@ export default function AssessmentForm() {
       }
 
       if (cvFile) formData.append("cvFile", cvFile);
+      formData.append("marketingOptOut", marketingOptOut ? "true" : "false");
+      formData.append("termsAccepted", termsAccepted ? "true" : "false");
 
       const res = await fetch(apiUrl("/leads/assessment"), {
         method: "POST",
@@ -1067,9 +1078,14 @@ export default function AssessmentForm() {
                       Continue <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   ) : (
-                    <Button type="button" onClick={handleSubmitAndReveal} disabled={submitting} className="rounded-full px-8 py-3 bg-primary hover:bg-primary/90 text-white shadow-lg text-base font-semibold">
-                      {submitting ? "Processing..." : <>Submit and View My Result <ArrowRight className="w-5 h-5 ml-2" /></>}
-                    </Button>
+                    <div className="flex flex-col items-end gap-4 w-full">
+                      <div className="w-full">
+                        <ConsentFields marketingOptOut={marketingOptOut} termsAccepted={termsAccepted} onMarketingOptOutChange={setMarketingOptOut} onTermsAcceptedChange={setTermsAccepted} termsError={termsError} />
+                      </div>
+                      <Button type="button" onClick={handleSubmitAndReveal} disabled={submitting} className="rounded-full px-8 py-3 bg-primary hover:bg-primary/90 text-white shadow-lg text-base font-semibold">
+                        {submitting ? "Processing..." : <>Submit and View My Result <ArrowRight className="w-5 h-5 ml-2" /></>}
+                      </Button>
+                    </div>
                   )}
                 </div>
 

@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { COUNTRIES, STUDY_DESTINATIONS as DESTINATIONS } from "@/data/countries";
+import { ConsentFields } from "@/components/ui/ConsentFields";
 
 const referralSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -28,6 +29,8 @@ const referralSchema = z.object({
   nationalities: z.array(z.string()).min(1, "Please select at least one nationality"),
   destinations: z.array(z.string()).min(1, "Please select at least one destination"),
   notes: z.string().optional(),
+  marketingOptOut: z.boolean().optional().default(false),
+  termsAccepted: z.literal(true, { errorMap: () => ({ message: "You must accept the Terms and Conditions and Privacy Policy to continue." }) }),
 });
 
 type ReferralFormValues = z.infer<typeof referralSchema>;
@@ -128,6 +131,7 @@ export default function StudentReferral() {
     defaultValues: {
       fullName: "", email: "", dateOfBirth: "", university: "",
       nationalities: [], destinations: [], notes: "",
+      marketingOptOut: false,
     },
   });
 
@@ -337,6 +341,20 @@ export default function StudentReferral() {
                         </FormItem>
                       )} />
 
+                      <FormField
+                        control={form.control}
+                        name="marketingOptOut"
+                        render={({ field }) => (
+                          <ConsentFields
+                            marketingOptOut={field.value ?? false}
+                            termsAccepted={form.watch("termsAccepted") === true}
+                            onMarketingOptOutChange={field.onChange}
+                            onTermsAcceptedChange={(v) => form.setValue("termsAccepted", v as true, { shouldValidate: true })}
+                            termsError={form.formState.errors.termsAccepted?.message}
+                          />
+                        )}
+                      />
+
                       {submitError && (
                         <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
                           {submitError}
@@ -346,10 +364,6 @@ export default function StudentReferral() {
                       <Button type="submit" size="lg" disabled={submitting} className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl h-12 text-base font-semibold shadow-lg">
                         {submitting ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Submitting...</> : "Submit Application"}
                       </Button>
-                      <p className="text-xs text-muted-foreground text-center">
-                        By submitting, you confirm the information provided is accurate and you agree to
-                        the programme terms.
-                      </p>
                     </form>
                   </Form>
                 </div>

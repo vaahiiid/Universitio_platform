@@ -33,6 +33,7 @@ import { CheckCircle2, Plus, Trash2, Upload, Info } from "lucide-react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState, useRef } from "react";
+import { ConsentFields } from "@/components/ui/ConsentFields";
 
 const COUNTRIES = [
   "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
@@ -635,8 +636,25 @@ export default function FreeConsultation() {
                   </div>
                 </section>
 
+                {/* ── Consent ── */}
+                <div className="pt-4 border-t border-border">
+                  <FormField
+                    control={form.control}
+                    name="marketingOptOut"
+                    render={({ field }) => (
+                      <ConsentFields
+                        marketingOptOut={field.value ?? false}
+                        termsAccepted={form.watch("termsAccepted") === true}
+                        onMarketingOptOutChange={field.onChange}
+                        onTermsAcceptedChange={(v) => form.setValue("termsAccepted", v as true, { shouldValidate: true })}
+                        termsError={form.formState.errors.termsAccepted?.message}
+                      />
+                    )}
+                  />
+                </div>
+
                 {/* ── Submit ── */}
-                <div className="pt-6 border-t border-border flex flex-col items-center">
+                <div className="pt-4 flex flex-col items-center">
                   <Button
                     type="submit"
                     size="lg"
@@ -645,9 +663,6 @@ export default function FreeConsultation() {
                   >
                     {mutation.isPending ? "Submitting..." : "Submit Consultation Request"}
                   </Button>
-                  <p className="text-xs text-muted-foreground mt-4 text-center max-w-md">
-                    By submitting this form, you agree to our Privacy Policy. Universitio will safely store your data in accordance with ICO regulations.
-                  </p>
                 </div>
 
               </form>

@@ -28,6 +28,8 @@ export const consultationSchema = z.object({
   howDidYouHear: z.string().optional(),
   howDidYouHearOther: z.string().optional(),
   preferredContactMethod: z.string().min(1, "Please select your preferred contact method"),
+  marketingOptOut: z.boolean().optional().default(false),
+  termsAccepted: z.literal(true, { errorMap: () => ({ message: "You must accept the Terms and Conditions and Privacy Policy to continue." }) }),
 }).superRefine((data, ctx) => {
   if (data.intendedCourseArea === "Other" && (!data.intendedCourseAreaOther || data.intendedCourseAreaOther.trim().length < 2)) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify your intended course area", path: ["intendedCourseAreaOther"] });
@@ -67,6 +69,8 @@ async function submitConsultation(data: ConsultationInput) {
     if (key === "cvFile") continue;
     if (Array.isArray(value)) {
       formData.append(key, JSON.stringify(value));
+    } else if (typeof value === "boolean") {
+      formData.append(key, value ? "true" : "false");
     } else if (value !== undefined && value !== null) {
       formData.append(key, String(value));
     }
