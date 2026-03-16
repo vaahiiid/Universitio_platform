@@ -117,13 +117,13 @@ export const siteData = {
       id: "icef",
       logoKey: "icef",
       name: "Accredited by ICEF",
-      statement: "A global quality benchmark in international student recruitment and ethical education practices."
+      statement: "We are an IAS Accredited agency by ICEF."
     },
     {
       id: "british-council",
       logoKey: "british-council",
-      name: "British Council Certified Agent",
-      statement: "Committed to recognised UK education standards and best practices in international student advising."
+      name: "British Council Agent & Counsellor Training Certified",
+      statement: "The agency owner has completed the British Council Agent & Counsellor Training programme."
     },
     {
       id: "ico",

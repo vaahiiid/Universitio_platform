@@ -441,10 +441,10 @@ export function AboutAndServices() {
                 Your Global Gateway to Education Abroad
               </h2>
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-4">
-                At Universitio, we help students from all around the world apply to trusted schools, colleges, and universities abroad. Whether you're aiming for the world's top-ranked institutions or finding the perfect fit for your ambitions, we make the application process simple, personal, and stress-free.
+                At Universitio, we help students from around the world apply to trusted schools, colleges, and universities abroad. Whether you're aiming for top-ranked institutions or searching for the right academic path, we make the application process simple, personal, and stress-free.
               </p>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                We're a UK-registered education consultancy, proudly approved by the British Council, accredited by ICEF, and a member of the Greater Birmingham Chambers of Commerce. Your privacy matters — we're also registered with the Information Commissioner's Office (ICO).
+                Universitio is a UK-registered education consultancy. Our agency owner has completed the British Council Agent &amp; Counsellor Training programme, and we are accredited by ICEF and a member of the Greater Birmingham Chambers of Commerce. We are also registered with the Information Commissioner's Office (ICO), ensuring that your personal data is handled securely and responsibly.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link href="/free-consultation">
