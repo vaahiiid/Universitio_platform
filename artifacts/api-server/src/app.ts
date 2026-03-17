@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs";
 import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import compression from "compression";
 import cors from "cors";
@@ -44,5 +46,15 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use("/api", router);
+
+if (process.env.NODE_ENV === "production") {
+  const staticDir = path.resolve(__dirname, "../../universitio/dist/public");
+  if (fs.existsSync(staticDir)) {
+    app.use(express.static(staticDir));
+    app.get("/{*splat}", (_req, res) => {
+      res.sendFile(path.join(staticDir, "index.html"));
+    });
+  }
+}
 
 export default app;
