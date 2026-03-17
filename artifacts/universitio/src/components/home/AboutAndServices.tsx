@@ -468,7 +468,7 @@ export function AboutAndServices() {
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </Link>
-                <Link href="/free-assessment">
+                <Link href="/assessment-form">
                   <Button variant="outline" className="rounded-full px-8 border-primary/30 hover:border-primary/60 transition-all">
                     Take Our Free Assessment
                   </Button>
