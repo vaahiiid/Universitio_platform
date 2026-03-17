@@ -7,7 +7,7 @@ export default function TermsAndConditions() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Terms and Conditions | Universitio</title>
-        <meta name="description" content="Read the Terms and Conditions for Universitio Ltd (Company No. 15168670), a UK-registered education consultancy providing university application support for international students." />
+        <meta name="description" content="Terms and Conditions for Universitio Ltd (Co. No. 15168670), a UK-registered education consultancy providing application support for international students." />
       </Helmet>
       <main className="max-w-3xl mx-auto px-4 py-12">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">

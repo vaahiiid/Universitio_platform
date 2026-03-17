@@ -514,7 +514,7 @@ export default function AssessmentForm() {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
         <title>Free Admissions Assessment | Universitio</title>
-        <meta name="description" content="Take the free Universitio admissions assessment to estimate your chances of acceptance at top universities. Get a personalised readiness score in under 5 minutes." />
+        <meta name="description" content="Take the free Universitio admissions assessment to estimate your chances at top UK universities. Get a personalised readiness score in under 5 minutes." />
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">

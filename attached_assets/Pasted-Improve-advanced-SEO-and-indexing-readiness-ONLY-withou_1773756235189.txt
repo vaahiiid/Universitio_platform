@@ -1,0 +1,67 @@
+Improve advanced SEO and indexing readiness ONLY, without changing any UI, design, layout, sections, styling, wording, branding, CTA text, or user flow.
+
+STRICT RULE:
+This is an advanced SEO task only.
+Do NOT redesign anything.
+Do NOT rewrite visible copy.
+Do NOT remove sections.
+Do NOT simplify the UI.
+Do NOT alter conversions or page flow.
+
+Tasks:
+
+1. Meta title optimisation (critical)
+   - Reduce homepage title length to under ~60 characters while keeping strong SEO keywords
+   - Keep brand name included
+   - Ensure each page has a unique, keyword-aligned title
+   - Avoid duplicate or overly long titles
+
+2. Meta description optimisation
+   - Reduce overly long descriptions (~150–160 characters ideal)
+   - Ensure each page has a unique, compelling description
+   - Align descriptions with search intent (study abroad, UK universities, etc.)
+   - Preserve tone and meaning
+
+3. Canonical final validation
+   - Ensure every page has correct canonical pointing to https://universitio.com/[path]
+   - Confirm no conflicting or duplicate canonicals exist
+   - Ensure consistency between canonical, sitemap, and actual URLs
+
+4. Indexing control audit
+   - Confirm important pages are indexable:
+     homepage, blog, services, assessment-form, consultation, partners
+   - Confirm these are NOT indexed:
+     404 page (noindex), any admin/internal routes
+   - Ensure no accidental noindex or nofollow on key pages
+
+5. Sitemap integrity check
+   - Ensure sitemap.xml includes all important pages
+   - Remove any invalid or outdated URLs
+   - Ensure URLs match canonical versions exactly
+   - Ensure trailing slash consistency
+
+6. Robots.txt alignment
+   - Confirm robots.txt is not blocking any important pages
+   - Ensure sitemap location is correctly declared
+   - Keep it minimal and clean
+
+7. Open Graph & Twitter consistency
+   - Ensure og:title, og:description, og:image match page intent
+   - Ensure og:image URL works (no 404)
+   - Ensure consistency across pages
+   - Preserve branding
+
+8. Structured data validation
+   - Validate Organization, WebSite, and BlogPosting schema
+   - Ensure no errors or warnings
+   - Ensure logo and URLs are valid
+   - Do not overuse schema
+
+9. Crawl path & orphan page audit
+   - Identify important pages not easily reachable via internal links
+   - Improve crawlability with minimal internal linking adjustments (no UI redesign)
+
+10. Final report
+   - List all improvements made
+   - Highlight any critical SEO issues that were fixed
+   - Explicitly confirm that NO UI/design/content changes were made

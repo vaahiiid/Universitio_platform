@@ -32,8 +32,8 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
-        <title>Blog | Universitio — Insights & Guidance for International Students</title>
-        <meta name="description" content="Expert insights, university guides, and practical advice for international students planning to study abroad. Browse articles on UK universities, student experience, scholarships, and more." />
+        <title>Universitio Blog | Guidance for International Students</title>
+        <meta name="description" content="Expert guides and insights for international students studying abroad. Browse articles on UK universities, visas, scholarships, and student experience." />
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">

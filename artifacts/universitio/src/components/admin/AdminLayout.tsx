@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "wouter";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import {
@@ -116,6 +117,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <aside className="hidden lg:block w-60 fixed inset-y-0 left-0 z-30">
         {sidebar}
       </aside>

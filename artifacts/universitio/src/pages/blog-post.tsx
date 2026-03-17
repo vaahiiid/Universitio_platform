@@ -117,15 +117,24 @@ export default function BlogPostPage() {
         <title>{post.title} | Universitio Blog</title>
         <meta name="description" content={post.excerpt.slice(0, 160)} />
         <link rel="canonical" href={`https://universitio.com/blog/${post.slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://universitio.com/blog/${post.slug}`} />
+        <meta property="og:title" content={`${post.title} | Universitio Blog`} />
+        <meta property="og:description" content={post.excerpt.slice(0, 160)} />
+        <meta property="og:image" content={`https://universitio.com/${post.image}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${post.title} | Universitio Blog`} />
+        <meta name="twitter:description" content={post.excerpt.slice(0, 160)} />
+        <meta name="twitter:image" content={`https://universitio.com/${post.image}`} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BlogPosting",
           "headline": post.title,
           "description": post.excerpt.slice(0, 160),
           "datePublished": post.date,
-          "image": `https://universitio.com${BASE}${post.image}`,
+          "image": `https://universitio.com/${post.image}`,
           "author": { "@type": "Organization", "name": "Universitio", "url": "https://universitio.com" },
-          "publisher": { "@type": "Organization", "name": "Universitio", "logo": { "@type": "ImageObject", "url": "https://universitio.com/assets/universitio-logo.png" } },
+          "publisher": { "@type": "Organization", "name": "Universitio", "logo": { "@type": "ImageObject", "url": "https://universitio.com/logo.png" } },
           "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` }
         })}</script>
       </Helmet>

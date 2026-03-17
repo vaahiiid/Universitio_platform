@@ -188,7 +188,7 @@ export default function Partners() {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
         <title>Become a Universitio Partner | Education Agency Partnership</title>
-        <meta name="description" content="Join the Universitio partner programme. We work with education agencies, counsellors, and student recruitment partners to support international students worldwide." />
+        <meta name="description" content="Join the Universitio partner programme. We work with education agencies, counsellors, and student recruiters to support international students worldwide." />
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
