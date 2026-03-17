@@ -4,7 +4,7 @@ export function TrustIndicators() {
   return (
     <>
       {/* Stats Section */}
-      <section id="stats" className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
+      <section id="stats" aria-label="Key Statistics" className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-4 divide-x-0 lg:divide-x divide-white/20">
@@ -23,7 +23,7 @@ export function TrustIndicators() {
       </section>
 
       {/* Universities Marquee */}
-      <section id="universities" className="py-12 md:py-20 bg-background overflow-hidden">
+      <section id="universities" aria-label="Partner Universities" className="py-12 md:py-20 bg-background overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Pathways to Leading Institutions</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

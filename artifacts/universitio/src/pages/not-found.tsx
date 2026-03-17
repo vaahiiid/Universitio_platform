@@ -1,9 +1,14 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { ArrowLeft, Home, BookOpen, Calendar } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+      <Helmet>
+        <title>Page Not Found | Universitio</title>
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <div className="text-center max-w-lg">
         <div className="text-[120px] font-extrabold leading-none text-primary/10 select-none mb-2">404</div>
         <h1 className="text-3xl font-bold text-foreground mb-3">Page not found</h1>

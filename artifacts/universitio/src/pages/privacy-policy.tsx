@@ -1,10 +1,15 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { ArrowLeft } from "lucide-react";
 
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-4 py-12">
+      <Helmet>
+        <title>Privacy Policy | Universitio</title>
+        <meta name="description" content="Universitio's Privacy Policy explains how we collect, use, and protect your personal data in accordance with UK GDPR and the Data Protection Act 2018." />
+      </Helmet>
+      <main className="max-w-3xl mx-auto px-4 py-12">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">
           <ArrowLeft className="w-4 h-4" />
           Back to Home
@@ -114,7 +119,7 @@ export default function PrivacyPolicy() {
           </section>
 
         </div>
-      </div>
+      </main>
     </div>
   );
 }

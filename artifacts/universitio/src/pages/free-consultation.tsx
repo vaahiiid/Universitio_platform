@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -192,6 +193,10 @@ export default function FreeConsultation() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>Book a Free Consultation | Universitio</title>
+        <meta name="description" content="Book your free, no-obligation consultation with Universitio. Tell us about your study goals and we'll help you find the right university and course." />
+      </Helmet>
       <Navbar />
 
       <main className="flex-grow pt-32 pb-24">

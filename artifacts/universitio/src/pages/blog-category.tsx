@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -24,15 +25,8 @@ export default function BlogCategoryPage() {
   const posts = blogPosts.filter((p) => p.categorySlugs.includes(categorySlug || ""));
 
   useEffect(() => {
-    if (category) {
-      document.title = `${category.name} Articles | Universitio Blog`;
-      const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
-      meta.setAttribute("name", "description");
-      meta.setAttribute("content", `Browse ${posts.length} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`);
-      if (!meta.parentElement) document.head.appendChild(meta);
-    }
     setVisibleCount(POSTS_PER_PAGE);
-  }, [category, categorySlug, posts.length]);
+  }, [categorySlug]);
 
   const allCategoriesSorted = blogCategories
     .filter((c) => c.postCount > 0)
@@ -65,11 +59,15 @@ export default function BlogCategoryPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>{category.name} Articles | Universitio Blog</title>
+        <meta name="description" content={`Browse ${posts.length} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`} />
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
             <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-foreground font-medium">{category.name}</span>

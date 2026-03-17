@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,21 +6,12 @@ import { Link } from "wouter";
 import { Briefcase, ArrowRight } from "lucide-react";
 
 export default function Careers() {
-  useEffect(() => {
-    document.title = "Careers | Universitio";
-    const meta =
-      document.querySelector('meta[name="description"]') ||
-      document.createElement("meta");
-    meta.setAttribute("name", "description");
-    meta.setAttribute(
-      "content",
-      "Explore career opportunities at Universitio. Join our team of education consultants helping international students reach top universities worldwide.",
-    );
-    if (!meta.parentElement) document.head.appendChild(meta);
-  }, []);
-
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>Careers | Universitio</title>
+        <meta name="description" content="Explore career opportunities at Universitio. Join our team of education consultants helping international students reach top universities worldwide." />
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

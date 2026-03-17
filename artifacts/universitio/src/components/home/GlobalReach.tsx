@@ -3,7 +3,7 @@ import { Globe } from "lucide-react";
 
 export function GlobalReach() {
   return (
-    <section id="countries" className="py-12 md:py-20 bg-muted/30">
+    <section id="countries" aria-label="Global Reach" className="py-12 md:py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
           <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">

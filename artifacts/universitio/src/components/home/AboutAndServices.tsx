@@ -442,7 +442,7 @@ export function AboutAndServices() {
   return (
     <>
       {/* ── Unified About Section: story + credentials + why us ── */}
-      <section id="about" className="py-14 md:py-22 bg-white">
+      <section id="about" aria-label="About Universitio" className="py-14 md:py-22 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 md:space-y-20">
 
           {/* Row 1: brand story (left) + credential logos (right) */}
@@ -542,7 +542,7 @@ export function AboutAndServices() {
       </section>
 
       {/* ── Services Card Grid ── */}
-      <section id="services" className="py-12 md:py-20 bg-muted/40">
+      <section id="services" aria-label="Our Services" className="py-12 md:py-20 bg-muted/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">Our Services</h2>

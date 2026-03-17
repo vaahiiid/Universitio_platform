@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { trackEvent } from "@/lib/analytics";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -81,21 +82,6 @@ export default function BlogPostPage() {
 
   useEffect(() => {
     if (post) {
-      document.title = `${post.title} | Universitio Blog`;
-
-      const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
-      meta.setAttribute("name", "description");
-      meta.setAttribute("content", post.excerpt.slice(0, 160));
-      if (!meta.parentElement) document.head.appendChild(meta);
-
-      let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-      if (!canonical) {
-        canonical = document.createElement("link") as HTMLLinkElement;
-        canonical.setAttribute("rel", "canonical");
-        document.head.appendChild(canonical);
-      }
-      canonical.setAttribute("href", `https://universitio.com/blog/${post.slug}`);
-
       trackEvent("blog_article_view", {
         event_category: "blog",
         event_label: post.title,
@@ -103,10 +89,6 @@ export default function BlogPostPage() {
         page_path: `/blog/${post.slug}`,
       });
     }
-    return () => {
-      const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-      if (canonical) canonical.setAttribute("href", "https://universitio.com/");
-    };
   }, [post]);
 
   const relatedPosts = useMemo(() => {
@@ -131,11 +113,27 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>{post.title} | Universitio Blog</title>
+        <meta name="description" content={post.excerpt.slice(0, 160)} />
+        <link rel="canonical" href={`https://universitio.com/blog/${post.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.excerpt.slice(0, 160),
+          "datePublished": post.date,
+          "image": `https://universitio.com${BASE}${post.image}`,
+          "author": { "@type": "Organization", "name": "Universitio", "url": "https://universitio.com" },
+          "publisher": { "@type": "Organization", "name": "Universitio", "logo": { "@type": "ImageObject", "url": "https://universitio.com/assets/universitio-logo.png" } },
+          "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` }
+        })}</script>
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8 flex-wrap">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground mb-8 flex-wrap">
             <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             {post.categories[0] && (

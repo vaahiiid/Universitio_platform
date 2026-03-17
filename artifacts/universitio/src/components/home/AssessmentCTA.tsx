@@ -10,7 +10,7 @@ const infoCards = [
 
 export function AssessmentCTA() {
   return (
-    <section id="assessment" className="py-12 md:py-20 relative overflow-hidden">
+    <section id="assessment" aria-label="Free Admissions Assessment" className="py-12 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a0a33] via-primary to-[#2d1157]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-secondary/10 rounded-full blur-[200px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-blue-500/8 rounded-full blur-[150px] pointer-events-none" />
@@ -57,7 +57,7 @@ export function AssessmentCTA() {
                   <card.icon className="w-7 h-7 text-secondary" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white text-lg">{card.label}</h4>
+                  <h3 className="font-bold text-white text-lg">{card.label}</h3>
                   <p className="text-white/50 text-sm">{card.desc}</p>
                 </div>
               </div>

@@ -1,10 +1,15 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { ArrowLeft } from "lucide-react";
 
 export default function TermsAndConditions() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-4 py-12">
+      <Helmet>
+        <title>Terms and Conditions | Universitio</title>
+        <meta name="description" content="Read the Terms and Conditions for Universitio Ltd (Company No. 15168670), a UK-registered education consultancy providing university application support for international students." />
+      </Helmet>
+      <main className="max-w-3xl mx-auto px-4 py-12">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">
           <ArrowLeft className="w-4 h-4" />
           Back to Home
@@ -86,7 +91,7 @@ export default function TermsAndConditions() {
           </section>
 
         </div>
-      </div>
+      </main>
     </div>
   );
 }

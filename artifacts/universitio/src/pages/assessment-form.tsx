@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -511,6 +512,10 @@ export default function AssessmentForm() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>Free Admissions Assessment | Universitio</title>
+        <meta name="description" content="Take the free Universitio admissions assessment to estimate your chances of acceptance at top universities. Get a personalised readiness score in under 5 minutes." />
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

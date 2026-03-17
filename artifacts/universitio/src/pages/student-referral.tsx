@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
@@ -175,6 +176,10 @@ export default function StudentReferral() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>Student Referral Programme | Universitio</title>
+        <meta name="description" content="Refer students planning to study abroad and earn rewards through the Universitio Student Referral Programme. Simple, free, and rewarding." />
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

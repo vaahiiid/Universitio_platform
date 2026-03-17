@@ -5,7 +5,7 @@ import { ArrowRight, ChevronRight, GraduationCap, MapPin, Search } from "lucide-
 
 export function Hero() {
   return (
-    <section id="home" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50/50">
+    <section id="home" aria-label="Introduction" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50/50">
       {/* Decorative background elements */}
       <div className="absolute top-20 right-0 w-[800px] h-[800px] bg-secondary/5 rounded-full blur-3xl -z-10 mix-blend-multiply" />
       <div className="absolute bottom-0 left-[-20%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl -z-10 mix-blend-multiply" />

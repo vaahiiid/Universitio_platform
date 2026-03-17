@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Link } from "wouter";
@@ -185,6 +186,10 @@ export default function Partners() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>Become a Universitio Partner | Education Agency Partnership</title>
+        <meta name="description" content="Join the Universitio partner programme. We work with education agencies, counsellors, and student recruitment partners to support international students worldwide." />
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

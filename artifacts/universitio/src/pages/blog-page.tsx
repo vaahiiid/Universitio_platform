@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -19,14 +20,6 @@ export default function BlogPage() {
   const [, navigate] = useLocation();
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
 
-  useEffect(() => {
-    document.title = "Blog | Universitio — Insights & Guidance for International Students";
-    const meta = document.querySelector('meta[name="description"]') || document.createElement("meta");
-    meta.setAttribute("name", "description");
-    meta.setAttribute("content", "Expert insights, university guides, and practical advice for international students planning to study abroad. Browse articles on UK universities, student experience, scholarships, and more.");
-    if (!meta.parentElement) document.head.appendChild(meta);
-  }, []);
-
   const featured = blogPosts[0];
   const remaining = blogPosts.slice(1);
   const visible = remaining.slice(0, visibleCount);
@@ -38,6 +31,10 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Helmet>
+        <title>Blog | Universitio — Insights & Guidance for International Students</title>
+        <meta name="description" content="Expert insights, university guides, and practical advice for international students planning to study abroad. Browse articles on UK universities, student experience, scholarships, and more." />
+      </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

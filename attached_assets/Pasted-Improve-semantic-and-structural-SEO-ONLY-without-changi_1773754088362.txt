@@ -1,0 +1,56 @@
+Improve semantic and structural SEO ONLY, without changing any UI, design, layout, sections, styling, wording, branding, CTA text, or user flow.
+
+STRICT RULE:
+This is a structure/SEO task only.
+Do NOT redesign anything.
+Do NOT simplify the interface.
+Do NOT remove sections.
+Do NOT rewrite visible marketing copy unless absolutely necessary for semantic heading structure, and even then preserve the exact meaning and tone.
+Do NOT change the look and feel.
+
+Tasks:
+
+1. Fix heading hierarchy
+   - Ensure each page has exactly one H1
+   - Reduce excessive H2 usage where possible
+   - Create a clean semantic hierarchy: H1 → H2 → H3
+   - Preserve the current visible design and text meaning
+
+2. Improve section semantics
+   - Use semantic HTML where appropriate (main, section, nav, article, aside, footer, header)
+   - Do not change layout or styling
+   - Ensure sections are labeled meaningfully for search engines and accessibility
+
+3. Internal linking
+   - Add or improve internal links between:
+     • homepage and service pages
+     • homepage and blog
+     • blog posts and relevant services
+     • related blog posts where appropriate
+   - Keep links natural and useful
+   - Do not clutter the UI or visibly redesign sections
+
+4. Image alt text audit
+   - Ensure all meaningful images have descriptive alt text
+   - Decorative images should use appropriate empty alt where needed
+   - Preserve current appearance
+
+5. Structured data validation
+   - Audit and improve structured data already present
+   - Keep Organization schema correct
+   - Ensure sameAs links are valid
+   - Add or improve relevant schema only if it does not require design/content changes
+   - Do not add spammy schema
+
+6. Metadata consistency
+   - Ensure titles, canonicals, and page intent are aligned with actual page purpose
+   - Keep brand/domain consistency intact
+   - Do not change overall messaging style
+
+7. Accessibility/SEO overlap improvements
+   - Improve labels, landmarks, and semantic clarity where this helps both accessibility and SEO
+   - No visible redesign
+
+8. Final report
+   - List exactly what structural SEO improvements were made
+   - Confirm that no UI/design/content/section changes were made
