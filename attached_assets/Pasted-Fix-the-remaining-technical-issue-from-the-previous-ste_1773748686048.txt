@@ -1,0 +1,75 @@
+Fix the remaining technical issue from the previous step AND perform performance optimization, WITHOUT changing any UI, design, layout, sections, styling, wording, images placement, brand feel, or user flow.
+
+STRICT RULE:
+This is a technical + performance task only.
+Do NOT redesign anything.
+Do NOT simplify the interface.
+Do NOT change text, copy, section order, or visual hierarchy.
+Do NOT remove or alter branding.
+Do NOT change form flows, CTA wording, or page content.
+
+PART A — REMAINING TECHNICAL ISSUE TO FIX
+----------------------------------------
+
+The current 404 page in the SPA is visually correct, but invalid/non-existent routes may still return HTTP 200 because of client-side routing.
+Please improve this as much as possible within the current architecture.
+
+Tasks:
+1. Ensure invalid routes are handled in the best SEO-friendly way possible for the current stack
+2. If true HTTP 404 status can be returned for unknown frontend routes without breaking the site, implement it
+3. If the current architecture cannot safely return real 404 for SPA routes, then:
+   - keep the branded 404 UI
+   - ensure invalid URLs are clearly excluded from sitemap/internal linking
+   - ensure no broken internal links remain
+   - document the limitation clearly in the final report
+4. Do not break routing, blog pages, forms, or deployments
+
+PART B — PERFORMANCE OPTIMIZATION
+---------------------------------
+
+1. Optimize images
+   - Convert large images to modern formats where appropriate (WebP/AVIF if safely supported)
+   - Serve properly sized images based on their actual rendered dimensions
+   - Fix any distorted image rendering caused by width/height/aspect-ratio issues
+   - Preserve the exact current visual appearance
+
+2. Lazy loading
+   - Add lazy loading to below-the-fold images and non-critical media
+   - Do not lazy load critical above-the-fold assets
+
+3. Reduce JavaScript cost
+   - Reduce unnecessary JS execution
+   - Use code splitting / lazy loading for non-critical routes and components where safe
+   - Remove dead or unused JS where possible
+   - Do not break analytics, forms, blog pages, or admin-related behavior
+
+4. Defer non-critical third-party scripts
+   - Keep Google Analytics working
+   - Defer/delay non-essential third-party scripts where safe
+   - Preserve all current functionality
+
+5. Improve caching
+   - Add or verify cache headers for static assets:
+     images, CSS, JS, icons
+   - Keep deployment compatibility intact
+
+6. Enable compression
+   - Ensure HTML, JS, CSS, and other compressible assets are served with gzip or Brotli where supported
+
+7. Reduce render-blocking resources where possible
+   - Optimize non-critical CSS/JS loading
+   - Preserve the same final visual result
+
+8. Fonts
+   - Optimize font loading without changing typography
+   - Preserve the current font family and visual style
+
+9. Keep technical SEO intact
+   - Do not break canonical tags
+   - Do not break sitemap, robots.txt, metadata, structured data, redirects, or domain consistency
+
+10. Final report
+   - List exactly what was optimized
+   - Confirm whether real HTTP 404 was achieved or not
+   - If not possible, explain the limitation briefly
+   - Explicitly confirm that no design/content/layout/UX changes were made

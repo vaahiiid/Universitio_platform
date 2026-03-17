@@ -290,21 +290,21 @@ export const siteData = {
   blogPosts: [
     {
       id: 1,
-      image: "blog-1.png",
+      image: "blog-1.webp",
       date: "12 March 2026",
       title: "How to Write a Strong UCAS Personal Statement",
       excerpt: "Your personal statement is one of the most important parts of your UCAS application. Here's our expert guide to making it stand out."
     },
     {
       id: 2,
-      image: "blog-2.png",
+      image: "blog-2.webp",
       date: "5 March 2026",
       title: "UK Study 2026: What International Students Need to Know",
       excerpt: "A clear overview of the UK application requirements, documentation process, and what to expect when applying from abroad."
     },
     {
       id: 3,
-      image: "blog-3.png",
+      image: "blog-3.webp",
       date: "26 February 2026",
       title: "Choosing Between Russell Group and Post-1992 Universities",
       excerpt: "Understanding the difference between university types in the UK can help you make a more informed decision about where to apply."

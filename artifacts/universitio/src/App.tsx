@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation, Redirect } from "wouter";
 import { trackPageView } from "@/lib/analytics";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,28 +10,37 @@ import { CanonicalHead } from "@/components/seo/CanonicalHead";
 import Home from "@/pages/Home";
 import FreeConsultation from "@/pages/free-consultation";
 import AssessmentForm from "@/pages/assessment-form";
-import BlogPage from "@/pages/blog-page";
-import BlogPostPage from "@/pages/blog-post";
-import BlogCategoryPage from "@/pages/blog-category";
-import Partners from "@/pages/partners";
-import StudentReferral from "@/pages/student-referral";
-import Careers from "@/pages/careers";
-import TermsAndConditions from "@/pages/terms-and-conditions";
-import PrivacyPolicy from "@/pages/privacy-policy";
-import NotFound from "@/pages/not-found";
 
-import AdminLogin from "@/pages/admin/login";
-import AdminDashboard from "@/pages/admin/dashboard";
-import ConsultationsPage from "@/pages/admin/consultations";
-import AssessmentsPage from "@/pages/admin/assessments";
-import AdminPartnersPage from "@/pages/admin/admin-partners";
-import ReferralsPage from "@/pages/admin/referrals";
-import MessagesPage from "@/pages/admin/messages";
-import BlogImportPage from "@/pages/admin/blog-import";
-import MembersPage from "@/pages/admin/members";
-import ServiceRequestsPage from "@/pages/admin/service-requests";
+const BlogPage = lazy(() => import("@/pages/blog-page"));
+const BlogPostPage = lazy(() => import("@/pages/blog-post"));
+const BlogCategoryPage = lazy(() => import("@/pages/blog-category"));
+const Partners = lazy(() => import("@/pages/partners"));
+const StudentReferral = lazy(() => import("@/pages/student-referral"));
+const Careers = lazy(() => import("@/pages/careers"));
+const TermsAndConditions = lazy(() => import("@/pages/terms-and-conditions"));
+const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
+const NotFound = lazy(() => import("@/pages/not-found"));
+
+const AdminLogin = lazy(() => import("@/pages/admin/login"));
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+const ConsultationsPage = lazy(() => import("@/pages/admin/consultations"));
+const AssessmentsPage = lazy(() => import("@/pages/admin/assessments"));
+const AdminPartnersPage = lazy(() => import("@/pages/admin/admin-partners"));
+const ReferralsPage = lazy(() => import("@/pages/admin/referrals"));
+const MessagesPage = lazy(() => import("@/pages/admin/messages"));
+const BlogImportPage = lazy(() => import("@/pages/admin/blog-import"));
+const MembersPage = lazy(() => import("@/pages/admin/members"));
+const ServiceRequestsPage = lazy(() => import("@/pages/admin/service-requests"));
 
 const queryClient = new QueryClient();
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="w-6 h-6 border-2 border-[#42147d] border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
 
 function DomainRedirectGuard() {
   useEffect(() => {
@@ -79,53 +88,55 @@ function Router() {
       <DomainRedirectGuard />
       <CanonicalHead />
       <ScrollToTop />
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/free-consultation" component={FreeConsultation} />
-        <Route path="/assessment-form" component={AssessmentForm} />
-        <Route path="/blog" component={BlogPage} />
-        <Route path="/blog/category/:category" component={BlogCategoryPage} />
-        <Route path="/blog/:slug" component={BlogPostPage} />
-        <Route path="/partners" component={Partners} />
-        <Route path="/student-referral" component={StudentReferral} />
-        <Route path="/careers" component={Careers} />
-        <Route path="/terms-and-conditions" component={TermsAndConditions} />
-        <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Suspense fallback={<PageLoader />}>
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/free-consultation" component={FreeConsultation} />
+          <Route path="/assessment-form" component={AssessmentForm} />
+          <Route path="/blog" component={BlogPage} />
+          <Route path="/blog/category/:category" component={BlogCategoryPage} />
+          <Route path="/blog/:slug" component={BlogPostPage} />
+          <Route path="/partners" component={Partners} />
+          <Route path="/student-referral" component={StudentReferral} />
+          <Route path="/careers" component={Careers} />
+          <Route path="/terms-and-conditions" component={TermsAndConditions} />
+          <Route path="/privacy-policy" component={PrivacyPolicy} />
 
-        <Route path="/admin/login" component={AdminLogin} />
-        <Route path="/admin">
-          {() => <AdminGuard><AdminDashboard /></AdminGuard>}
-        </Route>
-        <Route path="/admin/consultations/:id?">
-          {() => <AdminGuard><ConsultationsPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/assessments/:id?">
-          {() => <AdminGuard><AssessmentsPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/partners/:id?">
-          {() => <AdminGuard><AdminPartnersPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/referrals/:id?">
-          {() => <AdminGuard><ReferralsPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/messages/:id?">
-          {() => <AdminGuard><MessagesPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/blog-import">
-          {() => <AdminGuard><BlogImportPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/members">
-          {() => <AdminGuard><MembersPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/service-requests/:id?">
-          {() => <AdminGuard><ServiceRequestsPage /></AdminGuard>}
-        </Route>
-        <Route path="/admin/:rest*">
-          {() => <AdminGuard><Redirect to="/admin" /></AdminGuard>}
-        </Route>
+          <Route path="/admin/login" component={AdminLogin} />
+          <Route path="/admin">
+            {() => <AdminGuard><AdminDashboard /></AdminGuard>}
+          </Route>
+          <Route path="/admin/consultations/:id?">
+            {() => <AdminGuard><ConsultationsPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/assessments/:id?">
+            {() => <AdminGuard><AssessmentsPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/partners/:id?">
+            {() => <AdminGuard><AdminPartnersPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/referrals/:id?">
+            {() => <AdminGuard><ReferralsPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/messages/:id?">
+            {() => <AdminGuard><MessagesPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/blog-import">
+            {() => <AdminGuard><BlogImportPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/members">
+            {() => <AdminGuard><MembersPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/service-requests/:id?">
+            {() => <AdminGuard><ServiceRequestsPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/:rest*">
+            {() => <AdminGuard><Redirect to="/admin" /></AdminGuard>}
+          </Route>
 
-        <Route component={NotFound} />
-      </Switch>
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
     </>
   );
 }

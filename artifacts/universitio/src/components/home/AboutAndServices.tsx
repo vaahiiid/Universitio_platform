@@ -492,7 +492,7 @@ export function AboutAndServices() {
                         className="flex items-center gap-4 bg-slate-50 rounded-2xl p-4 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all"
                       >
                         {logo && (
-                          <img src={logo.img} alt={logo.alt} className="h-10 w-auto object-contain shrink-0" />
+                          <img src={logo.img} alt={logo.alt} className="h-10 w-auto object-contain shrink-0" loading="lazy" />
                         )}
                         <div>
                           <p className="font-semibold text-foreground text-xs leading-snug">{acc.name}</p>

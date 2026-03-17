@@ -81,6 +81,7 @@ export function StudyDestinations() {
                   src={dest.image}
                   alt={dest.country}
                   className="absolute inset-0 w-full h-full object-cover transition-all duration-500"
+                  loading="lazy"
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t ${dest.colour} opacity-60`} />
                 <div className="absolute bottom-8 left-8 right-8 z-10">
@@ -116,7 +117,7 @@ export function StudyDestinations() {
           {destinations.map((d, i) => (
             <div key={i} className="bg-white rounded-2xl border border-border shadow-md overflow-hidden">
               <div className="relative h-48">
-                <img src={d.image} alt={d.country} className="w-full h-full object-cover" />
+                <img src={d.image} alt={d.country} className="w-full h-full object-cover" loading="lazy" />
                 <div className={`absolute inset-0 bg-gradient-to-t ${d.colour} opacity-60`} />
                 <div className="absolute bottom-4 left-4 z-10">
                   <span className="text-4xl drop-shadow-lg">{d.flag}</span>
