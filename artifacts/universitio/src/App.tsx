@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AdminAuthProvider, useAdminAuth } from "@/contexts/AdminAuthContext";
+import { CanonicalHead } from "@/components/seo/CanonicalHead";
 
 import Home from "@/pages/Home";
 import FreeConsultation from "@/pages/free-consultation";
@@ -31,6 +32,17 @@ import MembersPage from "@/pages/admin/members";
 import ServiceRequestsPage from "@/pages/admin/service-requests";
 
 const queryClient = new QueryClient();
+
+function DomainRedirectGuard() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const host = window.location.hostname;
+    if (host === "universitio.com" || host === "localhost" || host.endsWith(".replit.dev") || host.endsWith(".repl.co") || host.endsWith(".replit.app")) return;
+    const canonical = "https://universitio.com" + window.location.pathname + window.location.search + window.location.hash;
+    window.location.replace(canonical);
+  }, []);
+  return null;
+}
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -64,6 +76,8 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
 function Router() {
   return (
     <>
+      <DomainRedirectGuard />
+      <CanonicalHead />
       <ScrollToTop />
       <Switch>
         <Route path="/" component={Home} />
