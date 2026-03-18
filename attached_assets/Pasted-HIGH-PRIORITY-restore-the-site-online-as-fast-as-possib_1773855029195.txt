@@ -1,0 +1,59 @@
+HIGH PRIORITY: restore the site online as fast as possible.
+
+Goal:
+Make the deployment pass health checks immediately and get the public site back online.
+Do NOT do any broad refactoring. Do NOT change UI, design, layout, content, or SEO logic unless absolutely required for the health check.
+
+Urgent deployment strategy:
+1. Make GET "/" on the internal server return a plain fast HTTP 200 immediately
+   - response body can be just "ok"
+   - no JSON generation if unnecessary
+   - no redirects
+   - no database access
+   - no auth
+   - no static file checks
+   - no middleware that could delay the response
+
+2. Register GET "/" as the FIRST route in the Express app
+   - before compression
+   - before cors
+   - before body parsers
+   - before database init hooks
+   - before static serving
+   - before any catch-all routes
+
+3. Temporarily disable any startup database verification or expensive boot-time checks
+   - the app must start even if the database is slow
+   - move DB verification out of startup path if currently blocking boot
+   - do not block server.listen() on database readiness
+
+4. Ensure the server binds explicitly and immediately to:
+   - host: 0.0.0.0
+   - port: process.env.PORT || 8080
+
+5. Keep /healthz too, but the priority is GET "/"
+
+6. If static frontend serving is interfering with health checks, temporarily bypass it for "/"
+   - health check success is the top priority
+   - get the deployment green first
+
+7. Add temporary startup logs:
+   - "server boot start"
+   - "root health route registered"
+   - "listening on port ..."
+   - "startup complete"
+   so we can see exactly where delays happen
+
+8. Rebuild the production bundle and verify in production mode:
+   - curl http://127.0.0.1:8080/
+   - must return 200 instantly in well under 1 second
+
+9. Report only:
+   - exact file changed
+   - exact root route code
+   - whether DB startup checks were disabled or deferred
+   - whether curl localhost:8080/ returns 200 immediately in production mode
+
+IMPORTANT:
+Prioritise getting the site online over elegance.
+Make the smallest safe change that gets deployment healthy.

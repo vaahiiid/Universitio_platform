@@ -5,6 +5,13 @@ import compression from "compression";
 import cors from "cors";
 import router from "./routes";
 
+const app: Express = express();
+
+// Health checks — absolute first routes, no middleware, plain-text instant response
+app.get("/", (_req, res) => { res.send("ok"); });
+app.get("/healthz", (_req, res) => { res.send("ok"); });
+app.get("/api/healthz", (_req, res) => { res.send("ok"); });
+
 const CANONICAL_HOST = "universitio.com";
 
 const ALLOWED_DEV_PATTERNS = [
@@ -32,12 +39,6 @@ function canonicalRedirect(req: Request, res: Response, next: NextFunction): voi
   const redirectUrl = `https://${CANONICAL_HOST}${req.originalUrl}`;
   res.redirect(301, redirectUrl);
 }
-
-const app: Express = express();
-
-// Health checks — registered first, before all middleware and routing
-app.get("/", (_req, res) => { res.json({ status: "ok" }); });
-app.get("/healthz", (_req, res) => { res.json({ status: "ok" }); });
 
 app.use(canonicalRedirect);
 app.use(compression());

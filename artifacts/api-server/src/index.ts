@@ -1,5 +1,9 @@
+console.log("[BOOT] server boot start");
+
 import app from "./app";
 import { pool } from "@workspace/db";
+
+console.log("[BOOT] root health route registered");
 
 process.on("uncaughtException", (err) => {
   console.error("[FATAL] Uncaught exception:", err.name, err.message);
@@ -20,39 +24,31 @@ process.on("SIGTERM", () => {
   });
 });
 
-const requiredVars = ["PORT"];
 const dbConfigured = process.env.DATABASE_URL || (process.env.PGHOST && process.env.PGUSER && process.env.PGDATABASE);
 if (!dbConfigured) {
   console.error("[FATAL] No database configuration found. Set DATABASE_URL or PGHOST/PGUSER/PGPASSWORD/PGDATABASE.");
   process.exit(1);
 }
 
-const missing = requiredVars.filter((v) => !process.env[v]);
-if (missing.length) {
-  console.error(`[FATAL] Missing required environment variables: ${missing.join(", ")}`);
-  process.exit(1);
-}
-
-const port = Number(process.env["PORT"]);
-
+const port = Number(process.env["PORT"] ?? 8080);
 if (Number.isNaN(port) || port <= 0) {
   console.error(`[FATAL] Invalid PORT value: "${process.env["PORT"]}"`);
   process.exit(1);
 }
 
-console.log(`[INFO] Startup — NODE_ENV=${process.env.NODE_ENV ?? "not set"} PORT=${port}`);
+const server = app.listen(port, "0.0.0.0", () => {
+  console.log(`[BOOT] listening on port ${port}`);
+  console.log("[BOOT] startup complete");
 
-pool.connect()
-  .then((client) => {
-    console.log("[INFO] Database connection verified");
-    client.release();
-  })
-  .catch((err: Error) => {
-    console.error("[ERROR] Database connection failed at startup:", err.message);
-  });
-
-const server = app.listen(port, () => {
-  console.log(`[INFO] Server listening on port ${port}`);
+  // DB ping deferred — runs after server is already accepting requests
+  pool.connect()
+    .then((client) => {
+      console.log("[INFO] Database connection verified");
+      client.release();
+    })
+    .catch((err: Error) => {
+      console.error("[ERROR] Database connection failed:", err.message);
+    });
 });
 
 server.on("error", (err) => {
