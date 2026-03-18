@@ -1,0 +1,315 @@
+Update the website legal pages with the following requirements.
+
+CRITICAL RULES:
+- Do NOT change any UI, design, layout, styling, spacing, colours, or component structure.
+- Do NOT modify navigation, routes, or page hierarchy.
+- Only update TEXT CONTENT inside existing Terms & Conditions and Privacy Policy pages.
+- Maintain full SEO integrity.
+
+---
+
+TASK 1 — TERMS AND CONDITIONS
+
+Replace the entire content of the Terms & Conditions page with the following updated version:
+
+TERMS AND CONDITIONS
+Last updated: March 2026 — Universitio Ltd (Company No. 15168670)
+1. About Us
+Universitio Ltd (“Universitio”, “we”, “us”, “our”) is a UK-registered education consultancy company (Company No. 15168670), with its registered office at:
+44 Birmingham Road, Birmingham, B72 1QQ, United Kingdom
+ 
+2. Acceptance of Terms
+By accessing our website, submitting any form, or using our services, you confirm that you accept these Terms and Conditions and agree to comply with them.
+If you do not agree, you must not use our services.
+ 
+3. Our Services
+We provide education consultancy and student support services, including:
+•	Free assessments and consultations
+•	University and course selection guidance
+•	Application support
+•	Scholarship and funding guidance
+•	English language preparation advice
+•	Interview preparation
+•	Referral programmes
+•	General student support
+We do not provide immigration, visa, or legal advice.
+ 
+4. User Responsibilities
+You agree to:
+•	Provide accurate, complete, and up-to-date information
+•	Submit genuine and verifiable documents
+•	Respond promptly when requested
+We are not responsible for outcomes resulting from incorrect or misleading information.
+ 
+5. No Guarantee of Outcome
+We do not guarantee:
+•	admission to any institution
+•	scholarship or funding
+•	visa approval
+•	accommodation
+•	timelines
+All final decisions are made by third parties.
+ 
+6. Fees and Refund Policy
+6.1 Free Services
+Free services are not subject to refunds.
+6.2 Paid Services
+All paid services are non-refundable, unless we are unable to deliver the service at all.
+No refund applies if:
+•	the service has started or been delivered
+•	you change your mind
+•	you fail to provide required information
+•	your application is unsuccessful
+•	third parties reject or delay outcomes
+Approved refunds are limited to the undelivered portion only.
+ 
+7. Data Use and Marketing
+By submitting forms or using our services, your data may be stored and used for:
+•	service delivery and communication
+•	follow-ups and support
+•	relevant marketing communications
+We do not sell your personal data.
+You may unsubscribe at any time via email or direct request.
+ 
+8. Data Retention
+We may retain your data for up to one (1) year in active systems after your last interaction.
+Data may be retained longer where required for legal, compliance, or dispute purposes.
+ 
+9. Website Use
+You agree not to:
+•	misuse the website
+•	attempt unauthorised access
+•	introduce harmful code
+We may suspend access if misuse occurs.
+ 
+10. Intellectual Property
+All website content is owned by Universitio Ltd.
+You may not use or reproduce it without permission.
+ 
+11. Third-Party Links
+We are not responsible for third-party websites or services.
+ 
+12. Service Availability
+We do not guarantee uninterrupted or error-free access to our website or services.
+ 
+13. Events Outside Our Control
+We are not liable for delays or failures caused by events outside our control, including:
+•	natural disasters
+•	pandemics
+•	government actions
+•	system failures
+•	third-party delays
+ 
+14. Complaints
+Complaints must be submitted to:
+📧 info@universitio.co.uk
+We aim to respond within 28 working days.
+If unresolved, you may seek support from:
+•	Citizens Advice
+•	Trading Standards
+•	ICO (for data issues)
+•	UK courts where applicable
+ 
+15. Limitation of Liability
+We are not liable for indirect or consequential losses.
+Our liability is limited to the amount paid for the service.
+ 
+16. Changes to Terms
+We may update these Terms at any time.
+Continued use constitutes acceptance.
+ 
+17. Governing Law
+These Terms are governed by the laws of England and Wales.
+ 
+18. Contact
+Email: info@universitio.co.uk
+Phone: +44 7963 345465
+Address: 44 Birmingham Road, Birmingham, B72 1QQ, UK
+
+REQUIREMENTS:
+
+1. Add a TABLE OF CONTENTS at the top of the page:
+   - Must list all sections (1 to 18)
+   - Each item must be clickable and anchor-linked to its section
+   - Example:
+     1. About Us
+     2. Acceptance of Terms
+     3. Our Services
+     ...
+   - Use anchor IDs (e.g. #about-us, #acceptance-of-terms)
+   - Smooth scrolling if already supported (do NOT add new UI behavior)
+
+2. Ensure proper heading structure:
+   - H1: TERMS AND CONDITIONS
+   - H2: Each main section (1–18)
+   - H3: Subsections (e.g. 6.1, 6.2)
+
+3. Make email clickable (mailto link)
+
+4. Preserve exact wording — no rewriting
+
+---
+
+TASK 2 — PRIVACY POLICY
+
+Replace the entire content of the Privacy Policy page with the following updated version:
+
+PRIVACY POLICY
+Last updated: March 2026 — Universitio Ltd (Company No. 15168670)
+1. Who We Are
+Universitio Ltd is the data controller of your personal data.
+ 
+2. Data We Collect
+We may collect:
+•	Identity data (name, DOB, nationality)
+•	Contact data (email, phone)
+•	Education data (qualifications, preferences)
+•	Documents (CV, SOP, transcripts)
+•	Communication data
+•	Technical data (IP, browser, usage)
+•	Marketing preferences
+ 
+3. How We Collect Data
+We collect data when you:
+•	fill in forms
+•	contact us
+•	use our services
+•	upload documents
+We may also collect technical data automatically and limited data from partners or public sources.
+ 
+4. How We Use Data
+We use your data to:
+•	respond to enquiries
+•	provide consultancy services
+•	assess eligibility
+•	support applications
+•	communicate with you
+•	send relevant opportunities and updates
+•	improve services
+•	comply with legal obligations
+ 
+5. Legal Basis
+We rely on:
+•	Contract
+•	Legitimate interests
+•	Consent (for marketing where applicable)
+•	Legal obligations
+ 
+6. Marketing
+We may send relevant communications unless you opt out.
+You can unsubscribe at any time.
+We do not sell your data.
+ 
+7. Data Sharing
+We may share data with:
+•	universities and institutions
+•	service providers (hosting, email, systems)
+•	legal authorities (if required)
+We do not allow third parties to use your data for their own marketing.
+ 
+8. International Transfers
+Data may be transferred outside the UK with appropriate safeguards.
+ 
+9. Data Security
+We use appropriate security measures to protect your data.
+ 
+10. Data Retention
+We retain data for up to three (3) years after your last interaction, or longer if legally required.
+ 
+11. Your Rights
+You have the right to:
+•	access your data
+•	correct it
+•	request deletion
+•	object to processing
+•	withdraw consent
+•	complain to the ICO
+Contact: info@universitio.co.uk
+Response time: up to 30 days
+ 
+12. Complaints
+You may contact us first or complain to the ICO (ico.org.uk).
+ 
+13. Cookies
+We use essential cookies only.
+See our Cookie Policy for details.
+ 
+14. Third-Party Links
+We are not responsible for external websites.
+ 
+15. Changes
+We may update this policy. Please review periodically.
+ 
+16. Contact
+Email: info@universitio.co.uk
+Phone: +44 7963 345465
+Address: Birmingham, UK
+ 
+REQUIREMENTS:
+
+1. Add a TABLE OF CONTENTS at the top:
+   - List all sections (1–16)
+   - Clickable anchor links
+   - Same anchor logic as Terms page
+
+2. Maintain semantic headings:
+   - H1: PRIVACY POLICY
+   - H2: Sections
+   - Bullet lists properly structured
+
+3. Make email clickable
+
+4. Do NOT modify wording
+
+---
+
+TASK 3 — SEO & LEGAL CHECK
+
+Ensure:
+
+- Both pages are linked in footer
+- Each page has:
+  - unique <title>
+  - meta description under 160 chars
+  - canonical tag (self-referencing)
+- Pages MUST remain indexable (no noindex)
+
+---
+
+TASK 4 — FORM CONSENT INTEGRATION (CRITICAL)
+
+Update ALL forms:
+
+Add TWO checkboxes:
+
+1. REQUIRED:
+"I have read and agree to the Terms and Conditions and Privacy Policy"
+- Must be required
+- Terms & Privacy must be clickable links (open in new tab)
+
+2. OPTIONAL:
+"Tick this box if you do NOT want to receive marketing emails from us"
+- Must NOT be required
+
+DATA REQUIREMENTS:
+
+- Store checkbox values (true/false)
+- Store timestamp
+- Store form type (assessment / consultation / referral)
+
+IMPORTANT:
+- Do NOT change form layout or styling
+- Integrate seamlessly into current UI
+
+---
+
+TASK 5 — FINAL VERIFICATION
+
+Confirm:
+
+- No visual/UI changes anywhere
+- Anchor links work correctly
+- Table of Contents scrolls to correct sections
+- No console errors
+- Forms still work
+- Mobile + desktop rendering correct
