@@ -26,8 +26,24 @@ function getDatabaseUrl(): string {
   );
 }
 
+function getSslConfig(url: string): boolean | { rejectUnauthorized: boolean } | undefined {
+  try {
+    const parsed = new URL(url);
+    const sslmode = parsed.searchParams.get("sslmode");
+    if (sslmode === "disable") return false;
+    if (sslmode === "require" || sslmode === "verify-ca" || sslmode === "verify-full") {
+      return { rejectUnauthorized: sslmode === "verify-full" };
+    }
+  } catch {
+    // not a parseable URL — leave ssl unset
+  }
+  return undefined;
+}
+
 const connectionString = getDatabaseUrl();
-export const pool = new Pool({ connectionString });
+const ssl = getSslConfig(connectionString);
+
+export const pool = new Pool(ssl !== undefined ? { connectionString, ssl } : { connectionString });
 export const db = drizzle(pool, { schema });
 
 export * from "./schema";
