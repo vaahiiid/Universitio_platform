@@ -1,0 +1,83 @@
+Update the website legal pages with the following requirements.
+
+CRITICAL RULES:
+- Do NOT change any UI, design, layout, styling, spacing, colours, or component structure.
+- Do NOT modify navigation, routes, or page hierarchy.
+- Do NOT remove any existing sections unless explicitly replaced.
+- Only update the TEXT CONTENT inside the existing Terms & Conditions and Privacy Policy pages.
+- Keep the same headings structure (H1, H2, etc.) unless already incorrect.
+- Ensure the pages remain fully SEO-safe and accessible.
+
+TASK 1 — TERMS AND CONDITIONS
+
+Replace the entire content of the Terms & Conditions page with the following updated version:
+
+[PASTE YOUR FULL TERMS TEXT HERE EXACTLY]
+
+Make sure:
+- Formatting is clean and readable (paragraph spacing preserved)
+- Headings are properly structured (H1 for title, H2 for sections, H3 for sub-sections like 6.1 / 6.2)
+- Email is clickable (mailto link)
+- No additional content is added
+- No wording is modified
+
+---
+
+TASK 2 — PRIVACY POLICY
+
+Replace the entire content of the Privacy Policy page with the following updated version:
+
+[PASTE YOUR FULL PRIVACY POLICY TEXT HERE EXACTLY]
+
+Make sure:
+- Headings structure is consistent and semantic
+- Lists (data types, rights, etc.) are properly formatted
+- Email is clickable
+- No text is changed or interpreted
+
+---
+
+TASK 3 — LEGAL COMPLIANCE CHECK
+
+Ensure the following are correctly implemented:
+
+1. The Terms page and Privacy page are accessible via footer links on all pages
+2. Each page has:
+   - Unique <title>
+   - Meta description under 160 characters
+3. Add (if not already present):
+   - canonical tags (self-referencing)
+4. Do NOT add noindex to these pages (they must remain indexable)
+
+---
+
+TASK 4 — FORM CONSENT INTEGRATION (IMPORTANT)
+
+Update ALL forms across the website (assessment form, consultation form, referral form, etc.):
+
+Add TWO checkboxes at the end of each form:
+
+1. REQUIRED checkbox:
+"I have read and agree to the Terms and Conditions and Privacy Policy"
+- Must be required to submit
+- Terms and Privacy should be clickable links (open in new tab)
+
+2. OPTIONAL checkbox (marketing opt-out style wording):
+"Tick this box if you do NOT want to receive marketing emails from us"
+- Must NOT be required
+
+CRITICAL:
+- Store both checkbox states in the backend/database (true/false)
+- Ensure timestamp logging for compliance (GDPR evidence)
+- Do NOT change form design or layout — integrate cleanly into existing structure
+
+---
+
+TASK 5 — FINAL VERIFICATION
+
+After implementation:
+- No visual changes anywhere on the site
+- All links working
+- No console errors
+- Forms still submit correctly
+- Legal pages render correctly on mobile and desktop
