@@ -122,11 +122,11 @@ function Router() {
           <Route path="/admin/messages/:id?">
             {() => <AdminGuard><MessagesPage /></AdminGuard>}
           </Route>
-          <Route path="/admin/blog/:slug?">
-            {() => <AdminGuard><AdminBlogPage /></AdminGuard>}
-          </Route>
           <Route path="/admin/blog-import">
             {() => <AdminGuard><BlogImportPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/blog/:slug?">
+            {() => <AdminGuard><AdminBlogPage /></AdminGuard>}
           </Route>
           <Route path="/admin/members">
             {() => <AdminGuard><MembersPage /></AdminGuard>}
