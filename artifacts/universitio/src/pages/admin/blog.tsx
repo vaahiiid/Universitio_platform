@@ -120,7 +120,6 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Statuses</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
             <SelectItem value="published">Published</SelectItem>
           </SelectContent>
@@ -131,7 +130,6 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
             <SelectValue placeholder="Filter by category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Categories</SelectItem>
             {BLOG_CATEGORIES && Array.isArray(BLOG_CATEGORIES) && BLOG_CATEGORIES.map((cat) => (
               <SelectItem key={cat} value={cat}>
                 {cat}
