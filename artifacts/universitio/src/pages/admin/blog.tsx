@@ -55,10 +55,12 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
   const [statusFilter, setStatusFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<BlogPostWithDates | null>(null);
 
   const fetchPosts = useCallback(async (page = 1) => {
     setLoading(true);
+    setError(null);
     try {
       const params = new URLSearchParams({ page: String(page), limit: "20" });
       if (search) params.set("search", search);
@@ -68,7 +70,9 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
       setPosts(res.data);
       setPagination(res.pagination);
     } catch (e) {
-      console.error(e);
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      setError(errorMsg);
+      console.error("Error fetching posts:", e);
     } finally {
       setLoading(false);
     }
@@ -93,6 +97,13 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
 
   return (
     <div className="space-y-4">
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
+          <p className="font-medium">Error loading posts</p>
+          <p className="text-sm">{error}</p>
+        </div>
+      )}
+      
       <div className="flex gap-3">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
@@ -121,7 +132,7 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="">All Categories</SelectItem>
-            {BLOG_CATEGORIES.map((cat) => (
+            {BLOG_CATEGORIES && Array.isArray(BLOG_CATEGORIES) && BLOG_CATEGORIES.map((cat) => (
               <SelectItem key={cat} value={cat}>
                 {cat}
               </SelectItem>
@@ -133,6 +144,10 @@ function ListView({ onEdit }: { onEdit: (post: BlogPostWithDates) => void }) {
       {loading ? (
         <div className="flex items-center justify-center py-10">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+        </div>
+      ) : error ? (
+        <div className="text-center py-10 text-red-600">
+          Failed to load blog posts. Please refresh the page.
         </div>
       ) : filteredPosts.length === 0 ? (
         <div className="text-center py-10 text-muted-foreground">
