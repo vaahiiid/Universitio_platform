@@ -200,7 +200,7 @@ function ScoreRing({ score, size = 160, animated = false }: { score: number; siz
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (score / 100) * circumference;
   return (
-    <svg width={size} height={size} className="transform -rotate-90">
+    <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="currentColor" strokeWidth="3" className="text-border" />
       <circle
         cx={size / 2}
@@ -214,12 +214,14 @@ function ScoreRing({ score, size = 160, animated = false }: { score: number; siz
         className="text-primary transition-all duration-1000 ease-out"
         strokeLinecap="round"
       />
-      <text x={size / 2} y={size / 2 + 7} textAnchor="middle" fontSize="32" fontWeight="700" className="fill-primary">
-        {Math.round(score)}
-      </text>
-      <text x={size / 2} y={size / 2 + 28} textAnchor="middle" fontSize="12" className="fill-muted-foreground">
-        /100
-      </text>
+      <g style={{ transform: 'rotate(90deg)', transformOrigin: `${size / 2}px ${size / 2}px` }}>
+        <text x={size / 2} y={size / 2 + 9} textAnchor="middle" fontSize="32" fontWeight="700" fill="currentColor" className="fill-primary">
+          {Math.round(score)}
+        </text>
+        <text x={size / 2} y={size / 2 + 30} textAnchor="middle" fontSize="12" fill="currentColor" className="fill-muted-foreground">
+          /100
+        </text>
+      </g>
     </svg>
   );
 }
@@ -239,13 +241,27 @@ function ResultsView({ results, onReset }: { results: DestinationScore[]; onRese
         {results.map((result) => {
           const { band, bandColor, bandBgColor } = getBand(result.score);
           return (
-            <div key={result.destination} className={`${bandBgColor} rounded-2xl border p-6 text-center max-w-xs`}>
-              <h2 className="text-lg font-bold text-foreground mb-4">{result.destination}</h2>
-              <div className="flex justify-center mb-4">
-                <ScoreRing score={result.score} size={160} animated={true} />
+            <div key={result.destination} className="w-full max-w-xs">
+              <div className={`${bandBgColor} rounded-2xl border p-6 text-center`}>
+                <h2 className="text-lg font-bold text-foreground mb-4">{result.destination}</h2>
+                <div className="flex justify-center mb-4">
+                  <ScoreRing score={result.score} size={160} animated={true} />
+                </div>
+                <p className={`text-sm font-semibold ${bandColor} mb-2`}>{band} Fit</p>
+                <p className="text-xs text-muted-foreground">{band === "Top Shape" ? "Excellent chances of admission." : band === "Strong Potential" ? "Good potential for admission." : band === "On the Right Track" ? "You're on the right track — areas for improvement remain." : "Strengthen your profile for better chances."}</p>
               </div>
-              <p className={`text-sm font-semibold ${bandColor} mb-2`}>{band} Fit</p>
-              <p className="text-xs text-muted-foreground">{band === "Strong" ? "Strong chances of admission." : band === "Moderate" ? "Good potential for admission." : "Strengthen your profile for better chances."}</p>
+              {result.restricted && result.restrictionMessage && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                  <p className="text-xs font-semibold text-red-700 mb-1">Visa Restriction Notice</p>
+                  <p className="text-xs text-red-600">{result.restrictionMessage}</p>
+                </div>
+              )}
+              {result.destination === "UK" && (
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <p className="text-xs font-semibold text-blue-700 mb-1">Important Information</p>
+                  <p className="text-xs text-blue-600">In the UK, dependant visas are generally only available for PhD and research-based master's programmes. Most taught master's degrees do not qualify for dependant visas.</p>
+                </div>
+              )}
             </div>
           );
         })}

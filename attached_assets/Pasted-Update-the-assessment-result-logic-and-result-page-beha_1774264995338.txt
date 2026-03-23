@@ -1,0 +1,119 @@
+Update the assessment result logic and result-page behaviour with high priority.
+
+IMPORTANT:
+This task includes scoring adjustments, result messaging improvements, UI fixes, and country restriction logic.
+You ARE allowed to update scoring logic.
+Do NOT redesign the UI beyond fixing issues.
+Do NOT remove questions or destinations.
+
+---
+
+TASK 1 — FIX RESULT SCORE UI
+
+Fix the score display inside circular cards:
+- Score must be straight (no rotation)
+- Properly centered
+- "/100" aligned correctly
+- No vertical or tilted text rendering
+
+---
+
+TASK 2 — FORBIDDEN / RESTRICTED COUNTRY HANDLING
+
+Implement logic for restricted countries based on the following policy:
+
+=== RESTRICTED COUNTRIES (USA) ===
+
+Afghanistan, Albania, Algeria, Antigua and Barbuda, Armenia, Azerbaijan, Bahamas, Bangladesh, Barbados, Belarus, Belize, Bhutan, Bosnia and Herzegovina, Brazil, Burma (Myanmar), Cambodia, Cameroon, Cape Verde, Colombia, Cote d’Ivoire, Cuba, Democratic Republic of the Congo, Dominica, Egypt, Eritrea, Ethiopia, Fiji, The Gambia, Georgia, Ghana, Grenada, Guatemala, Guinea, Haiti, Iran, Iraq, Jamaica, Jordan, Kazakhstan, Kosovo, Kuwait, Kyrgyz Republic, Laos, Lebanon, Liberia, Libya, Moldova, Mongolia, Montenegro, Morocco, Nepal, Nicaragua, Nigeria, North Macedonia, Pakistan, Republic of the Congo, Russia, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and the Grenadines, Senegal, Sierra Leone, Somalia, South Sudan, Sudan, Syria, Tanzania, Thailand, Togo, Tunisia, Uganda, Uruguay, Uzbekistan, Yemen
+
+=== ADDITIONAL RULES ===
+- Study visas are restricted for:
+  Afghanistan, Cameroon, Myanmar, Sudan
+
+- Work visas restricted for:
+  Afghanistan
+
+---
+
+REQUIRED BEHAVIOUR:
+
+If user selects USA AND their nationality is in the restricted list:
+
+1. Show a clear warning message:
+   - Explain that visa issuance is currently paused or restricted
+   - Clarify that this significantly affects admission/visa chances
+
+2. Adjust scoring:
+   - Apply a strong penalty OR cap the score
+   - Do NOT show high scores for restricted cases
+
+3. Messaging:
+   - Must be clear, honest, and non-legal wording
+   - Example tone:
+     "Based on current visa restrictions, your chances for the USA are currently very limited."
+
+4. UX:
+   - Do NOT crash or remove the country
+   - Show result but clearly flagged
+
+---
+
+TASK 3 — SOFTEN SCORING LOGIC
+
+Adjust scoring rules:
+
+- Users with basic eligibility should receive reasonably positive scores
+- Strong profiles should reach 90+
+- Reduce harsh penalties for non-critical factors
+
+STRICT ONLY ON:
+- budget
+- academic background
+- qualification relevance
+- critical eligibility factors
+
+Make scoring:
+- encouraging
+- realistic
+- not overly pessimistic
+
+---
+
+TASK 4 — UK DEPENDANT VISA MESSAGE
+
+If:
+- user is married
+- AND selects UK
+
+Show message:
+
+"In the UK, dependant visas are generally only available for PhD and research-based master’s programmes. Most taught master’s degrees do not qualify for dependant visas."
+
+---
+
+TASK 5 — RESULT MESSAGE QUALITY
+
+Ensure:
+- Not overly negative
+- Clear differentiation between weak / medium / strong
+- Actionable guidance
+
+---
+
+TASK 6 — STABILITY & SAFETY
+
+Ensure:
+- No React crash
+- No object rendering errors
+- All results render correctly
+- Restricted countries handled safely
+
+---
+
+FINAL REPORT REQUIRED:
+
+1. What changed in scoring logic
+2. How score UI was fixed
+3. How restricted country logic was implemented
+4. Where warning appears
+5. Confirmation that strong profiles can reach 90+

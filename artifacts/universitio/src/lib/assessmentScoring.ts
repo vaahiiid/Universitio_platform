@@ -34,7 +34,7 @@ const UK_RESTRICTED_NATIONALITIES = [
 ];
 
 const USA_RESTRICTED_NATIONALITIES = [
-  "Afghanistan", "Burma", "Burkina Faso", "Chad", "Republic of the Congo",
+  "Afghanistan", "Burma", "Myanmar", "Burkina Faso", "Chad", "Republic of the Congo",
   "Equatorial Guinea", "Eritrea", "Haiti", "Iran", "Laos", "Libya",
   "Mali", "Niger", "Sierra Leone", "Somalia", "South Sudan", "Sudan",
   "Syria", "Yemen"
@@ -101,21 +101,21 @@ function scoreAcademic(profile: AssessmentProfile): number {
   const gap = targetRank - qualRank;
 
   let alignmentScore = 0;
-  if (gap === 1) alignmentScore = 10;
-  else if (gap === 0) alignmentScore = 9;
-  else if (gap < 0) alignmentScore = 8;
-  else if (gap === 2) alignmentScore = 5;
-  else alignmentScore = 3;
+  if (gap === 1) alignmentScore = 11;
+  else if (gap === 0) alignmentScore = 10;
+  else if (gap < 0) alignmentScore = 9;
+  else if (gap === 2) alignmentScore = 7;
+  else alignmentScore = 5;
 
   const perfMap: Record<string, number> = {
-    "Distinction": 10, "Merit": 7, "Pass": 5, "Needs Improvement": 2
+    "Distinction": 11, "Merit": 8, "Pass": 6, "Needs Improvement": 3
   };
-  let perfScore = perfMap[profile.academicPerformance] || 5;
+  let perfScore = perfMap[profile.academicPerformance] || 6;
 
-  if (gap >= 3) perfScore = Math.min(perfScore, 3);
-  if (gap >= 2) perfScore = Math.min(perfScore, 6);
+  if (gap >= 3) perfScore = Math.min(perfScore, 4);
+  if (gap >= 2) perfScore = Math.min(perfScore, 7);
 
-  return Math.min(18, alignmentScore + perfScore);
+  return Math.min(20, alignmentScore + perfScore);
 }
 
 function scoreLanguage(profile: AssessmentProfile, destination: string): number {
@@ -186,16 +186,16 @@ function scoreBudget(budget: string, destination: string): number {
   const isEuro = euroCountries.includes(destination);
 
   if (budget === "over20k") {
-    return 25;
+    return 28;
   }
   if (budget === "10k-20k") {
-    if (isEuro) return 20;
-    if (destination === "Canada") return 16;
-    return 14;
+    if (isEuro) return 22;
+    if (destination === "Canada") return 18;
+    return 16;
   }
-  if (isEuro) return 14;
-  if (destination === "Canada") return 8;
-  return 6;
+  if (isEuro) return 16;
+  if (destination === "Canada") return 10;
+  return 8;
 }
 
 function scoreAlignment(profile: AssessmentProfile): number {
@@ -267,35 +267,35 @@ function applyCaps(
   let capped = rawTotal;
 
   if (natResult.restricted) {
-    capped = Math.min(capped, 40);
+    capped = Math.min(capped, 48);
   }
 
   const academicGap = getAcademicGap(profile);
   if (academicGap >= 3) {
-    capped = Math.min(capped, 48);
+    capped = Math.min(capped, 55);
   } else if (academicGap >= 2) {
-    capped = Math.min(capped, 60);
+    capped = Math.min(capped, 70);
   } else if (academicScore <= 6) {
-    capped = Math.min(capped, 62);
+    capped = Math.min(capped, 72);
   }
 
   if (ENGLISH_MEDIUM_DESTINATIONS.includes(destination)) {
     if (!profile.hasLanguageQualification) {
       if (languageScore <= 6) {
-        capped = Math.min(capped, 55);
-      } else {
         capped = Math.min(capped, 65);
+      } else {
+        capped = Math.min(capped, 80);
       }
     } else if (languageScore <= 6) {
-      capped = Math.min(capped, 60);
+      capped = Math.min(capped, 72);
     }
   }
 
   if (profile.budget === "under10k") {
     if (["UK", "USA", "Australia"].includes(destination)) {
-      capped = Math.min(capped, 55);
+      capped = Math.min(capped, 65);
     } else if (destination === "Canada") {
-      capped = Math.min(capped, 58);
+      capped = Math.min(capped, 68);
     }
   }
 
@@ -310,15 +310,15 @@ function applyCaps(
   if (academicGap >= 2) weaknessCount++;
 
   if (weaknessCount >= 3) {
-    capped = Math.min(capped, 40);
+    capped = Math.min(capped, 52);
   } else if (weaknessCount >= 2) {
-    capped = Math.min(capped, 50);
+    capped = Math.min(capped, 62);
   }
 
   if (isWeakPerformance && isWeakLanguage && isWeakBudget) {
-    capped = Math.min(capped, 35);
+    capped = Math.min(capped, 45);
   } else if (isWeakPerformance && (isWeakLanguage || isWeakBudget)) {
-    capped = Math.min(capped, 42);
+    capped = Math.min(capped, 54);
   }
 
   return capped;
