@@ -237,17 +237,15 @@ function ResultsView({ results, onReset }: { results: DestinationScore[]; onRese
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
         {results.map((result) => {
-          const scoreBand = getBand(result.score);
-          const bandColor = scoreBand === "Strong" ? "text-green-600" : scoreBand === "Moderate" ? "text-blue-600" : "text-amber-600";
-          const bgColor = scoreBand === "Strong" ? "bg-green-50 border-green-200" : scoreBand === "Moderate" ? "bg-blue-50 border-blue-200" : "bg-amber-50 border-amber-200";
+          const { band, bandColor, bandBgColor } = getBand(result.score);
           return (
-            <div key={result.destination} className={`${bgColor} rounded-2xl border p-6 text-center max-w-xs`}>
+            <div key={result.destination} className={`${bandBgColor} rounded-2xl border p-6 text-center max-w-xs`}>
               <h2 className="text-lg font-bold text-foreground mb-4">{result.destination}</h2>
               <div className="flex justify-center mb-4">
                 <ScoreRing score={result.score} size={160} animated={true} />
               </div>
-              <p className={`text-sm font-semibold ${bandColor} mb-2`}>{scoreBand} Fit</p>
-              <p className="text-xs text-muted-foreground">{scoreBand === "Strong" ? "Strong chances of admission." : scoreBand === "Moderate" ? "Good potential for admission." : "Strengthen your profile for better chances."}</p>
+              <p className={`text-sm font-semibold ${bandColor} mb-2`}>{band} Fit</p>
+              <p className="text-xs text-muted-foreground">{band === "Strong" ? "Strong chances of admission." : band === "Moderate" ? "Good potential for admission." : "Strengthen your profile for better chances."}</p>
             </div>
           );
         })}
