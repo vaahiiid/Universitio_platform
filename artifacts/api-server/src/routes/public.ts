@@ -32,6 +32,7 @@ router.get("/blog", async (req: Request, res: Response) => {
         coverImage: blogPosts.coverImage,
         coverImageAlt: blogPosts.coverImageAlt,
         metaDescription: blogPosts.metaDescription,
+        content: blogPosts.content,
         publishedAt: blogPosts.publishedAt,
         tags: blogPosts.tags,
       })
