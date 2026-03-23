@@ -263,12 +263,19 @@ export default function BlogPage() {
       ...data,
       publishedAt: data.status === "published" ? new Date().toISOString() : null,
     };
-    await apiFetch("/admin/blog", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-    handleCreateCancel();
-    window.location.reload();
+    console.log("[BLOG_FORM] Creating post with payload:", payload);
+    try {
+      const result = await apiFetch("/admin/blog", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      console.log("[BLOG_FORM] Create successful:", result);
+      handleCreateCancel();
+      window.location.reload();
+    } catch (error) {
+      console.error("[BLOG_FORM] Create failed:", error);
+      throw error;
+    }
   };
 
   const handleEditSubmit = async (data: BlogPost) => {

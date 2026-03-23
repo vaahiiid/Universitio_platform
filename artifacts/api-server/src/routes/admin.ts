@@ -763,6 +763,13 @@ router.post("/admin/members/import", async (req: Request, res: Response) => {
 // Create a new blog post
 router.post("/admin/blog", async (req: Request, res: Response) => {
   try {
+    console.log("[BLOG] POST /admin/blog received", { 
+      bodyKeys: Object.keys(req.body),
+      status: req.body.status,
+      title: req.body.title,
+      slug: req.body.slug,
+    });
+    
     const {
       title,
       slug,
@@ -780,6 +787,7 @@ router.post("/admin/blog", async (req: Request, res: Response) => {
 
     // Validate required fields
     if (!title || !slug || !metaTitle || !metaDescription || !category || !coverImage || !coverImageAlt || !content) {
+      console.log("[BLOG] Validation failed", { title, slug, metaTitle, metaDescription, category, coverImage, coverImageAlt, content });
       return res.status(400).json({ error: "Missing required fields: title, slug, metaTitle, metaDescription, category, coverImage, coverImageAlt, content" });
     }
 
@@ -795,6 +803,13 @@ router.post("/admin/blog", async (req: Request, res: Response) => {
     }
 
     const now = new Date();
+    console.log("[BLOG] Attempting insert with values", {
+      title,
+      slug,
+      status: status || "draft",
+      publishedAt: publishedAt ? new Date(publishedAt) : null,
+    });
+    
     const [inserted] = await db
       .insert(blogPosts)
       .values({
@@ -815,9 +830,11 @@ router.post("/admin/blog", async (req: Request, res: Response) => {
       })
       .returning();
 
+    console.log("[BLOG] Insert successful", { id: inserted?.id, slug: inserted?.slug });
     res.status(201).json(inserted);
   } catch (err) {
-    console.error("Create blog post error:", err);
+    console.error("[BLOG] Create blog post error:", err instanceof Error ? err.message : String(err));
+    console.error("[BLOG] Full error:", err);
     res.status(500).json({ error: "Failed to create blog post" });
   }
 });
