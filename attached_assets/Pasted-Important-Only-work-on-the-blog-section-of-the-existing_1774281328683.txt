@@ -1,0 +1,150 @@
+Important: Only work on the blog section of the existing admin and public blog pages.
+
+Do not modify, redesign, refactor, or touch anything outside the blog feature.
+
+Strict scope:
+- admin blog area only
+- public blog listing page only
+- public single blog post page only
+- blog-related database/storage only
+
+Do NOT touch:
+- dashboard
+- members
+- requests
+- consultations
+- assessments
+- partners
+- referrals
+- contact messages
+- authentication
+- unrelated admin layout
+- unrelated styles
+- unrelated routes
+- unrelated APIs
+- unrelated database models/tables
+
+The current Blog Import page is not acceptable for my needs.
+I do NOT want a ZIP import workflow as the main blog management system.
+
+I want you to replace or rebuild only the blog section so that it becomes a proper lightweight blog CMS inside the existing admin.
+
+Main requirement:
+I want to manually create, edit, delete, and publish blog posts from the admin panel.
+
+Do not make broad project-wide changes.
+Do not change anything outside blog functionality.
+Do not introduce unnecessary restructuring.
+Keep all changes isolated to the blog module.
+
+
+--------------------------------------------------
+
+Build a lightweight blog CMS for the existing Universitio admin panel.
+
+Required blog admin features:
+- blog posts list
+- create new post
+- edit existing post
+- delete post with confirmation
+- draft / published status
+- publish immediately
+- update published posts later
+- search by title
+- filter by status
+- filter by category
+
+Each blog post must support:
+- title
+- slug
+- meta title
+- meta description
+- category
+- tags
+- cover image
+- cover image alt text
+- highlighted text that appears in quotation marks near the top of the article
+- main content
+- internal and external links inside the content
+- created date
+- updated date
+- published date
+- status
+
+Content editor requirements:
+- simple and clean
+- paragraphs
+- headings
+- bold
+- bullet lists
+- links
+- internal links
+- external links
+
+Validation:
+A post cannot be published unless it has:
+- title
+- slug
+- meta title
+- meta description
+- category
+- cover image
+- main content
+
+Slug rules:
+- auto-generate from title
+- editable manually
+- unique
+- public URL format: /blog/[slug]
+
+Public blog pages:
+- /blog for blog listing
+- /blog/[slug] for single blog posts
+
+Blog listing page should show:
+- cover image
+- title
+- category
+- publish date
+- short preview
+
+Single blog page should show:
+- H1 title
+- cover image
+- highlighted quote text
+- main content
+- category
+- publish date
+- SEO meta title
+- SEO meta description
+
+
+--------------------------------------------------
+
+Critical implementation constraints:
+
+1. Only modify blog-related files, routes, APIs, components, schema, and storage.
+2. Do not change anything outside the blog section.
+3. Do not redesign the whole admin panel.
+4. Reuse the current admin layout and sidebar.
+5. If the current /admin/blog-import page exists, convert that blog area into the proper blog CMS or add a dedicated /admin/blog page, but do not affect other admin sections.
+6. Keep styling consistent with the current admin design.
+7. Do not create a ZIP-based workflow as the main content publishing method.
+8. Do not remove existing unrelated functionality.
+9. Keep the solution simple, maintainable, and isolated.
+10. Show me exactly which blog-related files were added or changed before applying any wider refactor.
+
+
+--------------------------------------------------
+
+Before coding:
+
+First inspect the existing project and identify:
+- blog-related routes
+- blog-related components
+- blog-related database/schema
+- current blog import logic
+
+Then implement the new blog CMS with minimal changes and only inside the blog scope.
+
+If a change is not directly required for blog functionality, do not make it.
