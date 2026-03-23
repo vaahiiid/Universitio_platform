@@ -1,0 +1,45 @@
+I want to fully revert the blog system to the exact state it was in before I requested the mini CMS/blog admin feature.
+
+Important:
+This is a full rollback of the blog CMS work.
+Do not partially keep the new blog CMS.
+Do not keep the new admin blog CRUD system.
+Do not keep the new public blog API/database-driven blog system.
+
+I want the blog returned completely to its previous pre-CMS state, with all previous blog content visible again exactly as before.
+
+Strict requirements:
+1. Restore the blog section to the exact previous implementation from before the mini CMS request.
+2. Restore the previous public blog page and previous blog post pages exactly as they were before these blog CMS changes.
+3. Restore all previous blog content that existed before this CMS work.
+4. Remove all mini CMS-related blog changes.
+
+This rollback should include removing/reverting all of the following if they were introduced for the CMS:
+- admin blog page
+- admin blog create/edit/delete functionality
+- blog CRUD API endpoints
+- blog_posts database schema/table usage
+- public /api/blog endpoints introduced for the CMS
+- SafeHtmlRenderer introduced for the CMS flow
+- blog admin sidebar item
+- any blog form components/constants created for the CMS
+- any blog route changes introduced for the CMS
+- any blog listing/post page rewrites that changed the old content source
+
+Also:
+- remove Blog from the admin sidebar if it did not exist before
+- keep Blog Import only if it existed before this CMS request
+- do not touch unrelated parts of the website
+- do not refactor unrelated code
+- do not redesign anything
+
+Before changing anything:
+1. Identify the exact commit/state before the mini CMS request started.
+2. Revert the blog-related files to that state only.
+3. Do not make broader project-wide rollback changes.
+
+After the rollback, stop and show me exactly:
+- which files were reverted
+- which CMS-related files/components/routes were removed
+- confirm that the old blog content is visible again
+- confirm that the blog is now using the original pre-CMS implementation

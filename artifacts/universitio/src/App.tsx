@@ -28,7 +28,6 @@ const AssessmentsPage = lazy(() => import("@/pages/admin/assessments"));
 const AdminPartnersPage = lazy(() => import("@/pages/admin/admin-partners"));
 const ReferralsPage = lazy(() => import("@/pages/admin/referrals"));
 const MessagesPage = lazy(() => import("@/pages/admin/messages"));
-const AdminBlogPage = lazy(() => import("@/pages/admin/blog"));
 const BlogImportPage = lazy(() => import("@/pages/admin/blog-import"));
 const MembersPage = lazy(() => import("@/pages/admin/members"));
 const ServiceRequestsPage = lazy(() => import("@/pages/admin/service-requests"));
@@ -124,9 +123,6 @@ function Router() {
           </Route>
           <Route path="/admin/blog-import">
             {() => <AdminGuard><BlogImportPage /></AdminGuard>}
-          </Route>
-          <Route path="/admin/blog/:slug?">
-            {() => <AdminGuard><AdminBlogPage /></AdminGuard>}
           </Route>
           <Route path="/admin/members">
             {() => <AdminGuard><MembersPage /></AdminGuard>}
