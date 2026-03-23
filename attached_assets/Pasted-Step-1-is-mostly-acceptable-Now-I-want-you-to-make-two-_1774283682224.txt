@@ -1,0 +1,133 @@
+Step 1 is mostly acceptable. Now I want you to make two small Step 1 corrections and then implement only Step 2 in a controlled way.
+
+Important:
+Do not switch to Autonomous mode.
+Do not implement everything at once.
+Do not touch anything outside the blog section.
+Do not modify any unrelated admin pages, routes, styles, APIs, or database models.
+
+Strict scope for this step:
+- blog-related schema/API corrections only
+- blog admin list page only
+- blog admin create post form only
+
+Do NOT build yet:
+- edit post
+- delete post
+- public blog pages
+- rich media library
+- advanced editor
+- unrelated refactors
+
+--------------------------------------------------
+First, make these Step 1 corrections only:
+
+1. Remove the unused `boolean` import from `lib/db/src/schema/blog-posts.ts`.
+2. Add strict validation in the blog API so `status` only accepts:
+- draft
+- published
+
+Also follow these rules for the implementation:
+- content will be stored as an HTML string from the editor/form
+- updatedAt will need to be explicitly updated later in edit/update endpoints
+- publishedAt should be set when a post is first published
+- public blog endpoints should be separated later from admin endpoints
+
+--------------------------------------------------
+Then implement Step 2 only:
+
+Build the admin blog management UI for:
+- listing blog posts
+- creating a new blog post
+
+Admin scope only:
+- reuse the current admin layout and sidebar
+- keep styling consistent with the existing admin
+- do not redesign unrelated sections
+
+Required admin blog features for this step:
+1. Blog posts list page
+Create or use:
+- /admin/blog
+or convert the current blog area into this
+
+The page must include:
+- list of blog posts
+- title
+- category
+- status
+- created date or published date
+- search by title
+- filter by status
+- filter by category
+- button to create a new post
+
+2. Create new post form
+Add a create form for blog posts with these fields:
+- title
+- slug
+- meta title
+- meta description
+- category
+- tags
+- cover image
+- cover image alt text
+- highlighted quote text
+- main content
+- status (draft or published)
+
+Form behavior:
+- slug should auto-generate from title
+- slug must remain editable manually
+- content should be stored as HTML string
+- if status is published and publishedAt is empty, set publishedAt
+- validate required fields before publish
+
+Required fields before publishing:
+- title
+- slug
+- meta title
+- meta description
+- category
+- cover image
+- cover image alt text
+- main content
+
+Content editor:
+Keep it simple.
+It does not need to be advanced yet.
+Support:
+- paragraphs
+- headings
+- bold
+- bullet lists
+- links
+
+Image handling for this step:
+Use the simplest existing compatible approach in the project.
+If there is already an upload pattern, reuse it.
+If not, use a temporary/simple image URL input instead of building a full upload system right now.
+
+Important implementation constraints:
+1. Only modify blog-related files, components, routes, APIs, and schema logic.
+2. Do not redesign the whole admin panel.
+3. Do not touch dashboard, members, requests, consultations, assessments, partners, referrals, contact messages, auth, or unrelated styling.
+4. Keep this step simple and maintainable.
+5. Do not implement edit/delete yet.
+6. Do not implement public blog pages yet.
+7. Do not add broad refactors.
+
+--------------------------------------------------
+Before making changes:
+First inspect only the existing blog-related files, admin layout usage, and the simplest compatible way to add the admin blog list and create form.
+
+Then implement Step 2 with minimal changes.
+
+After finishing, stop and show me exactly:
+- which files were added or changed
+- what routes were added
+- how the create form works
+- how validation works
+- how status and publishedAt are handled
+
+Do not continue to Step 3 automatically.

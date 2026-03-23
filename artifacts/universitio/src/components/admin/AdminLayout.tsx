@@ -4,7 +4,7 @@ import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import {
   LayoutDashboard, FileText, ClipboardCheck, Handshake, Users,
   Upload, LogOut, Menu, X, ChevronRight, MessageSquare, ClipboardList,
-  UserRound
+  UserRound, BookOpen
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "@/lib/api";
@@ -22,6 +22,7 @@ interface UnreadCounts {
 const NAV_ITEMS = [
   { label: "Dashboard", path: "/admin", icon: LayoutDashboard, unreadKey: null, section: null },
   { label: "Members", path: "/admin/members", icon: UserRound, unreadKey: null, section: null },
+  { label: "Blog", path: "/admin/blog", icon: BookOpen, unreadKey: null, section: null },
   { label: "Service Requests", path: "/admin/service-requests", icon: ClipboardList, unreadKey: "serviceRequests" as const, section: "Requests" },
   { label: "Consultations", path: "/admin/consultations", icon: FileText, unreadKey: "consultations" as const, section: "Requests" },
   { label: "Assessments", path: "/admin/assessments", icon: ClipboardCheck, unreadKey: "assessments" as const, section: "Requests" },

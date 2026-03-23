@@ -783,6 +783,11 @@ router.post("/admin/blog", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Missing required fields: title, slug, metaTitle, metaDescription, category, coverImage, coverImageAlt, content" });
     }
 
+    // Validate status
+    if (status && !["draft", "published"].includes(status)) {
+      return res.status(400).json({ error: "Status must be 'draft' or 'published'" });
+    }
+
     // Check slug uniqueness
     const existing = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
     if (existing.length > 0) {
