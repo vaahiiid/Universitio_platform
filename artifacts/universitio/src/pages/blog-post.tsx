@@ -1,21 +1,39 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { trackEvent } from "@/lib/analytics";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useParams, useLocation } from "wouter";
-import {
-  ArrowLeft, ArrowRight, Calendar, Clock, User,
-  Share2, Copy, ChevronRight
-} from "lucide-react";
-import { blogPosts, type BlogPost } from "@/data/blog/postsData";
+import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, Loader2, ChevronRight } from "lucide-react";
+import { apiFetch } from "@/lib/api";
+import { SafeHtmlRenderer } from "@/components/blog/SafeHtmlRenderer";
 
-const BASE = import.meta.env.BASE_URL;
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  metaTitle: string;
+  metaDescription: string;
+  category: string;
+  tags: string[];
+  coverImage: string;
+  coverImageAlt: string;
+  highlightedQuote?: string;
+  content: string;
+  status: "draft" | "published";
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+interface ApiResponse {
+  data: BlogPost[];
+  pagination: { page: number; limit: number; total: number; pages: number };
+}
 
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr + "T00:00:00");
-  return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  return new Date(dateStr).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
 function readTime(content: string) {
@@ -45,6 +63,20 @@ function PostNotFound() {
   );
 }
 
+function PostLoading() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Navbar />
+      <main className="flex-grow pt-28 pb-24">
+        <div className="max-w-3xl mx-auto px-4 flex items-center justify-center py-20">
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function RelatedPostCard({ post }: { post: BlogPost }) {
   const [, navigate] = useLocation();
   return (
@@ -54,8 +86,8 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
     >
       <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
         <img
-          src={`${BASE}${post.image}`}
-          alt={post.imageAlt}
+          src={post.coverImage}
+          alt={post.coverImageAlt}
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
@@ -63,7 +95,7 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
           <Calendar className="w-3 h-3" />
-          {formatDate(post.date)}
+          {formatDate(post.publishedAt)}
         </div>
         <h3 className="text-base font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
           {post.title}
@@ -78,225 +110,148 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const [, navigate] = useLocation();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (post) {
-      trackEvent("blog_article_view", {
-        event_category: "blog",
-        event_label: post.title,
-        article_slug: post.slug,
-        page_path: `/blog/${post.slug}`,
-      });
-    }
-  }, [post]);
+    if (!slug) return;
+
+    Promise.all([
+      apiFetch<BlogPost>(`/blog/${slug}`)
+        .then((data) => {
+          setPost(data);
+          trackEvent("blog_article_view", {
+            event_category: "blog",
+            event_label: data.title,
+            article_slug: data.slug,
+            page_path: `/blog/${data.slug}`,
+          });
+        })
+        .catch(() => {
+          setNotFound(true);
+        }),
+      apiFetch<ApiResponse>("/blog?limit=100")
+        .then((res) => {
+          setAllPosts(res.data);
+        })
+        .catch(() => {}),
+    ]).finally(() => {
+      setLoading(false);
+    });
+  }, [slug]);
 
   const relatedPosts = useMemo(() => {
-    if (!post) return [];
-    const primaryCat = post.categorySlugs[0];
-    const sameCat = blogPosts.filter(
-      (p) => p.id !== post.id && p.categorySlugs.includes(primaryCat)
-    );
+    if (!post || allPosts.length === 0) return [];
+    const sameCat = allPosts.filter((p) => p.id !== post.id && p.category === post.category);
     const shuffled = [...sameCat].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 3);
-  }, [post]);
+  }, [post, allPosts]);
 
-  if (!post) return <PostNotFound />;
+  if (loading) {
+    return <PostLoading />;
+  }
 
-  const articleUrl = typeof window !== "undefined"
-    ? window.location.href
-    : "";
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(articleUrl).catch(() => {});
-  };
+  if (notFound || !post) {
+    return <PostNotFound />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
-        <title>{post.title} | Universitio Blog</title>
-        <meta name="description" content={post.excerpt.slice(0, 160)} />
-        <link rel="canonical" href={`https://universitio.com/blog/${post.slug}`} />
+        <title>{post.metaTitle}</title>
+        <meta name="description" content={post.metaDescription} />
+        <meta property="og:title" content={post.metaTitle} />
+        <meta property="og:description" content={post.metaDescription} />
+        <meta property="og:image" content={post.coverImage} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://universitio.com/blog/${post.slug}`} />
-        <meta property="og:title" content={`${post.title} | Universitio Blog`} />
-        <meta property="og:description" content={post.excerpt.slice(0, 160)} />
-        <meta property="og:image" content={`https://universitio.com/${post.image}`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${post.title} | Universitio Blog`} />
-        <meta name="twitter:description" content={post.excerpt.slice(0, 160)} />
-        <meta name="twitter:image" content={`https://universitio.com/${post.image}`} />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          "headline": post.title,
-          "description": post.excerpt.slice(0, 160),
-          "datePublished": post.date,
-          "image": `https://universitio.com/${post.image}`,
-          "author": { "@type": "Organization", "name": "Universitio", "url": "https://universitio.com" },
-          "publisher": { "@type": "Organization", "name": "Universitio", "logo": { "@type": "ImageObject", "url": "https://universitio.com/logo.png" } },
-          "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` }
-        })}</script>
+        <meta name="article:published_time" content={post.publishedAt} />
+        <meta name="article:author" content="Universitio" />
+        {post.tags.map((tag) => (
+          <meta key={tag} name="article:tag" content={tag} />
+        ))}
       </Helmet>
+
       <Navbar />
-      <main className="flex-grow pt-28 pb-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground mb-8 flex-wrap">
-            <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
-            {post.categories[0] && (
-              <>
-                <Link
-                  href={`/blog/category/${post.categorySlugs[0]}`}
-                  className="hover:text-primary transition-colors"
-                >
-                  {post.categories[0]}
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </>
+      <main className="flex-grow pt-20 pb-24">
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <Link href="/blog">
+              <Button variant="ghost" className="gap-2 px-0 text-muted-foreground hover:text-foreground mb-6">
+                <ArrowLeft className="w-4 h-4" /> Back to Blog
+              </Button>
+            </Link>
+
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <span className="text-sm font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">{post.category}</span>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4" />
+                  {formatDate(post.publishedAt)}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4" />
+                  {readTime(post.content)} min read
+                </span>
+              </div>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">{post.title}</h1>
+
+            {post.highlightedQuote && (
+              <blockquote className="border-l-4 border-primary bg-primary/5 px-6 py-4 my-8 italic text-lg text-foreground rounded">
+                &ldquo;{post.highlightedQuote}&rdquo;
+              </blockquote>
             )}
-            <span className="text-foreground font-medium line-clamp-1">{post.title}</span>
-          </nav>
+          </div>
 
-          <div className="rounded-3xl overflow-hidden bg-muted mb-8">
+          <div className="mb-12 aspect-[16/9] bg-muted rounded-xl overflow-hidden">
             <img
-              src={`${BASE}${post.image}`}
-              alt={post.imageAlt}
-              className="w-full max-h-[480px] object-cover"
-              loading="eager"
+              src={post.coverImage}
+              alt={post.coverImageAlt}
+              className="w-full h-full object-cover"
             />
           </div>
 
-          <div className="flex items-center gap-3 flex-wrap mb-4">
-            {post.categories.map((cat, i) => (
-              <Link key={cat} href={`/blog/category/${post.categorySlugs[i]}`}>
-                <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full hover:bg-primary/15 transition-colors">
-                  {cat}
-                </span>
-              </Link>
-            ))}
-            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <Calendar className="w-3.5 h-3.5" />
-              {formatDate(post.date)}
-            </span>
+          <div className="prose prose-lg max-w-none mb-12 text-foreground">
+            <SafeHtmlRenderer content={post.content} />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground leading-tight mb-4">
-            {post.title}
-          </h1>
-
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
-            <span className="flex items-center gap-1.5">
-              <User className="w-4 h-4" />
-              {post.author}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
-              {readTime(post.content)} min read
-            </span>
-          </div>
-
-          <hr className="border-border mb-8" />
-
-          <article
-            className="prose prose-slate max-w-none prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:mx-auto prose-strong:text-foreground prose-li:marker:text-primary/60 mb-10"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-
-          {post.tags.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap mb-8">
-              <span className="text-sm font-medium text-muted-foreground">Tags:</span>
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs bg-slate-100 text-muted-foreground px-3 py-1 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
+          <div className="py-8 border-t border-b border-border my-12">
+            <div className="flex items-center gap-3 mb-4">
+              <Share2 className="w-5 h-5 text-muted-foreground" />
+              <span className="text-sm font-semibold">Share this article</span>
             </div>
-          )}
-
-          <div className="flex items-center gap-3 border-t border-b border-border py-4 mb-12">
-            <Share2 className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm font-medium text-muted-foreground mr-2">Share:</span>
-            <button
-              onClick={handleCopyLink}
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-              title="Copy link"
-            >
-              <Copy className="w-4 h-4" /> Copy Link
-            </button>
-            <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + articleUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent("whatsapp_click", { event_category: "contact", event_label: "WhatsApp Button", article_slug: post.slug })}
-              className="text-sm text-muted-foreground hover:text-green-600 transition-colors"
-            >
-              WhatsApp
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-blue-600 transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(articleUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-sky-500 transition-colors"
-            >
-              X / Twitter
-            </a>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const text = `${post.title} - ${window.location.href}`;
+                  navigator.clipboard.writeText(text);
+                }}
+              >
+                Copy Link
+              </Button>
+            </div>
           </div>
 
           {relatedPosts.length > 0 && (
-            <section className="mb-16">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Related Articles</h2>
+            <div className="mt-16">
+              <h2 className="text-2xl font-bold text-foreground mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedPosts.map((rp) => (
-                  <RelatedPostCard key={rp.id} post={rp} />
+                {relatedPosts.map((relatedPost) => (
+                  <RelatedPostCard key={relatedPost.id} post={relatedPost} />
                 ))}
               </div>
-            </section>
-          )}
-
-          <div className="flex items-center justify-between mb-10">
-            <Link href="/blog">
-              <Button variant="outline" className="rounded-full">
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Blog
-              </Button>
-            </Link>
-          </div>
-
-          <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl p-10 md:p-14 border border-primary/15 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-              Need Personalised Guidance?
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
-              Our expert consultants are ready to help you navigate your study abroad journey.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/free-consultation">
-                <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white shadow-lg">
-                  Book a Free Consultation <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-              <Link href="/assessment-form">
-                <Button variant="outline" size="lg" className="rounded-full px-8">
-                  Take a Free Assessment
-                </Button>
-              </Link>
             </div>
-          </div>
-
-        </div>
+          )}
+        </article>
       </main>
+
       <Footer />
     </div>
   );

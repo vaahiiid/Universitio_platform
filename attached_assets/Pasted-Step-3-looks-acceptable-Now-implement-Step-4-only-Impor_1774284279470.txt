@@ -1,0 +1,84 @@
+Step 3 looks acceptable. Now implement Step 4 only.
+
+Important:
+Do not switch to Autonomous mode.
+Do not touch anything outside the public blog pages and the minimum blog-related public API needed for them.
+Do not modify unrelated admin pages, routes, styles, components, or database models.
+Do not redesign the website outside the blog pages.
+
+Strict Step 4 scope:
+- public blog listing page only
+- public single blog post page only
+- minimum required public blog API only
+
+Do NOT build yet:
+- rich text editor
+- image upload
+- blog search page for users
+- category archive pages
+- sitemap changes beyond blog if unnecessary
+- broad SEO refactors across the whole website
+- unrelated style refactors
+
+--------------------------------------------------
+Build the public blog pages for the existing Universitio website.
+
+Required public pages:
+1. /blog
+2. /blog/[slug]
+
+Requirements for /blog:
+- show only published blog posts
+- display cover image
+- display title
+- display category
+- display publish date
+- display short preview/excerpt generated safely from content if no dedicated excerpt field exists
+- each card should link to the single blog post page
+- keep design consistent with the current public site
+- do not redesign unrelated pages
+
+Requirements for /blog/[slug]:
+- show only published blog posts publicly
+- if slug does not exist, show proper not found behavior
+- if post is draft, it must not be publicly visible
+- display title as H1
+- display cover image
+- display highlighted quote near the top in quotation marks if present
+- display category
+- display publish date
+- render the blog content correctly
+- preserve internal and external links inside content
+- apply meta title and meta description for SEO
+
+Public API requirements:
+- do not reuse admin-only endpoints directly for public rendering if a separate public route is more appropriate
+- create the minimum clean public blog API needed for:
+  - list published posts
+  - get one published post by slug
+
+Content/rendering rules:
+- content is stored as HTML string
+- render it safely and consistently
+- do not expose draft posts publicly
+- preserve links in the rendered content
+
+Implementation constraints:
+1. Only modify blog-related public pages, blog-related public API, and the minimum related blog components.
+2. Do not touch dashboard, members, requests, consultations, assessments, partners, referrals, contact messages, auth, or unrelated admin code.
+3. Keep the implementation simple and maintainable.
+4. Reuse existing site layout/components where possible.
+5. Keep styles aligned with the current Universitio website.
+6. Do not introduce broad project-wide refactors.
+
+Nice-to-have only if simple:
+- related posts based on same category
+- empty state for no published posts
+
+After finishing Step 4, stop and show me exactly:
+- which files were added or changed
+- what public routes were added
+- what public API routes were added
+- how draft posts are excluded
+- how SEO meta title and meta description are applied
+- how HTML content is rendered
