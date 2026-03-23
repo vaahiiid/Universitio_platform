@@ -29,7 +29,6 @@ const NAV_ITEMS = [
   { label: "Partners", path: "/admin/partners", icon: Handshake, unreadKey: "partners" as const, section: "Requests" },
   { label: "Referrals", path: "/admin/referrals", icon: Users, unreadKey: "referrals" as const, section: "Requests" },
   { label: "Contact Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const, section: "Requests" },
-  { label: "Blog Import", path: "/admin/blog-import", icon: Upload, unreadKey: null, section: null },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
