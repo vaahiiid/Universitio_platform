@@ -1,6 +1,6 @@
 import { Router, type Request, type Response } from "express";
 import { db, blogPosts } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, count } from "drizzle-orm";
 
 const router = Router();
 
@@ -40,7 +40,7 @@ router.get("/blog", async (req: Request, res: Response) => {
       .orderBy(desc(blogPosts.publishedAt));
 
     const countQuery = db
-      .select({ value: db.count() })
+      .select({ value: count() })
       .from(blogPosts)
       .where(eq(blogPosts.status, "published"));
 
