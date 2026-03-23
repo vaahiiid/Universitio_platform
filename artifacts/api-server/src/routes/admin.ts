@@ -6,6 +6,7 @@ import {
   partnerRequests,
   studentReferrals,
   blogImportRecords,
+  blogPosts,
   contactMessages,
   serviceRequests,
   members,
@@ -754,6 +755,130 @@ router.post("/admin/members/import", async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Member import error:", err);
     res.status(500).json({ error: "Failed to import members" });
+  }
+});
+
+// ===== BLOG POSTS API =====
+
+// Create a new blog post
+router.post("/admin/blog", async (req: Request, res: Response) => {
+  try {
+    const {
+      title,
+      slug,
+      metaTitle,
+      metaDescription,
+      category,
+      tags,
+      coverImage,
+      coverImageAlt,
+      highlightedQuote,
+      content,
+      status,
+      publishedAt,
+    } = req.body;
+
+    // Validate required fields
+    if (!title || !slug || !metaTitle || !metaDescription || !category || !coverImage || !coverImageAlt || !content) {
+      return res.status(400).json({ error: "Missing required fields: title, slug, metaTitle, metaDescription, category, coverImage, coverImageAlt, content" });
+    }
+
+    // Check slug uniqueness
+    const existing = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+    if (existing.length > 0) {
+      return res.status(400).json({ error: "Slug already exists" });
+    }
+
+    const now = new Date();
+    const [inserted] = await db
+      .insert(blogPosts)
+      .values({
+        title,
+        slug,
+        metaTitle,
+        metaDescription,
+        category,
+        tags: tags || [],
+        coverImage,
+        coverImageAlt,
+        highlightedQuote: highlightedQuote || null,
+        content,
+        status: status || "draft",
+        publishedAt: publishedAt ? new Date(publishedAt) : null,
+        createdAt: now,
+        updatedAt: now,
+      })
+      .returning();
+
+    res.status(201).json(inserted);
+  } catch (err) {
+    console.error("Create blog post error:", err);
+    res.status(500).json({ error: "Failed to create blog post" });
+  }
+});
+
+// Get all blog posts (with pagination)
+router.get("/admin/blog", async (req: Request, res: Response) => {
+  try {
+    const page = Math.max(1, parseId(req.query.page as string) || 1);
+    const limit = Math.max(1, Math.min(100, parseId(req.query.limit as string) || 20));
+    const offset = (page - 1) * limit;
+    const search = (req.query.search as string) || "";
+    const status = (req.query.status as string) || "";
+
+    let whereClause: SQL | undefined;
+    const conditions: SQL[] = [];
+
+    if (search) {
+      conditions.push(ilike(blogPosts.title, `%${search}%`));
+    }
+    if (status) {
+      conditions.push(eq(blogPosts.status, status));
+    }
+
+    if (conditions.length > 0) {
+      whereClause = and(...conditions);
+    }
+
+    const query = db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+    const countQuery = db.select({ value: count() }).from(blogPosts);
+
+    const [{ value: total }] = await (whereClause ? countQuery.where(whereClause) : countQuery);
+    const posts = await (whereClause ? query.where(whereClause) : query).limit(limit).offset(offset);
+
+    res.json({
+      data: posts,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
+  } catch (err) {
+    console.error("Get blog posts error:", err);
+    res.status(500).json({ error: "Failed to fetch blog posts" });
+  }
+});
+
+// Get single blog post by slug
+router.get("/admin/blog/:slug", async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    if (!slug) {
+      return res.status(400).json({ error: "Slug is required" });
+    }
+
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+
+    if (!post) {
+      return res.status(404).json({ error: "Blog post not found" });
+    }
+
+    res.json(post);
+  } catch (err) {
+    console.error("Get blog post error:", err);
+    res.status(500).json({ error: "Failed to fetch blog post" });
   }
 });
 
