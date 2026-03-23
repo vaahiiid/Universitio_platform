@@ -16,7 +16,7 @@ interface ApiResponse {
   pagination: Pagination;
 }
 
-// Get all published blog posts (public)
+// Get all published blog posts (public) - summary only
 router.get("/blog", async (req: Request, res: Response) => {
   try {
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
@@ -24,7 +24,17 @@ router.get("/blog", async (req: Request, res: Response) => {
     const offset = (page - 1) * limit;
 
     const query = db
-      .select()
+      .select({
+        id: blogPosts.id,
+        title: blogPosts.title,
+        slug: blogPosts.slug,
+        category: blogPosts.category,
+        coverImage: blogPosts.coverImage,
+        coverImageAlt: blogPosts.coverImageAlt,
+        metaDescription: blogPosts.metaDescription,
+        publishedAt: blogPosts.publishedAt,
+        tags: blogPosts.tags,
+      })
       .from(blogPosts)
       .where(eq(blogPosts.status, "published"))
       .orderBy(desc(blogPosts.publishedAt));
