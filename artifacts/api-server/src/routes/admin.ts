@@ -887,4 +887,111 @@ router.get("/admin/blog/:slug", async (req: Request, res: Response) => {
   }
 });
 
+// Update blog post by slug
+router.put("/admin/blog/:slug", async (req: Request, res: Response) => {
+  try {
+    const { slug: oldSlug } = req.params;
+    const {
+      title,
+      slug,
+      metaTitle,
+      metaDescription,
+      category,
+      tags,
+      coverImage,
+      coverImageAlt,
+      highlightedQuote,
+      content,
+      status,
+      publishedAt: newPublishedAt,
+    } = req.body;
+
+    // Validate required fields
+    if (!title || !slug || !metaTitle || !metaDescription || !category || !coverImage || !coverImageAlt || !content) {
+      return res.status(400).json({ error: "Missing required fields: title, slug, metaTitle, metaDescription, category, coverImage, coverImageAlt, content" });
+    }
+
+    // Validate status
+    if (status && !["draft", "published"].includes(status)) {
+      return res.status(400).json({ error: "Status must be 'draft' or 'published'" });
+    }
+
+    // Check if post exists
+    const [existing] = await db.select().from(blogPosts).where(eq(blogPosts.slug, oldSlug));
+    if (!existing) {
+      return res.status(404).json({ error: "Blog post not found" });
+    }
+
+    // Check if new slug is already taken (and different from old slug)
+    if (slug !== oldSlug) {
+      const [slugExists] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+      if (slugExists) {
+        return res.status(400).json({ error: "Slug already exists" });
+      }
+    }
+
+    // Handle publishedAt logic
+    let publishedAt = existing.publishedAt;
+    if (status === "published") {
+      // If transitioning from draft to published, set publishedAt if not already set
+      if (!existing.publishedAt && !newPublishedAt) {
+        publishedAt = new Date();
+      } else if (newPublishedAt) {
+        publishedAt = new Date(newPublishedAt);
+      }
+      // If already published, keep the original publishedAt unless explicitly provided
+    } else if (status === "draft") {
+      // If changing to draft, clear publishedAt
+      publishedAt = null;
+    }
+
+    const now = new Date();
+    const [updated] = await db
+      .update(blogPosts)
+      .set({
+        title,
+        slug,
+        metaTitle,
+        metaDescription,
+        category,
+        tags: tags || [],
+        coverImage,
+        coverImageAlt,
+        highlightedQuote: highlightedQuote || null,
+        content,
+        status: status || "draft",
+        updatedAt: now,
+        publishedAt,
+      })
+      .where(eq(blogPosts.slug, oldSlug))
+      .returning();
+
+    res.json(updated);
+  } catch (err) {
+    console.error("Update blog post error:", err);
+    res.status(500).json({ error: "Failed to update blog post" });
+  }
+});
+
+// Delete blog post by slug
+router.delete("/admin/blog/:slug", async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    if (!slug) {
+      return res.status(400).json({ error: "Slug is required" });
+    }
+
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+    if (!post) {
+      return res.status(404).json({ error: "Blog post not found" });
+    }
+
+    await db.delete(blogPosts).where(eq(blogPosts.slug, slug));
+    res.json({ success: true, message: "Blog post deleted" });
+  } catch (err) {
+    console.error("Delete blog post error:", err);
+    res.status(500).json({ error: "Failed to delete blog post" });
+  }
+});
+
 export default router;

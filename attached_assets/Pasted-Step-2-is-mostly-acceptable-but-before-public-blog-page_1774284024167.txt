@@ -1,0 +1,75 @@
+Step 2 is mostly acceptable, but before public blog pages I want Step 3 to complete the admin blog workflow properly.
+
+Important:
+Do not touch anything outside the blog section.
+Do not switch to Autonomous mode.
+Do not implement public blog pages yet.
+
+Implement Step 3 only.
+
+Strict Step 3 scope:
+- blog admin edit post
+- blog admin delete post
+- controlled category handling
+- keep the admin UI maintainable
+
+Required Step 3 features:
+
+1. Edit post
+Add the ability to edit an existing blog post from the admin blog page.
+I need to be able to update:
+- title
+- slug
+- meta title
+- meta description
+- category
+- tags
+- cover image
+- cover image alt text
+- highlighted quote
+- content
+- status
+
+Rules:
+- a published post must remain editable
+- updatedAt must be updated on edit
+- publishedAt should not be overwritten on every edit
+- if a draft is being published for the first time, set publishedAt
+- if a published post is changed but remains published, keep the original publishedAt unless explicitly needed otherwise
+
+2. Delete post
+Add delete functionality with a confirmation step.
+Delete must only affect the selected blog post.
+
+3. Controlled categories
+Do not leave category as a fully inconsistent free-form field.
+Implement a controlled category approach for blog posts.
+
+Use a predefined category list for now.
+Suggested categories:
+- UK Study
+- Canada Study
+- USA Study
+- Europe Study
+- Visas
+- Scholarships
+- Student Support
+- Career & Work
+
+The create/edit form should use these categories consistently.
+
+4. Maintainability
+The current admin blog page should not become a giant single file.
+Refactor blog-only UI into smaller blog-related components if needed, but do not touch unrelated parts of the project.
+
+5. Editor
+Do not add a heavy rich text editor yet.
+But improve the current content input only if it can be done simply and safely within the blog scope.
+Do not over-engineer this step.
+
+After Step 3 is complete, stop and show me:
+- which files were added or changed
+- what edit/delete routes or API changes were added
+- how category control works
+- how updatedAt and publishedAt are handled
+- whether any blog UI was split into smaller components
