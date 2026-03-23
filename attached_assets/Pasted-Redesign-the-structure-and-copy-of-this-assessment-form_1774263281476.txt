@@ -1,0 +1,111 @@
+Redesign the structure and copy of this assessment form to improve user flow, conversion rate, and clarity, while strictly preserving all existing logic.
+
+CRITICAL RULES:
+- Do NOT change any questions.
+- Do NOT remove any questions.
+- Do NOT modify scoring, weights, or evaluation logic.
+- Do NOT change answer options or values.
+- Do NOT introduce new fields.
+- Only change:
+  1. Order of questions
+  2. Step grouping
+  3. Labels (only to mark optional fields clearly)
+  4. Top section copy (headline + description)
+
+---
+
+TASK 1 — UPDATE HEADER COPY
+
+Replace the current heading and description at the top of the form with:
+
+Headline:
+Check Your Admission Chances in 30 Seconds
+
+Subtext:
+Get a quick estimate of your admission chances based on your profile. Free and no commitment.
+
+Disclaimer (small text below):
+This is an estimate only and does not guarantee admission.
+
+IMPORTANT:
+- Do NOT change styling or layout
+- Only replace the text content
+
+---
+
+TASK 2 — RESTRUCTURE FORM STEPS (KEEP 6 STEPS)
+
+Reorganise the form into the following exact structure:
+
+Step 1:
+- Preferred Study Destination
+- Intended Level of Study
+
+Step 2:
+- Intended Course Area
+
+Step 3:
+- Highest Qualification
+- Academic Performance
+- Is the intended course related to previous studies
+
+Step 4:
+- English Language Qualification
+- (Include score/level if applicable)
+
+Step 5:
+- Budget Range
+- GRE / GMAT / SAT / A-levels
+- Work Experience
+- Research Experience
+
+Step 6 (FINAL STEP — PERSONAL DETAILS):
+- Full Name
+- Email
+- Mobile Number
+- Nationality
+- Date of Birth
+- Marital Status
+- Preferred Contact Method (optional)
+- How did you hear about us (optional)
+
+---
+
+TASK 3 — OPTIONAL FIELD CLARITY (VERY IMPORTANT)
+
+For ALL fields that are NOT required:
+
+- Add "(Optional)" clearly in the label
+- Example:
+  Preferred Contact Method (Optional)
+  How did you hear about us (Optional)
+
+CRITICAL:
+- Do NOT change validation logic
+- Do NOT change required/optional behavior in code
+- ONLY update label text to reflect optional status
+
+---
+
+TASK 4 — UX RULES
+
+Ensure:
+
+- Early steps are lightweight (2–4 fields max where possible)
+- Step 1 contains NO personal or sensitive data
+- Personal/contact information ONLY appears in the final step
+- Flow feels progressive and logical (education → qualifications → background → personal details)
+
+---
+
+TASK 5 — FINAL VALIDATION
+
+Confirm:
+
+- All questions still exist (zero removed)
+- No scoring or logic changes
+- No new fields added
+- Step count remains exactly 6
+- Optional fields are clearly labeled
+- Form still submits correctly
+- No UI or styling changes
