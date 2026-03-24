@@ -67,22 +67,6 @@ export function SocialProof() {
     }
   };
 
-  useEffect(() => {
-    const win = window as unknown as { Trustpilot?: { loadFromElement: (el: Element, b: boolean) => void } };
-    if (document.getElementById("tp-widget-script")) {
-      if (win.Trustpilot) {
-        const el = document.querySelector(".trustpilot-widget");
-        if (el) win.Trustpilot.loadFromElement(el, true);
-      }
-      return;
-    }
-    const script = document.createElement("script");
-    script.id = "tp-widget-script";
-    script.src = "https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
-    script.async = true;
-    document.head.appendChild(script);
-  }, []);
-
   return (
     <>
       {/* Testimonials */}
@@ -102,15 +86,14 @@ export function SocialProof() {
           <div className="mb-10">
             <div
               className="trustpilot-widget"
-              data-locale="en-GB"
+              data-locale="en-US"
               data-template-id="56278e9abfbbba0bdcd568bc"
-              data-businessunit-id="7ac98d0742b24421b3d38448"
+              data-businessunit-id="655257df9abd4cf92d9631e5"
               data-style-height="52px"
               data-style-width="100%"
+              data-token="14179466-0ff9-404f-bd08-ff89a834a80f"
             >
-              <a href="https://www.trustpilot.com/review/universitio.co.uk" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground">
-                Universitio is rated on Trustpilot
-              </a>
+              <a href="https://www.trustpilot.com/review/universitio.com" target="_blank" rel="noopener">Trustpilot</a>
             </div>
           </div>
 
