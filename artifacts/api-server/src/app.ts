@@ -69,8 +69,32 @@ if (process.env.NODE_ENV === "production") {
     });
 
     app.use(express.static(staticDir));
-    app.get("/{*splat}", (_req, res) => {
-      res.sendFile(path.join(staticDir, "index.html"));
+
+    // Valid frontend routes for 404 detection
+    const validRoutePatterns = [
+      /^\/$/,                                    // Home
+      /^\/free-consultation$/,                   // Free Consultation
+      /^\/assessment-form$/,                     // Assessment Form
+      /^\/blog$/,                                // Blog listing
+      /^\/blog\/[a-z0-9\-]+$/,                   // Blog post (:slug)
+      /^\/blog\/category\/[a-z0-9\-]+$/,        // Blog category
+      /^\/partners$/,                            // Partners
+      /^\/student-referral$/,                    // Student Referral
+      /^\/careers$/,                             // Careers
+      /^\/terms-and-conditions$/,                // Terms
+      /^\/privacy-policy$/,                      // Privacy
+      /^\/admin(?:\/.*)?$/,                      // Admin and subroutes
+    ];
+
+    function isValidRoute(pathname: string): boolean {
+      return validRoutePatterns.some((pattern) => pattern.test(pathname));
+    }
+
+    // SPA fallback with proper 404 status for unknown routes
+    app.get("/{*splat}", (req: Request, res: Response) => {
+      const pathname = req.path;
+      const statusCode = isValidRoute(pathname) ? 200 : 404;
+      res.status(statusCode).sendFile(path.join(staticDir, "index.html"));
     });
   }
 }
