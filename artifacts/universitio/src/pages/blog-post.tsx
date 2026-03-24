@@ -55,6 +55,7 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
       <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
         <img
           src={`${BASE}${post.image}`}
+          srcSet={`${BASE}${post.image.replace('.webp', '-400.webp')} 400w, ${BASE}${post.image.replace('.webp', '-600.webp')} 600w, ${BASE}${post.image} 1200w`}
           alt={post.imageAlt}
           loading="lazy"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
