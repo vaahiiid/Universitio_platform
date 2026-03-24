@@ -1,0 +1,80 @@
+I need you to fix the blog categories properly and also review/correct the sitemap so it matches the actual current blog structure.
+
+Important:
+- do not redesign the blog
+- do not change unrelated pages
+- do not touch admin
+- keep the scope limited to blog taxonomy and sitemap accuracy
+
+----------------------------------
+TASK 1: FIX BLOG CATEGORIES
+----------------------------------
+
+The current blog categories are not correctly aligned with the intended blog taxonomy.
+
+I want the blog categories to be exactly these:
+
+- UK Universities
+- US Universities
+- EU Universities
+- CA Universities
+- Education News
+- Student Guides
+
+Requirements:
+1. Make sure the blog uses these category names consistently.
+2. Remove or replace outdated/incorrect category labels if they are still being used.
+3. Make sure category pages and category links reflect the correct current taxonomy.
+4. Do not leave old inconsistent category slugs active unless they are intentionally needed.
+5. The Solent University post must be in:
+   - UK Universities
+
+If slug handling is needed for categories, use clean and consistent slugs.
+
+----------------------------------
+TASK 2: AUDIT AND FIX SITEMAP
+----------------------------------
+
+I want you to check whether the sitemap is:
+- automatically generated
+- manually maintained
+- or partially hardcoded
+
+Then fix it so it reflects the actual current site structure correctly.
+
+Please check and correct all of the following:
+
+1. Ensure all current important public pages are included correctly
+2. Ensure all current blog posts are included correctly
+3. Ensure the new Solent University blog post is included
+4. Ensure category URLs in the sitemap match the corrected blog taxonomy
+5. Remove outdated or incorrect blog category URLs if they no longer belong to the current structure
+6. Make sure sitemap entries reflect the actual current blog/category/page setup
+7. If lastmod values are generated incorrectly or too generically, improve them if possible
+8. Keep sitemap clean and accurate for Google
+
+If the sitemap is not currently generated from the actual blog data source, improve that so it stays in sync more reliably.
+
+----------------------------------
+QUESTIONS I NEED ANSWERED
+----------------------------------
+
+Please clearly answer these as part of the work:
+
+1. Is the sitemap currently automatic or manual?
+2. Why was the new Solent blog post missing from the sitemap?
+3. Were the old blog category URLs still coming from an outdated blog taxonomy?
+4. What exactly did you change to make the sitemap accurate?
+5. Is the sitemap now fully aligned with the current blog categories and current blog posts?
+
+----------------------------------
+AFTER CHANGES
+----------------------------------
+
+Show me exactly:
+- which files were modified
+- what old categories were replaced/removed
+- what the final category slugs are
+- whether the sitemap is now automatic or still manual
+- confirmation that the Solent post is now included in the sitemap
+- confirmation that the sitemap now matches the real current blog structure
