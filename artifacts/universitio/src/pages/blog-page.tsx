@@ -75,21 +75,6 @@ export default function BlogPage() {
             </div>
           </div>
 
-          <div className="mb-10">
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
-              <button className="px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap bg-primary text-white border-primary shadow-md">
-                All
-              </button>
-              {allCategories.map((cat) => (
-                <Link key={cat.slug} href={`/blog/category/${cat.slug}`}>
-                  <button className="px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap bg-white text-foreground border-border hover:border-primary hover:text-primary transition-all">
-                    {cat.name}
-                  </button>
-                </Link>
-              ))}
-            </div>
-          </div>
-
           {featured && (
             <article
               className="group mb-12 bg-white rounded-3xl border border-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
