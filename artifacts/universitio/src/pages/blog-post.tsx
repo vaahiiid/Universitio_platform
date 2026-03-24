@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams, useLocation } from "wouter";
 import {
   ArrowLeft, ArrowRight, Calendar, Clock, User,
-  Share2, Copy, ChevronRight
+  Share2, Copy, ChevronRight, Facebook, Twitter, Linkedin
 } from "lucide-react";
 import { blogPosts, type BlogPost } from "@/data/blog/postsData";
 
@@ -218,7 +218,7 @@ export default function BlogPostPage() {
             </div>
           )}
 
-          <div className="flex items-center gap-3 border-t border-b border-border py-4 mb-12">
+          <div className="flex items-center gap-3 border-t border-b border-border py-4 mb-12 flex-wrap">
             <Share2 className="w-4 h-4 text-muted-foreground" />
             <span className="text-sm font-medium text-muted-foreground mr-2">Share:</span>
             <button
@@ -233,25 +233,25 @@ export default function BlogPostPage() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent("whatsapp_click", { event_category: "contact", event_label: "WhatsApp Button", article_slug: post.slug })}
-              className="text-sm text-muted-foreground hover:text-green-600 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-green-600 transition-colors"
             >
-              WhatsApp
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-blue-600 transition-colors"
-            >
-              LinkedIn
+              <Facebook className="w-4 h-4" /> Facebook
             </a>
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(articleUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-sky-500 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-sky-500 transition-colors"
             >
-              X / Twitter
+              <Twitter className="w-4 h-4" /> X / Twitter
+            </a>
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-blue-600 transition-colors"
+            >
+              <Linkedin className="w-4 h-4" /> LinkedIn
             </a>
           </div>
 

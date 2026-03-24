@@ -1,0 +1,99 @@
+I need you to update only the Solent University blog post that was just added.
+
+Important:
+- Do NOT change the overall blog architecture
+- Do NOT modify unrelated blog posts
+- Do NOT change routing
+- Do NOT redesign the whole blog page
+- Only update the existing Solent University post and its share section styling
+
+----------------------------------
+TASK 1: USE THE ATTACHED IMAGE
+----------------------------------
+
+I will attach the blog cover image.
+
+Please:
+- use the attached image as the cover image for the existing Solent University post
+- make sure it displays correctly on:
+  - the blog listing page
+  - the single blog post page
+- add proper alt text:
+  "Solent University Southampton campus UK"
+
+If the current static blog structure requires a local image path, save/use the attached image in the correct blog image location and update the Solent post entry accordingly.
+
+----------------------------------
+TASK 2: ADD A FICTIONAL AUTHOR NAME
+----------------------------------
+
+For this Solent University blog post only, assign a fictional author name.
+
+Requirements:
+- choose one random fictional name
+- the name must sound realistic
+- it must be selected from a small pool that includes:
+  - 3 to 4 British-style names
+  - 1 Pakistani-style name
+  - 1 Indian-style name
+- do not use any real known public figure
+- the chosen name should be displayed as the author of this blog post
+
+Use a random fictional name from a pool similar to:
+- Oliver Bennett
+- Amelia Clarke
+- Sophie Turner
+- Daniel Foster
+- Ayesha Rahman
+- Arjun Mehta
+
+Pick only ONE name for this post.
+
+----------------------------------
+TASK 3: IMPROVE THE SHARE SECTION
+----------------------------------
+
+On the single blog post page, the share links at the bottom should use proper icons next to them instead of plain text-only links.
+
+Please:
+- keep the existing share functionality
+- improve only the visual presentation
+- show share options with appropriate icons
+- keep it clean and minimal
+- do not redesign unrelated parts of the page
+
+Examples could include icons for:
+- Facebook
+- X / Twitter
+- LinkedIn
+- Copy link
+
+If icon components already exist in the project, reuse them.
+If not, use the simplest compatible icon solution already available in the codebase.
+
+----------------------------------
+STRICT SCOPE
+----------------------------------
+
+Only update:
+- the existing Solent University post data
+- the image reference for that post
+- the author field for that post
+- the share section UI on the single blog post page
+
+Do NOT:
+- modify unrelated blog posts
+- change blog categories
+- change blog routing
+- touch admin
+- touch old public pages outside this specific blog-related display update
+
+----------------------------------
+AFTER CHANGES
+----------------------------------
+
+Show me exactly:
+- which file(s) were modified
+- what image path/reference was used
+- which fictional author name was selected
+- what was changed in the share section
