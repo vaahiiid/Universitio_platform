@@ -505,7 +505,7 @@ export default function AssessmentForm() {
 
           {currentStep === 0 && (
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Check Your Admission Chances in 30 Seconds</h1>
+              <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Take Your Free Admissions Assessment</h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-3">
                 Get a quick estimate of your admission chances based on your profile. Free and no commitment.
               </p>
