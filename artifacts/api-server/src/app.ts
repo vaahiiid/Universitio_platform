@@ -64,15 +64,20 @@ if (process.env.NODE_ENV === "production") {
   if (fs.existsSync(staticDir)) {
     // Cache control middleware for static assets
     app.use((req: Request, res: Response, next: NextFunction) => {
-      // Long cache (1 year) for hashed assets (JS, CSS, images)
-      if (/\.(js|css|webp|png|jpg|jpeg|gif|svg|woff2|woff|ttf|eot)$/.test(req.path)) {
+      // Long cache (1 year, immutable) for versioned/hashed assets
+      // Pattern: asset-<hash>.ext (e.g., index-CiBoISeN.css, vendor-react-qwSqH58P.js)
+      if (/\.(js|mjs|css|webp|png|jpg|jpeg|gif|svg|woff2|woff|ttf|eot|mp4|webm)$/.test(req.path) && /[-][a-zA-Z0-9]+\.(js|mjs|css|webp|png|jpg|jpeg|gif|svg|woff2|woff|ttf|eot|mp4|webm)$/.test(req.path)) {
         res.set("Cache-Control", "public, max-age=31536000, immutable");
       }
-      // Short cache for HTML (index.html and others)
+      // Medium cache (7 days) for non-hashed static assets
+      else if (/\.(js|mjs|css|webp|png|jpg|jpeg|gif|svg|woff2|woff|ttf|eot|ico|xml|txt)$/.test(req.path)) {
+        res.set("Cache-Control", "public, max-age=604800");
+      }
+      // Short cache (1 hour, revalidatable) for HTML
       else if (req.path.endsWith(".html") || req.path === "/") {
         res.set("Cache-Control", "public, max-age=3600, must-revalidate");
       }
-      // Default for other files
+      // Default for other files (1 day)
       else {
         res.set("Cache-Control", "public, max-age=86400");
       }
