@@ -41,7 +41,18 @@ function canonicalRedirect(req: Request, res: Response, next: NextFunction): voi
 }
 
 app.use(canonicalRedirect);
-app.use(compression());
+app.use(
+  compression({
+    level: 6,
+    threshold: 1024,
+    filter: (req, res) => {
+      if (req.headers["x-no-compression"]) {
+        return false;
+      }
+      return compression.filter(req, res);
+    },
+  })
+);
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
