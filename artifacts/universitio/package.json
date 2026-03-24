@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
-    "build": "tsx scripts/generate-sitemap.ts && vite build --config vite.config.ts",
+    "build": "tsx scripts/generate-home-posts.ts && tsx scripts/generate-sitemap.ts && vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
