@@ -5,7 +5,7 @@ export const members = pgTable("members", {
   fullName: text("full_name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
-  source: text("source").notNull().default("imported"),
+  source: text("source").notNull().default("consultation"),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
