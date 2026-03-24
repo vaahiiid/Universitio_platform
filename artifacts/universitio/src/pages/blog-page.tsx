@@ -44,7 +44,7 @@ export default function BlogPage() {
               <BookOpen className="w-4 h-4" />
               Universitio Blog
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Insights & Guidance</h1>
+            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">Study Abroad Guides for International Students</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Expert insights, university guides, and practical advice for international students planning to study abroad.
             </p>
