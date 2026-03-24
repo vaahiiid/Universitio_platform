@@ -9,7 +9,7 @@ export default function Careers() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
-        <title>Careers | Universitio</title>
+        <title>Careers in Education Consulting | Universitio</title>
         <meta name="description" content="Explore career opportunities at Universitio. Join our team of education consultants helping international students reach top universities worldwide." />
       </Helmet>
       <Navbar />
@@ -21,7 +21,7 @@ export default function Careers() {
           </div>
 
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-            Join Our Team
+            Careers in International Education & Student Recruitment
           </h1>
 
           <div className="bg-white rounded-3xl border border-border shadow-sm p-10 md:p-14 mb-12">
