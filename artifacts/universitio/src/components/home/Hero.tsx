@@ -25,7 +25,7 @@ export function Hero() {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-foreground">
-              Apply to Top Universities Worldwide with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Expert Support for International Students</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">University Application Support</span> for International Students
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">

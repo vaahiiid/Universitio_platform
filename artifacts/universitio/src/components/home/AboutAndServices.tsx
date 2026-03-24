@@ -546,6 +546,7 @@ export function AboutAndServices() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">Our Services</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground">Universitio Education Support for International Students</h2>
             <p className="text-base md:text-lg text-muted-foreground">
               Comprehensive support at every stage — from application to arrival.
             </p>
