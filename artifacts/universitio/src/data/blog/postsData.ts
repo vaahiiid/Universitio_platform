@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-03-24",
     author: `Amelia Clarke`,
     excerpt: `Discover Solent University courses, tuition fees, entry requirements, and how to apply. A complete guide for international students in the UK.`,
-    image: "@assets/Solent_1774347116529.webp",
+    image: "blog-images/solent-university-southampton-campus-uk.webp",
     imageAlt: `Solent University Southampton campus UK`,
     categories: ["UK Universities"],
     categorySlugs: ["uk-universities"],
