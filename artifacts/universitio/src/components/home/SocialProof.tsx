@@ -167,6 +167,7 @@ export function SocialProof() {
                     src={`${import.meta.env.BASE_URL}${post.image}`}
                     alt={post.imageAlt}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
