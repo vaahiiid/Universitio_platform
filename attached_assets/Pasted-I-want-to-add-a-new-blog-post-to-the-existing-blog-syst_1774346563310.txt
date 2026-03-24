@@ -1,0 +1,200 @@
+I want to add a new blog post to the existing blog system (NOT the CMS version).
+
+Important:
+- Do NOT use any CMS logic
+- Do NOT modify the blog architecture
+- Do NOT change routing or API
+- Only add this blog post to the existing blog structure
+- Follow the same format and structure used by current blog posts
+
+----------------------------------
+BLOG DETAILS
+----------------------------------
+
+Title (H1):
+Solent University Guide: Courses, Fees & Admission
+
+SEO Title:
+Solent University Guide: Courses, Fees & Admission
+
+Meta Description:
+Discover Solent University courses, tuition fees, entry requirements, and how to apply. A complete guide for international students in the UK.
+
+Slug:
+solent-university-courses-fees-admission
+
+Category:
+UK Universities
+
+Focus Keywords:
+Primary: Solent University
+Secondary:
+- Solent University courses
+- Solent University fees
+- Solent University admission
+- study at Solent University
+- universities in Southampton UK
+
+----------------------------------
+IMAGE
+----------------------------------
+
+I will attach a blog cover image.
+Use it as the main blog image.
+Add proper alt text:
+"Solent University Southampton campus UK"
+
+----------------------------------
+CONTENT
+----------------------------------
+
+Use proper semantic HTML with:
+- h1, h2, h3
+- paragraphs
+- bullet points
+- internal and external links
+
+Content:
+
+<h1>Solent University Guide: Courses, Fees & Admission</h1>
+
+<p>If you are planning to study in the UK and looking for a modern, career-focused university, Solent University is a strong option. Located in Southampton, it offers practical courses, industry connections, and solid support for international students.</p>
+
+<p>You can explore more details on the official website:
+<a href="https://www.solent.ac.uk/" target="_blank" rel="noopener noreferrer">Solent University Official Website</a></p>
+
+<h2>Why Choose Solent University?</h2>
+
+<p>Solent University is known for its practical approach to education and strong focus on employability.</p>
+
+<h3>Key Benefits</h3>
+<ul>
+<li>Career-focused courses with real-world experience</li>
+<li>Strong links with industry and employers</li>
+<li>Modern facilities and equipment</li>
+<li>Supportive environment for international students</li>
+<li>Located in a vibrant coastal city</li>
+</ul>
+
+<h2>Popular Courses at Solent University</h2>
+
+<p>Solent offers a wide range of undergraduate and postgraduate programmes designed to meet industry needs.</p>
+
+<h3>Main Study Areas</h3>
+<ul>
+<li>Business and Management</li>
+<li>Maritime and Shipping</li>
+<li>Media and Creative Industries</li>
+<li>Sports Science</li>
+<li>Engineering and Technology</li>
+</ul>
+
+<p>These courses are designed to help students gain practical skills and improve job prospects after graduation.</p>
+
+<h2>Solent University Fees for International Students</h2>
+
+<p>Tuition fees vary depending on the course and level of study.</p>
+
+<h3>Estimated Tuition Fees</h3>
+<ul>
+<li>Undergraduate: £14,000 to £16,500 per year</li>
+<li>Postgraduate: £15,000 to £17,500 per year</li>
+</ul>
+
+<p>It is important to check the exact fees for your chosen course before applying.</p>
+
+<h2>Entry Requirements</h2>
+
+<p>To apply to Solent University, you need to meet both academic and English language requirements.</p>
+
+<h3>Academic Requirements</h3>
+<ul>
+<li>Undergraduate: High school qualification</li>
+<li>Postgraduate: Bachelor’s degree</li>
+</ul>
+
+<h3>English Language Requirements</h3>
+<ul>
+<li>IELTS: Usually 6.0 overall</li>
+<li>Minimum 5.5 in each skill</li>
+</ul>
+
+<p>Requirements may vary depending on the course.</p>
+
+<h2>How to Apply to Solent University</h2>
+
+<h3>Application Steps</h3>
+<ul>
+<li>Choose your course</li>
+<li>Prepare required documents (SOP, CV, transcripts)</li>
+<li>Submit your application</li>
+<li>Attend an interview if required</li>
+<li>Receive and accept your offer</li>
+</ul>
+
+<h2>Student Life in Southampton</h2>
+
+<p>Solent University is located in Southampton, a popular student city in the south of England.</p>
+
+<h3>Why Southampton?</h3>
+<ul>
+<li>More affordable than London</li>
+<li>Active student lifestyle</li>
+<li>Good transport links to London</li>
+<li>Part-time job opportunities</li>
+</ul>
+
+<h2>Is Solent University Good for International Students?</h2>
+
+<p>Yes, Solent University is a good choice for international students, especially those who prefer practical learning.</p>
+
+<p>It is suitable for students who:</p>
+
+<ul>
+<li>Want hands-on experience</li>
+<li>Aim to improve employability</li>
+<li>Prefer a supportive learning environment</li>
+</ul>
+
+<p><strong>👉 Book your free consultation now:</strong><br/>
+<a href="https://universitio.com/free-consultation">https://universitio.com/free-consultation</a></p>
+
+----------------------------------
+INTERNAL LINKS
+----------------------------------
+
+Include these links naturally in the content:
+
+- https://universitio.com/free-consultation
+- https://universitio.com/assessment-form
+
+----------------------------------
+BLOG CATEGORIES (DEFINE IF NOT EXISTS)
+----------------------------------
+
+Ensure blog categories include:
+
+- UK Universities
+- US Universities
+- EU Universities
+- CA Universities
+- Education News
+- Student Guides   ← (use this for daily study-related content)
+
+This blog must be assigned to:
+UK Universities
+
+----------------------------------
+FINAL REQUIREMENTS
+----------------------------------
+
+- Keep SEO structure intact
+- Keep formatting clean and readable
+- Do not modify existing blog system
+- Do not remove or change existing posts
+- Only add this new blog post
+
+After adding, show me:
+- which file was created/modified
+- where this post is stored
+- confirm it appears on /blog
