@@ -23,8 +23,8 @@ export const blogPosts: BlogPost[] = [
     excerpt: `Discover Solent University courses, tuition fees, entry requirements, and how to apply. A complete guide for international students in the UK.`,
     image: "blog-images/solent-university-southampton-campus-uk.webp",
     imageAlt: `Solent University Southampton campus UK`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Solent University", "Solent University courses", "Solent University fees", "Solent University admission", "study at Solent University", "universities in Southampton UK"],
     content: `<h1>Solent University Guide: Courses, Fees & Admission</h1>
 
@@ -196,8 +196,8 @@ export const blogPosts: BlogPost[] = [
     excerpt: `For international students looking for a university that combines academic quality with a personal learning experience, Liverpool Hope University offers a distinctive option. Located in one of the UK’...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Liverpool Hope University: Education in a Historic Citiy — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>For international students looking for a university that combines academic quality with a personal learning experience, <a href="https://www.hope.ac.uk/"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">Liverpool Hope University</span></span></a> offers a distinctive option. Located in one of the UK’s most vibrant and historic cities, the university is known for its supportive teaching approach, strong academic traditions and focus on student development.</p>
@@ -282,8 +282,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Introduction For international students who want a UK university combining academic quality with creativity and real-world preparation, the University of Brighton offers an attractive option. Known fo...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `University of Brighton: Career-Focused UK Education — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<h2>Introduction</h2>
 <p>For international students who want a UK university combining academic quality with creativity and real-world preparation, the <a href="https://www.brighton.ac.uk/index.aspx"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">University of Brighton</span></span></a> offers an attractive option. Known for its applied teaching approach, industry connections and vibrant coastal location, Brighton provides an environment where students can develop professionally while enjoying a dynamic student lifestyle.</p>
@@ -321,8 +321,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Introduction Many international students panic when they hear about the UK student visa interview. The reality is far less dramatic than most imagine. The interview, often called a credibility intervi...`,
     image: "blog-images/visa-3.webp",
     imageAlt: `UK Student Visa Interview: What to Expect and How to Pass — Visa`,
-    categories: ["Visa"],
-    categorySlugs: ["visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<h2>Introduction</h2>
 <p>Many <a href="https://en.wikipedia.org/wiki/International_student">international students</a> panic when they hear about the UK student visa interview. The reality is far less dramatic than most imagine. The interview, often called a <strong>credibility interview</strong>, is simply a short conversation designed to confirm that you are a genuine student with a clear academic plan. It is not required for every applicant, and being invited does not mean something is wrong with your application. It is just one of the ways UK immigration checks that your study plans are real and well thought out.</p>
@@ -376,8 +376,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `For international students seeking a UK university that combines accessible entry routes with career-focused education, the University of Wolverhampton offers a strong and practical choice. With a lon...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of Wolverhampton: A UK University Focused on Success — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<p>For international students seeking a UK university that combines accessible entry routes with career-focused education, the <a href="https://www.wlv.ac.uk/"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">University of Wolverhampton</span></span></a> offers a strong and practical choice. With a long-standing commitment to inclusive education and employability, Wolverhampton provides programmes designed to help students progress academically while preparing for real-world careers.</p>
 
@@ -454,8 +454,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `For international students seeking a UK university that combines strong academic standards with real-world relevance, University of Plymouth offers a compelling option. Located in the South West of En...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of Plymouth: Innovation, and Coastal Student Life — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>For international students seeking a UK university that combines strong academic standards with real-world relevance, <span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">University of Plymouth</span></span> offers a compelling option. Located in the South West of England, Plymouth is recognised for research-led teaching, industry engagement and a student experience shaped by its unique coastal setting. It is a university where innovation, sustainability and applied learning come together.</p>
@@ -544,8 +544,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `For international students looking to study in the UK, choosing a university that offers strong employability outcomes alongside academic quality is essential. University of Salford has built its repu...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Salford: Career-Driven University in Industry — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>For international students looking to study in the UK, choosing a university that offers strong employability outcomes alongside academic quality is essential. <a href="https://www.salford.ac.uk/"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">University of Salford</span></span></a> has built its reputation around exactly this principle. With a clear focus on industry collaboration, applied learning and real-world experience, Salford offers students an education that is closely aligned with professional success.</p>
@@ -645,8 +645,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `For international students planning to study in the UK, choosing a university that balances quality education with real-world opportunities is essential. Cardiff Metropolitan University stands out as ...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Cardiff Metropolitan University: A Practical UK Choice — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>For international students planning to study in the UK, choosing a university that balances quality education with real-world opportunities is essential. <a href="https://www.cardiffmet.ac.uk/">Cardiff Metropolitan University</a> stands out as a vibrant, career-oriented institution where academic study blends with professional readiness. With a focus on practical learning, industry engagement and student experience, Cardiff Met has become a popular choice for students who want both academic excellence and employability.</p>
@@ -759,8 +759,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Choosing the right university in the UK is a big decision for international students. The University of Bradford stands out as an institution that combines academic quality with real-world impact. Bra...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of Bradford: Your Path to a Supportive UK Education — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Choosing the right university in the UK is a big decision for international students. <a href="https://www.bradford.ac.uk/">The University of Bradford</a> stands out as an institution that combines academic quality with real-world impact. Bradford offers courses designed to prepare students for the job market, supports students from diverse backgrounds, and prioritises practical learning alongside academic theory. This makes it a compelling choice for learners who want both solid education and career readiness.</p>
@@ -879,8 +879,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Choosing the right university in the UK is about more than rankings alone. For many international students, teaching quality, academic support, and a positive student experience matter just as much as...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of Wales Trinity Saint David — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Choosing the right university in the UK is about more than rankings alone. For many international students, teaching quality, academic support, and a positive student experience matter just as much as reputation. <a href="https://www.uwtsd.ac.uk/"><span class="hover:entity-accent entity-underline inline cursor-pointer align-baseline"><span class="whitespace-normal">University of Wales Trinity Saint David</span></span></a> is a UK institution that has built its identity around exactly these priorities, offering a supportive and practical learning environment for students from around the world.</p>
@@ -925,8 +925,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Finishing school is exciting, but for many international students, moving directly into a UK undergraduate degree can be academically risky. Differences in education systems, assessment styles, and ac...`,
     image: "blog-images/schools-3.webp",
     imageAlt: `Why a Foundation Year in the UK Is Essential for School Leavers — Schools`,
-    categories: ["Schools"],
-    categorySlugs: ["schools"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>Finishing school is exciting, but for many international students, moving directly into a UK undergraduate degree can be academically risky. Differences in education systems, assessment styles, and academic English mean that being “qualified” on paper does not always mean being “prepared” in practice. This is exactly why a Foundation Year in the UK plays such a critical role. It is not a backup option; it is a strategic pathway designed to help school leavers succeed at university from day one.</p>
@@ -974,8 +974,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Abertay University is a modern UK university located in Dundee, Scotland, with a strong reputation for applied education, digital innovation, and graduate employability. It is especially well known fo...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Abertay University: Courses, and Why It’s a Smart Choice — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.abertay.ac.uk/">Abertay University</a> is a modern UK university located in Dundee, Scotland, with a strong reputation for applied education, digital innovation, and graduate employability. It is especially well known for its leadership in computer science, artificial intelligence, cybersecurity, and games technology, making it an attractive destination for international students seeking career-focused degrees in the UK.</p>
@@ -1077,8 +1077,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `St Mary’s University, Twickenham offers a distinctive London study experience that combines academic quality with a close-knit campus community. Located in southwest London, the university is known fo...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `St Mary's University, Twickenham: A Supportive Experience — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.stmarys.ac.uk/">St Mary’s University, Twickenham</a> offers a distinctive London study experience that combines academic quality with a close-knit campus community. Located in southwest London, the university is known for small class sizes, strong student support, and a values-led approach to education. For international students seeking a balance between academic rigour and personal attention, St Mary’s stands out among London universities.</p>
@@ -1187,8 +1187,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Why Choose the University of Hull The University of Hull is a respected UK public university known for strong teaching quality, applied research, and an inclusive student experience. Located in an aff...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of Hull for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<h3>Why Choose the University of Hull</h3>
 <blockquote>
@@ -1284,8 +1284,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Sheffield Hallam University (SHU) is one of the UK’s largest modern universities, known for its strong focus on employability, applied learning and student support. With a diverse international commun...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Sheffield Hallam University: A Practical Guide for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.shu.ac.uk/">Sheffield Hallam University</a> (SHU) is one of the UK’s largest modern universities, known for its strong focus on employability, applied learning and student support. With a diverse international community and campuses located in the vibrant city of Sheffield, the university offers practical, industry-aligned programmes across a wide range of disciplines.</p>
@@ -1399,8 +1399,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Heriot-Watt University is one of the UK’s oldest and most respected institutions, with a strong international reputation for excellence in engineering, science, mathematics, business and technology. F...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Heriot-Watt University: A Leader in the UK Education System — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.hw.ac.uk/">Heriot-Watt University</a> is one of the UK’s oldest and most respected institutions, with a strong international reputation for excellence in engineering, science, mathematics, business and technology. Founded in 1821, the university is based primarily in Edinburgh, Scotland, and is known for combining academic rigour with real-world application.</p>
@@ -1455,8 +1455,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Introduction Working as an education agent is already complex enough. Managing student acquisition, trust, follow-ups, and expectations leaves little room for operational overload. Our agent partnersh...`,
     image: "blog-images/partnership-1.webp",
     imageAlt: `Partner With Us: A Smarter Commission-Based Model for Education Agents — Partner with us`,
-    categories: ["Partner with us"],
-    categorySlugs: ["partner-with-us"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <h2>Introduction</h2>
@@ -1647,8 +1647,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `Buckinghamshire New University (often called BNU) is one of the UK’s dynamic modern universities known for practical programmes, personalised support and strong industry links. Located in the south of...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Buckinghamshire New University: Complete Guide for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.bucks.ac.uk/">Buckinghamshire New University</a> (often called BNU) is one of the UK’s dynamic modern universities known for practical programmes, personalised support and strong industry links. Located in the south of England with campuses in High Wycombe and Uxbridge, BNU attracts students from all over the world who want an education that matches real-world career expectations.</p>
@@ -1742,8 +1742,8 @@ At Universitio, we are official representatives of UK universities, colleges and
     excerpt: `For Hong Kong students, the UK is not just a popular option. It is one of the most practical and strategically aligned destinations for academic success and career growth. The reasons go beyond rankin...`,
     image: "blog-images/general-education-2.webp",
     imageAlt: `Why the UK Works So Well for Hong Kong Students — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>For Hong Kong students, the UK is not just a popular option. It is one of the most practical and strategically aligned destinations for academic success and career growth. The reasons go beyond rankings and prestige. <a href="https://www.gov.uk/browse/education">The UK education</a> model, language environment, qualification recognition and post-study pathways often match what Hong Kong students need, with fewer adjustment shocks compared to many other destinations.</p>
@@ -1850,8 +1850,8 @@ Plan your visa route based on your long-term goal, not only the quickest option<
     excerpt: `Newcastle University is one of the UK’s leading research-intensive institutions and a proud member of the Russell Group. With a history dating back to 1834, the university combines academic excellence...`,
     image: "blog-images/general-education-1.webp",
     imageAlt: `Newcastle University: Top Russell Group Choice for Students — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.ncl.ac.uk/">Newcastle University</a> is one of the UK’s leading research-intensive institutions and a proud member of the Russell Group. With a history dating back to 1834, the university combines academic excellence with a strong focus on global impact, innovation and student experience.</p>
@@ -1967,8 +1967,8 @@ Plan your visa route based on your long-term goal, not only the quickest option<
     excerpt: `The University of Nottingham is one of the UK’s most prestigious and internationally recognised universities. As a member of the Russell Group, it is known for world-class research, academic excellenc...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of Nottingham: A Global Leader in Research — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.nottingham.ac.uk/">The University of Nottingham</a> is one of the UK’s most prestigious and internationally recognised universities. As a member of the Russell Group, it is known for world-class research, academic excellence and a truly global outlook. With campuses in the UK, China and Malaysia, Nottingham offers students an education that combines British academic tradition with international impact.</p>
@@ -2033,8 +2033,8 @@ Plan your visa route based on your long-term goal, not only the quickest option<
     excerpt: `The Innovator Founder visa is a UK immigration route designed for entrepreneurs who want to set up and run an innovative, scalable business in the United Kingdom. It is aimed at experienced or high-po...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `Innovator Founder Visa UK: Complete 2026 Guide — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.gov.uk/innovator-founder-visa">The Innovator Founder visa</a> is a UK immigration route designed for entrepreneurs who want to set up and run an innovative, scalable business in the United Kingdom. It is aimed at experienced or high-potential founders with a credible idea that can grow, create jobs and compete internationally.</p>
@@ -2301,8 +2301,8 @@ Plan your visa route based on your long-term goal, not only the quickest option<
     excerpt: `London South Bank University (LSBU) is one of the UK’s most industry-connected universities, known for practical learning, outstanding employability outcomes and strong partnerships with hundreds of e...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `London South Bank University: A Practical Path to Success — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.lsbu.ac.uk/">London South Bank University</a> (LSBU) is one of the UK’s most industry-connected universities, known for practical learning, outstanding employability outcomes and strong partnerships with hundreds of employers. Located minutes from London’s business, tech and creative districts, LSBU offers international students the opportunity to study in one of the world’s most dynamic cities while building real career skills.</p>
@@ -2670,8 +2670,8 @@ Plan your visa route based on your long-term goal, not only the quickest option<
     excerpt: `Staffordshire University stands out as a modern, dynamic institution in the UK, offering practical courses, supportive student environment, and accessible tuition and living costs. Located in Stafford...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Choose Staffordshire University: Full Guide for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.staffs.ac.uk/courses/undergraduate?utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=aobrand_autumn25&amp;utm_content=stafford_always_on&amp;utm_id=sta027.1&amp;gad_source=1&amp;gad_campaignid=22969652087&amp;gbraid=0AAAAA9YFKRYfAgrSF4N2AGSmn2PyI_ylH&amp;gclid=CjwKCAiAlrXJBhBAEiwA-5pgwhsJqCnREsqlNxNSQpjbZC8nGIsOqbCEWRxNOCpie0vrJI6yYtOryRoCE9gQAvD_BwE">Staffordshire University</a> stands out as a modern, dynamic institution in the UK, offering practical courses, supportive student environment, and accessible tuition and living costs. Located in Staffordshire, it’s well-connected yet relatively calm and affordable compared to major cities. For international students seeking balance between quality, affordability and opportunities — Staffordshire is a serious contender.</p>
@@ -2817,8 +2817,8 @@ Plan your visa route based on your long-term goal, not only the quickest option<
     excerpt: `Manchester Metropolitan University (MMU) has become one of the UK’s most recognised modern universities, known for its industry-focused teaching, innovative programmes and strong career outcomes. With...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Study at Manchester Metropolitan University | Full Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.mmu.ac.uk/">Manchester Metropolitan University (MMU)</a> has become one of the UK’s most recognised modern universities, known for its industry-focused teaching, innovative programmes and strong career outcomes. With a vibrant campus in the centre of Manchester, it attracts students who want high-quality education with real employability value.</p>
@@ -3161,8 +3161,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of East London (UEL) is one of the UK’s most dynamic and career-driven universities, located in one of the most diverse and fast-growing regions of London. Known for its modern approach...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of East London: A Full Guide for Global Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.uel.ac.uk/">The University of East London (UEL)</a> is one of the UK’s most dynamic and career-driven universities, located in one of the most diverse and fast-growing regions of London. Known for its modern approach to teaching, industry-aligned programs and strong support for international students, UEL has become a major destination for students seeking practical skills and global career opportunities. This guide covers everything future applicants need to know.</p>
@@ -3327,8 +3327,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Derby is a modern, industry-focused UK institution known for practical learning, strong student support and state-of-the-art facilities. Located in the heart of England, Derby offers...`,
     image: "blog-images/general-education-3.webp",
     imageAlt: `University of Derby: A Complete Guide for Global Students — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.derby.ac.uk/">The University of Derby</a> is a modern, industry-focused UK institution known for practical learning, strong student support and state-of-the-art facilities. Located in the heart of England, Derby offers an affordable and welcoming environment that attracts thousands of international students each year. This guide gives you everything you need to know before applying, from academic strengths to campus life, living costs and career opportunities.</p>
@@ -3490,8 +3490,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Liverpool John Moores University (LJMU) stands as one of the UK’s most dynamic and forward-looking institutions. Located in the heart of Liverpool — one of the country’s most vibrant and affordable ci...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Liverpool John Moores University – Where Ambition Meets Innovation — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.ljmu.ac.uk/">Liverpool John Moores University</a> (LJMU) stands as one of the UK’s most dynamic and forward-looking institutions. Located in the heart of Liverpool — one of the country’s most vibrant and affordable cities — LJMU combines world-class teaching, hands-on experience, and global research excellence. The university’s mission is simple yet powerful: to inspire learning, shape futures, and prepare students for real-world success.</p>
@@ -3673,8 +3673,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Dundee stands among the UK’s most forward-thinking institutions, blending academic excellence with real-world impact. Located in the heart of Scotland, Dundee provides a welcoming an...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Dundee – Where Innovation Meets Opportunity — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.dundee.ac.uk/">The University of Dundee</a> stands among the UK’s most forward-thinking institutions, blending academic excellence with real-world impact. Located in the heart of Scotland, Dundee provides a welcoming and affordable environment for international students who seek both top-tier education and a supportive community. Recognised for innovation in science, design, and engineering, the university consistently ranks high for teaching quality and student satisfaction.</p>
@@ -4010,8 +4010,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Edge Hill University is one of the UK’s most respected modern universities, combining high-quality teaching, career-focused programs, and a friendly campus atmosphere. Located in the picturesque town ...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Edge Hill University – Where Innovation Meets Community — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.edgehill.ac.uk/">Edge Hill University</a> is one of the UK’s most respected modern universities, combining high-quality teaching, career-focused programs, and a friendly campus atmosphere. Located in the picturesque town of Ormskirk, near Liverpool and Manchester, the university offers international students a perfect balance between peaceful academic life and access to vibrant city experiences. With a strong record of excellence in teaching, employability, and student satisfaction, Edge Hill has become a top choice for learners from all over the world.</p>
@@ -4177,8 +4177,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Queen’s University Belfast, one of the most prestigious members of the UK’s Russell Group, combines academic excellence, world-class research, and a warm, multicultural atmosphere in the heart of Nort...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Queen’s University Belfast – A Prestigious Path to Success — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.qub.ac.uk/">Queen’s University Belfast</a>, one of the most prestigious members of the UK’s Russell Group, combines academic excellence, world-class research, and a warm, multicultural atmosphere in the heart of Northern Ireland’s capital city. For international students, Queen’s represents a perfect blend of tradition, innovation, and opportunity — offering globally recognised degrees that open doors to successful careers around the world.</p>
@@ -4267,8 +4267,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Driving in the United Kingdom is a valuable skill that gives you freedom and independence, especially for international students or newcomers. However, getting a UK driving licence involves several cl...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `How to Get a UK Driving Licence – Step-by-Step Guide — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>Driving in the United Kingdom is a valuable skill that gives you freedom and independence, especially for international students or newcomers. However, getting a <a href="https://www.gov.uk/driving-licence-categories">UK driving licence involves</a> several clear steps and legal requirements. Whether you are a new learner or transferring your licence from another country, understanding the process helps you avoid delays and ensures you meet all government regulations.</p>
@@ -4385,8 +4385,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Coventry University is one of the UK’s most dynamic and forward-thinking institutions, attracting students from around the world who want to combine academic excellence with real-world experience. Loc...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Study at Coventry University – A Global Hub for Innovation — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.coventry.ac.uk/">Coventry University</a> is one of the UK’s most dynamic and forward-thinking institutions, attracting students from around the world who want to combine academic excellence with real-world experience. Located in the heart of England, Coventry has built a global reputation for innovation, employability, and high-quality teaching. Its modern learning approach and strong industry connections make it a top choice for international students who want to turn their education into a successful career.</p>
@@ -4472,8 +4472,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The UK job market is evolving rapidly. With technological innovation, an ageing population, climate commitments and global competition, certain degree fields and professions are seeing strong growth. ...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `Top Trending Degrees and In-Demand Jobs in the UK 2026 — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>The UK job market is evolving rapidly. With technological innovation, an ageing population, climate commitments and global competition, certain degree fields and professions are seeing strong growth. For international students and graduates, choosing a programme aligned with future employment demand is key. Below we highlight the degrees that are trending, map them to job roles with high demand, and explain what you need to succeed.</p>
@@ -4546,8 +4546,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Located on England’s beautiful south coast, the University of Portsmouth stands out as one of the UK’s most dynamic and career-focused universities. Known for its modern approach to teaching, high stu...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Portsmouth – Smart Choice for Global Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Located on England’s beautiful south coast, the <a href="https://www.port.ac.uk/"><strong>University of Portsmouth</strong></a> stands out as one of the UK’s most dynamic and career-focused universities. Known for its modern approach to teaching, high student satisfaction, and impressive graduate employability, Portsmouth has become a top destination for international students who want both academic quality and a vibrant student experience.</p>
@@ -4649,8 +4649,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Choosing a degree isn’t just about passion — it’s also about potential. For international students studying in the UK, understanding what kind of salary and career opportunities each field can lead to...`,
     image: "blog-images/general-education-2.webp",
     imageAlt: `Expected Salaries in the UK by Degree and Career Path — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Choosing a degree isn’t just about passion — it’s also about potential. For international students studying in the UK, understanding what kind of salary and career opportunities each field can lead to is an important part of planning your future. The UK job market values both academic excellence and practical experience, and graduates from British universities are in high demand worldwide. Here’s what you can realistically expect to earn in the UK depending on your degree and chosen career path.</p>
@@ -4721,8 +4721,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Oxford Brookes University is one of the UK’s leading modern universities, known for its innovation, academic excellence, and strong industry connections. Located in the historic city of Oxford, it com...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Study at Oxford Brookes University –A Path to Global Success — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.brookes.ac.uk/">Oxford Brookes University</a> is one of the UK’s leading modern universities, known for its innovation, academic excellence, and strong industry connections. Located in the historic city of Oxford, it combines a forward-thinking approach to education with the cultural richness of one of the world’s most famous academic cities. For international students, Oxford Brookes offers a unique blend of academic quality, professional preparation, and an inclusive, global environment.</p>
@@ -4891,8 +4891,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `City, University of London, is one of the UK’s most vibrant and forward-thinking universities, located in the heart of London. Known for its strong links to industry and professional bodies, City offe...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Study at City, University of London–Where Innovation Starts — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.citystgeorges.ac.uk/">City, University of London</a>, is one of the UK’s most vibrant and forward-thinking universities, located in the heart of London. Known for its strong links to industry and professional bodies, City offers students a perfect combination of academic excellence and real-world experience. Whether you’re interested in business, law, engineering, health, or media, City provides the tools, opportunities, and networks to help you thrive in your chosen career.</p>
@@ -5088,8 +5088,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The United Kingdom has long been one of the world’s most popular destinations for higher education. With its world-class universities, global recognition, and diverse academic culture, studying for a ...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Everything You Need to Know About Bachelor Degree in the UK — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>The United Kingdom has long been one of the world’s most popular destinations for higher education. With its world-class universities, global recognition, and diverse academic culture, studying for a bachelor’s degree in the UK can be a life-changing experience. Whether you dream of studying business, engineering, medicine, arts, or law, the UK offers flexibility, prestige, and practical opportunities that prepare students for international success.</p>
@@ -5218,8 +5218,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Birmingham stands among the most prestigious universities in the United Kingdom, known for academic excellence, global research impact, and an inspiring student experience. Situated ...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Study at the University of Birmingham at the Heart of the UK — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.birmingham.ac.uk/">The University of Birmingham</a> stands among the most prestigious universities in the United Kingdom, known for academic excellence, global research impact, and an inspiring student experience. Situated in England’s second-largest city, Birmingham combines world-class education with cultural diversity, innovation, and opportunity — making it one of the best choices for international students in 2025 and beyond.</p>
@@ -5286,8 +5286,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The official DV-2027 instructions have not been released yet, so applicants should refer to the DV-2026 rules to understand how to prepare their entry correctly. This guide covers all current photo re...`,
     image: "blog-images/usa-2.webp",
     imageAlt: `DV-2026 Photo Requirements and Country Eligibility Guide — USA Visas`,
-    categories: ["USA Visas"],
-    categorySlugs: ["usa-visas"],
+    categories: ["United States"],
+    categorySlugs: ["united-states"],
     tags: [],
     content: `<blockquote>
 <p>The official DV-2027 instructions have not been released yet, so applicants should refer to the DV-2026 rules to understand how to prepare their entry correctly. This guide covers all current photo requirements and lists the countries that were not eligible for the Diversity Visa Lottery 2026, so you can apply confidently when the new round opens.</p>
@@ -5342,8 +5342,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Leicester is one of the UK’s leading research-focused universities, recognised for its innovation, diversity, and inclusive academic environment. Located in the heart of England, Lei...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Study at the University of Leicester — A Gateway to Innovation — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://le.ac.uk/">The University of Leicester</a> is one of the UK’s leading research-focused universities, recognised for its innovation, diversity, and inclusive academic environment. Located in the heart of England, Leicester offers world-class education with a strong sense of community, making it a favourite among international students who want both academic excellence and a welcoming atmosphere.</p>
@@ -5419,8 +5419,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `University College London (UCL) is one of the world’s most prestigious and innovative universities — a true powerhouse for research, creativity, and global impact. Ranked consistently among the top 10...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `Study at UCL with Universitio, Exclusive £500 Scholarship — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>University College London (UCL) is one of the world’s most prestigious and innovative universities — a true powerhouse for research, creativity, and global impact. Ranked consistently among the top 10 universities worldwide, UCL stands at the heart of London’s academic and cultural life. For international students aiming for world-class education and future career success, UCL offers unmatched opportunities. And now, with <strong>Universitio’s exclusive £500 scholarship</strong>, you can make that dream more affordable and achievable than ever before.</p>
@@ -5492,8 +5492,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Royal Holloway, University of London is a prestigious institution often celebrated for its striking campus, strong academic reputation, and close links to London. Known for a friendly atmosphere, exce...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Complete Guide to Studying at Royal Holloway — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.royalholloway.ac.uk/">Royal Holloway</a>, University of London is a prestigious institution often celebrated for its striking campus, strong academic reputation, and close links to London. Known for a friendly atmosphere, excellent research, and a balance between city access and a serene environment, Royal Holloway offers a compelling choice for students seeking both academic excellence and quality of life.</p>
@@ -5617,8 +5617,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of South Wales (USW) is a modern, career-focused university with campuses across south Wales. It combines practical teaching, strong industry links, and a student-first approach to prep...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Complete Guide to University of South Wales — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.southwales.ac.uk/">The University of South Wales</a> (USW) is a modern, career-focused university with campuses across south Wales. It combines practical teaching, strong industry links, and a student-first approach to prepare graduates for the workplace. USW is especially attractive to students who want applied learning, clear employability pathways, and a more affordable student experience than many large UK cities.</p>
@@ -5682,8 +5682,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `One of the most common questions international students ask when moving to the UK is how they can work part-time alongside their studies. With tuition fees, accommodation, and living costs, having a p...`,
     image: "blog-images/jobs-3.webp",
     imageAlt: `Top Part-Time Jobs for International Students in the UK — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>One of the most common questions international students ask when moving to the UK is how they can work part-time alongside their studies. With tuition fees, accommodation, and living costs, having a part-time job not only helps financially but also provides valuable work experience and skills. In 2025, the UK job market continues to offer plenty of opportunities for students, but it’s important to know what roles are available, what the rules are, and how to balance work with academic life.</p>
@@ -5753,8 +5753,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Cardiff University is Wales’s flagship research and teaching institution, combining a long academic tradition with modern facilities and a strong international reputation. Located in the Welsh capital...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Complete Guide to Cardiff University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.cardiff.ac.uk/">Cardiff University</a> is Wales’s flagship research and teaching institution, combining a long academic tradition with modern facilities and a strong international reputation. Located in the Welsh capital, the university offers broad subject choice, excellent research opportunities, and a student experience that blends city life with green spaces and easy access to the coast and countryside. This guide gives a full, practical picture for prospective undergraduates, postgraduates, and international applicants.</p>
@@ -5835,8 +5835,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The Diversity Visa (DV) Lottery is one of the most popular ways for people around the world to apply for a U.S. green card. Each year, millions of applicants submit entries for the chance to live, stu...`,
     image: "blog-images/usa-1.webp",
     imageAlt: `US DV Lottery 2027: New $1 Fee and How to Register — USA Visas`,
-    categories: ["USA Visas"],
-    categorySlugs: ["usa-visas"],
+    categories: ["United States"],
+    categorySlugs: ["united-states"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://travel.state.gov/content/travel/en/us-visas/immigrate/diversity-visa-program-entry/diversity-visa-submit-entry1.html?wcmmode=disabled">The Diversity Visa (DV)</a> Lottery is one of the most popular ways for people around the world to apply for a U.S. green card. Each year, millions of applicants submit entries for the chance to live, study, and work in the United States. Starting from the DV-2027 program, a major change has been introduced: the once completely free registration process now requires a small $1 fee. This update has raised questions for many applicants, so here is a clear guide to what has changed, how to register, and what to expect.</p>
@@ -5918,8 +5918,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Chester is a well-established, student-centred university in the northwest of England combining a strong teaching focus with close community ties and practical career support. With c...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Complete Guide to Studying at University of Chester — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.chester.ac.uk/">The University of Chester</a> is a well-established, student-centred university in the northwest of England combining a strong teaching focus with close community ties and practical career support. With campuses close to historic Chester and a growing profile across teaching, professional training and applied research, Chester offers a manageable, affordable and friendly environment for domestic and international students. This guide walks through everything you need to know to decide whether Chester is right for you and how to apply successfully.</p>
@@ -6064,8 +6064,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Edge Hill University is a public campus university located in Ormskirk, Lancashire, in the North West of England. It combines modern facilities with a strong reputation for student experience, teachin...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Complete Guide to Studying at Edge Hill University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.edgehill.ac.uk/">Edge Hill University</a> is a public campus university located in Ormskirk, Lancashire, in the North West of England. It combines modern facilities with a strong reputation for student experience, teaching quality, and affordability. For international students, it offers a welcoming atmosphere, support services, and good value compared to universities in major metropolitan areas.</p>
@@ -6104,8 +6104,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Studying in the UK is one of the most rewarding investments for international students, but it requires careful financial planning. The overall budget depends on your level of study, choice of univers...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `How Much Budget Do You Need to Study in the UK in 2026? — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>Studying in the UK is one of the most rewarding investments for international students, but it requires careful financial planning. The overall budget depends on your level of study, choice of university, location, and lifestyle. Understanding the typical tuition fees and living costs will help you prepare effectively and avoid financial stress once you arrive.</p>
@@ -6220,8 +6220,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Queen Mary University of London is a leading public research university based in East London. As a member of the Russell Group, it combines academic excellence with opportunities for global impact, di...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Complete Guide to Studying at Queen Mary University London — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.qmul.ac.uk/">Queen Mary University of Londo</a>n is a leading public research university based in East London. As a member of the Russell Group, it combines academic excellence with opportunities for global impact, diversity, and inclusion. It offers students access to vibrant communities, rigorous programmes, and a central London experience without being fully in the heart of the most expensive zones.</p>
@@ -6301,8 +6301,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Studying in the UK is a dream for many international students, but the cost of living can vary dramatically depending on where you choose to study. While cities like London, Oxford, or Cambridge are w...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Cheapest Cities in the UK for International Students — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>Studying in the UK is a dream for many international students, but the cost of living can vary dramatically depending on where you choose to study. While cities like London, Oxford, or Cambridge are world-famous, they often come with a high price tag. The good news is that there are many affordable cities across the UK where you can receive a high-quality education, enjoy a vibrant student life, and still manage your budget effectively.</p>
@@ -6363,8 +6363,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Bangor University is one of the oldest and most respected universities in Wales, located in the coastal city of Bangor. With more than 140 years of history, it combines academic tradition with modern ...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Complete Guide to Studying at Bangor University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Bangor"],
     content: `<blockquote>
 <p><a href="https://www.bangor.ac.uk/">Bangor University</a> is one of the oldest and most respected universities in Wales, located in the coastal city of Bangor. With more than 140 years of history, it combines academic tradition with modern facilities and a strong reputation for student satisfaction. For international students, Bangor offers a unique balance of high-quality education, affordable living, and a close-knit, supportive community.</p>
@@ -6452,8 +6452,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Birmingham Newman University (Newman) is a modern public university located in Bartley Green, Birmingham, England. It has a student-centred approach, with strong emphasis on inclusive teaching, person...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Complete Guide to Studying at Birmingham Newman University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.newman.ac.uk/">Birmingham Newman University</a> (Newman) is a modern public university located in Bartley Green, Birmingham, England. It has a student-centred approach, with strong emphasis on inclusive teaching, personal wellbeing, and preparing students for real-world careers. For international students, it offers a supportive environment, relatively affordable fees, and access to one of the UK’s most dynamic cities without being right in the city centre.</p>
@@ -6498,8 +6498,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The Innovator Founder visa is the UK’s flagship route for entrepreneurs who want to build innovative, scalable businesses. It replaced the old Innovator and Start-up visas, offering founders the oppor...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `Innovator Founder Visa UK: 2025 Complete Guide — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.gov.uk/innovator-founder-visa">The Innovator Founder visa</a> is the UK’s flagship route for entrepreneurs who want to build innovative, scalable businesses. It replaced the old Innovator and Start-up visas, offering founders the opportunity to stay in the UK for three years at a time and qualify for settlement after just three years if their business shows significant growth. This visa is designed for ambitious individuals who can create businesses with real impact in the UK and globally.</p>
@@ -6678,8 +6678,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Sussex, located in Brighton on the south coast of England, is one of the UK’s most internationally recognised universities. Established in the 1960s, Sussex quickly developed a reput...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Complete Guide to Studying at University of Sussex — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.sussex.ac.uk/">The University of Sussex</a>, located in Brighton on the south coast of England, is one of the UK’s most internationally recognised universities. Established in the 1960s, Sussex quickly developed a reputation for academic innovation, research excellence, and global outlook. For international students, it offers the perfect combination of academic quality, vibrant student life, and the benefits of studying in one of the UK’s most creative and diverse cities.</p>
@@ -6724,8 +6724,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Timing is one of the most critical factors when applying to UK universities. Missing a deadline can mean waiting an entire year, while applying too late might limit your options for courses, scholarsh...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Best Times to Apply for UK Universities for Intl Students — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Timing is one of the most critical factors when applying to UK universities. Missing a deadline can mean waiting an entire year, while applying too late might limit your options for courses, scholarships, or accommodation. For international students, planning is even more important because of additional requirements like visas, funding, and English language tests. This guide explains the best times to apply for UK universities in 2025 across all levels of study.</p>
@@ -6810,8 +6810,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Teesside University, located in Middlesbrough in the northeast of England, is a modern, career-focused institution with a strong reputation for innovation, employability, and affordability. For intern...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Complete Guide to Studying at Teesside University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.tees.ac.uk/">Teesside University</a>, located in Middlesbrough in the northeast of England, is a modern, career-focused institution with a strong reputation for innovation, employability, and affordability. For international students seeking a supportive learning environment combined with industry links and research opportunities, Teesside provides an excellent study destination.</p>
@@ -6856,8 +6856,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Studying in the UK is an exciting opportunity, but for many international students, small mistakes can lead to big problems. Whether it’s misunderstanding visa rules, struggling with finances, or over...`,
     image: "blog-images/general-education-1.webp",
     imageAlt: `Common Mistakes International Students Make in the UK — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Studying in the UK is an exciting opportunity, but for many international students, small mistakes can lead to big problems. Whether it’s misunderstanding visa rules, struggling with finances, or overlooking cultural differences, being aware of these issues in advance helps you enjoy a smoother and more successful student experience. This guide highlights the most common mistakes students make in 2025 and how you can avoid them.</p>
@@ -6914,8 +6914,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Huddersfield, located in West Yorkshire, England, is a forward-looking institution with a strong reputation for teaching excellence, employability, and student satisfaction. Known fo...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Complete Guide to Studying at University of Huddersfield — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.hud.ac.uk/">The University of Huddersfield</a>, located in West Yorkshire, England, is a forward-looking institution with a strong reputation for teaching excellence, employability, and student satisfaction. Known for combining academic quality with hands-on learning, Huddersfield has become a popular choice for international students seeking practical skills, global exposure, and an affordable study destination in the UK.</p>
@@ -6960,8 +6960,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Applying to study in the UK can be overwhelming, especially for international students who face different systems, requirements, and deadlines. The good news is that there are several trusted platform...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Best Platforms to Get Admission Support in the UK — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Applying to study in the UK can be overwhelming, especially for international students who face different systems, requirements, and deadlines. The good news is that there are several trusted platforms and services designed to guide students through the entire process—from choosing the right course to submitting applications and securing visas. Whether you are applying to a school, college, undergraduate, or postgraduate programme, these resources provide valuable support.</p>
@@ -7056,8 +7056,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Introduction Aberystwyth University, located on the beautiful west coast of Wales, is one of the UK’s most historic and distinctive universities. Founded in 1872, it has a proud tradition of academic ...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Complete Guide to Studying at Aberystwyth University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Aberystwyth University","study in uk"],
     content: `<h2>Introduction</h2>
 <p><a href="https://www.aber.ac.uk/en/">Aberystwyth University</a>, located on the beautiful west coast of Wales, is one of the UK’s most historic and distinctive universities. Founded in 1872, it has a proud tradition of academic excellence, a welcoming community, and a breathtaking coastal setting that makes it truly unique. For international students seeking a combination of strong teaching, affordable living, and natural beauty, Aberystwyth is an excellent choice.</p>
@@ -7102,8 +7102,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Studying in the UK is an exciting and life-changing experience. However, international students must follow specific rules and regulations to stay legally compliant, succeed academically, and enjoy th...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Essential Rules Every International Student Must Know in the UK — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p>Studying in the UK is an exciting and life-changing experience. However, international students must follow specific rules and regulations to stay legally compliant, succeed academically, and enjoy their time without unnecessary stress. From visa conditions to healthcare, housing, and work rights, knowing these laws ensures you stay safe and secure during your studies.</p>
@@ -7224,8 +7224,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Reading is one of the UK’s leading research-intensive universities, with a strong global reputation for academic excellence, innovation, and student experience. Located just 25 minut...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Complete Guide to Studying at University of Reading — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["reading"],
     content: `<blockquote>
 <p><a href="https://www.reading.ac.uk/">The University of Reading</a> is one of the UK’s leading research-intensive universities, with a strong global reputation for academic excellence, innovation, and student experience. Located just 25 minutes by train from London, the university offers a perfect mix of city access and a green, spacious campus environment. For international students, Reading combines academic quality with a welcoming community and excellent career opportunities.</p>
@@ -7270,8 +7270,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Driving in the UK is both a fascinating and practical experience for international students, professionals, and visitors. With its mix of historic roads, modern motorways, and strict safety standards,...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `Interesting Facts About Driving in the UK You Need to Know — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["driving in the uk","uk driving"],
     content: `<blockquote>
 <p>Driving in the UK is both a fascinating and practical experience for international students, professionals, and visitors. With its mix of historic roads, modern motorways, and strict safety standards, the UK driving system is unique compared to many countries. But did you know that rules can differ slightly between England, Scotland, Wales, and Northern Ireland? This guide covers everything you need to know—from quirky traditions to important legal differences.</p>
@@ -7378,8 +7378,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of the West of England, commonly known as UWE Bristol, is a modern and ambitious university located in the vibrant city of Bristol. Known for its industry connections, innovative teachi...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Complete Guide to Studying at UWE Bristol — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["bristol","university of west england","uwe bristol"],
     content: `<blockquote>
 <p><a href="https://www.uwe.ac.uk/">The University of the West of England</a>, commonly known as UWE Bristol, is a modern and ambitious university located in the vibrant city of Bristol. Known for its industry connections, innovative teaching, and commitment to preparing graduates for global careers, UWE has become one of the UK’s most popular destinations for international students.</p>
@@ -7424,8 +7424,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `In today’s fast-changing and disruptive global business environment, leaders face increasing pressure to make strategic, sustainable, and responsible decisions. A Doctor of Business Administration (DB...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `DBA – Transform Your Leadership Journey — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["DBA","doctorate of business administration","study DBA"],
     content: `<blockquote>
 <p>In today’s fast-changing and disruptive global business environment, leaders face increasing pressure to make strategic, sustainable, and responsible decisions. A <a href="https://en.wikipedia.org/wiki/Doctor_of_Business_Administration"><strong>Doctor of Business Administration (DBA)</strong></a> is designed for experienced professionals who want to elevate their leadership capabilities, deepen their understanding of complex business issues, and drive meaningful impact within their organizations.</p>
@@ -7479,8 +7479,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Nottingham Trent University (NTU) is one of the UK’s most dynamic and modern universities, located in the vibrant city of Nottingham. Known for its student-focused teaching, industry partnerships, and...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Complete Guide to Studying at Nottingham Trent University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Nottingham Trent"],
     content: `<blockquote>
 <p><a href="https://www.ntu.ac.uk/">Nottingham Trent University</a> (NTU) is one of the UK’s most dynamic and modern universities, located in the vibrant city of Nottingham. Known for its student-focused teaching, industry partnerships, and commitment to sustainability, NTU has built a reputation as a forward-thinking institution that equips graduates with the skills and confidence to succeed globally.</p>
@@ -7525,8 +7525,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `University College London (UCL) is one of the world’s leading universities and one of the most competitive institutions in the UK. Each year, thousands of students apply, but only the strongest and mo...`,
     image: "blog-images/general-education-3.webp",
     imageAlt: `Why You Should Apply to UCL Through Official Agents — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.ucl.ac.uk/">University College London</a> (UCL) is one of the world’s leading universities and one of the most competitive institutions in the UK. Each year, thousands of students apply, but only the strongest and most carefully prepared applications succeed. While many try to apply independently or through unverified consultants, the smartest approach is to work with <strong>licensed sub-agents</strong> who hold official authorisation to support student applications. At Universitio, we provide that expertise and authorisation to give you a reliable, professional route into UCL.</p>
@@ -7601,8 +7601,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Lincoln, located in the historic city of Lincoln in the East Midlands, is one of the UK’s most modern and ambitious universities. Known for its innovative teaching, cutting-edge faci...`,
     image: "blog-images/general-education-2.webp",
     imageAlt: `Complete Guide to Studying at University of Lincoln — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.lincoln.ac.uk/">The University of Lincoln</a>, located in the historic city of Lincoln in the East Midlands, is one of the UK’s most modern and ambitious universities. Known for its innovative teaching, cutting-edge facilities, and student-focused approach, Lincoln has quickly risen in the rankings and become a popular destination for both UK and international students. Its city-centre campus blends academic excellence with a rich cultural experience in one of England’s most historic cities.</p>
@@ -7647,9 +7647,9 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The UK is world-renowned not only for its universities but also for its schools. Parents from across the globe choose Britain for their children’s education because of the balance of academic excellen...`,
     image: "blog-images/schools-2.webp",
     imageAlt: `Best UK Schools for Students Under Year 12 in 2025 — Schools`,
-    categories: ["Schools"],
-    categorySlugs: ["schools"],
-    tags: ["schools","uk schools"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
+    tags: ["student-guides","uk schools"],
     content: `<blockquote>
 <p>The UK is world-renowned not only for its universities but also for its schools. Parents from across the globe choose Britain for their children’s education because of the balance of academic excellence, pastoral care, extracurricular opportunities, and international outlook. For students below Year 12—typically those in junior, prep, or early secondary levels—UK schools provide a strong foundation that prepares them for both higher education and lifelong success.</p>
 </blockquote>
@@ -7735,8 +7735,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Glasgow Caledonian University (GCU) is one of Scotland’s most modern and forward-looking universities. Located in the heart of Glasgow, one of the UK’s most vibrant and student-friendly cities, GCU is...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Complete Guide to Studying at Glasgow Caledonian University — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["GCU","Glasgow Caledonian University"],
     content: `<blockquote>
 <p><a href="https://www.gcu.ac.uk/">Glasgow Caledonian University</a> (GCU) is one of Scotland’s most modern and forward-looking universities. Located in the heart of Glasgow, one of the UK’s most vibrant and student-friendly cities, GCU is known for combining academic quality with a strong focus on employability, innovation, and social responsibility. For international students, GCU offers the perfect balance of high-quality teaching, practical skills, and an inclusive, supportive community.</p>
@@ -7781,8 +7781,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Studying in the UK is an exciting journey, but many international students also look for part-time work opportunities to support their living costs, gain experience, and build professional skills. Wit...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `Best Part-Time Jobs in the UK for International Students — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["jobs in the uk","UK jobs"],
     content: `<blockquote>
 <p>Studying in the UK is an exciting journey, but many international students also look for part-time work opportunities to support their living costs, gain experience, and build professional skills. With a Student visa, you are typically allowed to work up to 20 hours per week during term time and full-time during holidays. Choosing the right part-time job can make a big difference to your finances, schedule, and overall student experience.</p>
@@ -7859,8 +7859,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Chichester is a welcoming and student-focused institution located in the historic city of Chichester, on the beautiful south coast of England. Known for its supportive learning envir...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Complete Guide to Studying at University of Chichester 2025 — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["chichester","chichester university","study in uk"],
     content: `<blockquote>
 <p>The University of Chichester is a welcoming and student-focused institution located in the historic city of Chichester, on the beautiful south coast of England. Known for its supportive learning environment, high teaching standards, and strong sense of community, it has become a popular choice for both UK and international students. With small class sizes, excellent facilities, and a friendly atmosphere, the university offers an ideal place to study and grow.</p>
@@ -7905,8 +7905,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Many international students studying in the UK dream of starting their own business. The UK’s dynamic entrepreneurial ecosystem, clear legal framework, and global market access make it one of the most...`,
     image: "blog-images/jobs-3.webp",
     imageAlt: `UK Company Registration Rules for International Students — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["company registration","register company in the uk"],
     content: `<blockquote>
 <p>Many international students studying in the UK dream of starting their own business. The UK’s dynamic entrepreneurial ecosystem, clear legal framework, and global market access make it one of the most attractive countries for innovation. But are international students and their dependants allowed to register a company in the UK? The answer is nuanced. This guide explains the rules, restrictions, and practical pathways for 2025.</p>
@@ -7977,8 +7977,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Northumbria University, located in the vibrant city of Newcastle upon Tyne, is one of the UK’s fastest-rising universities. Known for its career-focused education, innovative research, and strong indu...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Complete Guide to Studying at Northumbria University 2025 — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Northumbria University"],
     content: `<blockquote>
 <p><a href="https://www.northumbria.ac.uk/">Northumbria University</a>, located in the vibrant city of Newcastle upon Tyne, is one of the UK’s fastest-rising universities. Known for its career-focused education, innovative research, and strong industry links, it has become a preferred destination for students from across the globe. Its reputation for high-quality teaching combined with a welcoming student community makes Northumbria an exciting choice for ambitious learners.</p>
@@ -8023,8 +8023,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The UK is one of the world’s most popular study destinations—not only because of its world-class universities, but also because of the opportunities it offers after graduation. One of the most attract...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Why UK Offers a Graduate Visa After You Finish Your Degree — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["graduate visa","study in the UK","Universitio","why graduate visa"],
     content: `<blockquote>
 <p>The UK is one of the world’s most popular study destinations—not only because of its world-class universities, but also because of the opportunities it offers after graduation. One of the most attractive post-study benefits is the <a href="https://www.gov.uk/graduate-visa"><strong>Graduate Visa</strong></a>, which allows international students to stay and work in the UK after completing their degree. But why does the UK offer this route, and how can it benefit you? Let’s explore the purpose, advantages, and conditions of this visa.</p>
@@ -8138,8 +8138,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Leeds stands out as a Russell Group powerhouse, combining top-tier research with an empowering student environment. Located in a thriving cultural city, it offers both academic excel...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Complete Guide to Studying at University of Leeds 2025 — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out"><a href="https://www.leeds.ac.uk/">The University of Leeds</a> stands out as a Russell Group powerhouse, combining top-tier research with an empowering student environment. Located in a thriving cultural city, it offers both academic excellence and an inclusive, broad-minded atmosphere. With decades of global engagement, Leeds has become a go-to for ambitious students aiming for career success and academic depth.</span></p>
@@ -8184,8 +8184,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Studying in the UK offers not just an excellent education but also the chance to explore some of the most historic, scenic, and culturally rich destinations in the world. However, travel costs can add...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Affordable UK Destinations for Students in 2025 — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["uk","uk tourism"],
     content: `<blockquote>
 <p>Studying in the UK offers not just an excellent education but also the chance to explore some of the most historic, scenic, and culturally rich destinations in the world. However, travel costs can add up quickly—especially for students on a budget. The good news is, many amazing places in England and across the UK can be enjoyed without breaking the bank. Here’s your guide to affordable destinations perfect for student adventures in 2025.</p>
@@ -8246,9 +8246,9 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Swansea University, located by the picturesque Swansea Bay in Wales, is a dynamic and research-led institution that has steadily climbed global rankings—now securing a spot among the top 300 universit...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Complete Guide to Studying at Swansea University 2025 — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["study in uk","UK Universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["study in uk","United Kingdom"],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out"><a href="https://www.swansea.ac.uk/">Swansea University</a>, located by the picturesque Swansea Bay in Wales, is a dynamic and research-led institution that has steadily climbed global rankings—now securing a spot among the top 300 universities worldwide. With modern campuses, accomplished faculty, and a strong sense of community, Swansea offers an enriching academic and social experience.</span></p>
 </blockquote>
@@ -8289,8 +8289,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `University College London (UCL) is a global heavyweight: research-intensive, employer-respected, and rooted in the heart of London. For ambitious students who want academic stretch, real-world impact,...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Study at UCL with Universitio: Your Exclusive 2025 Path — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Study in UCL","study in uk","ucl"],
     content: `<blockquote>
 <p>University College London (UCL) is a global heavyweight: research-intensive, employer-respected, and rooted in the heart of London. For ambitious students who want academic stretch, real-world impact, and powerful networks, UCL is a top-tier choice. This guide explains exactly why UCL is worth it, what it takes to get in, what it costs, key timelines, visa considerations, and why working with Universitio gives you a faster, safer path from shortlisting to enrolment.</p>
@@ -8362,8 +8362,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Manchester (UoM) is one of the UK’s most prestigious research-led institutions, ranked in the Russell Group and globally recognized for its academic excellence and innovation. Locate...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Study at the University of Manchester: Your 2025 Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["manchester","study in uk","university of manchester"],
     content: `<blockquote>
 <p><a href="https://www.manchester.ac.uk/">The University of Manchester</a> (UoM) is one of the UK’s most prestigious research-led institutions, ranked in the Russell Group and globally recognized for its academic excellence and innovation. Located in the vibrant metropolitan city of Manchester, it combines world-class teaching, high-impact research, and a diverse student community.</p>
@@ -8418,8 +8418,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `If you’re planning to study abroad, especially in destinations like the UK, Canada, or Australia, you’ve probably come across two types of service providers: those who help you apply to universities f...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `Why Trusted Study Abroad Agents Don’t Charge for University Applications — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["study in uk","university agents"],
     content: `<blockquote>
 <p>If you’re planning to study abroad, especially in destinations like the UK, Canada, or Australia, you’ve probably come across two types of service providers: those who help you apply to universities <strong>for free</strong>, and those who <strong>charge hundreds or even thousands of dollars</strong> just for submitting a university application. But which one is legitimate? And why are some services free?</p>
@@ -8523,8 +8523,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `King’s College London (KCL) is one of the UK’s most prestigious universities and a member of the elite Russell Group. Located in the heart of London, King’s combines a long history dating back to 1829...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Study at King’s College London: Your Complete 2025 Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["King's college","London","study in uk"],
     content: `<blockquote>
 <p>King’s College London (KCL) is one of the UK’s most prestigious universities and a member of the elite Russell Group. Located in the heart of London, King’s combines a long history dating back to 1829 with a modern, globally-minded approach to teaching, research, and student experience. Whether you plan to study medicine, law, business, humanities, or sciences, KCL offers world-renowned programmes, strong global links, and a central London environment.</p>
@@ -8579,8 +8579,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Planning to study abroad is exciting—but also overwhelming. One of the first questions many students ask is: should I work with a university agent or hire an immigration consultant? While both seem he...`,
     image: "blog-images/general-education-1.webp",
     imageAlt: `Why University Agents Are Better Than Immigration Consultants for Study Abroad — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["immigration consultants","study in the UK"],
     content: `<blockquote>
 <p>Planning to study abroad is exciting—but also overwhelming. One of the first questions many students ask is: should I work with a <strong>university agent</strong> or hire an <strong>immigration consultant</strong>? While both seem helpful on the surface, their roles, goals, and impact on your academic future are very different. In this blog, we’ll break down the key differences and explain why university agents are the smart, safe, and effective choice for applying to universities abroad—especially in the UK.</p>
@@ -8712,8 +8712,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Sheffield is a member of the prestigious Russell Group and one of the UK’s top research-led universities. Located in the vibrant South Yorkshire city of Sheffield, it blends academic...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of Sheffield 2025: Complete Student Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["sheffield","sheffield university","study in uk"],
     content: `<blockquote>
 <p><a href="https://sheffield.ac.uk/">The University of Sheffield</a> is a member of the prestigious Russell Group and one of the UK’s top research-led universities. Located in the vibrant South Yorkshire city of Sheffield, it blends academic excellence with student-friendly living and strong graduate outcomes. Whether you are pursuing undergraduate or postgraduate study, Sheffield offers a high-quality, supportive environment to achieve your goals.</p>
@@ -8768,8 +8768,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Whether you are moving to the UK for study, work, or travel, choosing the right SIM card is essential for staying connected. The UK has several network providers, each with different strengths, covera...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Best UK SIM Cards and Coverage by City in 2025 — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["simcard in the uk","uk simcard"],
     content: `<blockquote>
 <p>Whether you are moving to the UK for study, work, or travel, choosing the right SIM card is essential for staying connected. The UK has several network providers, each with different strengths, coverage areas, and pricing plans. This guide explains the best SIM cards in</p>
@@ -8953,8 +8953,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Southampton is a research-led Russell Group institution located on England’s south coast, renowned for its excellence in engineering, sciences, oceanography, and business. With globa...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Study at the University of Southampton: Complete Guide 2025 — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in uk"],
     content: `<blockquote>
 <p><a href="https://www.southampton.ac.uk/">The University of Southampton</a> is a research-led Russell Group institution located on England’s south coast, renowned for its excellence in engineering, sciences, oceanography, and business. With globally ranked departments, high graduate employability, and a beautiful campus near the coast, Southampton is a powerful destination for both undergraduate and postgraduate study.</p>
@@ -9009,8 +9009,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The United Kingdom has always been a powerhouse of education, but in recent years it has been positioning itself to become the number one destination for students and scholars worldwide. From centurie...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Why the UK Is Set to Become the top Destination for Scholars — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in uk","uk","why uk"],
     content: `<blockquote>
 <p>The United Kingdom has always been a powerhouse of education, but in recent years it has been positioning itself to become the number one destination for students and scholars worldwide. From centuries-old universities producing Nobel laureates to cutting-edge research driving the future of technology and medicine, the UK offers a unique blend of tradition and innovation that appeals to the brightest minds across the globe. But what exactly makes the UK stand out, and why is it poised to become the most sought-after academic hub?</p>
@@ -9053,8 +9053,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Strathclyde is one of Scotland’s largest and most dynamic universities. Located in Glasgow, it’s known for combining strong academic reputation with real-world impact. A 1964 foundin...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Study at the University of Strathclyde: Your 2025 Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["strathclyde","study in the UK","university of strathclyde"],
     content: `<blockquote>
 <p><a href="https://www.strath.ac.uk/">The University of Strathclyde</a> is one of Scotland’s largest and most dynamic universities. Located in Glasgow, it’s known for combining strong academic reputation with real-world impact. A 1964 founding makes it modern by UK standards, but Strathclyde consistently ranks among the UK’s top institutions for innovation, teaching quality, and graduate employability. This guide covers everything from programmes and fees to support services, student life, and application advice.</p>
@@ -9109,8 +9109,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `If you’re planning to study a postgraduate or research program in the UK in certain sensitive subject areas, you may be asked to submit something called an ATAS certificate. But what is it? Who needs ...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `What Is the ATAS Certificate and Who Needs It in 2025? — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["ATAS","study in uk"],
     content: `<blockquote>
 <p>If you’re planning to study a postgraduate or research program in the UK in certain sensitive subject areas, you may be asked to submit something called an <a href="https://www.gov.uk/guidance/academic-technology-approval-scheme"><strong>ATAS certificate</strong></a>. But what is it? Who needs it? How do you apply? And why does it matter? In this complete guide, we’ll answer all your questions and give you a solid understanding of the ATAS process for international students in 2025.</p>
@@ -9304,9 +9304,9 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of York is one of the UK’s leading research-intensive institutions and a proud member of the prestigious Russell Group. Located in the historic city of York, the university blends acade...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Study at the University of York: A Complete 2025 Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["study in the UK","UK Universities","university of york"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["study in the UK","United Kingdom","university of york"],
     content: `<blockquote>
 <p><a href="https://www.york.ac.uk/">The University of York</a> is one of the UK’s leading research-intensive institutions and a proud member of the prestigious Russell Group. Located in the historic city of York, the university blends academic excellence with a student-friendly atmosphere. Whether you're looking for a high-quality undergraduate experience or advanced postgraduate study, York offers world-class teaching, cutting-edge research, and a supportive international community.</p>
 </blockquote>
@@ -9466,8 +9466,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Every year, thousands of Nigerian students make the life-changing decision to study abroad—and for good reason. Among all possible destinations, the United Kingdom consistently stands out as the most ...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Why the UK Is the Best Destination for Nigerian Students — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["study in uk","why study in uk"],
     content: `<blockquote>
 <p>Every year, thousands of Nigerian students make the life-changing decision to study abroad—and for good reason. Among all possible destinations, the United Kingdom consistently stands out as the most trusted and rewarding choice. With world-class education, welcoming multicultural communities, and a clear pathway to career success, the UK offers far more than just a degree. If you're a Nigerian student considering your future, this guide will show you why the UK should be your number one destination.</p>
@@ -9538,8 +9538,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Exeter is a highly regarded Russell Group university located in the vibrant South West of England. Known for combining academic excellence with a strong sense of community, Exeter of...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of Exeter 2025: Complete Student Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["exeter","study in the UK","university of exeter"],
     content: `<blockquote>
 <p><a href="https://www.exeter.ac.uk/">The University of Exeter</a> is a highly regarded Russell Group university located in the vibrant South West of England. Known for combining academic excellence with a strong sense of community, Exeter offers world-class teaching, outstanding research, and beautiful campuses. Whether you’re a UK-based, international, undergraduate, or postgraduate student, Exeter provides a rich and supportive environment to pursue your ambitions.</p>
@@ -9594,8 +9594,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The United Kingdom is one of the most popular destinations for international education, offering a wide range of academic programs across schools, colleges, and universities. However, one of the most ...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Understanding Tuition Fees in UK Schools and Universities — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in the UK","tuition fee","uk","uk tuition fee"],
     content: `<blockquote>
 <p>The United Kingdom is one of the most popular destinations for international education, offering a wide range of academic programs across schools, colleges, and universities. However, one of the most critical aspects for students and families to consider is tuition fees. These fees vary widely based on the level of education, type of institution, nationality of the student, and even the program chosen. In this guide, we’ll break down how tuition fees are calculated and what you should expect to pay when studying in the UK.</p>
@@ -9780,8 +9780,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Bristol is one of the UK’s most prestigious and research-led institutions, known for academic excellence, innovation, and a vibrant student culture. Located in the historic and creat...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Study at the University of Bristol: A 2025 Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["bristol","study in the UK","university of bristol"],
     content: `<blockquote>
 <p><a href="https://www.bristol.ac.uk/">The University of Bristol</a> is one of the UK’s most prestigious and research-led institutions, known for academic excellence, innovation, and a vibrant student culture. Located in the historic and creative city of Bristol, it attracts top students from around the world. With strong global rankings, outstanding teaching, and powerful industry links, Bristol offers a dynamic and supportive environment for both undergraduate and postgraduate study.</p>
@@ -9850,8 +9850,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The United Kingdom has long been a global leader in arts, design, and culture. With historic institutions, world-famous museums, and an international creative industry, it offers students not only a t...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Top UK Universities to Study Art in 2025: Completed Guide — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study art in the uk","study in the UK","uk"],
     content: `<blockquote>
 <p>The United Kingdom has long been a global leader in arts, design, and culture. With historic institutions, world-famous museums, and an international creative industry, it offers students not only a top-tier education but also exposure to real-world artistic environments. Studying art in the UK opens doors to careers in fine arts, fashion, design, film, photography, curation, and more.</p>
@@ -10088,8 +10088,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Aberdeen, founded in 1495, is one of the oldest universities in the English‑speaking world. Nestled between the Grampian Mountains and the North Sea, its historic campus blends centu...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Top Reasons to Choose the University of Aberdeen — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Aberdeen University","study in uk"],
     content: `<blockquote>
 <p><a href="https://www.abdn.ac.uk/">The University of Aberdeen</a>, founded in 1495, is one of the oldest universities in the English‑speaking world. Nestled between the Grampian Mountains and the North Sea, its historic campus blends centuries‑old tradition with modern innovation. With a global reputation for teaching and research, Aberdeen offers an unparalleled student experience in Scotland’s thriving cultural hub.</p>
@@ -10137,8 +10137,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Dentistry is one of the most respected and competitive healthcare degrees in the UK. Whether you're a UK school leaver, an international student, or a graduate looking to enter the field, studying den...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `How to Study Dentistry in the UK: A Complete Guide — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["dentistry","Study Dentistry","Study Dentistry in the UK","study in the UK"],
     content: `<blockquote>
 <p>Dentistry is one of the most respected and competitive healthcare degrees in the UK. Whether you're a UK school leaver, an international student, or a graduate looking to enter the field, studying dentistry in the UK offers world-class training, access to <a href="https://www.nhs.uk/">NHS</a> or private practice careers, and a clear path to professional registration.</p>
@@ -10415,8 +10415,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Loughborough University is consistently ranked among the best in the UK for both academic excellence and student satisfaction. Known for its modern campus, strong industry connections, and world-class...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Top Reasons to Choose Loughborough University in the UK — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Loughborough","Loughborough university","study in the UK"],
     content: `<blockquote>
 <p><a href="https://www.lboro.ac.uk/">Loughborough University</a> is consistently ranked among the best in the UK for both academic excellence and student satisfaction. Known for its modern campus, strong industry connections, and world-class sports and engineering programs, Loughborough offers an ideal environment for students seeking a dynamic, high-impact university experience.</p>
@@ -10467,8 +10467,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Choosing the optimal time to apply to University College London can make a big difference in your chances of admission, visa processing, and scholarship opportunities. This comprehensive guide covers ...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Best Time to Apply to UCL: From Deadlines to Tips — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Study in UCL","ucl","university college london"],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out">Choosing the optimal time to apply to University College London can make a big difference in your chances of admission, visa processing, and scholarship opportunities. This comprehensive guide covers official deadlines, real student timelines, postgraduate and undergraduate cycles, and actionable tips, enabling you to plan your UCL application with confidence.</span></p>
@@ -10521,8 +10521,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Durham University, one of the oldest and most respected universities in the UK, offers far more than just academic prestige. With a unique collegiate system, a picturesque historic setting, and world-...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Discover the Unique Durham University Experience — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["durham","durham university","study in uk"],
     content: `<blockquote>
 <p><a href="https://www.durham.ac.uk/">Durham University</a>, one of the oldest and most respected universities in the UK, offers far more than just academic prestige. With a unique collegiate system, a picturesque historic setting, and world-class research output, Durham is a top choice for students seeking an exceptional educational experience in the UK. In this blog, we’ll uncover everything that makes Durham a standout institution — from its academic strengths to its student lifestyle and future vision.</p>
@@ -10579,8 +10579,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `When planning to study in the United Kingdom, one of the mandatory costs you’ll encounter during your visa application is the Immigration Health Surcharge (IHS). While it may appear as just another fe...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `Understanding the IHS for International Students in the UK — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["ihd","students insurance","uk insurance"],
     content: `<blockquote>
 <p>When planning to study in the United Kingdom, one of the mandatory costs you’ll encounter during your visa application is the Immigration Health Surcharge (IHS). While it may appear as just another fee, the IHS plays a critical role in ensuring international students have access to the UK's healthcare system throughout their studies.</p>
@@ -10671,8 +10671,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of the Arts London (UAL) stands as one of the world’s foremost institutions for art, design, fashion, and performance. With over 19,000 students from around 130 countries across six col...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of the Arts London: Guide for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p><a href="https://www.arts.ac.uk/">The University of the Arts London (UAL)</a> stands as one of the world’s foremost institutions for art, design, fashion, and performance. With over 19,000 students from around 130 countries across six colleges, UAL delivers a uniquely creative and global learning environment. Here's everything international students should know before choosing UAL as their creative launchpad.</p>
@@ -10842,8 +10842,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `For thousands of Nigerian students each year, the United Kingdom remains the number one destination for higher education—and with good reason. From globally respected universities and diverse cultural...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Why the UK is the Ultimate Destination for Nigerian Students — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["nigeria","nigerian students","study in uk","uk"],
     content: `<blockquote>
 <p>For thousands of Nigerian students each year, the United Kingdom remains the number one destination for higher education—and with good reason. From globally respected universities and diverse cultural experiences to career opportunities and a strong Nigerian community, the UK offers a complete academic journey that prepares students not only to succeed but to thrive. If you're a Nigerian student considering studying abroad, here’s why the UK should be at the top of your list.</p>
@@ -10893,8 +10893,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Bath, nestled in the UNESCO-listed city of Bath in southwest England, is a prestigious institution renowned for academic excellence, career-focused learning, and a welcoming, vibrant...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `University of Bath: A Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["bath","study in the UK","university of bath"],
     content: `<blockquote>
 <p><a href="https://www.bath.ac.uk/">The University of Bath</a>, nestled in the UNESCO-listed city of Bath in southwest England, is a prestigious institution renowned for academic excellence, career-focused learning, and a welcoming, vibrant community. Whether you are interested in engineering, sciences, business, humanities or health, Bath offers an environment carefully designed for personal growth, research impact, and real-world application. Here’s everything you need to know to make an informed decision.</p>
@@ -10967,8 +10967,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The United Kingdom is known not only for its world-class universities and diverse culture but also for its strong emphasis on public health and well-being. One of the pillars of this focus is access t...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Free Sports Facilities & Programmes in UK for Public Use — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["free sports facilities","life in the uk","live in the uk","student facilities"],
     content: `<blockquote>
 <p>The United Kingdom is known not only for its world-class universities and diverse culture but also for its strong emphasis on public health and well-being. One of the pillars of this focus is access to sports and fitness facilities. Many people are surprised to learn that the UK offers a wide range of free or heavily subsidised sports services to the general public, including international students. These services are part of the government’s ongoing commitment to promote physical activity, reduce obesity, and improve mental health across all age groups.</p>
@@ -11150,8 +11150,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `Imperial College London stands as one of the world’s most prestigious institutions, renowned for its focus on science, engineering, medicine, and business. Situated in the heart of South Kensington, o...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Imperial College London: A Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["imperial college","imperial college london","study in uk"],
     content: `<blockquote>
 <p><a href="https://www.imperial.ac.uk/">Imperial College London</a> stands as one of the world’s most prestigious institutions, renowned for its focus on science, engineering, medicine, and business. Situated in the heart of South Kensington, one of London’s most affluent and intellectually rich districts, Imperial attracts some of the brightest minds from over 140 countries. Choosing a university is a major decision, especially for international students planning to study in the UK. This guide offers a detailed overview of everything you need to know about Imperial College London—from courses and campuses to fees, student life, and career prospects.</p>
@@ -11289,8 +11289,8 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The UK remains one of the most attractive destinations for professionals seeking long-term career opportunities, thanks to its dynamic economy, diverse job market, and clear immigration pathways. One ...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `How to Find a Sponsored Job in the UK & Skilled Worker Visa — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["jobs in uk","skilled worker","sponsorship worker"],
     content: `<blockquote>
 <p>The UK remains one of the most attractive destinations for professionals seeking long-term career opportunities, thanks to its dynamic economy, diverse job market, and clear immigration pathways. One of the most popular work routes for non-UK nationals is the <a href="https://www.gov.uk/skilled-worker-visa"><strong>Skilled Worker visa</strong></a>. But to be eligible, you need a job offer from a licensed sponsor. Here's how to find such a job and successfully navigate the process.</p>
@@ -11411,9 +11411,9 @@ This updated guide explains everything you need to know about the PGWP in 2025, 
     excerpt: `The University of Greenwich, located in southeast London with campuses in Greenwich, Avery Hill, and Medway (Kent), is one of the UK's most accessible and career-focused universities. With a history d...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of Greenwich: A Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["greenwich","study in uk","UK Universities","university of greenwich"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["greenwich","study in uk","United Kingdom","university of greenwich"],
     content: `<blockquote>
 <p><a href="https://www.gre.ac.uk/">The University of Greenwich</a>, located in southeast London with campuses in Greenwich, Avery Hill, and Medway (Kent), is one of the UK's most accessible and career-focused universities. With a history dating back to 1890 and a commitment to innovation and inclusion, it offers a rich academic environment and diverse student body that makes it a prime destination for international students.</p>
 </blockquote>
@@ -11530,8 +11530,8 @@ If you’re considering applying for a UK visa, switching your status, or planni
     excerpt: `University College London (UCL) is one of the world’s leading multidisciplinary universities, located in the heart of London. Established in 1826, it has built a global reputation for academic excelle...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `Top UCL Courses You Shouldn’t Miss: A Student’s Guide — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in uk","ucl","university college london"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []"><a href="https://www.ucl.ac.uk/">University College London (UCL)</a> is one of the world’s leading multidisciplinary universities, located in the heart of London. Established in 1826, it has built a global reputation for academic excellence, research innovation, and an inclusive, forward-thinking approach to education. For international students aiming to study in the UK, UCL is a top destination offering a diverse range of world-class programmes. In this blog, we explore some of the best courses to study at UCL, based on academic reputation, graduate prospects, research strength, and global recognition.</p>
@@ -11579,8 +11579,8 @@ If you're planning to study at UCL, Universitio is here to help. As one of the o
     excerpt: `The University of Cambridge is one of the oldest, most prestigious, and globally recognised institutions of higher education in the world. Located in the historic city of Cambridge, England, and found...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Cambridge: A Complete Guide for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["cambridge","cambridge university","study in the UK","university of cambridge"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []"><a href="https://www.cam.ac.uk/">The University of Cambridge</a> is one of the oldest, most prestigious, and globally recognised institutions of higher education in the world. Located in the historic city of Cambridge, England, and founded in 1209, the university has maintained a reputation for academic excellence, cutting-edge research, and a rich student experience. For international students seeking a world-class education in a supportive and intellectually stimulating environment, Cambridge stands out as a top choice.</p>
@@ -11639,8 +11639,8 @@ If you're considering applying to Cambridge, Universitio can support you every s
     excerpt: `Studying in the UK can be one of the most exciting and rewarding experiences of your life—but it's no secret that student life can also be financially challenging. The good news? UK-based students, in...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Free and Discounted Services for Students in the UK — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["student discount","student life","study in uk"],
     content: `<blockquote>Studying in the UK can be one of the most exciting and rewarding experiences of your life—but it's no secret that student life can also be financially challenging. The good news? UK-based students, including international students, have access to a wide range of free and heavily discounted services designed to make life easier, more affordable, and more enjoyable. From transport and technology to entertainment and banking, here’s a comprehensive guide to the benefits you can access as a student in the UK.</blockquote>
 <h2 data-pm-slice="1 1 []">Discount Platforms for Students</h2>
@@ -11735,8 +11735,8 @@ Studying in the UK comes with more than just academic opportunities. A wide rang
     excerpt: `The London School of Economics and Political Science (LSE) is one of the most prestigious and influential universities in the world. Located in the heart of London, LSE has earned a global reputation ...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `London School of Economics and Political Science (LSE) — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["london school of economics","lse"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []"><a href="https://www.lse.ac.uk/">The London School of Economics</a> and Political Science (LSE) is one of the most prestigious and influential universities in the world. Located in the heart of London, LSE has earned a global reputation for academic excellence in the social sciences. With a commitment to research, diversity, and real-world impact, it attracts students from over 140 countries who aspire to become leaders in economics, law, politics, sociology, management, and more.</p>
@@ -11851,8 +11851,8 @@ If LSE is your dream, let us help you make it your destination. <a href="https:/
     excerpt: `International students currently benefit from a generous post-study work visa in the UK—up to 24 months (36 months for PhD graduates). But the government’s new immigration white paper proposes reducin...`,
     image: "blog-images/visa-2.webp",
     imageAlt: `Will the Graduate Route Visa Change to 18 Months? — Visa`,
-    categories: ["Visa"],
-    categorySlugs: ["visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["graduate visa"],
     content: `<blockquote>
 <p>International students currently benefit from a generous post-study work visa in the UK—up to 24 months (36 months for PhD graduates). But the government’s new immigration white paper proposes reducing that period to <strong>18 months</strong> for undergraduates and Master’s students. However, with savvy planning and energetic job hunting, this change doesn’t have to derail your career ambitions.</p>
@@ -11928,9 +11928,9 @@ If LSE is your dream, let us help you make it your destination. <a href="https:/
     excerpt: `The University of Oxford stands as one of the most iconic and revered academic institutions in the world. With a history dating back to the 12th century, it is not only the oldest university in the En...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of Oxford: The Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["oxford","oxford university","UK Universities","university of oxford"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["oxford","oxford university","United Kingdom","university of oxford"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []"><a href="https://www.ox.ac.uk/">The University of Oxford</a> stands as one of the most iconic and revered academic institutions in the world. With a history dating back to the 12th century, it is not only the oldest university in the English-speaking world but also one of the most prestigious. Renowned for its unparalleled academic standards, Oxford continues to attract ambitious students from across the globe, offering world-class education, rigorous intellectual training, a vibrant collegiate community, and a lifelong network of excellence.</p>
 </blockquote>
@@ -12019,8 +12019,8 @@ Applying to Oxford is a life-changing journey, and Universitio is here to help y
     excerpt: `If you're aiming to start a business after your studies in the UK, you're on an exciting journey. The UK offers structured routes to entrepreneurship, official support, and meaningful benefits for int...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `Launching a Business in the UK: Complete Guide for Students — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["busines in the uk","start business UK visa","Universitio"],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out">If you're aiming to start a business after your studies in the UK, you're on an exciting journey. The UK offers structured routes to entrepreneurship, official support, and meaningful benefits for international graduates. In this guide, you'll learn about business types, legal registration steps, government-backed support, and how registering a business can enhance your post-study prospects.</span></p>
@@ -12092,8 +12092,8 @@ Whether your ambition is to start a tech company, launch a design studio, or ope
     excerpt: `Nestled on the east coast of Scotland, the University of St Andrews is the United Kingdom’s oldest university, founded in 1413. This historic institution is consistently ranked among the top three in ...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of St Andrews: Guide for Prospective Students — UK Universities`,
-    categories: ["UK Universities","Uncategorized"],
-    categorySlugs: ["uk-universities","uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["st andrew"],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out">Nestled on the east coast of Scotland, the <a href="https://www.st-andrews.ac.uk/">University of St Andrews</a> is the United Kingdom’s oldest university, founded in 1413. This historic institution is consistently ranked among the top three in Scotland and holds a prestigious international reputation. Beyond its remarkable heritage, St Andrews offers modern academic excellence and a highly supportive international student environment. Here’s everything you should know if you’re considering studying there.</span></p>
@@ -12182,8 +12182,8 @@ At <a href="https://universitio.com/free-consultation">Universitio</a>, we help 
     excerpt: `The UK Global Talent Visa is one of the most prestigious and flexible immigration routes designed to attract the brightest and most promising individuals from around the world. Whether you are an acad...`,
     image: "blog-images/visa-1.webp",
     imageAlt: `UK Global Talent Visa: Complete Guide for Ambitious Students — Visa`,
-    categories: ["Visa"],
-    categorySlugs: ["visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["global talent","global talent visa","uk"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []"><a href="https://www.gov.uk/global-talent">The UK Global Talent Visa</a> is one of the most prestigious and flexible immigration routes designed to attract the brightest and most promising individuals from around the world. Whether you are an academic, a researcher, a tech expert, or a creative professional, this visa offers a unique opportunity to live and work in the UK without the need for employer sponsorship or a formal job offer. It reflects the UK's commitment to innovation, global collaboration, and excellence across diverse sectors.</p>
@@ -12255,8 +12255,8 @@ The Global Talent Visa represents one of the most exciting and forward-thinking 
     excerpt: `The University of Surrey, located in Guildford just 35 minutes from London, offers international students a world-class education, modern campus facilities, and exceptional job prospects. This complet...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Surrey in Guildford: Your Ultimate Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["The University of Surrey","uk study","Universitio"],
     content: `<blockquote>
 <p><a href="https://www.surrey.ac.uk/">The University of Surrey</a>, located in Guildford just 35 minutes from London, offers international students a world-class education, modern campus facilities, and exceptional job prospects. This complete guide covers everything you need to know—from campuses and courses to fees, accommodation, employability, and student life.</p>
@@ -12399,8 +12399,8 @@ The Global Talent Visa represents one of the most exciting and forward-thinking 
     excerpt: `The UK offers a range of humanitarian support programmes and financial assistance for international students facing hardship, displacement, or conflict-related challenges. These initiatives—offered by...`,
     image: "blog-images/scholarships-3.webp",
     imageAlt: `Humanitarian Support for International Students in the UK — Scholarships`,
-    categories: ["Scholarships"],
-    categorySlugs: ["scholarships"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["student supports","study in uk","Universitio"],
     content: `<blockquote>
 <p>The UK offers a range of humanitarian support programmes and financial assistance for international students facing hardship, displacement, or conflict-related challenges. These initiatives—offered by universities, charities, and government-backed funds—aim to ensure that international students in need can continue their studies with dignity, security, and peace of mind.</p>
@@ -12484,8 +12484,8 @@ The Global Talent Visa represents one of the most exciting and forward-thinking 
     excerpt: `Applying to UK universities is a competitive process, and your CV (curriculum vitae) can be a powerful tool in showcasing your academic achievements, skills, and experiences. Unlike a job resume, a un...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `How to Write a Standout CV for UK Universities — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["CV","resume","write a cv"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []">Applying to UK universities is a competitive process, and your CV (<a href="https://en.wikipedia.org/wiki/Curriculum_vitae">curriculum vitae</a>) can be a powerful tool in showcasing your academic achievements, skills, and experiences. Unlike a job resume, a university CV focuses more on educational background, research, and academic interests. This comprehensive guide explains how to craft a compelling CV tailored specifically for UK higher education institutions.</p>
@@ -12601,8 +12601,8 @@ Crafting a strong CV is an essential step in your UK university application. By 
     excerpt: `The decade leading up to 2030 promises to reshape global economics and the landscape of higher education. For students planning to study in the UK, understanding both the global and domestic economic ...`,
     image: "blog-images/jobs-3.webp",
     imageAlt: `The Global and UK Economic Outlook Through 2030 for Students — Jobs`,
-    categories: ["Jobs","Visa"],
-    categorySlugs: ["jobs","visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["2030 economic view","economy","edtech","education technology","uk","Universitio"],
     content: `<blockquote>
 <p data-pm-slice="1 1 []">The decade leading up to 2030 promises to reshape global economics and the landscape of higher education. For students planning to study in the UK, understanding both the global and domestic economic trends is essential to make informed decisions about their academic and professional future. From tuition fees and living costs to employment prospects and student welfare, this guide offers a comprehensive look at what lies ahead.</p>
@@ -12652,8 +12652,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Finding a job in the UK can feel daunting, especially for international students and recent graduates. Despite challenges in today’s labour market, there are numerous strategic pathways you can take t...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `Comprehensive Guide & Effective Ways to Find a Job in the UK — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["find jobs in the uk","life in the uk","UK jobs"],
     content: `<blockquote>
 <p>Finding a job in the UK can feel daunting, especially for international students and recent graduates. Despite challenges in today’s labour market, there are numerous strategic pathways you can take to improve your job prospects. In this extensive guide, you’ll discover proven methods—from crafting the perfect CV to networking smartly, visa strategies, digital platforms, and avoiding job scams—all in a single, seamless narrative that’s both engaging and SEO-optimised.</p>
@@ -12708,9 +12708,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The University of Edinburgh, founded in 1583, is one of the world’s oldest and most prestigious universities, located in the capital of Scotland. As one of the UK’s six ancient universities and a memb...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `University of Edinburgh: A Complete Guide for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["UK Universities","University of Edinburgh"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["United Kingdom","University of Edinburgh"],
     content: `<blockquote>
 <p>The University of Edinburgh, founded in 1583, is one of the world’s oldest and most prestigious universities, located in the capital of Scotland. As one of the UK’s six ancient universities and a member of the elite Russell Group, it has maintained its global academic reputation for over four centuries. Today, it ranks among the top 30 universities in the world and attracts tens of thousands of students from more than 150 countries. Its combination of world-class research, academic diversity, and rich student life makes it one of the most attractive destinations for international students seeking a top-tier UK education.</p>
 </blockquote>
@@ -12748,8 +12748,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The UK economy has shown signs of slowing in 2025, with multiple indicators pointing to a cooling labour market. Rising unemployment, declining vacancies, and sluggish wage growth are creating a cauti...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `UK Unemployment Rate & Labour Market Overview — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["find jobs in the uk","UK jobs","united kingdom"],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out"><a href="https://www.ons.gov.uk/employmentandlabourmarket/peoplenotinwork/unemployment">The UK economy</a> has shown signs of slowing in 2025, with multiple indicators pointing to a cooling labour market. Rising unemployment, declining vacancies, and sluggish wage growth are creating a cautious environment—particularly for young people and recent graduates. In this deep dive, we unpack the current statistics, explore demographic challenges, and provide actionable guidance for students, graduates, and jobseekers.</span></p>
@@ -12848,9 +12848,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Northumbria University, located in the vibrant city of Newcastle upon Tyne, is one of the UK’s most ambitious, research-rich, and globally engaged universities. Known for its career-driven programmes ...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Northumbria University: A Top UK Choice for Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["Northumbria University","study in the UK","UK Universities","Universitio"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["Northumbria University","study in the UK","United Kingdom","Universitio"],
     content: `<blockquote>
 <p><a href="https://www.northumbria.ac.uk/"><strong>Northumbria University</strong></a>, located in the vibrant city of Newcastle upon Tyne, is one of the UK’s most ambitious, research-rich, and globally engaged universities. Known for its career-driven programmes and strong employer links, Northumbria has become a popular destination for international students seeking high-quality education in a dynamic urban setting.</p>
 </blockquote>
@@ -13025,8 +13025,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The UK is globally recognised for its excellence in medical education. With prestigious universities, cutting-edge research facilities, and access to the NHS for practical training, the UK attracts th...`,
     image: "blog-images/general-education-3.webp",
     imageAlt: `Study Medicine in the UK: A Guide for International Students — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["gmat","study","study in the UK","study Medicine","ucat","uk"],
     content: `<blockquote>
 <p>The UK is globally recognised for its excellence in medical education. With prestigious universities, cutting-edge research facilities, and access to the NHS for practical training, the UK attracts thousands of aspiring doctors every year.</p>
@@ -13383,9 +13383,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The University of Warwick is one of the UK’s most respected institutions, ranked among the top globally and a proud member of the Russell Group. Founded in 1965, it combines academic excellence with a...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Warwick: The Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["study in the UK","UK Universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["study in the UK","United Kingdom"],
     content: `<blockquote>
 <p><a href="https://warwick.ac.uk/">The University of Warwick</a> is one of the UK’s most respected institutions, ranked among the top globally and a proud member of the Russell Group. Founded in 1965, it combines academic excellence with an ambitious spirit. Located on a 290-hectare campus in the West Midlands, Warwick offers a vibrant community where international students thrive both academically and socially.</p>
 <p>With approximately 28,000 students from over 120 countries, Warwick is known for its diverse environment, world-class teaching, and outstanding research.</p>
@@ -13624,8 +13624,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Nestled in the rolling Lancashire countryside, Lancaster University is a distinguished public research university known for its strong academic reputation, supportive campus environment, and internati...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Lancaster University: The Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["lancaster","lancaster university","study in the UK"],
     content: `<blockquote>
 <p>Nestled in the rolling Lancashire countryside, <a href="https://www.lancaster.ac.uk/">Lancaster University</a> is a distinguished public research university known for its strong academic reputation, supportive campus environment, and internationally recognised research. Established in 1964, it is a member of the prestigious N8 Research Partnership and consistently ranks within the top 15 UK universities. With around 15,000 students—nearly 25% of whom are international—Lancaster offers a globally minded and inclusive academic community.</p>
@@ -13722,8 +13722,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Robert Gordon University (RGU), located in Aberdeen, Scotland, is a dynamic, professionally focused institution known for its strong links to industry, practical learning approach, and high graduate e...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Robert Gordon University: Everything Students Need to Know — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<blockquote>
 <p>Robert Gordon University (RGU), located in Aberdeen, Scotland, is a dynamic, professionally focused institution known for its strong links to industry, practical learning approach, and high graduate employability. Named after the 18th-century philanthropist Robert Gordon, the university has evolved from a technical college into one of the UK’s most modern and forward-thinking universities.</p>
@@ -13904,8 +13904,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `One of the biggest financial considerations for international students in the UK is the cost of accommodation. Whether you choose to live in London or outside it, understanding what to expect can help...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `Student Accommodation in the UK: Inside & Outside London — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["live in the uk","student accommodation","study in the UK"],
     content: `<blockquote>
 <p>One of the biggest financial considerations for international students in the UK is the cost of accommodation. Whether you choose to live in London or outside it, understanding what to expect can help you plan your finances more effectively.</p>
@@ -14084,8 +14084,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Keele University is a research-led institution located in Staffordshire, England. Established in 1949, it is known for its strong interdisciplinary approach, inclusive community, and one of the larges...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Keele University: Complete Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Keele University","study in the UK","uk study","Universitio"],
     content: `<blockquote>
 <p><a href="https://www.keele.ac.uk/">Keele University</a> is a research-led institution located in Staffordshire, England. Established in 1949, it is known for its strong interdisciplinary approach, inclusive community, and one of the largest campuses in the UK. With a student population of over 10,000, including around 1,500 international students from more than 120 countries, Keele offers a close-knit academic environment surrounded by green countryside.</p>
@@ -14616,8 +14616,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Founded in 1881, the University of Liverpool is one of the UK’s most prestigious and research-intensive institutions. It is a proud member of the Russell Group, a network of 24 leading UK universities...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `University of Liverpool: A Guide for International Students — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Liverpool University","study in the UK","Universitio","University of Liverpool"],
     content: `<blockquote>
 <p>Founded in 1881, the <a href="https://www.liverpool.ac.uk/">University of Liverpool</a> is one of the UK’s most prestigious and research-intensive institutions. It is a proud member of the Russell Group, a network of 24 leading UK universities committed to maintaining the highest research and teaching standards.</p>
@@ -14839,8 +14839,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Across the UK, universities and national organisations host a dynamic array of career fairs and apprenticeship events designed to connect students and recent graduates with employers, training provide...`,
     image: "blog-images/jobs-3.webp",
     imageAlt: `Overview of Career and Apprenticeship Fairs in the UK — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p><span class="relative -mx-px my-[-0.2rem] rounded px-px py- transition-colors duration-100 ease-in-out">Across the UK, universities and national organisations host a dynamic array of <strong>career fairs</strong> and <strong>apprenticeship events</strong> designed to connect students and recent graduates with employers, training providers, and industry experts. These fairs serve as invaluable platforms for networking, gaining practical insights, and launching your career path—whether that’s through traditional graduate routes or vocational apprenticeship pathways.</span></p>
@@ -14994,8 +14994,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The University of East Anglia (UEA), located in the historic city of Norwich, England, is one of the UK’s leading research-intensive universities. Since its establishment in 1963, UEA has developed a ...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of East Anglia (UEA): A Comprehensive Overview — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in the UK","UEA","Universitio","University of East Angelia"],
     content: `<blockquote>
 <p><a href="https://www.uea.ac.uk/">The University of East Anglia</a> (UEA), located in the historic city of Norwich, England, is one of the UK’s leading research-intensive universities. Since its establishment in 1963, UEA has developed a strong reputation for academic excellence, innovative research, and a supportive, inclusive student environment. This guide provides an in-depth overview of all aspects of UEA that prospective students should consider when making their choice.</p>
@@ -15097,8 +15097,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Understanding the healthcare system in the UK is essential for anyone planning to live, study, or work there. One of the fundamental elements of this system is the General Practitioner (GP). This arti...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `What is a GP in the UK? A Guide for International Students — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["General Practitioner","General Practitioner in the uk","GP"],
     content: `<blockquote>
 <p>Understanding the healthcare system in the UK is essential for anyone planning to live, study, or work there. One of the fundamental elements of this system is the <strong>General Practitioner (GP)</strong>. This article explains in detail what a GP is, their role, how to register with one, and why it matters, especially for international students and new residents.</p>
@@ -15151,8 +15151,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `When it comes to studying in the UK, Kingston University London is one of the standout institutions for both domestic and international students. Known for its strong emphasis on employability, innova...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Kingston University London: Everything You Need to Know — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["kingston university","study in uk"],
     content: `<blockquote>
 <p>When it comes to studying in the UK, <a href="https://www.kingston.ac.uk/"><strong>Kingston University London</strong></a> is one of the standout institutions for both domestic and international students. Known for its strong emphasis on employability, innovation, and inclusive education, Kingston offers a perfect blend of academic excellence, industry relevance, and a dynamic student experience. In this guide, we’ll explore everything you need to know about Kingston University—from its campuses and courses to rankings, scholarships, and student life.</p>
@@ -15304,8 +15304,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The United Kingdom remains one of the world’s top destinations for international students, attracting hundreds of thousands annually. As of the 2023/24 academic year, there were over 730,000 internati...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Where Do International Students in the UK Come From? — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["International Students","study in the UK","uk study","Universitio"],
     content: `<blockquote>
 <p>The <a href="https://en.wikipedia.org/wiki/United_Kingdom">United Kingdom</a> remains one of the world’s top destinations for international students, attracting hundreds of thousands annually. As of the 2023/24 academic year, there were over 730,000 international students enrolled across UK universities, representing roughly a quarter of all students. This diverse population comes from all corners of the globe, creating a vibrant and multicultural academic environment.</p>
@@ -15371,8 +15371,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Embarking on an academic journey in the UK offers international students a wealth of opportunities, from world-renowned universities to diverse cultural experiences. However, adapting to a new environ...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `The Do's and Don'ts for International Students in the UK — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["do and don't in the uk","study in the UK"],
     content: `<blockquote>
 <p style="text-align: left;">Embarking on an academic journey in the UK offers international students a wealth of opportunities, from world-renowned universities to diverse cultural experiences. However, adapting to a new environment comes with its challenges. Understanding the cultural norms, academic expectations, and legal requirements is crucial for a smooth transition.</p>
@@ -15427,8 +15427,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Nestled in the vibrant town of Hatfield, just 25 minutes from central London, the University of Hertfordshire (UH) is a dynamic public university renowned for its innovative, business-facing approach ...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `University of Hertfordshire: Hub of Innovation & Opportunity — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in the UK","uk study","university of hertfordshire"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Nestled in the vibrant town of Hatfield, just 25 minutes from central London, the<a href="https://www.herts.ac.uk/"> University of Hertfordshire</a> (UH) is a dynamic public university renowned for its innovative, business-facing approach and commitment to transforming lives. Established in 1952 as Hatfield Technical College, UH gained university status in 1992 and now hosts nearly 35,000 students from over 110 countries across its College Lane and de Havilland campuses. Recognised as the CMI Higher Education Partner of the Year 2024 and ranked among the top 200 universities under 50 years old globally (QS World University Rankings 2025), UH excels in employability, research impact, and sustainability. With over 700 career-focused degrees and a 96% graduate employment rate within six months, UH is a top choice for international students seeking a UK education. This guide explores UH’s campuses, academic offerings, accommodation, and more, providing a roadmap for your academic journey. Ready to unleash your potential? Let’s dive into the University of Hertfordshire!</p>
@@ -15793,8 +15793,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Great Britain, the heart of the United Kingdom comprising England, Scotland, and Wales, is a land where history, culture, and natural beauty converge to create a traveller’s paradise. From the ancient...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Discover the UK’s Top Attractions for Every Traveller — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["british","english heritage","travel to the uk","uk attractions"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Great Britain, the heart of the United Kingdom comprising England, Scotland, and Wales, is a land where history, culture, and natural beauty converge to create a traveller’s paradise. From the ancient enigma of Stonehenge to the regal splendour of Buckingham Palace and the rugged majesty of Edinburgh Castle, the UK’s iconic attractions captivate millions each year, drawing nearly 40 million visitors in 2023 alone (VisitBritain). For international students studying in the UK or visitors exploring its shores, these landmarks offer a glimpse into a nation’s storied past and vibrant present. In 2025, these must-see sites remain accessible, with practical tips to enhance your experience. This guide unveils the UK’s most famous tourist attractions, their significance, and how to make the most of your visit, ensuring an unforgettable journey. Ready to explore Britain’s timeless treasures? Let’s begin!</p>
@@ -16137,8 +16137,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The University of East London (UEL) is a forward-thinking public university in the vibrant heart of East London, renowned for its careers-first approach, diverse community, and commitment to social mo...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Empower Your Ambitions at the University of East London — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["study in the UK","UEL","University of East London"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []"><a href="https://www.uel.ac.uk/">The University of East London</a> (UEL) is a forward-thinking public university in the vibrant heart of East London, renowned for its careers-first approach, diverse community, and commitment to social mobility. Established in 1898 as the West Ham Technical Institute, UEL gained university status in 1992 and now serves over 44,000 students from 160+ countries across its Docklands, Stratford, and University Square Stratford campuses. Named University of the Year for Teaching Quality 2025 by The Times and Sunday Times Good University Guide, UEL empowers students with industry-aligned courses, cutting-edge facilities, and a 91% placement rate within six months of graduation. With a focus on innovation, inclusivity, and real-world impact, UEL is a top choice for international students seeking a transformative UK education. This guide explores UEL’s campuses, academic offerings, accommodation, and more, providing a roadmap for your academic journey. Ready to shape your future? Let’s dive into UEL</p>
@@ -16683,9 +16683,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Studying in the United Kingdom is a dream for many international students, offering access to world-class education, vibrant cultural experiences, and a gateway to global careers. However, the costs o...`,
     image: "blog-images/scholarships-2.webp",
     imageAlt: `Top UK Scholarships for International Students in 2025 — Scholarships`,
-    categories: ["Scholarships"],
-    categorySlugs: ["scholarships"],
-    tags: ["scholarships","study in uk","uk scholarships"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
+    tags: ["student-guides","study in uk","uk scholarships"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Studying in the United Kingdom is a dream for many international students, offering access to world-class education, vibrant cultural experiences, and a gateway to global careers. However, the costs of tuition and living can be daunting. Thankfully, the UK hosts a range of prestigious, annually recurring scholarships and funding opportunities designed to support talented international students. From the globally renowned Chevening and Commonwealth Scholarships to specialised awards like the Rhodes and Gates Cambridge, these programmes make studying at top UK universities accessible. In 2025, these scholarships continue to attract ambitious students from over 150 countries, covering tuition, living expenses, and more. This guide explores the most prominent, reliable, and recurring UK scholarships for international students, detailing eligibility, benefits, and application tips to help you turn your study dreams into reality. Ready to fund your UK education? Let’s explore!</p>
 </blockquote>
@@ -17250,8 +17250,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Nestled in the heart of London and Kent, the University of Greenwich is a dynamic public university celebrated for its rich history, modern facilities, and commitment to preparing students for global ...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `University of Greenwich: A Gateway to Global Success — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Greenwich university","study in the UK","university of greenwich"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Nestled in the heart of London and Kent, the University of Greenwich is a dynamic public university celebrated for its rich history, modern facilities, and commitment to preparing students for global careers. Founded in 1890 as Woolwich Polytechnic, it has grown into a leading institution, hosting over 25,000 students from 140 countries. With three stunning campuses—Greenwich, Avery Hill, and Medway—the university offers a unique blend of historic charm and cutting-edge education, set against the backdrop of the UNESCO World Heritage-listed Old Royal Naval College. Ranked among the UK’s top 100 universities (The Complete University Guide 2025), Greenwich excels in employability, sustainability, and inclusivity. This guide explores the university’s campuses, academic offerings, accommodation, and more, making it an essential resource for international students aiming to study in the UK. Ready to chart your future? Let’s dive into the University of Greenwich!</p>
@@ -17615,8 +17615,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `London Metropolitan University, affectionately known as London Met, is a dynamic public research university in the heart of London, UK, celebrated for its inclusive ethos, industry-focused courses, an...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `London Metropolitan University: Courses, Rankings, & Life — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["LMU","London Metropolitan University","study in the UK","uk"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []"><a href="https://www.londonmet.ac.uk/">London Metropolitan University</a>, affectionately known as London Met, is a dynamic public research university in the heart of London, UK, celebrated for its inclusive ethos, industry-focused courses, and multicultural community. Established in 2002 through the merger of the University of North London and London Guildhall University, its roots trace back to 1848, making it one of London’s oldest educational institutions. With over 10,000 students from more than 140 countries, London Met operates two campuses—Holloway in North London and Aldgate in the City of London—offering a vibrant urban experience. Ranked among the top 100 UK universities (The Complete University Guide 2025), London Met excels in employability, with 93% of graduates employed or in further study within six months (HESA 2023). This guide explores London Met’s history, campuses, academic offerings, rankings, accommodation, and more, providing a comprehensive resource for international students. Ready to thrive in London? Let’s dive in.</p>
@@ -18109,8 +18109,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Pursuing a Master of Business Administration (MBA) in the United Kingdom is a transformative decision for ambitious professionals seeking to elevate their careers on a global stage. Renowned for its w...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Unlock Your Global Career with an MBA in the UK — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["MBA","study in the UK","study MBA in the uk","uk study"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Pursuing a Master of Business Administration (MBA) in the United Kingdom is a transformative decision for ambitious professionals seeking to elevate their careers on a global stage. Renowned for its world-class universities, innovative business environment, and rich cultural diversity, the UK offers an unparalleled MBA experience that blends academic rigour with practical skills. In 2025, the UK remains a top destination for international students, with over 100 universities offering MBA programmes tailored to diverse specialisations like finance, marketing, and entrepreneurship. From the prestige of institutions like Oxford and London Business School to the shorter, cost-effective one-year programmes, studying an MBA in the UK equips you with the tools to thrive in today’s dynamic business world. This guide explores the compelling reasons to choose a UK MBA, covering academic excellence, career prospects, accommodation options, and more, helping you make an informed choice. Ready to unlock your potential? Let’s dive in.</p>
@@ -18363,8 +18363,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Finding the perfect place to live is a cornerstone of your university journey in the United Kingdom, offering a blend of comfort, community, and affordability across England, Scotland, Wales, and Nort...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Student Accommodation in the UK: Costs, Choices, & Insights — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["accommodation","life in the uk","student accommodation","student life","student life in uk"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Finding the perfect place to live is a cornerstone of your university journey in the United Kingdom, offering a blend of comfort, community, and affordability across England, Scotland, Wales, and Northern Ireland. For international students, the UK’s student accommodation options—spanning university halls, private halls, shared houses, studios, and homestays—cater to every preference and budget. Whether you’re immersing yourself in London’s global energy, Edinburgh’s historic charm, Cardiff’s vibrant culture, or Belfast’s welcoming spirit, choosing the right home is key to thriving. In 2025, accommodation costs range from £360/month in budget-friendly cities to £1,364/month in premium locations (Save the Student, 2025). This guide delves into the types of student housing, their approximate costs, and compares expensive cities like London with affordable ones like Dundee, empowering you to make an informed choice. Ready to find your UK home? Let’s get started!</p>
@@ -18988,8 +18988,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Brunel University London, nestled in the dynamic suburb of Uxbridge, West London, is a leading public research university renowned for its innovation, industry connections, and vibrant, multicultural ...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Brunel University London: Explore Courses, Campus, & Living — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["brunel university london","study in the UK"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []"><a href="https://www.brunel.ac.uk/">Brunel University London</a>, nestled in the dynamic suburb of Uxbridge, West London, is a leading public research university renowned for its innovation, industry connections, and vibrant, multicultural community. Established in 1966 and named after the visionary Victorian engineer Isambard Kingdom Brunel, the university serves over 15,700 students from more than 150 countries, fostering a global outlook. With a single, leafy campus that integrates academic, social, and accommodation facilities, Brunel offers a close-knit environment just 40 minutes from central London. Celebrated for its 95% placement rate across courses and ranked among the UK’s top 40 universities (The Complete University Guide 2025), Brunel is a top choice for international students. This guide explores Brunel’s history, campus, academic offerings, rankings, accommodation options, and more, providing a comprehensive resource for your UK study journey. Ready to ignite your future? Let’s dive in!</p>
@@ -19449,8 +19449,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The UK’s weather is a delightful tapestry of seasons, each weaving its own charm into the fabric of your student life. Far from the myth of perpetual rain, the UK boasts a temperate oceanic climate (K...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `Discover the UK’s Weather: A Vibrant Blend of Seasons — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The UK’s weather is a delightful tapestry of seasons, each weaving its own charm into the fabric of your student life. Far from the myth of perpetual rain, the UK boasts a temperate oceanic climate (Köppen Cfb) that brings warm, sun-drenched summers, vibrant autumns, mild winters perfect for snug evenings, and springs bursting with life. This ever-shifting weather infuses the nation’s culture, from outdoor festivals to cosy pub gatherings, creating a dynamic backdrop for international students. Whether you’re exploring London’s iconic parks, soaking up Edinburgh’s historic charm, or studying in Manchester’s lively hubs, the UK’s climate adds a touch of magic to every day. This guide celebrates the UK’s weather, spotlighting major cities, temperatures, and essential insights to help you make the most of your study adventure.</p>
@@ -19607,8 +19607,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Birmingham City University (BCU), located in the heart of Birmingham, England, is a forward-thinking public university renowned for its industry-aligned courses, vibrant multicultural community, and e...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Birmingham City University: A Vibrant Hub for Global Talent — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["bcu","birmingham city university","study in the UK","Universitio"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="0 0 []"><a href="http://bcu.ac.uk">Birmingham City University</a> (BCU), located in the heart of Birmingham, England, is a forward-thinking public university renowned for its industry-aligned courses, vibrant multicultural community, and exceptional employability outcomes. Founded in 1843 as the Birmingham College of Art, BCU has evolved into a modern institution serving over 24,000 students from more than 80 countries. With its main campuses in City Centre and City South, alongside specialist facilities like the School of Jewellery, BCU offers a dynamic blend of practical education and cultural immersion in the UK’s second-largest city. Ranked among the top 100 UK universities (The Complete University Guide 2025), BCU is celebrated for its professional accreditations and 97% graduate employment rate within six months (HESA 2023). This guide explores BCU’s campuses, academic offerings, rankings, facilities, and more, making it an essential resource for international students.</p>
@@ -19919,9 +19919,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Aston University, located in the heart of Birmingham, England, is a forward-thinking public research university renowned for its focus on employability, innovation, and inclusivity. Founded in 1895 as...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Aston University: A Guide to Excellence in Birmingham — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["aston university","study in uk","UK Universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["aston university","study in uk","United Kingdom"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []"><a href="http://aston.ac.uk">Aston University</a>, located in the heart of Birmingham, England, is a forward-thinking public research university renowned for its focus on employability, innovation, and inclusivity. Founded in 1895 as the Birmingham Municipal Technical School, it gained university status in 1966 and has since established itself as a leader in business, engineering, and health sciences. With over 18,000 students from more than 120 countries, Aston is celebrated for its diverse community, industry-aligned courses, and exceptional graduate outcomes, ranking in the UK’s top 25 for graduate prospects (The Times Good University Guide 2025). Its single campus in Birmingham’s city centre, combined with international study centres in Singapore and Oman, offers a dynamic environment for academic and professional growth. This guide provides a comprehensive overview of Aston University, covering its campus, academic programmes, rankings, facilities, and more, making it an essential resource for international students.</p>
 </blockquote>
@@ -20207,9 +20207,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The University of Kent, often called the UK’s European university, is a leading public research institution based in Kent, England, with a reputation for outstanding teaching, innovative research, and...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `University of Kent: A great Guide to study & student life — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["kent","kent university","study in the UK","UK Universities","university of kent"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["kent","kent university","study in the UK","United Kingdom","university of kent"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The University of Kent, often called the UK’s European university, is a leading public research institution based in Kent, England, with a reputation for outstanding teaching, innovative research, and a diverse, inclusive community. Established in 1965, it serves over 18,000 students from 152 countries, with 15.5% international students, across its main campuses in Canterbury and Medway, a centre in Tonbridge, and postgraduate centres in Paris, Brussels, Athens, and Rome. Known for its collegiate structure and interdisciplinary approach, Kent ranks among the top 40 UK universities (The Times Good University Guide 2025) and offers a dynamic student experience. This guide explores Kent’s campuses, academic programmes, rankings, facilities, and more, making it an essential resource for international students considering study at this vibrant institution.</p>
 </blockquote>
@@ -20515,8 +20515,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Middlesex University London, legally known as Middlesex University (abbreviated MDX), is a dynamic public research university based in Hendon, northwest London, with a rich history dating back to 1878...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `Middlesex University London Guidance: Study Different — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Middlesex","Middlesex university"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Middlesex University London, legally known as Middlesex University (abbreviated MDX), is a dynamic public research university based in Hendon, northwest London, with a rich history dating back to 1878. Renowned for its innovative teaching, industry-aligned courses, and diverse student body, Middlesex welcomes over 19,000 students in London and 37,000 globally, including a significant international community from 140 countries. With additional campuses in Dubai, Mauritius, and Malta, it’s a truly global institution. Named after the historic county of Middlesex, the university combines modern facilities with a commitment to employability, earning accolades for research strength and student satisfaction. This guide provides a comprehensive overview of Middlesex University in 2025, covering its campuses, academic offerings, rankings, facilities, and more, making it an essential resource for international students.</p>
@@ -20803,8 +20803,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Ulster University, often informally referred to as the University of Ulster or UU, is Northern Ireland’s largest university and a leading multi-campus institution, recognised as the UK and Ireland Uni...`,
     image: "blog-images/uk-universities-4.webp",
     imageAlt: `Comprehensive Guide to the University of Ulster and Campuses — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["ulster university","Ulster University in Belfast","ulster university in Birmingham","Ulster University in London","Ulster University in Manchester","Universitio","university of ulster"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []"><a href="https://ulster.ac.uk">Ulster University</a>, often informally referred to as the University of Ulster or UU, is Northern Ireland’s largest university and a leading multi-campus institution, recognised as the UK and Ireland University of the Year 2024 by Times Higher Education. With over 30,000 students from more than 70 countries, Ulster is celebrated for its teaching excellence, research impact, and strong industry links. Established in 1865 as Magee College, it took its modern form in 1984 through mergers, incorporating campuses in Belfast, Coleraine, Derry~Londonderry, and Jordanstown Sports Village, plus branch campuses in London, Birmingham, and Manchester. This guide provides a detailed overview of Ulster University’s campuses, academic offerings, rankings, facilities, and student experience, making it an essential resource for international students considering study in 2025.</p>
@@ -21129,9 +21129,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The University of Greater Manchester, previously known as the University of Bolton, is a dynamic public university located in Bolton, Greater Manchester, England. Renamed in recent years to reflect it...`,
     image: "blog-images/uk-universities-3.webp",
     imageAlt: `Your Guide to Discover the University of Greater Manchester — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
-    tags: ["study in the UK","uk","UK Universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["study in the UK","uk","United Kingdom"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The <a href="https://www.bolton.ac.uk/">University of Greater Manchester</a>, previously known as the University of Bolton, is a dynamic public university located in Bolton, Greater Manchester, England. Renamed in recent years to reflect its growing regional influence, this institution has evolved from its origins as the Bolton Mechanics’ Institute in 1824 to a modern, teaching-intensive university with a global outlook. With approximately 11,000 students, including a diverse international community from over 120 countries, the university is celebrated for its industry-focused courses, affordable fees, and exceptional student support. In 2025, the University of Greater Manchester stands out as a welcoming choice for international students, offering a compact campus, professional accreditations, and a multicultural environment. This guide provides a detailed overview of its offerings, rankings, facilities, and more, helping you decide if it’s the right place for your academic journey.</p>
 </blockquote>
@@ -21402,8 +21402,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `For international students aiming to study in the UK in 2025, demonstrating proof of financial support is a critical step in both securing university admission and obtaining a Student Visa. This proce...`,
     image: "blog-images/visa-3.webp",
     imageAlt: `How to Prepare Proof of Financial Support for Study in the UK — Visa`,
-    categories: ["Visa"],
-    categorySlugs: ["visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["bank statement","finanical proof","student visa"],
     content: `<blockquote>For international students aiming to study in the UK in 2025, demonstrating proof of financial support is a critical step in both securing university admission and obtaining a Student Visa. This process involves proving you have sufficient funds to cover tuition fees and living costs, reassuring universities and the UK government that you can support yourself without relying on public funds. The financial proof must be presented in two distinct stages: first, to the university to obtain a Confirmation of Acceptance for Studies (CAS), and second, to the UK embassy for visa approval. Mistakes in this process can lead to application rejections or visa refusals, making accuracy essential. This guide provides a detailed, up-to-date roadmap to prepare your financial documents, drawing on official sources like the <a href="https://gov.uk">UK government</a> and university guidelines.</blockquote>
 <h2 dir="ltr" data-pm-slice="1 1 []">Why Proof of Financial Support Matters</h2>
@@ -21612,8 +21612,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Exciting News for Aspiring Students Are you dreaming of studying at a prestigious UK university, college, or school? Universitio is thrilled to announce an exclusive offer to make your journey even mo...`,
     image: "blog-images/scholarships-1.webp",
     imageAlt: `Exclusive £500 Cash Offer for UK University Applicants — Scholarships`,
-    categories: ["Scholarships"],
-    categorySlugs: ["scholarships"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: [],
     content: `<h2 dir="ltr" data-pm-slice="1 1 []">Exciting News for Aspiring Students</h2>
 <p dir="ltr">Are you dreaming of studying at a prestigious UK university, college, or school? Universitio is thrilled to announce an exclusive offer to make your journey even more rewarding! For every student who applies through our services—whether free or paid—and successfully completes their registration and in-person enrolment at a UK institution, we’re giving <strong>£500 cash</strong> as a token of our support.</p>
@@ -21655,8 +21655,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Studying in the UK offers international students not only world-class education but also opportunities to gain valuable work experience. Whether you’re looking for part-time work to support your studi...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `Best Job Search Strategies for Students in the UK — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["graduate jobs","International Students","internships","job search strategies","networking","part-time jobs","UK job market"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Studying in the UK offers international students not only world-class education but also opportunities to gain valuable work experience. Whether you’re looking for part-time work to support your studies, internships to build your CV, or graduate roles to launch your career, navigating the UK job market can be challenging yet rewarding. This comprehensive guide outlines the best job search strategies for international students, ensuring you maximise your opportunities while adhering to visa regulations. From leveraging university resources to mastering online platforms and networking, we’ve got you covered.</p>
@@ -22037,8 +22037,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Dreaming of a world-class UK degree? Studying at Anglia Ruskin University (ARU), with 35,195 students from 185 countries, offers a vibrant path to success. Founded in 1858, ARU spans campuses in Cambr...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `Study at Anglia Ruskin University: Your 2025 Guide — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Angelia Ruskin University","ARU","study in the UK","Universitio"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Dreaming of a world-class UK degree? Studying at Anglia Ruskin University (ARU), with 35,195 students from 185 countries, offers a vibrant path to success. Founded in 1858, ARU spans campuses in Cambridge, Chelmsford, Peterborough, Writtle, and London (<a href="https://aru.ac.uk">ARU.ac.uk</a>). This 2025 guide, using data from QS, Guardian, and HESA, covers why you should study at Anglia Ruskin University: courses (nursing, business, engineering), fees (£14,300–£18,400/year), rankings (QS #341, Guardian #98), campuses, achievements (THE University of the Year 2023), student life, and visa requirements. With 92% graduate employment and a gold TEF rating, ARU shines (Prospects.ac.uk). <strong>Book a consultation with Universitio now</strong> to explore ARU’s programmes, visas, and scholarships with expert support!</p>
@@ -22088,8 +22088,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `University College London (UCL), a global academic powerhouse, welcomes over 51,000 students from 150 countries in 2025, making it a top choice for higher education (HESA 2023/24). Founded in 1826, UC...`,
     image: "blog-images/uk-universities-1.webp",
     imageAlt: `UCL Uncovered: Your 2025 Guide to University College London — UK Universities`,
-    categories: ["UK Universities"],
-    categorySlugs: ["uk-universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Apply to study in the UK","study in the UK","ucl","Universitio","university college london"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []"><a href="https://www.ucl.ac.uk/">University College London (UCL)</a>, a global academic powerhouse, welcomes over 51,000 students from 150 countries in 2025, making it a top choice for higher education (HESA 2023/24). Founded in 1826, UCL’s commitment to inclusivity and groundbreaking research has earned it the 9th spot in the QS World University Rankings 2025 and the title of University of the Year 2024 (Times and Sunday Times). This guide, packed with 2025 data from UCL.ac.uk and GOV.UK, explores UCL University College London 2025—its courses, admissions, fees, campus life, and more. Whether you’re eyeing a degree or curious about UCL’s impact, we’ve got you covered. Note: Policies may change, so check UCL.ac.uk and GOV.UK. Ready to discover why UCL University College London 2025 is a world leader? Let’s dive in!</p>
@@ -22277,7 +22277,7 @@ The global and UK economies are undergoing significant transformations that will
     imageAlt: `Your Guide to Studying in UK Schools Before Foundation: Conditions, Subjects, and More — United Kingdom`,
     categories: ["United Kingdom"],
     categorySlugs: ["unitedkingdom"],
-    tags: ["schools","study in school"],
+    tags: ["student-guides","study in school"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Dreaming of a world-class education for your child? Studying in UK schools before Foundation offers international students (ages 4–16) a pathway to academic excellence in primary and secondary education, culminating in GCSE qualifications. Renowned for its rigorous curriculum, the UK hosts 679,970 international students (HESA 2023/24). This blog, packed with 2025 data from GOV.UK and <a href="https://www.ukcisa.org.uk/">UKCISA</a>, covers everything you need to know about studying in UK schools before Foundation: admission requirements, subjects, visa conditions (including the Parent of a Child Student visa), and costs (£15,000–£45,000/year for private schools). From maths to music, the UK’s diverse curriculum prepares students for future success. Start your child’s journey today—<a href="https://universitio.com/free-consultation"><strong>book a consultation with Universitio now</strong></a> to explore top schools and visa options!</p>
 </blockquote>
@@ -22452,8 +22452,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Deciding between an MPhil, MRes, or PhD in the United Kingdom is a big step for the 679,970 international students chasing their academic dreams (HESA 2023/24). Each degree offers distinct paths, shap...`,
     image: "blog-images/general-education-2.webp",
     imageAlt: `MPhil, MRes, or PhD? Your UK Study Guide and Dependant Visa — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["MPhil","MRes","PhD","study in the UK","uk","united kingdom"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Deciding between an MPhil, MRes, or PhD in the United Kingdom is a big step for the 679,970 international students chasing their academic dreams (HESA 2023/24). Each degree offers distinct paths, shaping your career and even your family’s UK visa options. Understanding MPhil vs MRes vs PhD UK—how they differ, why they matter, and their impact on dependant visas—is key to choosing wisely. This guide, packed with 2025 data from GOV.UK and <a href="https://ucas.com">UCAS</a>, breaks down each degree’s structure, benefits, and visa rules in a clear, user-friendly way. Note: Policies can change, so always check GOV.UK. Ready to explore MPhil vs MRes vs PhD UK and plan your future? Let’s dive into what these degrees mean for your academic and personal journey!</p>
@@ -22498,8 +22498,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The UK-India Free Trade Agreement (FTA), signed on 6 May 2025, is a landmark for Indian students aspiring to study in the United Kingdom. Valued at £42.6 billion in 2024, the deal projects £25.5 billi...`,
     image: "blog-images/education-news-2.webp",
     imageAlt: `The UK-India Free Trade Agreement: What Indian Students Need to Know — Education News`,
-    categories: ["Education News","Uncategorized"],
-    categorySlugs: ["education-news","uncategorized"],
+    categories: ["Education News"],
+    categorySlugs: ["education-news"],
     tags: ["india trade","uk india trade agreement","uk trade"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The UK-India Free Trade Agreement (FTA), signed on 6 May 2025, is a landmark for Indian students aspiring to study in the United Kingdom. Valued at £42.6 billion in 2024, the deal projects £25.5 billion in trade growth by 2040, enhancing opportunities for the 84,555 Indian students in the UK (GOV.UK 2022). While the UK-India trade deal 2025 maintains existing student visa policies, it boosts professional mobility and educational partnerships. This guide, crafted for Indian students using 2025 data from GOV.UK and The PIE News, explores visa rules, career prospects, and study benefits. Note: Policies may change, so always check <a href="https://gov.uk">GOV.UK</a>. Ready to understand how the UK-India trade deal 2025 shapes your academic journey? Let’s explore its impact on your future in the United Kingdom!</p>
@@ -23155,7 +23155,7 @@ The global and UK economies are undergoing significant transformations that will
     imageAlt: `UK Student Visa Documents - Completed Guide — United Kingdom`,
     categories: ["United Kingdom"],
     categorySlugs: ["unitedkingdom"],
-    tags: ["student visa","uk student visa","visa"],
+    tags: ["student visa","uk student visa","student-guides"],
     content: `<blockquote>
 <p>Below is a comprehensive, SEO-friendly page in British English, tailored for your website, detailing all the required documents for a <a href="https://www.gov.uk/student-visa">UK Student Visa</a> (and Child Student Visa where applicable). The content is structured for direct use, concise yet thorough, covering every necessary document and related conditions for international students applying to study in the UK at any academic level. The title is short and relevant, as requested.</p>
 </blockquote>
@@ -23488,8 +23488,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Dreaming of studying medicine in the United Kingdom? The UK hosts world-class medical schools like Oxford and UCL, attracting 679,970 international students in 2023/24 (HESA). With a 5–6-year MBBS deg...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `How to Study Medicine in the UK in 2025: Complete Guide — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Medicine","study in uk","study medicine in the uk","united kingdom"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Dreaming of studying medicine in the United Kingdom? The UK hosts world-class medical schools like <a href="https://www.ox.ac.uk/">Oxford</a> and <a href="https://www.ucl.ac.uk/">UCL</a>, attracting 679,970 international students in 2023/24 (HESA). With a 5–6-year MBBS degree and access to the NHS, studying medicine in the UK in 2025 offers a prestigious path to becoming a doctor. This comprehensive guide covers everything—entry requirements, UCAS applications, aptitude tests, costs, visas, and career prospects—using 2025 data from GOV.UK, UCAS, and the Medical Schools Council. Note: Fees and requirements may change, so always check university websites. Whether you’re a high school student or graduate, this user-friendly roadmap ensures you’re ready to study medicine in the UK in 2025. Let’s dive in and start your medical journey!</p>
@@ -23541,9 +23541,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Looking for affordable education in the United Kingdom? The cheapest UK universities for 2025 offer quality degrees at budget-friendly prices, perfect for the 679,970 international students studying i...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Top 10 Cheapest and affordable UK Universities for 2025 — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
-    tags: ["cheapest universities","study in the UK","UK Universities","universities in the UK"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["cheapest universities","study in the UK","United Kingdom","universities in the UK"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Looking for affordable education in the United Kingdom? The cheapest UK universities for 2025 offer quality degrees at budget-friendly prices, perfect for the 679,970 international students studying in the UK (HESA 2023/24). International undergraduate tuition fees range from £10,000 to £20,000 annually, but these universities keep costs low (<a href="https://study.eu">Study.eu</a>). This blog lists the top 10 cheapest UK universities for 2025, detailing their undergraduate programs and average tuition fees, based on 2025 data from the GOV.UK and university websites. Note: Fees may change due to inflation or policy updates, but these are current averages. Ready to study in the United Kingdom on a budget? Explore the cheapest UK universities for 2025 and confidently plan your academic journey!</p>
 </blockquote>
@@ -23719,8 +23719,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Choosing the right subject to study in the UK for September 2025 can shape your career, especially with 679,970 international students flocking to its universities (HESA 2023/24). The UK’s world-class...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Best Courses to Study in the UK for September 2025 — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["September2025","study in the UK"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Choosing the right subject to study in the UK for September 2025 can shape your career, especially with 679,970 international students flocking to its universities (HESA 2023/24). The UK’s world-class education system, with 44 top-200 universities (<a href="https://www.topuniversities.com/">QS</a>), offers degrees that boost employability. But which fields promise the best job prospects and salaries? This blog highlights top disciplines for UK study 2025, based on 2025 data from GOV.UK, HESA, and Prospects.ac.uk. From tech to healthcare, we cover high-demand fields, their benefits, and why they’re ideal for international students. Ready to secure your future? Discover the best subjects to study in the UK for September 2025 and start your journey!</p>
@@ -23762,8 +23762,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `How successful are UK Graduate Visa holders at finding jobs and transitioning to Skilled Worker Visas? With 679,970 international students in 2023/24 (HESA), the UK Graduate Visa 2025 offers two years...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `Job Success Rates for UK Graduate Visa 2025 — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["job in the uk","jobs during graduate visa","UK jobs"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">How successful are UK Graduate Visa holders at finding jobs and transitioning to Skilled Worker Visas? With 679,970 international students in 2023/24 (HESA), the UK Graduate Visa 2025 offers two years (three for PhDs) of flexible work. This blog reveals precise 2025 statistics on job success, showing 73% of holders employed and 6.5% switching to Skilled Worker Visas by 2023 (<a href="https://gov.uk">GOV.UK</a>). Using data from GOV.UK, HESA, and UKCISA, we explore employment rates, visa transitions, and strategies to boost success. Whether you’re eyeing tech in London or healthcare in Manchester, understanding UK Graduate Visa 2025 job outcomes is key. Ready to plan your UK career? Dive into the numbers and see the potential!</p>
@@ -23800,9 +23800,9 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `If you're considering a premium UK boarding school experience for your child, this is your moment. A limited-time discount offer has just been announced for international students applying to one of t...`,
     image: "blog-images/scholarships-3.webp",
     imageAlt: `Scholarship Opportunity for International Students Applying to Foundation Year in School — Scholarships`,
-    categories: ["Scholarships"],
-    categorySlugs: ["scholarships"],
-    tags: ["foundation year","scholarships"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
+    tags: ["foundation year","student-guides"],
     content: `<blockquote>
 <p class="">If you're considering a premium UK boarding school experience for your child, this is your moment. A <strong>limited-time discount offer</strong> has just been announced for international students applying to one of the <strong>UK's most prestigious and luxurious boarding schools</strong> for the <strong>September 2025 intake</strong>.</p>
 <p class="">This special offer is part of an initiative to make elite British education more accessible for global families, while supporting the work of trusted education partners. Here’s what you need to know:</p>
@@ -23845,8 +23845,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `UK career fairs 2025 are vibrant events connecting job seekers with employers, offering opportunities to network, explore careers, and secure jobs. With over 80 events across England, they cater to st...`,
     image: "blog-images/jobs-3.webp",
     imageAlt: `Top UK Career Fairs 2025: Find Your Dream Job — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["find student jobs UK","job fair","student jobs"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">UK career fairs 2025 are vibrant events connecting job seekers with employers, offering opportunities to network, explore careers, and secure jobs. With over 80 events across England, they cater to students, graduates, and professionals (UK Careers Fair). These fairs bridge talent and opportunity from London to Manchester, boosting employability in a competitive market. For example, 98% of UCAS event attendees in 2022 found a university or employer to pursue (UCAS). This guide details what UK career fairs 2025 offer, famous examples in key cities, their purposes, and types, using 2025 data from UK Careers Fair and Youth Employment UK. Ready to elevate your career? Discover the best career fairs and plan your visit!</p>
@@ -23883,8 +23883,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The UK Graduate Visa 2025 is a game-changer for international students aiming to work in the UK after graduation. With 679,970 international students in 2023/24 (HESA), the UK remains a global educati...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `UK Graduate Visa 2025: Your Path to Work — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["graduate visa","graduate visa 2025","Postgraduate visa","uk","UK Graduate visa","Universitio"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The UK Graduate Visa 2025 is a game-changer for international students aiming to work in the UK after graduation. With 679,970 international students in 2023/24 (HESA), the UK remains a global education hub. This visa allows flexible work for two years (three for PhD graduates) without sponsorship, opening doors to diverse careers. However, understanding its application process, eligibility, job prospects, duration, and differences from other visas is crucial. Using 2025 data from <a href="https://gov.uk">GOV.UK</a>, UKCISA, and ICEF Monitor, this comprehensive guide explores every aspect of the UK Graduate Visa 2025. Whether you’re eyeing tech in London or arts in Edinburgh, this visa offers a bright future. Ready to plan your post-study journey? Let’s dive into the details!</p>
@@ -23930,8 +23930,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Applying to UK universities is thrilling but daunting. A UK university agent 2025 can streamline the process, minimizing errors that could derail your plans. With 605,495 international applications in...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `Why Use a UK University Application Agent? — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Apply to study in the UK","study in uk with agent","uk study","University Agent"],
     content: `<blockquote>
 <p class="break-words">Applying to UK universities is thrilling but daunting. A UK university agent 2025 can streamline the process, minimizing errors that could derail your plans. With 605,495 international applications in 2023/24 (Wikipedia), competition is intense, and mistakes are costly. Agents bring expertise, but UK law allows students to apply independently via UCAS or university portals (<a href="https://ucas.com">UCAS</a>). Without an agent, you risk missing deadlines or submitting incomplete documents. This blog explores why a UK university agent 2025 boosts success, highlights solo application risks, and respects your legal right to apply alone. Ready for a smooth UK study path? Let’s dive into the benefits!</p>
@@ -23971,8 +23971,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Dreaming of studying abroad? UK study 2025 reviews from students paint a vibrant picture of why the UK is a top choice. With 679,970 international students in 2023/24 (HESA), the UK’s universities, li...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `UK Study 2025 Reviews: Why Students Love It — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["apply for uk universities","study in the united kingdom","study in uk","study opportunity in uk"],
     content: `<blockquote>
 <p class="break-words">Dreaming of studying abroad? UK study 2025 reviews from students paint a vibrant picture of why the UK is a top choice. With 679,970 international students in 2023/24 (HESA), the UK’s universities, like Oxford and Cambridge, offer unmatched education. Students rave about quality teaching, diverse cultures, and career prospects. For example, 90% of international students report satisfaction with their UK experience (UKCISA). While some mention high costs, the benefits outweigh the challenges. This blog dives into glowing student feedback, sprinkles in minor critiques, and shows why UK study 2025 reviews make it an exciting choice. Ready to join them? Let’s explore!</p>
@@ -24015,8 +24015,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `A Personal Statement, or Statement of Purpose (SOP), is your ticket to UK universities in 2025. It shows admissions teams at places like Oxford or UCL why you’re a great fit. With 459,000 internationa...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `UK Personal Statement 2025: SOP Tips & AI Ethics — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["Personal Statement","SOP","Statement of Purpose","study in uk","uk study"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">A Personal Statement, or Statement of Purpose (SOP), is your ticket to UK universities in 2025. It shows admissions teams at places like Oxford or UCL why you’re a great fit. With 459,000 international student visas issued in 2024 and a 13% application jump in January 2025, a strong statement is key (<a href="https://homeoffice.gov.uk">Home Office</a>, ICEF Monitor, 2025). But can you use AI tools like ChatGPT for your SOP? If so, how do you stay ethical? Moreover, how do professors catch AI-written statements? This guide, using 2025 data from GOV.UK, UCAS, and HEPI, explains how to write a winning Personal Statement, use AI responsibly, and avoid traps. For example, the 116,455 Indian or 108,582 Chinese students applying need this (HESA, 2025).</p>
@@ -24169,8 +24169,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `In 2025, the UK’s Graduate Visa stands tall as a game-changer for international students, offering a golden opportunity to work or seek jobs for 2–3 years after graduation without needing a job offer ...`,
     image: "blog-images/visa-2.webp",
     imageAlt: `UK Graduate Visa 2025: Why It’s Your Best Post-Study Work Option — Visa`,
-    categories: ["Visa"],
-    categorySlugs: ["visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["graduate visa","Postgraduate visa","study in uk","uk"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">In 2025, the UK’s Graduate Visa stands tall as a game-changer for international students, offering a golden opportunity to work or seek jobs for 2–3 years after graduation without needing a job offer or sponsor. With 459,000 study visas issued in 2024 and a 13% rise in applications in January 2025 (Home Office, <a href="https://icef.com">ICEF</a> Monitor, 2025), the UK’s appeal is undeniable. But how does its Graduate Visa stack up against post-study work options in other top study destinations like the USA, Canada, Australia, and Germany? This in-depth guide, backed by 2025 data from GOV.UK, Universities UK, and global education reports, explores why the UK’s Graduate Visa outshines competitors, critiques their weaker systems, and shows why it’s a must-consider for the 679,970 international students studying in the UK (HESA, 2025). Ready to plan your future? Let’s dive into why the UK’s post-study work route is your best bet in 2025.</p>
@@ -24407,8 +24407,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Easter 2025, falling on April 20, is set to light up the UK with a vibrant mix of ancient rituals, modern festivities, and springtime joy. From chocolate egg hunts to fiery barrel races, the UK’s East...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Easter Traditions UK: Celebrate Spring’s Biggest Festival — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["easter","Easter Traditions UK","uk"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">Easter 2025, falling on April 20, is set to light up the UK with a vibrant mix of ancient rituals, modern festivities, and springtime joy. From chocolate egg hunts to fiery barrel races, the UK’s Easter traditions blend Christian roots, pagan echoes, and family fun, drawing 679,970 international students and millions of locals into the celebration (HESA, 2025). Whether you’re studying in London or exploring Scotland’s hills, Easter offers a cultural deep dive into Britain’s heritage. This guide uncovers the history, must-try customs, regional twists, and tips for enjoying Easter in the UK, backed by 2025 insights from GOV.UK, English Heritage, and VisitLondon. Ready to join the springtime buzz? Let’s explore how the UK celebrates Easter in 2025.</p>
@@ -24581,8 +24581,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The United Kingdom’s job market in 2025 is thriving, with a 4.4% unemployment rate and 1.2 million vacancies (ONS, 2025). As 459,000 international students study in the UK (Home Office, 2025), cities ...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `Job Demand UK 2025: Top Cities for Work Opportunities — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["best city to work in uk","full time job","jobs in uk","part time job","united kingdom"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The United Kingdom’s job market in 2025 is thriving, with a 4.4% unemployment rate and 1.2 million vacancies (ONS, 2025). As 459,000 international students study in the UK (Home Office, 2025), cities with booming industries offer not just education but career launches. From London’s tech and finance hubs to Manchester’s healthcare surge, where is labor demand highest? This comprehensive guide, backed by 2025 data from <a href="https://gov.uk">GOV.UK</a>, ONS, and Indeed, lists the UK cities with the most job opportunities, detailing in-demand sectors and why they’re magnets for workers. Whether you’re a student eyeing the Graduate Visa or a professional seeking opportunity, these cities are your 2025 hotspots.</p>
@@ -24894,8 +24894,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `As the football world gears up for the UEFA Champions League semi-final clash between Arsenal and Paris Saint-Germain on 29 April 2025, at London’s Emirates Stadium, the UK’s status as a global sports...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Arsenal vs PSG 2025: Top UK Stadiums for Students to Experience Football — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["Arsenal","Champoins League","PSG","UEFA","uk"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">As the football world gears up for the <a href="https://www.uefa.com/">UEFA</a> Champions League semi-final clash between Arsenal and Paris Saint-Germain on 29 April 2025, at London’s Emirates Stadium, the UK’s status as a global sports hub shines brighter than ever. This blockbuster match, pitting Mikel Arteta’s Gunners against Luis Enrique’s PSG, promises electrifying action in one of Europe’s premier venues. For students studying in the UK—home to 679,970 international scholars in 2023/24 (HESA, 2025)—this is more than a game. It’s a chance to soak up world-class football in iconic stadiums, from Wembley’s historic arches to Anfield’s roaring Kop. Studying in the UK doesn’t just mean top-tier education; it means front-row access to the planet’s biggest matches in the best stadiums. Join us as we explore the UK’s top football arenas in 2025, perfect for students eager to live the beautiful game.</p>
@@ -25124,8 +25124,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The United Kingdom’s universities remain a global hub for education, attracting over 679,970 international students in 2023/24 (HESA, 2025). But what disciplines are driving applications in 2025? From...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Top Trending Courses in the UK 2025: What to Study at Every Level — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["best master’s UK","PhD trends UK","popular degrees UK","study in UK 2025","trending courses UK 2025"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The United Kingdom’s universities remain a global hub for education, attracting over 679,970 international students in 2023/24 (HESA, 2025). But what disciplines are driving applications in 2025? From AI to healthcare, trending courses reflect job market needs, tech advances, and student ambitions. This comprehensive guide dives into 2025 data from HESA, UCAS, GOV.UK, and Prospects to reveal the most in-demand fields across undergraduate, master’s, and doctoral levels. Whether you’re eyeing a bachelor’s or a PhD, here’s what’s hot in UK higher education—and why.</p>
@@ -25472,8 +25472,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `The United Kingdom’s universities are a global draw, welcoming over 679,970 international students in the 2023/24 academic year (HESA, 2025). In 2024, India and China topped the list, driving nearly h...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `Which Nationalities Studied in the UK in 2024, and Their Post-Grad Paths — Jobs`,
-    categories: ["Jobs","Student Experience"],
-    categorySlugs: ["jobs","student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["students nationality in uk","uk students","united kingdom education"],
     content: `<blockquote>
 <p dir="ltr" data-pm-slice="1 1 []">The United Kingdom’s universities are a global draw, welcoming over 679,970 international students in the 2023/24 academic year (HESA, 2025). In 2024, India and China topped the list, driving nearly half of all study visas. But who else filled UK lecture halls, and what did they do after tossing their graduation caps? This in-depth guide, fueled by 2025 data from GOV.UK, HESA, UCAS, and The PIE News, explores the top nationalities of international students in the UK for 2024, their numbers, motivations, and the career paths or successes they pursued post-graduation. From tech innovators to NHS heroes, here’s the full story of the UK’s vibrant student diaspora.</p>
@@ -25811,8 +25811,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Artificial Intelligence (AI) is shaking up UK university assignments, with tools like ChatGPT becoming go-to aids for students. A 2025 survey shows 92% of UK undergrads use AI for coursework, up from ...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `AI in UK Uni Assignments 2025: Stats, Rules, and What Profs Think — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["AI","Artificial Intelligence","students assignment","university assignments"],
     content: `<blockquote>
 <p class="break-words">Artificial Intelligence (AI) is shaking up UK university assignments, with tools like ChatGPT becoming go-to aids for students. A 2025 survey shows 92% of UK undergrads use AI for coursework, up from 66% last year (HEPI, 2025). But what’s the deal، how much is it used, what do professors make of it, is it a help or a harm, and where’s the line on what’s okay? This guide digs into fresh 2025 data from HEPI, QAA, and GOV.UK, unpacking usage stats, academic opinions, pros, cons, and UK rules to give you the full picture on AI in assignments.</p>
@@ -25908,8 +25908,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Dreaming of a medical career in the United Kingdom? With its world-class universities, cutting-edge NHS training, and globally recognized degrees, it’s no surprise the UK draws thousands of aspiring d...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Complete Guide to Studying Medicine in the United Kingdom 2025 — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Medical","Medicine","Medicine in UK","study Medicine","study Medicine in UK"],
     content: `<blockquote>
 
@@ -26135,8 +26135,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Planning to study in the UK? Whether you’re an international student dreaming of a UK degree or a British student weighing your options, tuition fees are a big piece of the puzzle. In 2025, UK's highe...`,
     image: "blog-images/scholarships-2.webp",
     imageAlt: `UK Tuition Fees 2025: What International and British Students Need to Know — Scholarships`,
-    categories: ["Scholarships","Universities & Colleges"],
-    categorySlugs: ["scholarships","universities-colleges"],
+    categories: ["Student Guides","United Kingdom"],
+    categorySlugs: ["student-guides","united-kingdom"],
     tags: ["International Students","study in uk","Tuition Fees","uk"],
     content: `<blockquote>
 <p class="break-words">Planning to study in the UK? Whether you’re an international student dreaming of a UK degree or a British student weighing your options, tuition fees are a big piece of the puzzle. In 2025, UK's higher education system remains world-class—think Top 10 unis like Oxford and UCL (QS Rankings 2025)—but it comes at a cost. For international students, free undergraduate or postgraduate study is almost unheard of, while British students enjoy more funding support. Drawing from 2025 data via GOV.UK, UCAS, and the British Council, this guide breaks down exact tuition fees, conditions, and realities for both groups. Let’s dive into the numbers and what they mean for you.</p>
@@ -26245,8 +26245,8 @@ The global and UK economies are undergoing significant transformations that will
     excerpt: `Landing your first job or internship as a student or graduate can feel like climbing a mountain—exciting but daunting. Enter UK job fairs and internship exhibitions: dynamic events that connect you di...`,
     image: "blog-images/jobs-3.webp",
     imageAlt: `UK Job Fairs and Internship Exhibitions for Students and Graduates in 2025 — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["find student jobs UK","internship","jobs in uk","united kingdom"],
     content: `<blockquote>
 <p class="break-words">Landing your first job or internship as a student or graduate can feel like climbing a mountain—exciting but daunting. Enter UK job fairs and internship exhibitions: dynamic events that connect you directly with employers, opportunities, and insider knowledge to kickstart your career. In 2025, these events are bigger and more accessible than ever, offering students and recent grads a golden ticket to explore roles, network with recruiters, and land that dream gig. Drawing from 2025 insights—think UK Careers Fair, UCAS, and GOV.UK—this guide unpacks what these events are, their unbeatable benefits, real examples, and how to find them using the best platforms. Ready to step into the UK job market? Let’s dive in.</p>
@@ -26380,8 +26380,8 @@ Some fairs—like The Job Fairs UK (90+ events, 2025)—see employers hiring on 
     excerpt: `Are you eyeing a research-focused master’s degree in the UK? The Master of Research (MRes) and Master of Philosophy (MPhil) are two standout options for anyone passionate about diving deep into a subj...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `MRes and MPhil in the UK: Your Guide to Research Master’s and Bringing Dependents — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Dependent visa","Master by Research","Master of Research","MPhil","MRes","uk study"],
     content: `<blockquote>
 <p class="break-words">Are you eyeing a research-focused master’s degree in the UK? The Master of Research (MRes) and Master of Philosophy (MPhil) are two standout options for anyone passionate about diving deep into a subject, and they come with a bonus: eligibility to bring dependents under UK visa rules in 2025. But what exactly are these degrees, what do they entail, and how do they open doors for your family to join you? Drawing from the latest 2025 data—think <a href="https://gov.uk">GOV.UK</a>, UCAS, and top university insights—this guide breaks it all down. Whether you’re aiming for a PhD, a research career, or a life in England with loved ones, here’s everything you need to know about MRes and MPhil programs and their dependent visa perks.</p>
@@ -26491,8 +26491,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `Dreaming of holding a British passport—one of the world’s most powerful travel documents? You’re not alone. The UK’s citizenship unlocks unparalleled opportunities, from visa-free travel to global car...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `Unlock the British Passport: Why Studying in the UK is Your Golden Ticket — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["british citizenship","british passport","how to get a UK passport","ilr","study in UK citizenship","UK student visa to passport"],
     content: `<blockquote>
 <p class="break-words">Dreaming of holding a British passport—one of the world’s most powerful travel documents? You’re not alone. The UK’s citizenship unlocks unparalleled opportunities, from visa-free travel to global career prospects. But how do you get there, and what makes it worth the journey? Spoiler: starting as an international student might just be your smartest, most reliable route. Backed by data from GOV.UK, UCAS, and Henley &amp; Partners, this guide dives into the value of a British passport, the pathways to citizenship, and why studying in the UK stands out as the ultimate launchpad. Ready to turn your dream into a plan? Let’s explore.</p>
@@ -26578,8 +26578,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `Considering a bachelor’s degree in the UK but unsure about diving straight in? You’re not alone. Thousands of students—both UK-based and international—opt to kick off their undergraduate journey with ...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Foundation Year: The Smart Start to Your Degree — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["bachelor degree","college in uk","foundation year","study in uk","undergraduate in uk"],
     content: `<blockquote>
 <p class="break-words">Considering a bachelor’s degree in the UK but unsure about diving straight in? You’re not alone. Thousands of students—both UK-based and international—opt to kick off their undergraduate journey with a <strong>foundation course</strong>, a preparatory year designed to bridge gaps and set you up for success. But are foundation courses mandatory? Do they really make a difference? Spoiler: in many UK universities, they’re a required stepping stone for certain applicants, while in others, they’re an optional boost—and either way, they’re packed with benefits that can transform your academic and career path. Drawing from data by UCAS, the British Council, and top university insights, this guide explores why starting with a foundation course could be your smartest move yet—and why you should seriously consider enrolling.</p>
@@ -26654,8 +26654,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `The UK’s reputation as a global hub for education and opportunity draws countless immigrants and international students each year. But how do British people really feel about these newcomers? Are they...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `British Attitudes Toward Immigrants and International Students — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["british people","immigration","students","study in uk","UK People"],
     content: `<blockquote>
 <p class="break-words">The UK’s reputation as a global hub for education and opportunity draws countless immigrants and international students each year. But how do British people really feel about these newcomers? Are they welcomed with open arms or met with skepticism? Drawing from major surveys like the European Social Survey (ESS), British Social Attitudes (BSA), YouGov, and firsthand accounts from students and migrants, this blog uncovers the key traits shaping British attitudes. From hospitality to hidden biases, here’s the full picture—SEO-friendly and packed with insights for anyone curious about life in the UK as an outsider.</p>
@@ -26722,9 +26722,9 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `The UK is a global powerhouse for business education, home to prestigious universities that blend academic rigor with real-world impact. Whether you’re an international student aiming to boost your ca...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Mastering Your MBA in the UK: Top Universities for Quality and Affordability — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
-    tags: ["MBA","MBA in the UK","study in uk","UK MBA","UK Universities"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["MBA","MBA in the UK","study in uk","UK MBA","United Kingdom"],
     content: `<blockquote>
 <p class="break-words">The UK is a global powerhouse for business education, home to prestigious universities that blend academic rigor with real-world impact. Whether you’re an international student aiming to boost your career or a professional seeking a cost-effective MBA, the UK offers a wealth of options. But with so many choices, how do you pick the right one? In this guide, we’re diving deep into the UK’s MBA landscape, spotlighting two angles: the <strong>best universities for an MBA</strong> based on reputation and outcomes, and the <strong>most affordable MBA programs</strong> with tuition under £20,000. From London’s bustling business hubs to quieter campuses with lower costs, we’ve got the full scoop—backed by data from QS, Financial Times, and GOV.UK—to help you make an informed choice.</p>
 </blockquote>
@@ -26838,8 +26838,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `For international students dreaming of a future in the UK, the Graduate Visa—also known as the Post-Study Work (PSW) route—is a game-changer. Introduced in July 2021, this visa offers a generous windo...`,
     image: "blog-images/jobs-2.webp",
     imageAlt: `The UK Graduate Visa: A Perfect Opportunity for International Students — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["Graduate Visa UK","Postgraduate visa","start business UK visa","UK residency for international students","work after study UK"],
     content: `<blockquote>
 <p class="break-words">For international students dreaming of a future in the UK, the <a href="https://www.gov.uk/graduate-visa"><strong>Graduate Visa</strong></a>—also known as the Post-Study Work (PSW) route—is a game-changer. Introduced in July 2021, this visa offers a generous window to remain in the UK after graduation, allowing you to work freely, launch a business, or lay the groundwork for long-term residency—all without needing a sponsor. With <strong>two years for bachelor’s and master’s graduates and three years for PhD holders</strong>, it’s a standout option for turning your UK education into a career springboard. Drawing from GOV.UK, university insights, and immigration policies, this guide dives into every facet of the Graduate Visa—why it’s exceptional, who qualifies, how to apply, and how it opens doors to opportunity and residency.</p>
@@ -26950,9 +26950,9 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `The UK’s education system is world-renowned, attracting both domestic and international students to its universities. But here’s a question that looms large: Are there fully funded scholarships—coveri...`,
     image: "blog-images/scholarships-1.webp",
     imageAlt: `Fully Funded Scholarships in the UK 2025: The Truth for UK and International Students — Scholarships`,
-    categories: ["Scholarships"],
-    categorySlugs: ["scholarships"],
-    tags: ["limited UK student support 2025","PhD funding UK competitiveness","scholarships","UK bachelor’s master’s funding","uk study"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
+    tags: ["limited UK student support 2025","PhD funding UK competitiveness","student-guides","UK bachelor’s master’s funding","uk study"],
     content: `<blockquote>
 <p class="break-words">The UK’s education system is world-renowned, attracting both domestic and international students to its universities. But here’s a question that looms large: Are there fully funded scholarships—covering tuition, living expenses, and more—for bachelor’s and master’s students in the UK in 2025? The answer, backed by data from GOV.UK, <a href="https://www.ukri.org/">UKRI</a>, and top institutions, is a resounding <strong>no</strong>—whether you’re a UK resident or an international student. Fully funded opportunities exist only for doctoral (PhD) students, and even then, they’re intensely competitive. For undergrads and master’s students, support is limited and partial. This blog dives into the facts, lists every available option, and leaves no gaps—helping you navigate the UK funding landscape with clarity.</p>
 </blockquote>
@@ -27074,8 +27074,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `The UK job market in 2025 is buzzing with opportunity, driven by tech innovation, healthcare needs, and sustainability goals. Whether you’re a student, career-switcher, or international professional e...`,
     image: "blog-images/jobs-1.webp",
     imageAlt: `Top In-Demand Jobs in the UK for 2025, and How to Get There — Jobs`,
-    categories: ["Jobs"],
-    categorySlugs: ["jobs"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["high-demand jobs UK","skills for UK jobs 2025","trending careers UK"],
     content: `<blockquote>
 <p class="break-words">The UK job market in 2025 is buzzing with opportunity, driven by tech innovation, healthcare needs, and sustainability goals. Whether you’re a student, career-switcher, or international professional eyeing Britain, knowing the most in-demand roles—and the skills to snag them—can set you up for success. Based on the latest data from government stats, industry forecasts, and hiring trends, here’s your guide to the UK’s trending jobs for 2025, plus the must-have skills to break into these fields. Let’s dive into the careers shaping the future!</p>
@@ -27186,8 +27186,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `Deciding where to study abroad is a big move, and the UK, USA, and Canada often top the list for international students. Each brings something special to the table—prestigious universities, diverse cu...`,
     image: "blog-images/student-experience-3.webp",
     imageAlt: `Why the UK Outclasses the USA and Canada for Students in 2025 — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["best country for international students 2025","compare UK USA Canada for study","study in UK vs USA vs Canada","UK education advantages 2025"],
     content: `<blockquote>
 <p class="break-words">Deciding where to study abroad is a big move, and the UK, USA, and Canada often top the list for international students. Each brings something special to the table—prestigious universities, diverse cultures, and promising futures. Yet, as you weigh your options for 2025, the UK quietly steals the spotlight with its unmatched blend of academic excellence, affordability, and lifestyle perks. Let’s dive into how these three stack up, and why the UK might just be the brightest star for your education journey.</p>
@@ -27274,8 +27274,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `For international students, studying in the UK is just the beginning—an exciting step toward building a future in one of the world’s most vibrant nations. But what happens after graduation? Securing p...`,
     image: "blog-images/student-experience-2.webp",
     imageAlt: `How to Get UK Permanent Residency After Study in 2025: Your Complete Guide — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["study in uk","UK jobs","united kingdom","work after study","work in the UK"],
     content: `<blockquote>
 <p class="break-words">For international students, studying in the UK is just the beginning—an exciting step toward building a future in one of the world’s most vibrant nations. But what happens after graduation? Securing permanent residency (PR), officially known as <strong>Indefinite Leave to Remain (ILR)</strong>, lets you live, work, and study in the UK without time limits. In 2025, the pathways to PR are diverse, but they require planning and persistence. This guide breaks down the best, most reliable methods to transition from a student visa to UK permanent residency, straight from top sources like GOV.UK. Whether you’re finishing a degree in London or a PhD in Edinburgh, here’s how to make the UK your permanent home.</p>
@@ -27385,8 +27385,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `Studying in the UK offers more than just world-class education—it’s a chance to gain work experience, earn extra cash, and immerse yourself in British culture. For students, especially international o...`,
     image: "blog-images/student-experience-1.webp",
     imageAlt: `Part-Time Jobs for Students in the UK 2025: Work While Studying — Student Experience`,
-    categories: ["Student Experience"],
-    categorySlugs: ["student-experience"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["find student jobs UK","international student work UK","part-time jobs for students UK 2025"],
     content: `<blockquote>
 <p class="break-words">Studying in the UK offers more than just world-class education—it’s a chance to gain work experience, earn extra cash, and immerse yourself in British culture. For students, especially international ones, finding part-time work while juggling lectures can feel daunting. But with the right know-how, it’s entirely achievable. In this 2025 guide, we’ll cover the conditions for working as a student in the UK and share a comprehensive list of methods to land the perfect part-time job. Whether you’re at uni in London or a college in Manchester, this is your roadmap to balancing work and studies.</p>
@@ -27515,8 +27515,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `Planning to study in the UK and wondering if you can bring your family along? The UK student dependent visa allows certain international students to have their spouse, partner, or children join them d...`,
     image: "blog-images/education-news-3.webp",
     imageAlt: `UK Student Dependent Visa 2025: Full Conditions — Education News`,
-    categories: ["Education News","Visa"],
-    categorySlugs: ["education-news","visa"],
+    categories: ["Education News","Student Guides"],
+    categorySlugs: ["education-news","student-guides"],
     tags: ["bring family on UK student visa","student visa dependents UK eligibility","UK student dependent visa 2025"],
     content: `<blockquote>
 <p class="break-words">Planning to study in the UK and wondering if you can bring your family along? The UK student dependent visa allows certain international students to have their spouse, partner, or children join them during their studies. However, strict rules introduced in January 2024 have narrowed eligibility, making it vital to understand the conditions and qualifying programmes. In this 2025 guide, we’ll break down everything you need to know about the UK student dependent visa from who can apply to the specific courses that qualify ensuring you’re fully prepared to bring your loved ones to Britain.</p>
@@ -27644,8 +27644,8 @@ Post-January 2024 visa reforms barred most master’s students from bringing dep
     excerpt: `The UK education system is renowned worldwide for its structure and quality, guiding students from primary school to secondary education with a clear path to success. Whether you’re a parent helping y...`,
     image: "blog-images/schools-1.webp",
     imageAlt: `How to Study in UK Schools: Mastering Methods from Primary to GCSEs in 2025 — Schools`,
-    categories: ["Schools"],
-    categorySlugs: ["schools"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
     tags: ["GCSE revision tips","study methods UK schools","UK education system 2025"],
     content: `<blockquote>
 <p class="break-words">The UK education system is renowned worldwide for its structure and quality, guiding students from primary school to secondary education with a clear path to success. Whether you’re a parent helping your child or a student aiming to excel, understanding the study methods used from Key Stage 1 to Key Stage 4 (GCSEs) can make all the difference. In this 2025 guide, we’ll explore how learning evolves across UK schools, offering practical tips to thrive at every stage straight from the British classroom.</p>
@@ -27822,8 +27822,8 @@ Those with a British grandparent can sponsor their immediate family, subject to 
     excerpt: `If you’re considering an MBA and want to study in a country renowned for its academic excellence, the United Kingdom should be at the top of your list. British universities are celebrated not only for...`,
     image: "blog-images/general-education-1.webp",
     imageAlt: `The Top 10 MBA Schools in the UK: Choosing the Perfect University — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["MBA","study abroad","study in uk","uk","united kingdom"],
     content: `<blockquote>
 <p class="break-words">If you’re considering an MBA and want to study in a country renowned for its academic excellence, the United Kingdom should be at the top of your list. British universities are celebrated not only for their outstanding teaching standards but also for the exceptional networking opportunities and career prospects they offer. In this guide, we’ll dive into the 10 best MBA schools in the UK to help you find the ideal match for your professional ambitions.</p>
@@ -27877,9 +27877,9 @@ Those with a British grandparent can sponsor their immediate family, subject to 
     excerpt: `Studying in the UK is a dream for many international students, offering world-class education and vibrant cultural experiences. However, with tuition fees ranging from £10,000 to £38,000 per year and ...`,
     image: "blog-images/universities-colleges-3.webp",
     imageAlt: `Scholarships Options for International Students in the UK — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
-    tags: ["scholarships","study in uk","uk study","united kingdom"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
+    tags: ["student-guides","study in uk","uk study","united kingdom"],
     content: `<blockquote>
 <p class="break-words">Studying in the UK is a dream for many international students, offering world-class education and vibrant cultural experiences. However, with tuition fees ranging from £10,000 to £38,000 per year and rising living costs, funding your studies can feel daunting. The good news? There are plenty of scholarships and financial options available in 2025 to help ease the burden. Whether you’re aiming for a degree at Oxford or a course in Coventry, this guide explores the best funding avenues for international students like you.</p>
 </blockquote>
@@ -28012,8 +28012,8 @@ Those with a British grandparent can sponsor their immediate family, subject to 
     excerpt: `A Step-by-Step Guide to Choosing the Right University in the UK for International Students Choosing the right university in the UK can feel overwhelming, especially as an international student. With s...`,
     image: "blog-images/universities-colleges-1.webp",
     imageAlt: `Choosing the Right University in the UK for International Students — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: [],
     content: `<h1>A Step-by-Step Guide to Choosing the Right University in the UK for International Students</h1>
 <p class="break-words"><em>Choosing the right university in the UK can feel overwhelming, especially as an international student. With so many world-class institutions, diverse locations, and recent changes in visa policies, it’s essential to have a clear plan. This guide walks you through a practical, step-by-step process to find the perfect UK university for your academic and career goals. Whether you’re eyeing a bustling city like London or a quieter town like Durham, we’ve got you covered with tips to make your decision easier and smarter.</em></p>
@@ -28077,8 +28077,8 @@ Those with a British grandparent can sponsor their immediate family, subject to 
     excerpt: `Top 10 Affordable UK Universities for International Students in 2025 Dreaming of studying in the UK but worried about the cost? You’re not alone—many international students seek quality education with...`,
     image: "blog-images/universities-colleges-2.webp",
     imageAlt: `Affordable UK Universities for International Students 2025 — Universities & Colleges`,
-    categories: ["Universities & Colleges"],
-    categorySlugs: ["universities-colleges"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["Affordable Universities","study in uk","uk","uk students","uk univerisites"],
     content: `<h1>Top 10 Affordable UK Universities for International Students in 2025</h1>
 
@@ -28218,9 +28218,9 @@ Those with a British grandparent can sponsor their immediate family, subject to 
     excerpt: `The UK remains one of the most attractive destinations for international students, offering world-class education, a multicultural environment, and strong career prospects. If you are planning to stud...`,
     image: "blog-images/visa-1.webp",
     imageAlt: `UK Student Visa 2025: A Complete Guide for Students — Visa`,
-    categories: ["Visa"],
-    categorySlugs: ["visa"],
-    tags: ["student","student visa","uk visa","visa"],
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
+    tags: ["student","student visa","uk visa","student-guides"],
     content: `<blockquote>The UK remains one of the most attractive destinations for international students, offering world-class education, a multicultural environment, and strong career prospects. If you are planning to study in the UK in 2025, understanding the latest <strong>UK Student Visa</strong> requirements is essential. This guide will cover everything from eligibility criteria to the application process and post-study opportunities.</blockquote>
 <h4><strong>Why Choose the UK for Your Studies?</strong></h4>
 The UK is home to some of the world's best universities, including Oxford, Cambridge, and Imperial College London. It offers a <strong>high-quality education system</strong>, extensive research opportunities, and access to a <strong>global network of professionals</strong>. The <strong>Graduate Route Visa</strong> allows students to stay in the UK after completing their studies, making it an attractive choice for those looking to launch their careers internationally.
@@ -28285,8 +28285,8 @@ If you're planning to apply for a <strong>UK Student Visa in 2025</strong>, <a h
     excerpt: `The United Kingdom has long been recognized as a global hub for business, innovation, and entrepreneurship. With its strategic location, world-class infrastructure, and investor-friendly policies, the...`,
     image: "blog-images/general-education-1.webp",
     imageAlt: `The UK as a Global Business and Startup Hub in 2025 — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["business","startup","uk"],
     content: `The United Kingdom has long been recognized as a global hub for business, innovation, and entrepreneurship. With its strategic location, world-class infrastructure, and investor-friendly policies, the UK continues to attract startups, multinational corporations, and skilled professionals from around the world. In this article, we explore why the UK remains one of the most attractive destinations for businesses and startups in 2025.
 <h4><strong>Why the UK is a Top Destination for Entrepreneurs and Businesses</strong></h4>
@@ -28328,8 +28328,8 @@ The UK remains one of the best places in the world to start and grow a business.
     excerpt: `The United Kingdom is one of the most popular study destinations in the world, attracting students from every corner of the globe. With its prestigious universities, diverse culture, and vibrant stude...`,
     image: "blog-images/general-education-2.webp",
     imageAlt: `Student Life in the UK – 2025 Guide — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["life","life in uk","student","student life in uk"],
     content: `<blockquote>The United Kingdom is one of the most popular study destinations in the world, attracting students from every corner of the globe. With its prestigious universities, diverse culture, and vibrant student communities, studying in the UK is an experience that goes beyond academics. If you're considering studying in the UK in 2025, here’s a complete guide to student life, covering everything from academics to accommodation, social life, and work opportunities.</blockquote>
 <h4><strong>1. Academic Excellence and University Culture</strong></h4>
@@ -28393,8 +28393,8 @@ Student life in the UK is an incredible mix of education, adventure, and persona
     excerpt: `Universitio is proud to announce its official membership in the Greater Birmingham Chambers of Commerce (GBCC), a milestone that reinforces our dedication to providing top-tier educational consultancy...`,
     image: "blog-images/general-education-3.webp",
     imageAlt: `Universitio Joins the Birmingham Chamber of Commerce — Uncategorized`,
-    categories: ["Uncategorized"],
-    categorySlugs: ["uncategorized"],
+    categories: ["United Kingdom"],
+    categorySlugs: ["united-kingdom"],
     tags: ["birmingham","birmingham chambers","chambers"],
     content: `<blockquote>Universitio is proud to announce its official membership in the <strong>Greater Birmingham Chambers of Commerce (GBCC)</strong>, a milestone that reinforces our dedication to providing top-tier educational consultancy services. As one of the most influential business organizations in the UK, the <strong>GBCC plays a crucial role in supporting businesses across various industries, including education, trade, and professional services</strong>.</blockquote>
 <h3><strong>What is the Greater Birmingham Chambers of Commerce?</strong></h3>

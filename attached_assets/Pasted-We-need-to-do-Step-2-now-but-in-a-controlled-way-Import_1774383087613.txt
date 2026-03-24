@@ -1,0 +1,78 @@
+We need to do Step 2 now, but in a controlled way.
+
+Important:
+- do not switch to Autonomous mode
+- do not make broad refactors
+- do not redesign the blog
+- only fix the blog category mapping inconsistency
+
+Goal:
+Remap the old blog categories into the final 6-category system so the blog becomes fully consistent again.
+
+Final category system:
+- United Kingdom
+- United States
+- Europe
+- Canada
+- Education News
+- Student Guides
+
+Also use clean, consistent slugs for these final categories:
+- united-kingdom
+- united-states
+- europe
+- canada
+- education-news
+- student-guides
+
+----------------------------------
+STEP 2 RULES
+----------------------------------
+
+1. Remap only where the category mapping is clear and safe.
+2. Do not guess blindly for ambiguous posts.
+3. If a category can be safely mapped in bulk, do it.
+4. If some posts inside a category are ambiguous, stop and report those specific posts instead of forcing a bad mapping.
+
+----------------------------------
+LIKELY SAFE BULK MAPPINGS
+----------------------------------
+
+Please first evaluate and apply only clearly safe mappings such as:
+- Student Experience -> Student Guides
+- Visa -> Student Guides
+- Scholarships -> Student Guides
+- Jobs -> Student Guides
+- Schools -> Student Guides
+- Canada -> Canada
+- Education News -> Education News
+- United Kingdom -> United Kingdom
+- USA Visas -> United States or Student Guides only if clearly justified
+- Universities & Colleges -> only if clearly justified per post type
+- Partner with us -> evaluate carefully
+- Uncategorized -> do not guess; report separately unless obvious
+- Europe-related categories/posts -> Europe where clearly justified
+
+Do not assume all posts in a mixed category belong to the same final category unless the content clearly supports it.
+
+----------------------------------
+WHAT TO DO
+----------------------------------
+
+1. Remap all clearly safe old categories to the final 6 categories.
+2. Fix category links and category pages so they are fully consistent.
+3. Keep sitemap aligned with the corrected categories.
+4. Report any posts that remain ambiguous and were NOT remapped automatically.
+
+----------------------------------
+AFTER STEP 2
+----------------------------------
+
+Show me exactly:
+- which old categories were fully remapped
+- how many posts were moved into each final category
+- which posts (if any) remain ambiguous
+- whether all broken category links are now fixed
+- whether category pages are now consistent
+- whether sitemap is now fully aligned with the corrected taxonomy
+- which files were modified
