@@ -6,9 +6,9 @@ export function GlobalReach() {
     <section id="countries" aria-label="Global Reach" className="py-12 md:py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
+          <h3 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
             Supporting Students from Around the World
-          </h2>
+          </h3>
           <p className="text-base md:text-lg text-muted-foreground">
             Wherever you're from, we're here to help you take the next step.
           </p>

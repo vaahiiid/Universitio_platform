@@ -25,9 +25,9 @@ export function Partnerships() {
                   <Users className="w-4 h-4" />
                   For Agents & Professionals
                 </div>
-                <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 leading-tight">
+                <h3 className="text-2xl md:text-4xl font-bold text-white mb-3 leading-tight">
                   Partner With Universitio
-                </h2>
+                </h3>
                 <p className="text-white/80 mb-6 text-sm md:text-base max-w-xl leading-relaxed">
                   Are you an education agent, school counsellor, or student mentor? Join our growing network and benefit from a transparent referral structure, dedicated support, and full access to our application resources.
                 </p>
@@ -70,9 +70,9 @@ export function Partnerships() {
                 <Gift className="w-4 h-4" />
                 Student Referral Programme
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h3 className="text-3xl md:text-4xl font-bold mb-4">
                 Earn a Reward by Referring a Student
-              </h2>
+              </h3>
               <p className="text-lg text-white/80 mb-6 leading-relaxed">
                 Know someone planning to study abroad? Refer them — and receive a reward once they successfully enrol.
               </p>
