@@ -1,0 +1,79 @@
+You did not fully apply the requested update.
+
+Two things must be corrected now, and only these two things:
+
+1. The attached image must actually be used for the Solent University blog post.
+2. The share section must use "X" instead of "Twitter".
+
+Important:
+- Do NOT change the blog architecture
+- Do NOT modify unrelated blog posts
+- Do NOT change routing
+- Do NOT redesign the whole blog page
+- Only fix the Solent University post image and the share section naming/icons
+
+----------------------------------
+TASK 1: ACTUALLY USE THE ATTACHED IMAGE
+----------------------------------
+
+I attached a blog cover image for the Solent University post.
+
+You must actually use that attached image for the existing Solent University blog post.
+
+Requirements:
+- replace the current image reference for the Solent University post with the attached image
+- ensure the image displays correctly on:
+  - the blog listing page
+  - the single blog post page
+- update the post entry so it points to the real attached image path used in the project
+- do not leave the old placeholder or broken image reference in place
+- set alt text to:
+  "Solent University Southampton campus UK"
+
+After making the change, show me the exact image path/reference now used by the Solent post.
+
+----------------------------------
+TASK 2: SHARE SECTION MUST USE X, NOT TWITTER
+----------------------------------
+
+On the single blog post page:
+- change the share label/icon naming from "Twitter" to "X"
+- if there is a Twitter icon, replace it with an X icon if available in the current icon set
+- keep the share functionality working
+- keep the rest of the share section clean and minimal
+
+Use share options like:
+- Facebook
+- X
+- LinkedIn
+- Copy link
+
+Do not use the word "Twitter" anywhere in the share section.
+
+----------------------------------
+STRICT SCOPE
+----------------------------------
+
+Only modify:
+- the Solent University post image reference/data
+- the Solent University post alt text if needed
+- the share section UI naming/icon for X
+
+Do NOT modify:
+- unrelated blog posts
+- categories
+- routing
+- admin
+- unrelated public pages
+- blog structure
+
+----------------------------------
+AFTER CHANGES
+----------------------------------
+
+Show me exactly:
+- which file(s) were modified
+- the exact image path/reference now used for the Solent post
+- confirmation that the attached image is now the actual image used
+- what was changed in the share section
+- confirmation that "Twitter" was replaced by "X"

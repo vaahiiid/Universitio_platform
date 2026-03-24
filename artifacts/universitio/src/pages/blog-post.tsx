@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams, useLocation } from "wouter";
 import {
   ArrowLeft, ArrowRight, Calendar, Clock, User,
-  Share2, Copy, ChevronRight, Facebook, Twitter, Linkedin
+  Share2, Copy, ChevronRight, Facebook, X, Linkedin
 } from "lucide-react";
 import { blogPosts, type BlogPost } from "@/data/blog/postsData";
 
@@ -243,7 +243,7 @@ export default function BlogPostPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-sky-500 transition-colors"
             >
-              <Twitter className="w-4 h-4" /> X / Twitter
+              <X className="w-4 h-4" /> X
             </a>
             <a
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`}
