@@ -1,0 +1,95 @@
+We need to redesign this section from scratch.
+
+The current design feels oversized, generic, and not visually engaging.
+
+----------------------------------------
+GOAL
+----------------------------------------
+
+Create a modern, minimal, and visually strong section that communicates:
+
+1. We help students apply to key destinations (UK, USA, Canada, Europe)
+2. We accept and support students from anywhere in the world
+
+Both messages must be clearly delivered, but the design approach is fully up to you.
+
+----------------------------------------
+DESIGN FREEDOM
+----------------------------------------
+
+You are fully responsible for the design direction.
+
+Do NOT follow basic or template layouts.
+Avoid anything that looks standard or repetitive.
+
+Think like a product designer, not a template builder.
+
+----------------------------------------
+IMAGE USAGE (IMPORTANT)
+----------------------------------------
+
+- Use images as the PRIMARY visual element
+- All images must be:
+  - the same size
+  - aligned cleanly
+  - smaller and more compact (avoid large bulky blocks)
+
+- Text should be integrated INSIDE the images (overlay), not outside
+- Create a clean, modern composition
+
+----------------------------------------
+FLAGS
+----------------------------------------
+
+- Flags must NOT be the main visual element
+- If used, they should be small, subtle indicators only
+
+----------------------------------------
+MESSAGING (IMPORTANT)
+----------------------------------------
+
+You must naturally communicate BOTH:
+
+- destination countries (UK, USA, Canada, Europe)
+- global reach (students from anywhere in the world)
+
+How you combine these messages is up to your design.
+
+Do NOT separate them into boring sections.
+Make it feel unified and intentional.
+
+----------------------------------------
+STYLE
+----------------------------------------
+
+- modern
+- minimal
+- premium
+- visually engaging
+- not oversized
+- not empty
+
+----------------------------------------
+MOBILE
+----------------------------------------
+
+- Must look clean and intentional on mobile
+- Avoid long vertical layouts
+- Keep it compact but impactful
+
+----------------------------------------
+FINAL EXPECTATION
+----------------------------------------
+
+- This should feel like a high-end product section
+- Not a typical agency website block
+- Must be visually memorable
+
+----------------------------------------
+AFTER IMPLEMENTATION
+----------------------------------------
+
+Show:
+- mobile version
+- desktop version
+- brief explanation of your design choices
