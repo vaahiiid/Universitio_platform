@@ -10,8 +10,7 @@ export const siteData = {
     { value: "1,000+", label: "Students Helped" },
     { value: "20+", label: "Countries Represented" },
     { value: "500+", label: "Successful Applications" },
-    { value: "5+", label: "Years of Experience" },
-    { value: "100%", label: "Application Support" }
+    { value: "5+", label: "Years of Experience" }
   ],
   
   services: [

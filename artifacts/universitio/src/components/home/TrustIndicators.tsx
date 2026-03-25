@@ -7,7 +7,7 @@ export function TrustIndicators() {
       <section id="stats" aria-label="Key Statistics" className="py-6 md:py-8 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {siteData.stats.map((stat, index) => (
               <div key={index} className="text-center py-1">
                 <div className="text-2xl md:text-3xl font-bold text-secondary leading-tight">
