@@ -1,0 +1,82 @@
+We need to completely redesign this section.
+
+The current version feels oversized, generic, and visually weak. It does not reflect a modern, premium product.
+
+----------------------------------------
+GOAL
+----------------------------------------
+
+Create a visually engaging, modern, and minimal section that clearly communicates:
+
+1. We support students from anywhere in the world
+2. We help them apply to top destinations:
+   - UK
+   - USA
+   - Canada
+   - Europe
+
+----------------------------------------
+DESIGN DIRECTION (IMPORTANT)
+----------------------------------------
+
+- Do NOT use large bulky cards
+- Do NOT rely on flag icons as main visuals
+- Flags can be used only as subtle indicators (small, secondary)
+
+----------------------------------------
+VISUAL STYLE
+----------------------------------------
+
+- modern, clean, minimal, premium
+- strong visual hierarchy
+- balanced spacing (not oversized, not empty)
+- avoid repetitive or template-like layouts
+
+----------------------------------------
+USE OF IMAGES
+----------------------------------------
+
+- Use high-quality, relevant images (city, campus, student lifestyle, skyline, etc.)
+- Images should be the main visual element
+- Avoid generic stock feel — aim for curated, intentional visuals
+
+----------------------------------------
+LAYOUT
+----------------------------------------
+
+- Be creative — do NOT follow a standard grid or card layout
+- The section should feel designed, not assembled
+- Explore asymmetry, layering, or visual storytelling
+
+----------------------------------------
+CONTENT DELIVERY
+----------------------------------------
+
+- Message should be clear at a glance (within 2–3 seconds)
+- Avoid long text blocks
+- Keep text concise and meaningful
+
+----------------------------------------
+MOBILE FIRST
+----------------------------------------
+
+- Must look strong and intentional on mobile
+- Avoid long vertical scrolling
+- Avoid stacking too many heavy elements
+
+----------------------------------------
+FINAL EXPECTATION
+----------------------------------------
+
+- This should feel like a premium, product-level design
+- Not a typical agency website section
+- It should stand out and feel memorable
+
+----------------------------------------
+AFTER IMPLEMENTATION
+----------------------------------------
+
+Show:
+- mobile version
+- desktop version
+- visual explanation of design choices

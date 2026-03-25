@@ -1,56 +1,99 @@
 export function StudyDestinations() {
   const destinations = [
-    { name: "UK", flag: "🇬🇧", color: "from-[#42147d]/20 to-[#6b3fa0]/20", borderColor: "border-[#42147d]/30" },
-    { name: "USA", flag: "🇺🇸", color: "from-[#1e3a5f]/20 to-[#2d5f8a]/20", borderColor: "border-[#1e3a5f]/30" },
-    { name: "Canada", flag: "🇨🇦", color: "from-[#7c2d2d]/20 to-[#a84848]/20", borderColor: "border-[#7c2d2d]/30" },
-    { name: "Europe", flag: "🇪🇺", color: "from-[#1a4d3e]/20 to-[#2d7a5f]/20", borderColor: "border-[#1a4d3e]/30" },
+    {
+      name: "United Kingdom",
+      flag: "🇬🇧",
+      shortName: "UK",
+      image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80&fit=crop",
+      featured: true,
+    },
+    {
+      name: "United States",
+      flag: "🇺🇸",
+      shortName: "USA",
+      image: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80&fit=crop",
+      featured: false,
+    },
+    {
+      name: "Canada",
+      flag: "🇨🇦",
+      shortName: "Canada",
+      image: "https://images.unsplash.com/photo-1517935706615-2717063c2225?w=600&q=80&fit=crop",
+      featured: false,
+    },
+    {
+      name: "Europe",
+      flag: "🇪🇺",
+      shortName: "Europe",
+      image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=80&fit=crop",
+      featured: false,
+    },
   ];
 
   return (
     <section id="destinations" aria-label="Study Destinations" className="relative py-16 md:py-24 bg-background overflow-hidden">
-      {/* Subtle radial gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-40 pointer-events-none"></div>
-      <div className="absolute -top-40 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-        {/* Hero Heading */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        {/* Header Section */}
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 md:mb-6">
-            From Anywhere in the World<br />
-            <span className="text-primary">To the Best Study Destinations</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            Your Global Study Journey
           </h2>
-        </div>
-
-        {/* Center Message */}
-        <div className="text-center mb-14 md:mb-16">
-          <p className="text-lg md:text-xl text-muted-foreground font-medium">
-            Students from 20+ countries trust us
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            We support students from 20+ countries applying to the world's best universities
           </p>
         </div>
 
-        {/* 2x2 Destination Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-          {destinations.map((dest) => (
+        {/* Asymmetric Destination Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[300px]">
+          {/* Featured Card - Large */}
+          <div
+            className="md:col-span-2 md:row-span-2 group relative rounded-2xl overflow-hidden cursor-default
+                       shadow-lg hover:shadow-2xl transition-all duration-300"
+          >
+            <img
+              src={destinations[0].image}
+              alt={destinations[0].name}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">{destinations[0].flag}</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold">{destinations[0].shortName}</h3>
+              <p className="text-white/80 text-sm mt-2">World-class education & opportunity</p>
+            </div>
+          </div>
+
+          {/* Smaller Cards - Asymmetric Layout */}
+          {destinations.slice(1).map((dest) => (
             <div
-              key={dest.name}
-              className={`group bg-gradient-to-br ${dest.color} border ${dest.borderColor} rounded-2xl md:rounded-3xl p-8 md:p-10 
-                           hover:shadow-lg hover:border-primary/50 hover:-translate-y-2 transition-all duration-300 cursor-default
-                           flex flex-col items-center justify-center text-center`}
+              key={dest.shortName}
+              className="group relative rounded-2xl overflow-hidden cursor-default
+                         shadow-md hover:shadow-xl transition-all duration-300"
             >
-              <span className="text-5xl md:text-6xl mb-4 leading-none drop-shadow-sm">
-                {dest.flag}
-              </span>
-              <h3 className="text-xl md:text-2xl font-bold text-foreground">
-                {dest.name}
-              </h3>
+              <img
+                src={dest.image}
+                alt={dest.name}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 text-white">
+                <div className="flex items-center gap-1 mb-1">
+                  <span className="text-lg">{dest.flag}</span>
+                </div>
+                <h3 className="text-lg md:text-xl font-bold">{dest.shortName}</h3>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Bottom trust line - subtle */}
-        <div className="text-center mt-12 md:mt-14">
-          <p className="text-sm md:text-base text-muted-foreground/60">
-            Expert guidance for your global education journey
+        {/* Bottom CTA */}
+        <div className="text-center mt-12 md:mt-16">
+          <p className="text-sm md:text-base text-muted-foreground">
+            Explore pathways to leading universities worldwide
           </p>
         </div>
       </div>
