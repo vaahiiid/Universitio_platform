@@ -34,8 +34,8 @@ export function TrustIndicators() {
 
           {/* University Marquee */}
           <div className="relative flex flex-col gap-3">
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10"></div>
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10"></div>
+            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10"></div>
+            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10"></div>
             
             <div className="flex w-max animate-[marquee_40s_linear_infinite]">
               <div className="flex gap-3 px-3">
