@@ -170,34 +170,43 @@ export function SocialProof() {
             ))}
           </div>
 
-          {/* Mobile Horizontal Scroll */}
-          <div className="md:hidden mb-10">
-            <div className="flex overflow-x-auto gap-4 -mx-4 px-4 pb-2">
-              {homePostsData.slice(0, 3).map((post) => (
-                <div key={post.id} className="flex-none w-72 group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
-                  <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
-                    <img
-                      src={`${import.meta.env.BASE_URL}${post.image}`}
-                      alt={post.imageAlt}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-4 flex flex-col flex-grow">
-                    <div className="text-xs font-semibold text-secondary mb-2">
-                      {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+          {/* Mobile Carousel */}
+          <div className="md:hidden mb-10 relative px-4">
+            <Carousel
+              opts={{ align: "start", loop: false }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-4">
+                {homePostsData.slice(0, 3).map((post) => (
+                  <CarouselItem key={post.id} className="pl-4 basis-full">
+                    <div className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
+                      <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
+                        <img
+                          src={`${import.meta.env.BASE_URL}${post.image}`}
+                          alt={post.imageAlt}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="p-4 flex flex-col flex-grow">
+                        <div className="text-xs font-semibold text-secondary mb-2">
+                          {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                        </div>
+                        <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
+                        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-grow">{post.excerpt}</p>
+                        <Link href={`/blog/${post.slug}`}>
+                          <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
+                            Read More
+                          </span>
+                        </Link>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-grow">{post.excerpt}</p>
-                    <Link href={`/blog/${post.slug}`}>
-                      <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
-                        Read More
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-2 top-1/2 -translate-y-1/2 h-9 w-9 bg-white/90 border border-border shadow-sm hover:bg-primary hover:text-white hover:border-primary transition-all" />
+              <CarouselNext className="-right-2 top-1/2 -translate-y-1/2 h-9 w-9 bg-white/90 border border-border shadow-sm hover:bg-primary hover:text-white hover:border-primary transition-all" />
+            </Carousel>
           </div>
 
           <div className="text-center">
