@@ -1,0 +1,141 @@
+We need to fix the About page / homepage restructuring properly.
+
+The previous implementation did NOT fully follow the requirements.
+
+Please fix the following exactly:
+
+----------------------------------------
+1. ABOUT PAGE LINKS
+----------------------------------------
+
+- Update the About link in the HEADER so it goes to /about
+- Update the About link in the FOOTER so it goes to /about
+- If there is any other existing About navigation entry, update it too
+
+----------------------------------------
+2. SITEMAP
+----------------------------------------
+
+- /about must be included in the sitemap automatically
+- Do not leave it out
+- Verify that the generated sitemap actually contains:
+  https://universitio.com/about
+
+After fixing, confirm clearly that /about is in the sitemap source and final sitemap output
+
+----------------------------------------
+3. ABOUT PAGE DESIGN
+----------------------------------------
+
+The About page currently looks too plain/simple.
+It needs a stronger, more attractive, more premium layout.
+
+Important:
+- do not make it flashy or messy
+- keep it professional, modern, trust-focused
+- use the existing brand style
+- keep all important original content
+
+I want the About page to feel like a strong trust-building page.
+
+Structure the About page properly with sections such as:
+- Hero / intro
+- Who we are
+- Trust / accreditations
+- Why students choose us
+- Company / compliance / credibility details
+
+Use better layout hierarchy, spacing, cards, and visual grouping.
+The logos and their exact descriptions must remain.
+Do not oversimplify the page.
+
+----------------------------------------
+4. HOMEPAGE TRUST SECTION TEXT
+----------------------------------------
+
+The current mini About / trust section wording is wrong.
+
+Current type of message:
+"Trusted & Accredited"
+"Certified by leading UK and international education bodies"
+
+I do NOT want that wording.
+
+I want the wording to communicate that:
+- students can trust us
+- we are a reliable and established agency
+- we are recognised / accredited / compliant
+
+Please rewrite that short homepage trust heading/subheading accordingly.
+Do NOT use the current wording.
+
+The tone should feel like:
+"you can trust us" / "we are a trusted and established organisation"
+
+----------------------------------------
+5. UNIVERSITIO MUST REMAIN ON HOMEPAGE
+----------------------------------------
+
+Universitio should NOT disappear from the homepage.
+The About content was supposed to become smaller and more compact, not vanish.
+
+I still want a compact Universitio presence on the homepage:
+- a short mini About block
+- concise trust-focused text
+- smaller than before
+- helps reduce scrolling
+- links to /about
+
+This compact Universitio section should remain on the homepage and support trust + conversion.
+
+----------------------------------------
+6. WHY STUDENTS CHOOSE UNIVERSITIO
+----------------------------------------
+
+This section should still remain on the homepage, but in a shorter and more compact form.
+It should also be fully present in a richer form on the About page.
+
+Homepage version:
+- shorter
+- fewer cards
+- less vertical space
+
+About page version:
+- fuller
+- more detailed
+- more visually polished
+
+----------------------------------------
+7. KEEP LOGOS + DESCRIPTIONS ACCESSIBLE
+----------------------------------------
+
+On homepage:
+- logos should remain in a compact layout
+- descriptions do not need to take a lot of space
+- but the exact same descriptions must still be accessible somehow (tooltip, expandable item, modal, etc.)
+
+On About page:
+- logos + full exact descriptions should be clearly visible
+
+----------------------------------------
+8. FINAL RESULT REQUIRED
+----------------------------------------
+
+After the fix:
+- homepage should be shorter
+- Universitio should still be visible on homepage in compact form
+- the About page should be more attractive and trust-building
+- header/footer About links should work
+- sitemap must include /about
+
+----------------------------------------
+9. AFTER CHANGES
+----------------------------------------
+
+Show me exactly:
+- which files were modified
+- whether header and footer About links now point to /about
+- whether /about is now in the sitemap
+- what homepage text was changed for the trust section
+- how Universitio still remains on homepage in compact form
+- what design improvements were made to the About page

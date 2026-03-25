@@ -25,10 +25,10 @@ export function TrustStrip() {
           {/* Title */}
           <div className="text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-              Trusted & Accredited
+              A Trusted Partner in Education
             </h2>
             <p className="text-sm text-muted-foreground">
-              Certified by leading UK and international education bodies
+              UK-registered, ICEF-accredited, and recognised by leading education bodies
             </p>
           </div>
 
