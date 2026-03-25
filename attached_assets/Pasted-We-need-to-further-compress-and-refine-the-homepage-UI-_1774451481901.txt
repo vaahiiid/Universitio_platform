@@ -1,0 +1,117 @@
+We need to further compress and refine the homepage UI for a more premium, high-conversion layout.
+
+----------------------------------------
+1. STATS SECTION (MAKE IT ULTRA COMPACT)
+----------------------------------------
+
+Current issue:
+Still too tall and visually heavy.
+
+Required:
+
+- Turn stats into a single compact strip
+
+Desktop:
+- ALL stats in ONE horizontal row
+- Tight spacing
+- Smaller numbers (not oversized)
+
+Mobile:
+- 2 columns MAX
+- Tight vertical spacing (very important)
+
+Design:
+- Reduce padding significantly (target: py-8 or less)
+- Reduce gap between items
+- Make it feel like a “data strip”, not a section
+
+Optional:
+- Add subtle divider lines between stats
+
+----------------------------------------
+2. PATHWAYS SECTION (MINIMISE OR MERGE)
+----------------------------------------
+
+Current issue:
+Still feels like a full section but low value.
+
+Required:
+
+- Do NOT keep it as a standalone big section
+- Convert it into a compact intro line
+
+Example:
+Place it ABOVE the universities section as a short heading/subheading
+
+Text:
+- Max 1 line
+- No paragraph block
+
+Goal:
+This should NOT add vertical height
+
+----------------------------------------
+3. UNIVERSITIES / INSTITUTIONS SECTION
+----------------------------------------
+
+Critical issue:
+Currently showing ONLY UK universities.
+
+Required:
+- Mix universities from multiple countries:
+
+Include:
+- UK
+- USA
+- Canada
+- Germany
+- Netherlands
+
+----------------------------------------
+4. DATA SOURCE UPDATE
+----------------------------------------
+
+Update the university dataset or rotation logic:
+
+- Ensure it pulls a MIX of countries
+- Avoid repeating only UK entries
+- Random rotation must include multiple countries
+
+----------------------------------------
+5. UI FOR UNIVERSITIES
+----------------------------------------
+
+- Keep it visually light
+- Avoid large cards
+- Reduce vertical spacing
+- Make it feel dynamic but compact
+
+----------------------------------------
+6. GENERAL RULES
+----------------------------------------
+
+- Reduce overall homepage height further
+- Avoid “section-like” blocks unless necessary
+- Merge wherever possible
+- Focus on density + clarity + speed
+
+----------------------------------------
+7. FINAL RESULT
+----------------------------------------
+
+After changes:
+- Homepage should feel tighter and faster
+- Less scrolling on mobile
+- More global positioning (not UK-only)
+- More premium and structured design
+
+----------------------------------------
+8. AFTER IMPLEMENTATION
+----------------------------------------
+
+Show me:
+- what was changed in stats section
+- how pathways section was reduced/merged
+- how university data source was updated
+- list of countries now included in rotation
+- which components were modified

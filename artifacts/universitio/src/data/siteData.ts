@@ -152,12 +152,18 @@ export const siteData = {
   ],
 
   universities: [
+    // UK
     "University of Oxford", "University of Cambridge", "Imperial College London", 
     "UCL", "University of Edinburgh", "King's College London", 
-    "University of Manchester", "University of Birmingham", "LSE", 
-    "University of Leeds", "Durham University", "University of Bristol", 
-    "University of Glasgow", "University of Warwick", "Queen Mary London", 
-    "University of Sheffield"
+    "LSE", "University of Manchester",
+    // USA
+    "Harvard University", "Stanford University", "MIT", "Yale University",
+    // Canada
+    "University of Toronto", "McGill University",
+    // Germany
+    "Heidelberg University", "Technical University of Munich",
+    // Netherlands
+    "University of Amsterdam", "Delft University of Technology"
   ],
 
   whyChooseUs: [
