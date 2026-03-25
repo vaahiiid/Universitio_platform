@@ -1,55 +1,58 @@
-import { Globe, ArrowRight } from "lucide-react";
-
-const destinations = ["UK", "USA", "Canada", "Europe"];
-
 export function StudyDestinations() {
+  const destinations = [
+    { name: "UK", flag: "🇬🇧", color: "from-[#42147d]/20 to-[#6b3fa0]/20", borderColor: "border-[#42147d]/30" },
+    { name: "USA", flag: "🇺🇸", color: "from-[#1e3a5f]/20 to-[#2d5f8a]/20", borderColor: "border-[#1e3a5f]/30" },
+    { name: "Canada", flag: "🇨🇦", color: "from-[#7c2d2d]/20 to-[#a84848]/20", borderColor: "border-[#7c2d2d]/30" },
+    { name: "Europe", flag: "🇪🇺", color: "from-[#1a4d3e]/20 to-[#2d7a5f]/20", borderColor: "border-[#1a4d3e]/30" },
+  ];
+
   return (
-    <section id="destinations" aria-label="Study Destinations" className="py-8 md:py-12 bg-background border-b border-border/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Flow Layout */}
-        <div className="flex items-center justify-center gap-4 md:gap-6 overflow-x-auto md:overflow-visible pb-2 md:pb-0">
-          {/* Globe Icon with pulse animation */}
-          <div className="flex-none">
-            <div className="relative w-10 h-10 md:w-12 md:h-12">
-              <div className="absolute inset-0 bg-primary/20 rounded-full animate-pulse"></div>
-              <div className="relative w-full h-full flex items-center justify-center">
-                <Globe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-              </div>
-            </div>
-          </div>
+    <section id="destinations" aria-label="Study Destinations" className="relative py-16 md:py-24 bg-background overflow-hidden">
+      {/* Subtle radial gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-40 pointer-events-none"></div>
+      <div className="absolute -top-40 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
 
-          {/* Text */}
-          <span className="flex-none text-sm md:text-base font-medium text-foreground whitespace-nowrap">
-            Students worldwide
-          </span>
-
-          {/* Arrow with subtle animation */}
-          <div className="flex-none hidden sm:block">
-            <div className="relative">
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground animate-[bounce_2s_infinite]" style={{ animationDelay: "0s" }} />
-            </div>
-          </div>
-
-          {/* Destination Chips */}
-          <div className="flex-none flex gap-2 md:gap-3">
-            {destinations.map((dest, i) => (
-              <div
-                key={dest}
-                className="inline-block bg-primary/8 border border-primary/20 rounded-full px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold text-primary whitespace-nowrap hover:bg-primary/12 hover:border-primary/40 transition-all duration-300"
-                style={{
-                  animationDelay: `${i * 0.1}s`,
-                }}
-              >
-                {dest}
-              </div>
-            ))}
-          </div>
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        {/* Hero Heading */}
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 md:mb-6">
+            From Anywhere in the World<br />
+            <span className="text-primary">To the Best Study Destinations</span>
+          </h2>
         </div>
 
-        {/* Subtitle */}
-        <p className="text-center text-xs md:text-sm text-muted-foreground/70 mt-5 md:mt-6">
-          Expert guidance for your global education journey
-        </p>
+        {/* Center Message */}
+        <div className="text-center mb-14 md:mb-16">
+          <p className="text-lg md:text-xl text-muted-foreground font-medium">
+            Students from 20+ countries trust us
+          </p>
+        </div>
+
+        {/* 2x2 Destination Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+          {destinations.map((dest) => (
+            <div
+              key={dest.name}
+              className={`group bg-gradient-to-br ${dest.color} border ${dest.borderColor} rounded-2xl md:rounded-3xl p-8 md:p-10 
+                           hover:shadow-lg hover:border-primary/50 hover:-translate-y-2 transition-all duration-300 cursor-default
+                           flex flex-col items-center justify-center text-center`}
+            >
+              <span className="text-5xl md:text-6xl mb-4 leading-none drop-shadow-sm">
+                {dest.flag}
+              </span>
+              <h3 className="text-xl md:text-2xl font-bold text-foreground">
+                {dest.name}
+              </h3>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom trust line - subtle */}
+        <div className="text-center mt-12 md:mt-14">
+          <p className="text-sm md:text-base text-muted-foreground/60">
+            Expert guidance for your global education journey
+          </p>
+        </div>
       </div>
     </section>
   );

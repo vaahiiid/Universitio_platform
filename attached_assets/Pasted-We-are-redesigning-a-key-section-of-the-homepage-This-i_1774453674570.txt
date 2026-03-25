@@ -1,0 +1,114 @@
+We are redesigning a key section of the homepage.
+
+This is NOT a simple section — it must become a signature, high-impact visual block.
+
+----------------------------------------
+GOAL
+----------------------------------------
+
+Communicate clearly and powerfully:
+
+1. We accept students from anywhere in the world
+2. We help them apply to:
+   - UK
+   - USA
+   - Canada
+   - Europe
+
+----------------------------------------
+DESIGN CONCEPT: GLOBAL → DESTINATION
+----------------------------------------
+
+----------------------------------------
+1. SECTION STRUCTURE
+----------------------------------------
+
+TOP (Hero Text):
+"From Anywhere in the World
+To the Best Study Destinations"
+
+----------------------------------------
+2. BACKGROUND
+----------------------------------------
+
+- Add a subtle abstract globe effect or soft radial gradient
+- keep it minimal (NOT heavy or noisy)
+- must feel modern and premium
+
+----------------------------------------
+3. CENTER MESSAGE
+----------------------------------------
+
+"Students from 20+ countries"
+
+- clean typography
+- not oversized
+
+----------------------------------------
+4. DESTINATION GRID
+----------------------------------------
+
+Create a 2x2 grid of destination cards:
+
+- UK
+- USA
+- Canada
+- Europe
+
+----------------------------------------
+5. CARD DESIGN
+----------------------------------------
+
+- medium size (not too large)
+- soft gradient backgrounds
+- rounded corners (2xl)
+- subtle shadow
+- slight hover lift effect
+- include flag + name
+
+----------------------------------------
+6. SPACING
+----------------------------------------
+
+- balanced vertical spacing
+- no excessive empty space
+- visually centered
+
+----------------------------------------
+7. MOBILE VERSION
+----------------------------------------
+
+- stack:
+   heading
+   globe
+   text
+   2x2 cards
+- no long scrolling
+- keep everything compact but premium
+
+----------------------------------------
+8. REMOVE
+----------------------------------------
+
+- old chip layout
+- flow line layout
+- oversized blocks
+- repetitive sections
+
+----------------------------------------
+9. FINAL RESULT
+----------------------------------------
+
+- visually strong
+- memorable
+- premium look
+- clear message delivery
+
+----------------------------------------
+10. AFTER IMPLEMENTATION
+----------------------------------------
+
+Show:
+- mobile view
+- desktop view
+- animation behavior
