@@ -17,13 +17,13 @@ export default function Services() {
         <section className="py-20 md:py-28 bg-gradient-to-br from-primary/8 via-background to-background border-b border-border/40">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-block bg-accent text-accent-foreground px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
-              COMPREHENSIVE SUPPORT
+              EXPERT GUIDANCE
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Our Services
+              Your Complete Partner in Global Education
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Complete guidance at every stage of your educational journey — from application planning to arrival in your chosen country.
+              Strategic support across every stage—from application strategy to day-one arrival. We remove the complexity, so you can focus on success.
             </p>
           </div>
         </section>
