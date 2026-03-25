@@ -1,0 +1,59 @@
+We have a serious admin data visibility issue in Service Requests.
+
+Problem:
+When a user submits a service request form, the admin panel does not show the full submitted data.
+The frontend collects more fields, but the admin view only displays part of them.
+
+Example:
+For the attached Study Admissions service form, the user fills fields such as:
+- Full name
+- Email address
+- Phone number
+- Which level are you applying for?
+- Current level of education
+- What did you study?
+- How did you hear about us?
+- Preferred contact method
+
+But in the admin Service Requests page, the full submitted information is not shown clearly and completely.
+
+This issue is likely affecting all service request forms, not just Study Admissions.
+
+Goal:
+Whatever fields exist on the frontend form and are submitted by the user must be visible in the admin panel.
+Admin must be able to read the full submitted request.
+
+Important:
+- do not redesign the whole admin
+- do not change unrelated sections
+- do not remove existing functionality
+- only fix Service Requests data capture + admin display
+- keep the current admin style consistent
+
+Please do this carefully:
+
+1. Audit all service request forms on the frontend
+- identify every field submitted for each service
+- confirm what payload is actually being sent
+
+2. Audit the backend storage for service requests
+- check whether all fields are being saved
+- if some fields are not being saved, fix the backend/database mapping
+- if fields are saved but not displayed, fix only the admin rendering
+
+3. Update the admin Service Requests view
+- show all submitted fields clearly for each request
+- do not hide important values
+- if fields differ by service type, display them dynamically
+- labels should be readable and match the frontend form meaning
+
+4. Ensure this works for all service request types, not only Study Admissions
+
+5. Keep all existing status / notes / save / delete functions working
+
+After the fix, show me exactly:
+- which frontend fields were found for each service form
+- which fields were previously missing in admin
+- whether the issue was in frontend payload, backend save logic, or admin display
+- which files were modified
+- confirmation that admin now shows the full submitted data for all service requests
