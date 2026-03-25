@@ -88,6 +88,7 @@ function ExpandedRow({ req, onStatusChange, onDelete }: {
   }
 
   const details = [
+    { label: "Phone", value: req.phone },
     { label: "Study Level", value: req.studyLevel },
     { label: "Current Education", value: req.currentEducation },
     { label: "Field of Study", value: req.fieldOfStudy },
@@ -106,7 +107,9 @@ function ExpandedRow({ req, onStatusChange, onDelete }: {
     { label: "Preferred Contact", value: req.preferredContact },
     { label: "How Did You Hear", value: req.howDidYouHear },
     { label: "Notes", value: req.notes },
-  ].filter(d => d.value);
+    { label: "Marketing Consent", value: req.marketingOptOut ? "Opted out" : "Opted in" },
+    { label: "Terms Accepted", value: req.termsAccepted ? "Yes" : "No" },
+  ].filter(d => d.value && d.value !== "No");
 
   return (
     <div className="px-4 md:px-6 py-5 bg-muted/20 border-t border-border/60 space-y-5">
@@ -280,9 +283,10 @@ export default function ServiceRequestsPage() {
                   onClick={() => setExpanded(expanded === req.id ? null : req.id)}
                   className="w-full flex items-center gap-3 px-4 md:px-6 py-4 text-left hover:bg-muted/20 transition-colors"
                 >
-                  <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2 items-center">
+                  <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-6 gap-2 items-center">
                     <div className="font-medium text-foreground truncate">{req.fullName}</div>
                     <div className="text-sm text-muted-foreground truncate hidden sm:block">{req.email}</div>
+                    <div className="text-sm text-muted-foreground truncate hidden md:block">{req.phone || "—"}</div>
                     <div>
                       <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${SERVICE_COLORS[req.serviceType] || "bg-gray-100 text-gray-600"}`}>
                         {req.serviceType}
