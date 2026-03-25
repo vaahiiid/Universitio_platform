@@ -40,7 +40,7 @@ export function Navbar() {
     { name: "Our Services", href: "/#services" },
     { name: "Agents", href: "/#agents" },
     { name: "Earn as a Student", href: "/#earn" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (

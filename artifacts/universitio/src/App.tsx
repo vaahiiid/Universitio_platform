@@ -9,6 +9,7 @@ import { CanonicalHead } from "@/components/seo/CanonicalHead";
 
 import Home from "@/pages/Home";
 import About from "@/pages/About";
+import Contact from "@/pages/Contact";
 import FreeConsultation from "@/pages/free-consultation";
 import AssessmentForm from "@/pages/assessment-form";
 
@@ -93,6 +94,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
           <Route path="/free-consultation" component={FreeConsultation} />
           <Route path="/assessment-form" component={AssessmentForm} />
           <Route path="/blog" component={BlogPage} />

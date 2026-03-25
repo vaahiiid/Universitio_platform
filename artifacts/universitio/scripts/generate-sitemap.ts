@@ -23,6 +23,7 @@ function generateSitemap(): string {
   urls.push(
     { loc: `${CANONICAL_URL}/`, lastmod: "2026-03-24", changefreq: "weekly", priority: "1.00" },
     { loc: `${CANONICAL_URL}/about`, lastmod: "2026-03-24", changefreq: "monthly", priority: "0.90" },
+    { loc: `${CANONICAL_URL}/contact`, lastmod: "2026-03-24", changefreq: "monthly", priority: "0.85" },
     { loc: `${CANONICAL_URL}/blog`, lastmod: "2026-03-24", changefreq: "daily", priority: "0.90" },
     { loc: `${CANONICAL_URL}/free-consultation`, lastmod: "2026-03-24", changefreq: "monthly", priority: "0.90" },
     { loc: `${CANONICAL_URL}/assessment-form`, lastmod: "2026-03-24", changefreq: "monthly", priority: "0.90" },

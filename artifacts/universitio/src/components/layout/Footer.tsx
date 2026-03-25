@@ -78,7 +78,7 @@ export function Footer() {
               <li><Link href="/partners" className="hover:text-white transition-colors">Become a Partner</Link></li>
               <li><Link href="/student-referral" className="hover:text-white transition-colors">Refer a Student</Link></li>
               <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
-              <li><Link href="/#contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 

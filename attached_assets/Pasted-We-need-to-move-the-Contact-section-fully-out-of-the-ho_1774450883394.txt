@@ -1,0 +1,88 @@
+We need to move the Contact section fully out of the homepage and into its own dedicated page.
+
+Please implement the following exactly:
+
+----------------------------------------
+1. CREATE A DEDICATED CONTACT PAGE
+----------------------------------------
+
+Create a proper standalone page at:
+
+/contact
+
+This page should contain the full Contact section content currently used on the homepage.
+
+Important:
+- move the contact content fully to /contact
+- do not leave the Contact section on the homepage
+- keep the page professional, clean, modern, and conversion-friendly
+- use the existing site style and design system
+
+----------------------------------------
+2. REMOVE CONTACT SECTION FROM HOMEPAGE
+----------------------------------------
+
+Remove the full Contact section from the homepage completely.
+
+Important:
+- nothing from the Contact block needs to remain on the homepage
+- do not leave duplicate contact UI there
+- the homepage should become shorter after this change
+
+----------------------------------------
+3. CONTACT PAGE DESIGN
+----------------------------------------
+
+The new /contact page should not feel plain or unfinished.
+
+It should be structured clearly, for example:
+- Hero / page heading
+- Short intro text
+- Contact methods / contact details
+- Contact form (if already exists in the current Contact section)
+- Helpful supporting text if needed
+
+Keep it visually polished and consistent with the brand.
+
+----------------------------------------
+4. UPDATE HEADER + FOOTER LINKS
+----------------------------------------
+
+Update navigation so Contact points to /contact:
+
+- HEADER contact link -> /contact
+- FOOTER contact link -> /contact
+
+If there are other existing contact links in navigation, update them too.
+
+----------------------------------------
+5. UPDATE SITEMAP
+----------------------------------------
+
+Ensure /contact is included in the sitemap automatically.
+
+Please verify that the sitemap contains:
+https://universitio.com/contact
+
+----------------------------------------
+6. KEEP SEO CLEAN
+----------------------------------------
+
+Add proper SEO metadata for the new Contact page:
+- meta title
+- meta description
+- canonical if the current system uses it
+
+Keep internal linking correct.
+
+----------------------------------------
+7. FINAL CHECK
+----------------------------------------
+
+After the change, show me exactly:
+- which files were modified
+- confirmation that the Contact section was fully removed from the homepage
+- confirmation that /contact was created
+- confirmation that header and footer links now point to /contact
+- confirmation that /contact is included in the sitemap
+- what SEO metadata was added for /contact
