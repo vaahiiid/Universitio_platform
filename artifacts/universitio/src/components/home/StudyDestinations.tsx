@@ -75,13 +75,6 @@ export function StudyDestinations() {
             </div>
           ))}
         </div>
-
-        {/* Bottom Message */}
-        <div className="text-center mt-10 md:mt-12">
-          <p className="text-xs md:text-sm text-muted-foreground">
-            Expert guidance for your international education journey
-          </p>
-        </div>
       </div>
     </section>
   );
