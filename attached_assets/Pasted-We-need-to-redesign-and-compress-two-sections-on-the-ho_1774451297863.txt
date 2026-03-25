@@ -1,0 +1,94 @@
+We need to redesign and compress two sections on the homepage to reduce vertical space and improve visual quality without removing their meaning.
+
+Sections:
+1. Stats section (Students Helped, Countries, Applications, etc.)
+2. "Explore Pathways to Leading Institutions"
+
+----------------------------------------
+1. STATS SECTION REDESIGN
+----------------------------------------
+
+Current issue:
+- Takes too much vertical space
+- Feels oversized and stretched
+- Not visually premium
+
+Required changes:
+
+- Convert stats into a compact horizontal layout
+
+Desktop:
+- Display all stats in ONE row
+- Equal spacing
+- Clean and minimal
+
+Mobile:
+- 2 columns grid (not full stacked)
+- Reduce vertical padding significantly
+
+Design improvements:
+- Reduce font size slightly (not huge numbers)
+- Add subtle icons or separators
+- Keep it clean, modern, not heavy
+
+Spacing:
+- Reduce padding (e.g. from py-24 to around py-10 / py-12)
+- Reduce gaps between items
+
+----------------------------------------
+2. PATHWAYS SECTION REDESIGN
+----------------------------------------
+
+Section:
+"Explore Pathways to Leading Institutions"
+
+Current issue:
+- Too large
+- Too much empty space
+- Feels like a full block but low value density
+
+Required changes:
+
+- Make this section more compact and integrated
+
+Text:
+- Keep heading but reduce size slightly
+- Reduce paragraph to max 1–2 lines
+
+Layout:
+- Avoid large empty spacing
+- Combine with surrounding sections if possible
+
+Optional improvement:
+- Turn it into a small intro line above countries/universities section
+- Not a standalone large block
+
+----------------------------------------
+3. GENERAL DESIGN RULES
+----------------------------------------
+
+- Reduce vertical spacing across both sections
+- Avoid large empty gaps
+- Keep design consistent with brand
+- Do NOT remove content, only compress and redesign
+- Maintain readability and hierarchy
+
+----------------------------------------
+4. FINAL RESULT
+----------------------------------------
+
+After changes:
+- Sections should take significantly less vertical space
+- Homepage scroll should be shorter
+- Design should feel more premium and structured
+- No content should be lost, only optimised
+
+----------------------------------------
+5. AFTER IMPLEMENTATION
+----------------------------------------
+
+Show me:
+- before vs after layout explanation
+- what spacing was reduced
+- how many columns are used (mobile + desktop)
+- which components were modified
