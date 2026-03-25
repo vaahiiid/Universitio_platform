@@ -8,6 +8,7 @@ import { AdminAuthProvider, useAdminAuth } from "@/contexts/AdminAuthContext";
 import { CanonicalHead } from "@/components/seo/CanonicalHead";
 
 import Home from "@/pages/Home";
+import About from "@/pages/About";
 import FreeConsultation from "@/pages/free-consultation";
 import AssessmentForm from "@/pages/assessment-form";
 
@@ -91,6 +92,7 @@ function Router() {
       <Suspense fallback={<PageLoader />}>
         <Switch>
           <Route path="/" component={Home} />
+          <Route path="/about" component={About} />
           <Route path="/free-consultation" component={FreeConsultation} />
           <Route path="/assessment-form" component={AssessmentForm} />
           <Route path="/blog" component={BlogPage} />

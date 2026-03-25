@@ -1,0 +1,108 @@
+We need to restructure the homepage and create a dedicated About page with the following requirements.
+
+GOAL:
+- Reduce homepage scroll significantly
+- Move full About content into a separate /about page
+- Keep trust elements (logos + exact descriptions) visible on homepage in a compact design
+- Keep "Why Students Choose Universitio" but shorter
+- Improve UX and maintain SEO (include About page in sitemap automatically)
+
+----------------------------------------
+
+1. CREATE NEW PAGE: /about
+
+- Move ALL current About section content into /about
+- Keep FULL original text (no loss of content)
+- Keep ALL accreditation logos AND their exact descriptions
+- Design this page in a clean, modern layout:
+
+Structure:
+- Hero: "About Universitio"
+- Intro paragraph (existing text)
+- Accreditation section:
+  - Logos + FULL descriptions (as currently written)
+  - Display as grid cards (2 columns mobile, 3 desktop)
+- Trustpilot section
+- "Why Students Choose Universitio" (FULL version with all cards)
+- Company details (UK company info)
+
+----------------------------------------
+
+2. HOMEPAGE CHANGES
+
+A) REMOVE:
+- Long About paragraphs
+- Large accreditation cards section
+- Duplicate buttons in About section
+
+----------------------------------------
+
+B) ADD COMPACT TRUST SECTION (replace current About block)
+
+Create a minimal "Trust Strip" section:
+
+Layout:
+- Small title:
+  "Trusted & Accredited in the UK"
+
+- Logos in ONE ROW (horizontal)
+- Keep SAME logos
+- NO long descriptions under each logo
+
+- Add tooltip or hover (desktop) OR tap (mobile modal) to show EXACT same descriptions currently used
+
+- Keep Trustpilot rating (short version)
+
+----------------------------------------
+
+C) ADD MINI ABOUT (very short)
+
+Below trust strip:
+
+Text (max 2 lines):
+"We help students apply to universities in the UK and worldwide with expert, personalised support."
+
+Add link:
+"Learn more about us → /about"
+
+----------------------------------------
+
+3. "WHY STUDENTS CHOOSE UNIVERSITIO"
+
+- KEEP this section on homepage BUT:
+
+CHANGE:
+- Show ONLY 3 key cards (not all)
+- Reduce vertical spacing (less padding)
+- Shorten descriptions
+
+- Add link under it:
+"See full details → /about"
+
+----------------------------------------
+
+4. DESIGN OPTIMISATION
+
+- Reduce vertical padding across sections (especially mobile)
+- Merge unnecessary spacing blocks
+- Ensure faster visual flow to CTA
+
+----------------------------------------
+
+5. SEO + SITEMAP
+
+- Ensure /about page is included in sitemap automatically
+- Add proper meta title + description for About page
+- Keep internal link from homepage to /about
+
+----------------------------------------
+
+6. FINAL CHECK
+
+Ensure:
+- Homepage is shorter and more focused on conversion
+- All trust elements still exist (logos + descriptions accessible)
+- No data/content is lost (only moved or compacted)
+- UX improved for mobile scrolling
+
+Do NOT remove any important content — only restructure and optimise layout.

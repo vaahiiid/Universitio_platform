@@ -3,7 +3,9 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
 import { TrustIndicators } from "@/components/home/TrustIndicators";
-import { AboutAndServices } from "@/components/home/AboutAndServices";
+import { TrustStrip } from "@/components/home/TrustStrip";
+import { ServicesGrid } from "@/components/home/ServicesGrid";
+import { WhyChoosePreview } from "@/components/home/WhyChoosePreview";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { GlobalReach } from "@/components/home/GlobalReach";
 import { StudyDestinations } from "@/components/home/StudyDestinations";
@@ -29,17 +31,21 @@ export default function Home() {
         <Hero />
         {/* 2 — Accreditation strip + Stats + University marquee */}
         <TrustIndicators />
-        {/* 3 — About, Services, Special Pathways */}
-        <AboutAndServices />
-        {/* 4 — Assessment CTA: capture undecided users after they understand the service */}
+        {/* 3 — Compact Trust & About */}
+        <TrustStrip />
+        {/* 4 — Services */}
+        <ServicesGrid />
+        {/* 5 — Why Choose Preview */}
+        <WhyChoosePreview />
+        {/* 6 — Assessment CTA: capture undecided users after they understand the service */}
         <AssessmentCTA />
-        {/* 5 — Why Choose Us + Countries */}
+        {/* 7 — Global Reach + Countries */}
         <GlobalReach />
-        {/* 6 — Study Destinations */}
+        {/* 8 — Study Destinations */}
         <StudyDestinations />
-        {/* 7 — Partner & Student Referral */}
+        {/* 9 — Partner & Student Referral */}
         <Partnerships />
-        {/* 8 — Testimonials, Blog, Contact */}
+        {/* 10 — Testimonials, Blog, Contact */}
         <SocialProof />
       </main>
       <Footer />
