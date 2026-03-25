@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
 import { TrustIndicators } from "@/components/home/TrustIndicators";
 import { TrustStrip } from "@/components/home/TrustStrip";
-import { ServicesGrid } from "@/components/home/ServicesGrid";
+import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { WhyChoosePreview } from "@/components/home/WhyChoosePreview";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { GlobalReach } from "@/components/home/GlobalReach";
@@ -33,8 +33,8 @@ export default function Home() {
         <TrustIndicators />
         {/* 3 — Compact Trust & About */}
         <TrustStrip />
-        {/* 4 — Services */}
-        <ServicesGrid />
+        {/* 4 — Services Preview */}
+        <ServicesPreview />
         {/* 5 — Why Choose Preview */}
         <WhyChoosePreview />
         {/* 6 — Assessment CTA: capture undecided users after they understand the service */}

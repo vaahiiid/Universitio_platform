@@ -1,0 +1,96 @@
+We need to move the full Services section out of the homepage and create a dedicated Services page.
+
+GOAL:
+- reduce homepage scroll
+- keep homepage more focused on trust + conversion
+- create a premium standalone /services page
+- keep a short summary of services on the homepage
+
+----------------------------------------
+1. CREATE A DEDICATED SERVICES PAGE
+----------------------------------------
+
+Create a new page at:
+
+/services
+
+This page should become the main page for all services.
+
+Requirements:
+- strong, modern, premium design
+- visually polished, not plain
+- clear hierarchy
+- conversion-focused
+- same site design system and branding
+
+Page structure suggestion:
+- Hero section
+- Short intro paragraph
+- Full services grid / cards
+- Better service descriptions than the current homepage version
+- CTA buttons for each service
+- Strong final CTA section
+
+Use the current service content as the base, but improve the wording and presentation.
+
+Important:
+- keep the same call-to-actions concept
+- improve the descriptions so they sound more professional and persuasive
+- make the page feel high-quality and trust-building
+
+----------------------------------------
+2. HOMEPAGE CHANGES
+----------------------------------------
+
+Remove the full Services section from the homepage.
+
+Do NOT keep the full detailed services block there.
+
+Instead, replace it with a much shorter summary section:
+- short heading
+- short one-line explanation
+- a compact set of service highlights (very brief)
+- one main button or link:
+  "Explore All Services" → /services
+
+This homepage summary must be much smaller than the current section.
+
+----------------------------------------
+3. DESIGN RULES
+----------------------------------------
+
+- homepage should become shorter
+- /services page should carry the full detail
+- do not lose service content, only move and improve it
+- keep the homepage version compact
+- keep navigation and user flow clear
+
+----------------------------------------
+4. NAVIGATION + FOOTER + SITEMAP
+----------------------------------------
+
+- add/update Services link in header to /services
+- add/update Services link in footer to /services
+- ensure /services is included in sitemap automatically
+
+----------------------------------------
+5. SEO
+----------------------------------------
+
+Add proper SEO metadata for /services:
+- title
+- meta description
+- canonical if used in the project
+
+----------------------------------------
+6. AFTER IMPLEMENTATION
+----------------------------------------
+
+Show me exactly:
+- which files were modified
+- whether the full Services section was removed from homepage
+- what compact summary remains on homepage
+- what was added to /services
+- what design improvements were made on /services
+- whether header/footer links point to /services
+- whether /services is included in sitemap
