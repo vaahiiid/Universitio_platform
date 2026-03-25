@@ -47,9 +47,12 @@ export function StudyDestinations() {
     <section id="destinations" aria-label="Study Destinations" className="py-12 md:py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground tracking-tight">Where We Help You Study</h2>
-          <p className="text-lg text-muted-foreground">
-            Expert admissions guidance for the world's most sought-after study destinations.
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground tracking-tight">Where You Can Study — And Where You Can Apply From</h2>
+          <p className="text-lg text-muted-foreground mb-6">
+            We support applications to the UK, USA, Canada, and Europe — and work with students from all over the world.
+          </p>
+          <p className="text-base text-muted-foreground/80 font-medium">
+            Students from 20+ countries trust Universitio
           </p>
         </div>
 

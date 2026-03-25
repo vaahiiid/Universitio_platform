@@ -7,7 +7,6 @@ import { TrustStrip } from "@/components/home/TrustStrip";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { WhyChoosePreview } from "@/components/home/WhyChoosePreview";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
-import { GlobalReach } from "@/components/home/GlobalReach";
 import { StudyDestinations } from "@/components/home/StudyDestinations";
 import { Partnerships } from "@/components/home/Partnerships";
 import { SocialProof } from "@/components/home/SocialProof";
@@ -39,11 +38,9 @@ export default function Home() {
         <WhyChoosePreview />
         {/* 6 — Assessment CTA: capture undecided users after they understand the service */}
         <AssessmentCTA />
-        {/* 7 — Global Reach + Countries */}
-        <GlobalReach />
-        {/* 8 — Study Destinations */}
+        {/* 7 — Study Destinations (merged with Global Reach) */}
         <StudyDestinations />
-        {/* 9 — Partner & Student Referral */}
+        {/* 8 — Partner & Student Referral */}
         <Partnerships />
         {/* 10 — Testimonials, Blog, Contact */}
         <SocialProof />
