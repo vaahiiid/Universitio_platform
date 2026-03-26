@@ -142,24 +142,179 @@ function useServiceForm(serviceType: string, onClose: () => void) {
 
 function AdmissionsForm({ onClose }: { onClose: () => void }) {
   const { loading, sent, error, handleSubmit, marketingOptOut, setMarketingOptOut, termsAccepted, setTermsAccepted, termsError } = useServiceForm("Study Admissions", onClose);
+  const [phoneCountryCode, setPhoneCountryCode] = useState<string>("");
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  
+  const subjectAreas = ["Engineering", "Business & Management", "Law", "Medicine & Health", "Computer Science", "Arts & Humanities", "Social Sciences", "Science", "Other"];
+  const studyLevels = ["Foundation", "Bachelor's Degree", "Master's Degree", "PhD", "Postgraduate Certificate"];
+  const countries = ["United Kingdom", "United States", "Canada", "Australia", "Germany", "Netherlands", "France", "Singapore", "Other"];
+  const nationalities = ["Afghan", "Albanian", "Algerian", "Andorran", "Angolan", "Argentine", "Armenian", "Australian", "Austrian", "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean", "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "British", "Bruneian", "Bulgarian", "Burkinabe", "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian", "Cape Verdean", "Central African", "Chadian", "Chilean", "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian", "Dominican", "Dutch", "East Timorese", "Ecuadorian", "Egyptian", "Emirati", "English", "Equatorial Guinean", "Eritrean", "Estonian", "Ethiopian", "Fijian", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Grenadian", "Guatemalan", "Guinean", "Guinea-Bissau", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelander", "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan", "Kiribati", "Korean", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Lesotho", "Liberian", "Libyan", "Liechtensteiner", "Lithuanian", "Luxembourger", "Macanese", "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivian", "Malian", "Maltese", "Marshallese", "Martinican", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan", "Mongolian", "Montenegrin", "Moroccan", "Mozambican", "Namibian", "Nauruan", "Nepalese", "New Zealander", "Nicaraguan", "Nigerian", "Norwegian", "Omani", "Pakistani", "Palauan", "Palestinian", "Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Philippine", "Polish", "Portuguese", "Qatari", "Romanian", "Russian", "Rwandan", "Saint Kitts and Nevis", "Saint Lucian", "Saint Vincent and the Grenadines", "Samoan", "Salvadoran", "Sammarinese", "Sao Tomean", "Saudi", "Scottish", "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander", "Somali", "South African", "South Sudanese", "Spanish", "Sri Lankan", "Sudanese", "Surinamese", "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbek", "Vanuatuan", "Vatican", "Venezuelan", "Vietnamese", "Welsh", "Yemenite", "Zambian", "Zimbabwean"];
+
+  const handleCountryChange = (country: string) => {
+    if (selectedCountries.includes(country)) {
+      setSelectedCountries(selectedCountries.filter(c => c !== country));
+    } else if (selectedCountries.length < 2) {
+      setSelectedCountries([...selectedCountries, country]);
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const phoneInput = e.currentTarget.querySelector('input[name="phone"]') as HTMLInputElement | null;
+    if (phoneInput?.value && !phoneCountryCode) {
+      alert("Please select a country code for your phone number");
+      e.preventDefault();
+      return;
+    }
+    handleSubmit(e);
+  };
+
   if (sent) return <SuccessMsg onClose={onClose} />;
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <BaseFields />
-      <Field label="Which level are you applying for?" required>
-        <select name="studyLevel" required className={inputCls}>
-          <option value="">Select…</option>
-          {["School / College", "Bachelor's Degree", "Master's Degree", "Research-based Programme (UK Dependant Visa)", "PhD"].map(o => (
-            <option key={o}>{o}</option>
-          ))}
-        </select>
-      </Field>
-      <Field label="Current level of education">
-        <input name="currentEducation" className={inputCls} placeholder="e.g. A-Levels, Bachelor's" />
-      </Field>
-      <Field label="What did you study?">
-        <input name="fieldOfStudy" className={inputCls} placeholder="e.g. Business, Engineering" />
-      </Field>
+    <form onSubmit={handleFormSubmit} className="space-y-4">
+      <div className="border-b border-border pb-4">
+        <h3 className="font-semibold text-foreground mb-3">Personal Details</h3>
+        <div className="space-y-4">
+          <Field label="Full name" required>
+            <input name="fullName" required className={inputCls} placeholder="Your full name" />
+          </Field>
+          <Field label="Email address" required>
+            <input name="email" type="email" required className={inputCls} placeholder="you@example.com" />
+          </Field>
+          <Field label="Phone number with country code">
+            <div className="space-y-2">
+              <select 
+                name="phoneCountryCode"
+                className={inputCls} 
+                value={phoneCountryCode} 
+                onChange={e => setPhoneCountryCode(e.target.value)}
+              >
+                <option value="">Select country code…</option>
+                {[
+                  { code: "+44", label: "+44 United Kingdom" },
+                  { code: "+1", label: "+1 United States/Canada" },
+                  { code: "+61", label: "+61 Australia" },
+                  { code: "+64", label: "+64 New Zealand" },
+                  { code: "+1-242", label: "+1-242 Bahamas" },
+                  { code: "+33", label: "+33 France" },
+                  { code: "+49", label: "+49 Germany" },
+                  { code: "+31", label: "+31 Netherlands" },
+                  { code: "+65", label: "+65 Singapore" },
+                  { code: "+60", label: "+60 Malaysia" },
+                  { code: "+81", label: "+81 Japan" },
+                  { code: "+86", label: "+86 China" },
+                  { code: "+91", label: "+91 India" },
+                  { code: "+92", label: "+92 Pakistan" },
+                  { code: "+880", label: "+880 Bangladesh" },
+                  { code: "+39", label: "+39 Italy" },
+                  { code: "+34", label: "+34 Spain" },
+                  { code: "+32", label: "+32 Belgium" },
+                  { code: "+43", label: "+43 Austria" },
+                  { code: "+41", label: "+41 Switzerland" },
+                  { code: "+45", label: "+45 Denmark" },
+                  { code: "+46", label: "+46 Sweden" },
+                  { code: "+47", label: "+47 Norway" },
+                ].map(c => (
+                  <option key={c.code} value={c.code}>{c.label}</option>
+                ))}
+              </select>
+              <input 
+                name="phone" 
+                className={inputCls} 
+                placeholder="Enter phone number" 
+              />
+            </div>
+          </Field>
+          <Field label="Nationality" required>
+            <select name="nationality" required className={inputCls}>
+              <option value="">Select nationality…</option>
+              {nationalities.map(n => (
+                <option key={n}>{n}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Marital status">
+            <select name="maritalStatus" className={inputCls}>
+              <option value="">Select…</option>
+              {["Single", "Married", "Divorced", "Widowed"].map(o => (
+                <option key={o}>{o}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
+      </div>
+
+      <div className="border-b border-border pb-4">
+        <h3 className="font-semibold text-foreground mb-3">Previous Education</h3>
+        <div className="space-y-4">
+          <Field label="What subject area did you study before?" required>
+            <select name="previousSubjectArea" required className={inputCls}>
+              <option value="">Select subject area…</option>
+              {subjectAreas.map(s => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="What level did you study before?" required>
+            <select name="previousStudyLevel" required className={inputCls}>
+              <option value="">Select study level…</option>
+              {studyLevels.map(l => (
+                <option key={l}>{l}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
+      </div>
+
+      <div className="border-b border-border pb-4">
+        <h3 className="font-semibold text-foreground mb-3">Intended Future Study</h3>
+        <div className="space-y-4">
+          <Field label="What subject area do you want to study?" required>
+            <select name="intendedSubjectArea" required className={inputCls}>
+              <option value="">Select subject area…</option>
+              {subjectAreas.map(s => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="What level do you want to apply for?" required>
+            <select name="intendedStudyLevel" required className={inputCls}>
+              <option value="">Select study level…</option>
+              {studyLevels.map(l => (
+                <option key={l}>{l}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
+      </div>
+
+      <div className="border-b border-border pb-4">
+        <h3 className="font-semibold text-foreground mb-3">Destination Country</h3>
+        <Field label="Which countries do you want to apply to? (Select up to 2)">
+          <div className="space-y-2">
+            {countries.map(country => (
+              <div key={country} className="flex items-center gap-2">
+                <input 
+                  type="checkbox" 
+                  id={`country-${country}`}
+                  checked={selectedCountries.includes(country)}
+                  onChange={() => handleCountryChange(country)}
+                  disabled={selectedCountries.length >= 2 && !selectedCountries.includes(country)}
+                  className="w-4 h-4 rounded border-border"
+                />
+                <label htmlFor={`country-${country}`} className="text-sm text-foreground cursor-pointer">
+                  {country}
+                </label>
+              </div>
+            ))}
+          </div>
+          <input 
+            name="destinationCountries" 
+            type="hidden" 
+            value={JSON.stringify(selectedCountries)} 
+          />
+        </Field>
+      </div>
+
       <HowDidYouHear />
       <PreferredContact />
       <Field label="Additional notes">

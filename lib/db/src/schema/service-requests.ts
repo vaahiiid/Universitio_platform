@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
 
 export const serviceRequests = pgTable("service_requests", {
   id: serial("id").primaryKey(),
@@ -6,8 +6,16 @@ export const serviceRequests = pgTable("service_requests", {
   fullName: text("full_name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
+  phoneCountryCode: text("phone_country_code"),
   preferredContact: text("preferred_contact"),
   howDidYouHear: text("how_did_you_hear"),
+  previousSubjectArea: text("previous_subject_area"),
+  previousStudyLevel: text("previous_study_level"),
+  intendedSubjectArea: text("intended_subject_area"),
+  intendedStudyLevel: text("intended_study_level"),
+  maritalStatus: text("marital_status"),
+  nationality: text("nationality"),
+  destinationCountries: jsonb("destination_countries").$type<string[]>(),
   studyLevel: text("study_level"),
   currentEducation: text("current_education"),
   fieldOfStudy: text("field_of_study"),

@@ -11,8 +11,16 @@ interface ServiceRequest {
   fullName: string;
   email: string;
   phone: string | null;
+  phoneCountryCode: string | null;
   preferredContact: string | null;
   howDidYouHear: string | null;
+  previousSubjectArea: string | null;
+  previousStudyLevel: string | null;
+  intendedSubjectArea: string | null;
+  intendedStudyLevel: string | null;
+  maritalStatus: string | null;
+  nationality: string | null;
+  destinationCountries: string[] | null;
   studyLevel: string | null;
   currentEducation: string | null;
   fieldOfStudy: string | null;
@@ -87,39 +95,90 @@ function ExpandedRow({ req, onStatusChange, onDelete }: {
     }
   }
 
-  const details = [
-    { label: "Phone", value: req.phone },
-    { label: "Study Level", value: req.studyLevel },
-    { label: "Current Education", value: req.currentEducation },
-    { label: "Field of Study", value: req.fieldOfStudy },
-    { label: "Target IELTS Score", value: req.targetScore },
-    { label: "Interview Type", value: req.interviewType },
-    { label: "University", value: req.universityName || req.universities },
-    { label: "Programme", value: req.programme },
-    { label: "Service Needed", value: req.serviceNeeded },
-    { label: "City", value: req.city },
-    { label: "Intake Term", value: req.intakeTerm },
-    { label: "Year", value: req.year },
-    { label: "Weekly Budget", value: req.budget },
-    { label: "Arrival Airport", value: req.arrivalAirport },
-    { label: "Destination City", value: req.destinationCity },
-    { label: "Passengers", value: req.passengers },
-    { label: "Preferred Contact", value: req.preferredContact },
-    { label: "How Did You Hear", value: req.howDidYouHear },
-    { label: "Notes", value: req.notes },
-    { label: "Marketing Consent", value: req.marketingOptOut ? "Opted out" : "Opted in" },
-    { label: "Terms Accepted", value: req.termsAccepted ? "Yes" : "No" },
-  ].filter(d => d.value && d.value !== "No");
+  const isStudyAdmissions = req.serviceType === "Study Admissions";
+
+  const renderStudyAdmissionsDetails = () => (
+    <div className="space-y-4">
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Personal Details</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Detail label="Phone" value={req.phone && req.phoneCountryCode ? `${req.phoneCountryCode} ${req.phone}` : req.phone} />
+          <Detail label="Nationality" value={req.nationality} />
+          <Detail label="Marital Status" value={req.maritalStatus} />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Previous Education</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Detail label="Subject Area" value={req.previousSubjectArea} />
+          <Detail label="Study Level" value={req.previousStudyLevel} />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Intended Future Study</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Detail label="Subject Area" value={req.intendedSubjectArea} />
+          <Detail label="Study Level" value={req.intendedStudyLevel} />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Destination Country</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Detail label="Countries" value={req.destinationCountries?.join(", ")} />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Additional Information</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Detail label="Preferred Contact" value={req.preferredContact} />
+          <Detail label="How Did You Hear" value={req.howDidYouHear} />
+          <Detail label="Notes" value={req.notes} />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderGenericDetails = () => {
+    const details = [
+      { label: "Phone", value: req.phone },
+      { label: "Study Level", value: req.studyLevel },
+      { label: "Current Education", value: req.currentEducation },
+      { label: "Field of Study", value: req.fieldOfStudy },
+      { label: "Target IELTS Score", value: req.targetScore },
+      { label: "Interview Type", value: req.interviewType },
+      { label: "University", value: req.universityName || req.universities },
+      { label: "Programme", value: req.programme },
+      { label: "Service Needed", value: req.serviceNeeded },
+      { label: "City", value: req.city },
+      { label: "Intake Term", value: req.intakeTerm },
+      { label: "Year", value: req.year },
+      { label: "Weekly Budget", value: req.budget },
+      { label: "Arrival Airport", value: req.arrivalAirport },
+      { label: "Destination City", value: req.destinationCity },
+      { label: "Passengers", value: req.passengers },
+      { label: "Preferred Contact", value: req.preferredContact },
+      { label: "How Did You Hear", value: req.howDidYouHear },
+      { label: "Notes", value: req.notes },
+      { label: "Marketing Consent", value: req.marketingOptOut ? "Opted out" : "Opted in" },
+      { label: "Terms Accepted", value: req.termsAccepted ? "Yes" : "No" },
+    ].filter(d => d.value && d.value !== "No");
+
+    return details.length > 0 ? (
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {details.map(d => (
+          <Detail key={d.label} label={d.label} value={d.value} />
+        ))}
+      </div>
+    ) : null;
+  };
 
   return (
     <div className="px-4 md:px-6 py-5 bg-muted/20 border-t border-border/60 space-y-5">
-      {details.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {details.map(d => (
-            <Detail key={d.label} label={d.label} value={d.value} />
-          ))}
-        </div>
-      )}
+      {isStudyAdmissions ? renderStudyAdmissionsDetails() : renderGenericDetails()}
 
       <div className="flex flex-wrap gap-4 items-start">
         <div className="flex flex-col gap-1 min-w-[160px]">
