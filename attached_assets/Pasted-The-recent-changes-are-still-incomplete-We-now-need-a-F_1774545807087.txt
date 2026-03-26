@@ -1,0 +1,167 @@
+The recent changes are still incomplete.
+
+We now need a FINAL and STRICT implementation covering BOTH:
+- missing frontend questions
+- full admin visibility
+- phone number country code enforcement
+
+Do NOT skip anything.
+
+==================================================
+1. STUDY ADMISSIONS FORM — REQUIRED QUESTIONS (MUST BE ADDED)
+==================================================
+
+The Study Admissions service form is still missing required structured questions.
+
+You MUST implement the following exactly:
+
+----------------------------------------
+A. PREVIOUS EDUCATION (STRUCTURED)
+----------------------------------------
+
+Ask separately:
+
+1. What subject area did you study before?
+→ dropdown (standardised subject areas)
+
+2. What level did you study before?
+→ dropdown (Foundation / Diploma / Bachelor’s / Master’s / etc.)
+
+----------------------------------------
+B. INTENDED FUTURE STUDY (STRUCTURED)
+----------------------------------------
+
+Ask separately:
+
+1. What subject area do you want to study?
+→ dropdown (same or matching subject list)
+
+2. What level do you want to apply for?
+→ dropdown (Foundation / Bachelor’s / Master’s / PhD / etc.)
+
+IMPORTANT:
+This must be clearly separate from previous education.
+Do NOT merge them.
+
+----------------------------------------
+C. MARITAL STATUS (MUST EXIST)
+----------------------------------------
+
+Add:
+- Single
+- Married
+
+----------------------------------------
+D. DESTINATION COUNTRY (LIMITED SELECTION)
+----------------------------------------
+
+Ask:
+Which country do you want to apply to?
+
+Requirements:
+- user can select up to 2 countries
+- not more than 2
+- selection must be enforced
+
+----------------------------------------
+E. NATIONALITY (MUST EXIST)
+----------------------------------------
+
+User must select nationality properly.
+
+----------------------------------------
+F. PHONE NUMBER WITH COUNTRY CODE (MANDATORY)
+----------------------------------------
+
+Phone input MUST:
+- include country selector
+- require country code selection
+- NOT allow plain number without prefix
+
+==================================================
+2. APPLY PHONE NUMBER FIX TO ALL SERVICES
+==================================================
+
+The country code requirement must be applied to ALL service forms:
+
+- Study Admissions
+- IELTS Preparation
+- Interview Preparation
+- SOP & CV Guidance
+- Student Accommodation
+- Airport Transfer
+- all others
+
+User MUST choose country code before submitting.
+
+==================================================
+3. ADMIN MUST SHOW EVERY SINGLE QUESTION (NO EXCEPTIONS)
+==================================================
+
+For ALL services:
+
+Every single question shown in the frontend form MUST appear in admin.
+
+This includes the NEW Study Admissions fields:
+- previous subject area
+- previous study level
+- intended subject area
+- intended study level
+- marital status
+- nationality
+- up to 2 destination countries
+- phone number with country code
+
+Admin MUST:
+- show exact question labels
+- show answers clearly under each question
+- group by sections (not flat list)
+- match frontend logic
+
+==================================================
+4. APPLY TO ALL SERVICES (NOT JUST ADMISSIONS)
+==================================================
+
+Audit ALL service forms and ensure:
+- no field is missing in admin
+- no field is hidden
+- structure is readable
+
+==================================================
+5. VERIFY FULL DATA FLOW
+==================================================
+
+Check:
+frontend → payload → backend → database → admin
+
+Do NOT assume it works.
+Verify it.
+
+==================================================
+6. ADMIN UX STILL NEEDS IMPROVEMENT
+==================================================
+
+Continue improving:
+- list readability
+- ability to distinguish users
+- section grouping
+- spacing and hierarchy
+- scanability
+
+Do NOT redesign everything, but make it clearly usable.
+
+==================================================
+7. FINAL VERIFICATION (MANDATORY)
+==================================================
+
+After implementation, show:
+
+1. Which Study Admissions fields were added
+2. Which frontend files were modified
+3. Which backend files were modified
+4. Which admin files were modified
+5. Confirmation that ALL frontend questions now appear in admin
+6. Confirmation that phone country code is mandatory across ALL services
+7. Confirmation that user cannot submit without selecting country code
+8. Confirmation that destination selection is limited to max 2 countries
+9. Confirmation that all new fields are visible in admin
