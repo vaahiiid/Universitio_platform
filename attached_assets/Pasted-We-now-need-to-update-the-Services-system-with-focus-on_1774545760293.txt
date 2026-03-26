@@ -1,0 +1,177 @@
+We now need to update the Services system, with focus on BOTH:
+1. admin usability
+2. frontend service form structure
+
+This must be handled carefully and consistently across frontend, backend, and admin.
+
+==================================================
+PART 1 — ADMIN SERVICE REQUESTS UX MUST IMPROVE
+==================================================
+
+The current admin UX for Service Requests is hard to read and hard to work with.
+
+Problems:
+- the list is difficult to scan
+- records are not easy to distinguish from each other
+- the inside/detail view is not structured enough
+- the submitted request does not clearly reflect the original frontend questions
+
+Required improvements:
+- make the Service Requests list easier to scan
+- improve visual hierarchy
+- improve readability
+- help us distinguish users and requests more quickly
+- in the detail view, show the data grouped and labelled clearly
+- the admin detail view should reflect the same logic and structure as the frontend form questions
+
+Important:
+- do not redesign the whole admin panel
+- keep the existing admin style
+- focus on readability, grouping, and usability
+
+==================================================
+PART 2 — IN ADMIN, SHOW THE SAME QUESTIONS + ANSWERS CLEARLY
+==================================================
+
+For each service request, I want the admin detail view to show:
+- the same question structure as the frontend form
+- the answer under each question
+- grouped sections so it is easy to understand the request
+
+Do NOT show service requests as one flat mixed list of fields.
+
+The admin detail view must make it easy to understand:
+- what the user studied before
+- what they want to study now
+- which country/countries they are targeting
+- their marital status
+- nationality
+- contact details
+- all service-specific preferences
+
+==================================================
+PART 3 — STUDY ADMISSIONS SERVICE FORM CHANGES
+==================================================
+
+We need to update the Study Admissions service form on the main website.
+
+Current education-related questions must be improved.
+
+----------------------------------------
+A. PREVIOUS EDUCATION
+----------------------------------------
+
+Ask separately:
+
+1. What subject area did you study before?
+- use a dropdown list of subject areas
+
+2. What level did you study before?
+- use a dropdown list of study levels
+
+Do NOT keep this vague.
+We need a structured selection.
+
+----------------------------------------
+B. INTENDED FUTURE STUDY
+----------------------------------------
+
+Also ask separately:
+
+1. What subject area do you want to study?
+- use the same or a matching subject-area list
+
+2. What study level do you want to apply for?
+- use a dropdown list of intended study levels
+
+This must be clearly separate from previous education.
+
+----------------------------------------
+C. MARITAL STATUS
+----------------------------------------
+
+Add marital status question:
+- Single
+- Married
+(or equivalent wording if already standardised)
+
+----------------------------------------
+D. DESTINATION COUNTRY
+----------------------------------------
+
+Ask which country they want to apply to.
+
+Requirements:
+- allow selecting up to 2 countries
+- not more than 2
+- make the selected countries clear in admin too
+
+----------------------------------------
+E. NATIONALITY
+----------------------------------------
+
+Add nationality question if missing / ensure it is properly captured and shown in admin.
+
+----------------------------------------
+F. PHONE NUMBER WITH COUNTRY CODE
+----------------------------------------
+
+For phone number:
+- add country calling code support / country prefix
+- do not keep it as a plain local number field
+- make it user-friendly and internationally appropriate
+
+==================================================
+PART 4 — APPLY COUNTRY CODE FIX TO OTHER SERVICES TOO
+==================================================
+
+For ALL other service forms as well:
+- phone number input must support country code / country prefix properly
+
+This must be consistent across all service forms, not only Study Admissions.
+
+==================================================
+PART 5 — ADMIN MUST MATCH THESE NEW FIELDS
+==================================================
+
+Any new or updated Study Admissions questions must also appear properly in admin.
+
+Specifically, admin should clearly show:
+- previous subject area
+- previous study level
+- intended subject area
+- intended study level
+- marital status
+- up to 2 selected destination countries
+- nationality
+- phone number with country code
+
+The admin display should remain structured and readable.
+
+==================================================
+PART 6 — BACKEND / STORAGE / DATA FLOW
+==================================================
+
+Please verify the full chain:
+frontend form -> payload -> backend save -> admin display
+
+Do NOT only update the frontend.
+Do NOT only update the admin.
+Ensure the backend saves and returns the new fields correctly.
+
+==================================================
+PART 7 — AFTER IMPLEMENTATION, SHOW ME EXACTLY
+==================================================
+
+After finishing, report clearly:
+
+1. Which frontend service form files were modified
+2. Which backend files were modified
+3. Which admin files were modified
+4. How the Study Admissions questions were changed
+5. What new fields were added
+6. How country-code phone input was applied to all services
+7. How the admin list UX was improved
+8. How the admin detail view now mirrors the frontend questions
+9. Confirm that users can select up to 2 destination countries
+10. Confirm that all new fields are visible in admin
