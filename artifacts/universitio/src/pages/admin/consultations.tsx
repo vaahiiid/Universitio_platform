@@ -10,7 +10,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
 import {
-  ArrowLeft, Search, ChevronLeft, ChevronRight, X, Save, Loader2, Trash2, Download
+  ArrowLeft, Search, ChevronLeft, ChevronRight, X, Save, Loader2, Trash2, Download, FileText, CheckCircle2, AlertCircle
 } from "lucide-react";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
 
@@ -47,6 +47,45 @@ function FieldRow({ label, value }: { label: string; value: React.ReactNode }) {
     <div className="grid grid-cols-3 gap-2 py-2 border-b border-border last:border-0">
       <span className="text-sm font-medium text-muted-foreground col-span-1">{label}</span>
       <span className="text-sm text-foreground col-span-2 break-words">{value}</span>
+    </div>
+  );
+}
+
+function SectionHeader({ title }: { title: string }) {
+  return (
+    <div className="pt-6 pb-3 mb-4 border-b-2 border-primary">
+      <h3 className="text-sm font-bold text-foreground uppercase tracking-wide">{title}</h3>
+    </div>
+  );
+}
+
+function CvFileSection({ cvFileName }: { cvFileName: string | null | undefined }) {
+  if (!cvFileName) {
+    return (
+      <div className="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center gap-3">
+        <AlertCircle className="w-5 h-5 text-slate-500" />
+        <span className="text-sm text-slate-600">No CV/resume uploaded</span>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <FileText className="w-5 h-5 text-blue-600" />
+        <div>
+          <p className="text-sm font-medium text-blue-900">{cvFileName}</p>
+          <p className="text-xs text-blue-700">Submitted with application</p>
+        </div>
+      </div>
+      <a
+        href={`${import.meta.env.BASE_URL}api/admin/cv/${cvFileName}`}
+        download
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded transition-colors"
+      >
+        <Download className="w-3.5 h-3.5" />
+        Download
+      </a>
     </div>
   );
 }
@@ -126,45 +165,74 @@ function DetailView({ id }: { id: number }) {
             </Button>
           </div>
 
-          <div className="px-6 py-4 space-y-0">
-            <FieldRow label="Mobile" value={data.mobile as string} />
+          <div className="px-6 py-4">
+            {/* SECTION 1: Personal Details */}
+            <SectionHeader title="Personal Details" />
+            <FieldRow label="Full Name" value={data.fullName as string} />
+            <FieldRow label="Mobile Number" value={data.mobile as string} />
+            <FieldRow label="Email Address" value={data.email as string} />
             <FieldRow label="Date of Birth" value={data.dateOfBirth as string} />
             <FieldRow label="Nationality" value={data.nationality as string} />
             <FieldRow label="Marital Status" value={data.maritalStatus as string} />
-            <FieldRow label="Destinations" value={dests?.join(", ")} />
-            <FieldRow label="Course Area" value={data.intendedCourseArea as string} />
-            <FieldRow label="English Qualification" value={data.hasEnglishQualification as string} />
-            <FieldRow label="English Type" value={data.englishQualificationType as string} />
-            <FieldRow label="English Score" value={data.englishOverallScore as string} />
-            <FieldRow label="English Level" value={data.englishCurrentLevel as string} />
-            <FieldRow label="Budget" value={data.tuitionBudget as string} />
-            <FieldRow label="Contact Method" value={data.preferredContactMethod as string} />
-            <FieldRow label="How Heard" value={data.howDidYouHear as string} />
-            <FieldRow label="CV File" value={data.cvFileName as string} />
+
+            {/* SECTION 2: Education Background */}
+            <SectionHeader title="Education Background" />
             {prevEd && prevEd.length > 0 && (
-              <FieldRow
-                label="Education"
-                value={
-                  <ul className="space-y-1">
-                    {prevEd.map((ed, i) => (
-                      <li key={i} className="text-sm">{ed.levelOfStudy} — {ed.fieldOfStudy}</li>
-                    ))}
-                  </ul>
-                }
-              />
+              <div className="py-2 border-b border-border">
+                <span className="text-sm font-medium text-muted-foreground block mb-2">Previous Education</span>
+                <ul className="space-y-2 ml-3">
+                  {prevEd.map((ed, i) => (
+                    <li key={i} className="text-sm text-foreground border-l-2 border-primary pl-3">
+                      <span className="font-medium">{ed.levelOfStudy}</span>
+                      {ed.fieldOfStudy && <span className="text-muted-foreground"> — {ed.fieldOfStudy}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
-            <FieldRow label="Submitted" value={formatDate(data.createdAt as string)} />
+            <FieldRow label="Intended Course Area" value={data.intendedCourseArea as string} />
+
+            {/* SECTION 3: Study Preferences */}
+            <SectionHeader title="Study Preferences" />
+            <FieldRow label="Preferred Study Destinations" value={dests?.length ? dests.join(", ") : null} />
+            <FieldRow label="Tuition Budget" value={data.tuitionBudget as string} />
+
+            {/* SECTION 4: English Language */}
+            <SectionHeader title="English Language" />
+            <FieldRow label="English Language Qualification?" value={data.hasEnglishQualification as string} />
+            {data.hasEnglishQualification === "yes" && (
+              <>
+                <FieldRow label="Qualification Type" value={data.englishQualificationType as string} />
+                <FieldRow label="Overall Score" value={data.englishOverallScore as string} />
+              </>
+            )}
+            {data.hasEnglishQualification === "no" && (
+              <FieldRow label="Current English Level" value={data.englishCurrentLevel as string} />
+            )}
+
+            {/* SECTION 5: Additional Information */}
+            <SectionHeader title="Additional Information" />
+            <div className="py-2 border-b border-border">
+              <span className="text-sm font-medium text-muted-foreground block mb-2">CV / Resume File</span>
+              <CvFileSection cvFileName={data.cvFileName as string | null | undefined} />
+            </div>
+            <FieldRow label="How did you hear about us?" value={data.howDidYouHear as string} />
+            <FieldRow label="Preferred Contact Method" value={data.preferredContactMethod as string} />
+
+            {/* Consent & Submission Info */}
+            <SectionHeader title="Submission & Consent" />
+            <FieldRow label="Submission Date & Time" value={formatDate(data.createdAt as string)} />
             <FieldRow
-              label="Consent"
+              label="Consent Status"
               value={
                 <div className="flex flex-wrap gap-2">
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.termsAccepted ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                    {data.termsAccepted ? "✓ Terms Accepted" : "✗ Terms Not Accepted"}
+                    {data.termsAccepted ? <CheckCircle2 className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
+                    {data.termsAccepted ? "Terms Accepted" : "Terms Not Accepted"}
                   </span>
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.marketingOptOut ? "bg-gray-100 text-gray-600" : "bg-blue-100 text-blue-700"}`}>
-                    {data.marketingOptOut ? "Opted Out of Marketing" : "✓ Marketing Emails OK"}
+                    {data.marketingOptOut ? "Opted Out of Marketing" : "✓ Marketing Emails Accepted"}
                   </span>
-                  {data.consentVersion && <span className="text-xs text-muted-foreground">v{data.consentVersion}</span>}
                 </div>
               }
             />
@@ -313,23 +381,50 @@ function ListView() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {items.map((item) => (
+                  {items.map((item) => {
+                    const destinations = item.preferredDestinations as string[] | undefined;
+                    const contactMethod = item.preferredContactMethod as string | undefined;
+                    const courseArea = item.intendedCourseArea as string | undefined;
+                    return (
                     <tr
                       key={item.id as number}
-                      className="hover:bg-muted/20 transition-colors"
+                      className="hover:bg-muted/20 transition-colors cursor-pointer"
+                      onClick={() => navigate(`/admin/consultations/${item.id}`)}
                     >
-                      <td className="px-4 py-3 font-medium text-foreground cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{item.fullName as string}</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{item.email as string}</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden md:table-cell cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{item.nationality as string}</td>
-                      <td className="px-4 py-3 cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}><StatusBadge status={item.status as string} /></td>
-                      <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell cursor-pointer" onClick={() => navigate(`/admin/consultations/${item.id}`)}>{formatDate(item.createdAt as string)}</td>
                       <td className="px-4 py-3">
+                        <div className="flex flex-col gap-1.5">
+                          <p className="font-semibold text-foreground">{item.fullName as string}</p>
+                          <p className="text-xs text-muted-foreground">{item.email as string}</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {courseArea && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                                {courseArea}
+                              </span>
+                            )}
+                            {contactMethod && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                {contactMethod}
+                              </span>
+                            )}
+                            {destinations && destinations.length > 0 && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                {destinations.join(", ")}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{item.nationality as string}</td>
+                      <td className="px-4 py-3"><StatusBadge status={item.status as string} /></td>
+                      <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell">{formatDate(item.createdAt as string)}</td>
+                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                         <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(item.id as number); }} className="text-muted-foreground hover:text-red-600 transition-colors">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

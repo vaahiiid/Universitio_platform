@@ -353,4 +353,24 @@ router.post("/leads/service-request", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/admin/cv/:filename", async (req: Request, res: Response) => {
+  try {
+    const { filename } = req.params;
+    const filePath = path.resolve(CV_UPLOAD_DIR, filename);
+    
+    if (!filePath.startsWith(CV_UPLOAD_DIR)) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+    
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ error: "File not found" });
+    }
+    
+    res.download(filePath);
+  } catch (err) {
+    console.error("Error downloading CV:", err);
+    res.status(500).json({ error: "Failed to download file" });
+  }
+});
+
 export default router;

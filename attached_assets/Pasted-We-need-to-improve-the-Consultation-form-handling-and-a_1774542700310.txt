@@ -1,0 +1,151 @@
+We need to improve the Consultation form handling and admin experience very carefully.
+
+This is an admin usability and data visibility task.
+Do NOT do a shallow fix.
+Do NOT redesign unrelated parts.
+
+GOALS:
+1. The consultation submission in admin must visually match the structure of the frontend consultation form
+2. Uploaded CV/resume files must be accessible in admin (view/download)
+3. The admin consultations list must become much easier to scan and search
+
+==================================================
+PART 1 — ADMIN DETAIL VIEW MUST MATCH THE FRONTEND FORM
+==================================================
+
+The consultation form on the website is structured in sections, and I need the admin view to reflect that exact same logic so I do not get confused.
+
+The admin detail view should display the consultation using the SAME grouped sections and question labels as the frontend form.
+
+Use these exact sections and labels:
+
+----------------------------------------
+SECTION: Personal Details
+----------------------------------------
+- Full Name
+- Mobile Number
+- Email Address
+- Date of Birth
+- Nationality
+- Marital Status
+
+----------------------------------------
+SECTION: Education Background
+----------------------------------------
+- Previous Education
+- Field of Study
+- Level of Study
+- Intended Course Area
+
+Notes:
+- If “Previous Education” contains multiple entries, show them clearly as separate entries
+- Preserve order and readability
+
+----------------------------------------
+SECTION: Study Preferences
+----------------------------------------
+- Preferred Study Destination
+- Tuition Budget
+
+Notes:
+- If user selected up to 2 destinations, show both clearly
+
+----------------------------------------
+SECTION: English Language
+----------------------------------------
+- Do you have an English language qualification?
+
+----------------------------------------
+SECTION: Additional Information
+----------------------------------------
+- Do you have a CV or resume to share?
+- How did you hear about us?
+- Preferred Contact Method
+- Marketing opt-out
+- Terms and Conditions / Privacy Policy agreement
+
+IMPORTANT:
+- The admin view must NOT show this as a flat mixed list
+- It must be grouped section by section
+- Labels in admin should match the meaning and wording of the frontend questions
+- Make it easy to read quickly without mixing unrelated fields
+
+==================================================
+PART 2 — CV / RESUME FILE ACCESS IN ADMIN
+==================================================
+
+If the user uploads a CV or resume, I must be able to access it from the admin panel.
+
+Please verify the full file flow:
+frontend upload -> backend storage -> admin display
+
+Required:
+- Show whether a CV/resume was uploaded
+- If uploaded, show a clear link/button in admin:
+  - View CV
+  - Download CV
+- The file must be accessible to admin reliably
+- If the file is stored but not exposed, fix admin display
+- If the file is not being stored correctly, fix backend mapping/storage
+- If upload handling is broken, fix it end-to-end
+
+IMPORTANT:
+Do NOT assume the file system is correct.
+Verify the real upload path and admin retrieval.
+
+==================================================
+PART 3 — ADMIN CONSULTATION LIST UX IMPROVEMENT
+==================================================
+
+The consultations list in admin is currently hard to use.
+It is difficult to find and distinguish people quickly.
+
+Please improve the list UI/UX so it becomes easier to scan and manage submissions.
+
+Without redesigning the whole admin, find a practical solution.
+
+Possible improvements (choose the best combination yourself):
+- better row hierarchy
+- clearer name/email/phone visibility
+- badges or chips for destination / course area / contact method
+- better spacing and grouping
+- search field
+- filters (e.g. by destination, contact method, status)
+- sort options (newest first, etc.)
+- clearer status visibility
+- expandable summary preview
+
+Important:
+- Keep the admin style consistent
+- Focus on usability, readability, and speed of finding people
+- The solution should feel practical, not decorative
+
+==================================================
+PART 4 — VERIFICATION
+==================================================
+
+Do a real audit before changing things.
+
+First verify:
+1. What exact fields the frontend consultation form submits
+2. What exact fields are saved in backend/database
+3. Whether uploaded CV files are stored and retrievable
+4. What the admin currently shows vs what is missing
+
+Then implement only what is needed.
+
+==================================================
+AFTER IMPLEMENTATION, SHOW ME EXACTLY:
+==================================================
+
+1. Which frontend consultation fields were found
+2. Which fields were previously missing or badly displayed in admin
+3. Whether the issue was:
+   - admin rendering only
+   - backend save logic
+   - file upload handling
+   - or a combination
+4. Which files were modified
+5. Confirmation that the admin consultation detail view now follows the same section structure as the frontend form
+6. Confirmation that uploaded CV/resume files can now be viewed/downloaded in admin
+7. What usability improvements were made to the consultations list
