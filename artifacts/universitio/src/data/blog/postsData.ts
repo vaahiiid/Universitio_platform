@@ -174,6 +174,7 @@ export const blogPosts: BlogPost[] = [
 <p><strong>👉 Take our free assessment:</strong><br/>
 <a href="https://universitio.com/assessment-form" target="_blank" rel="noopener noreferrer">Complete your assessment form</a></p>`,
   },
+  {
     id: 92,
     slug: `solent-university-courses-fees-admission`,
     title: `Solent University Guide: Courses, Fees & Admission`,
