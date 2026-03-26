@@ -1,0 +1,64 @@
+The admin Consultation Requests list is currently not displaying.
+
+This is a critical bug and must be fixed first before any further consultation-form work.
+
+Please debug this carefully end-to-end.
+
+==================================================
+PROBLEM
+==================================================
+
+The Consultation Requests list in the admin panel is not showing.
+I need the list itself to load and display properly.
+
+Do NOT assume this is only a UI issue.
+Check the full chain:
+- frontend admin page
+- API request
+- backend route
+- database query
+- response shape
+- rendering logic
+
+==================================================
+REQUIRED DEBUG PROCESS
+==================================================
+
+1. Check whether the admin frontend page is making the request correctly
+2. Check whether the backend consultations endpoint is responding correctly
+3. Check whether the database query is returning records
+4. Check whether the frontend expects a different response shape than the backend returns
+5. Check for runtime/rendering errors that prevent the list from showing
+6. Check whether recent consultation-form changes broke the list page
+
+==================================================
+IMPORTANT
+==================================================
+
+- Do NOT redesign the admin
+- Do NOT make broad unrelated changes
+- Fix the exact reason the consultation list is not appearing
+- If there is an error state, make it visible and readable
+- If the list is empty because of a bug, fix it
+- If the data exists but is not rendering, fix the rendering
+
+==================================================
+AFTER FIXING
+==================================================
+
+Show me exactly:
+
+1. What the root cause was
+   - frontend request issue?
+   - backend route issue?
+   - database query issue?
+   - response shape mismatch?
+   - rendering/runtime error?
+
+2. Which files were modified
+
+3. Confirm that:
+   - admin consultation requests list now loads
+   - records are visible again
+   - clicking into a consultation still works
+   - no existing consultation functionality was broken
