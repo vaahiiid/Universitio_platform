@@ -15,6 +15,166 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+  {
+    id: 93,
+    slug: `scholarship-vs-funding-guide`,
+    title: `Scholarship vs Funding: Full Guide for Students`,
+    date: "2026-03-25",
+    author: `Amelia Clarke`,
+    excerpt: `Learn the difference between scholarships, funding, and fully funded programmes. Compare opportunities in the UK, USA, Canada, and Europe.`,
+    image: "blog-images/scholarship-vs-funding-guide.webp",
+    imageAlt: `Scholarship vs Funding: Full Guide for International Students`,
+    categories: ["Student Guides"],
+    categorySlugs: ["student-guides"],
+    tags: ["scholarship vs funding", "fully funded scholarship", "study abroad funding", "UK scholarships international students", "funded PhD", "study abroad financial support"],
+    content: `<h1>Scholarship vs Funding: Full Guide for Students</h1>
+
+<p>If you are planning to study abroad, you have probably heard terms like scholarship, funding, and fully funded. Many students assume they all mean the same thing — but they don't.</p>
+
+<p>Understanding the difference is essential. Otherwise, you may apply with unrealistic expectations and miss better opportunities.</p>
+
+<h2>What Is a Scholarship?</h2>
+
+<p>A scholarship is a financial award given to students to reduce tuition costs.</p>
+
+<h3>Key Features of Scholarships</h3>
+<ul>
+<li>Usually covers part of tuition fees</li>
+<li>Based on academic merit or achievements</li>
+<li>Sometimes includes limited living support</li>
+<li>Rarely covers all expenses</li>
+</ul>
+
+<p>Most scholarships are partial, not full.</p>
+
+<h2>What Is Funding?</h2>
+
+<p>Funding is a broader term that includes all types of financial support.</p>
+
+<h3>Types of Funding</h3>
+<ul>
+<li>Scholarships</li>
+<li>Grants</li>
+<li>Bursaries</li>
+<li>Research funding</li>
+<li>Teaching or research assistantships</li>
+</ul>
+
+<p>Funding can come from universities, governments, or external organisations.</p>
+
+<h2>What Does "Fully Funded" Mean?</h2>
+
+<p>A fully funded programme covers almost all study-related costs.</p>
+
+<h3>Typically Includes</h3>
+<ul>
+<li>Full tuition fees</li>
+<li>Monthly living allowance</li>
+<li>Accommodation (in some cases)</li>
+<li>Travel costs (occasionally)</li>
+</ul>
+
+<p>Fully funded opportunities are limited and highly competitive.</p>
+
+<h2>Key Differences (Simple Breakdown)</h2>
+
+<p><strong>Scholarship</strong> → Usually partial financial support</p>
+
+<p><strong>Funding</strong> → General term for all support types</p>
+
+<p><strong>Fully funded</strong> → Covers nearly everything</p>
+
+<p>Many students misunderstand this and expect full funding where it does not exist.</p>
+
+<h2>UK vs USA vs Canada vs Europe (Real Comparison)</h2>
+
+<h3>United Kingdom (UK)</h3>
+
+<p><strong>Scholarships:</strong> Available but mostly partial</p>
+
+<p><strong>Fully funded:</strong> Mainly for PhD</p>
+
+<p><strong>Undergraduate:</strong> Very rare</p>
+
+<p><strong>Master's:</strong> Limited</p>
+
+<p>For more information on UK student finance, visit the official <a href="https://www.gov.uk/student-finance" target="_blank" rel="noopener noreferrer">UK Student Finance page</a>.</p>
+
+<p><strong>Reality:</strong> The UK is not a fully funded destination for most students.</p>
+
+<h3>United States (USA)</h3>
+
+<p><strong>Scholarships:</strong> Available</p>
+
+<p><strong>Fully funded:</strong> Common for PhD</p>
+
+<p><strong>Master's:</strong> Sometimes funded</p>
+
+<p><strong>Undergraduate:</strong> Rare but possible</p>
+
+<p><strong>Reality:</strong> The USA offers strong funding opportunities, especially in research.</p>
+
+<h3>Canada</h3>
+
+<p><strong>Scholarships:</strong> Available but competitive</p>
+
+<p><strong>Fully funded:</strong> Mostly PhD</p>
+
+<p><strong>Master's:</strong> Limited funding options</p>
+
+<p><strong>Reality:</strong> Canada provides moderate funding, not guaranteed.</p>
+
+<h3>Europe (Germany, Netherlands, etc.)</h3>
+
+<p><strong>Germany:</strong> Low or no tuition fees</p>
+
+<p><strong>Netherlands:</strong> Partial scholarships</p>
+
+<p><strong>Other countries:</strong> Mixed</p>
+
+<p><strong>Reality:</strong> Europe is often low-cost rather than fully funded.</p>
+
+<h2>When Should You Expect Funding?</h2>
+
+<h3>Higher Chances</h3>
+<ul>
+<li>PhD programmes</li>
+<li>Research-based degrees</li>
+<li>Strong academic profile</li>
+</ul>
+
+<h3>Lower Chances</h3>
+<ul>
+<li>Undergraduate degrees</li>
+<li>Taught Master's</li>
+<li>General non-research courses</li>
+</ul>
+
+<h2>Common Mistakes Students Make</h2>
+
+<ul>
+<li>Expecting full funding for Bachelor's degrees</li>
+<li>Assuming all countries offer similar opportunities</li>
+<li>Confusing scholarships with full funding</li>
+<li>Applying without understanding criteria</li>
+</ul>
+
+<p>These mistakes can waste time and delay your plans.</p>
+
+<h2>Final Advice</h2>
+
+<p>Choosing where to study should be based on realistic expectations, not assumptions.</p>
+
+<p>If funding is your priority, you need a clear strategy — especially for selecting the right country and degree level.</p>
+
+<p><strong>👉 Get expert guidance on your study plans and funding options:</strong><br/>
+<a href="https://universitio.com/free-consultation" target="_blank" rel="noopener noreferrer">Book your free consultation now</a></p>
+
+<p>Our team can help you assess your profile, identify realistic funding opportunities, and create a personalised study plan.</p>
+
+<p><strong>👉 Take our free assessment:</strong><br/>
+<a href="https://universitio.com/assessment-form" target="_blank" rel="noopener noreferrer">Complete your assessment form</a></p>`,
+  },
     id: 92,
     slug: `solent-university-courses-fees-admission`,
     title: `Solent University Guide: Courses, Fees & Admission`,

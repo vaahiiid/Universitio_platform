@@ -1,0 +1,206 @@
+Create a new SEO-optimised blog post using the content below.
+
+IMPORTANT INSTRUCTIONS (READ CAREFULLY):
+
+1. Use the attached image as the blog cover image
+2. Add proper ALT TEXT for the image (SEO-optimised, relevant to keywords)
+3. Ensure the blog is fully SEO-friendly:
+   - Optimised title (max 60 characters)
+   - Meta description (150–160 characters)
+   - Proper keyword usage (natural, no stuffing)
+   - Clean structure (H1, H2, H3)
+4. Use the provided URL slug exactly
+5. Assign the blog to this category:
+   Student Guides
+6. Automatically update the Google sitemap after publishing
+7. Ensure the blog appears in the "latest blog posts" section on the homepage
+8. Maintain consistency with existing blog design and layout
+9. Use clean, readable formatting:
+   - short paragraphs
+   - bullet points where needed
+   - scannable structure
+10. Include internal links naturally within the content
+11. Include external links properly (especially authority sources like gov.uk)
+12. Keep tone professional, clear, and trustworthy
+13. Do NOT remove or weaken key points — only improve readability if needed
+
+----------------------------------------
+BLOG DATA
+----------------------------------------
+
+SEO Title:
+Scholarship vs Funding: Full Guide for Students
+
+Meta Description:
+Learn the difference between scholarships, funding, and fully funded programmes. Compare opportunities in the UK, USA, Canada, and Europe.
+
+URL Slug:
+scholarship-vs-funding-guide
+
+Focus Keywords:
+
+Primary:
+scholarship vs funding
+
+Secondary:
+fully funded scholarship
+study abroad funding
+UK scholarships for international students
+funded PhD UK USA Canada
+study abroad financial support
+
+----------------------------------------
+BLOG CONTENT
+----------------------------------------
+
+H1: Scholarship vs Funding: Full Guide for Students
+
+Introduction:
+
+If you are planning to study abroad, you have probably heard terms like scholarship, funding, and fully funded. Many students assume they all mean the same thing — but they don’t.
+
+Understanding the difference is essential. Otherwise, you may apply with unrealistic expectations and miss better opportunities.
+
+H2: What Is a Scholarship?
+
+A scholarship is a financial award given to students to reduce tuition costs.
+
+H3: Key Features of Scholarships
+- Usually covers part of tuition fees
+- Based on academic merit or achievements
+- Sometimes includes limited living support
+- Rarely covers all expenses
+
+Most scholarships are partial, not full.
+
+H2: What Is Funding?
+
+Funding is a broader term that includes all types of financial support.
+
+H3: Types of Funding
+- Scholarships
+- Grants
+- Bursaries
+- Research funding
+- Teaching or research assistantships
+
+Funding can come from universities, governments, or external organisations.
+
+H2: What Does “Fully Funded” Mean?
+
+A fully funded programme covers almost all study-related costs.
+
+H3: Typically Includes
+- Full tuition fees
+- Monthly living allowance
+- Accommodation (in some cases)
+- Travel costs (occasionally)
+
+Fully funded opportunities are limited and highly competitive.
+
+H2: Key Differences (Simple Breakdown)
+
+- Scholarship → Usually partial financial support  
+- Funding → General term for all support types  
+- Fully funded → Covers nearly everything  
+
+Many students misunderstand this and expect full funding where it does not exist.
+
+H2: UK vs USA vs Canada vs Europe (Real Comparison)
+
+H3: United Kingdom (UK)
+
+Scholarships: Available but mostly partial  
+Fully funded: Mainly for PhD  
+Undergraduate: Very rare  
+Master’s: Limited  
+
+Include this external link naturally:
+https://www.gov.uk/student-finance
+
+Reality: The UK is not a fully funded destination for most students.
+
+H3: United States (USA)
+
+Scholarships: Available  
+Fully funded: Common for PhD  
+Master’s: Sometimes funded  
+Undergraduate: Rare but possible  
+
+Reality: The USA offers strong funding opportunities, especially in research.
+
+H3: Canada
+
+Scholarships: Available but competitive  
+Fully funded: Mostly PhD  
+Master’s: Limited funding options  
+
+Reality: Canada provides moderate funding, not guaranteed.
+
+H3: Europe (Germany, Netherlands, etc.)
+
+Germany: Low or no tuition fees  
+Netherlands: Partial scholarships  
+Other countries: Mixed  
+
+Reality: Europe is often low-cost rather than fully funded.
+
+H2: When Should You Expect Funding?
+
+H3: Higher Chances
+- PhD programmes  
+- Research-based degrees  
+- Strong academic profile  
+
+H3: Lower Chances
+- Undergraduate degrees  
+- Taught Master’s  
+- General non-research courses  
+
+H2: Common Mistakes Students Make
+
+- Expecting full funding for Bachelor’s degrees  
+- Assuming all countries offer similar opportunities  
+- Confusing scholarships with full funding  
+- Applying without understanding criteria  
+
+These mistakes can waste time and delay your plans.
+
+H2: Final Advice
+
+Choosing where to study should be based on realistic expectations, not assumptions.
+
+If funding is your priority, you need a clear strategy — especially for selecting the right country and degree level.
+
+----------------------------------------
+INTERNAL LINKS (USE NATURALLY)
+----------------------------------------
+
+https://universitio.com/free-consultation  
+https://universitio.com/assessment-form  
+
+----------------------------------------
+EXTERNAL LINKS
+----------------------------------------
+
+https://www.gov.uk/student-finance  
+https://www.solent.ac.uk/  
+
+----------------------------------------
+FINAL CTA (MUST BE INCLUDED)
+----------------------------------------
+
+Book your free consultation now:
+https://universitio.com/free-consultation
+
+----------------------------------------
+AFTER IMPLEMENTATION, CONFIRM:
+----------------------------------------
+
+- Title used
+- Meta title & description
+- Slug applied correctly
+- Image alt text added
+- Category = Student Guides
+- Sitemap updated
+- Blog visible on homepage (latest posts)
