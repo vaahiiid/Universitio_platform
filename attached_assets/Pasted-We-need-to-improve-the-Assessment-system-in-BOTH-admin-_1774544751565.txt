@@ -1,0 +1,145 @@
+We need to improve the Assessment system in BOTH admin UX and scoring logic.
+
+This is a serious product/operations task.
+Please handle it carefully and systematically.
+
+==================================================
+PART 1 — ADMIN ASSESSMENT VIEW MUST BE SECTIONED LIKE THE FORM
+==================================================
+
+I want the admin assessment detail view to be much easier to read.
+
+Right now it is hard to scan and hard to understand what the user answered.
+
+The admin must display the assessment in clearly separated sections, similar to how the user experiences the form.
+
+Requirements:
+- group the answers into logical sections
+- show each answer clearly under its related section
+- use readable labels
+- make it visually easy to scan
+- do not dump everything as one long flat block
+
+Also improve readability in:
+1. the assessment list page
+2. the inside/detail view of each assessment
+
+The UI should make it easier to:
+- find people
+- scan key details quickly
+- open a record and understand it without confusion
+
+Without redesigning the whole admin, improve:
+- visual hierarchy
+- spacing
+- labels
+- grouping
+- readability
+- scanability
+
+==================================================
+PART 2 — ASSESSMENT SCORING LOGIC NEEDS TO BE ADJUSTED
+==================================================
+
+The current scoring still seems wrong.
+
+I want the scoring to be easier / less harsh overall.
+
+----------------------------------------
+UNITED KINGDOM
+----------------------------------------
+
+For the UK:
+- money/budget is important
+- previous education is important
+- if the student has high grades, that is a positive
+- if the student has an English language score, that is a positive
+- BUT if they do NOT have language yet, that should NOT be a negative
+- if English language score is above 6.5, they should basically receive full score for the language part
+
+Summary for UK:
+- budget matters
+- previous education matters
+- language helps
+- missing language should not punish heavily
+- scoring should be easier / more generous overall
+
+----------------------------------------
+EUROPE
+----------------------------------------
+
+For Europe:
+- previous qualification is important
+- money is NOT important
+- even if they put a very high budget, that should not matter much
+- what matters is having a good previous qualification
+- if they have German language qualification, that should give a very high score
+- if they have English language qualification, that should also give a high score
+- if they do not have language, they simply should not receive points for language
+- do not over-punish them
+
+Summary for Europe:
+- prior qualification matters a lot
+- budget should have little or no weight
+- German language = very strong positive
+- English language = strong positive
+- no language = no extra score, not a major punishment
+
+----------------------------------------
+USA AND CANADA
+----------------------------------------
+
+For USA and Canada:
+- similar to UK
+- budget matters
+- previous education matters
+- BUT language is more important than in the UK
+- if they want PhD, language is important for any country
+- for PhD applications in any destination, language should carry stronger weight
+
+Summary for USA/Canada:
+- similar structure to UK
+- language should matter more
+- PhD applicants should get stronger language weighting
+
+----------------------------------------
+GENERAL SCORING DIRECTION
+----------------------------------------
+
+Overall:
+- scoring should be more lenient / easier
+- do not make the model too strict
+- positive indicators should help
+- missing optional strengths should not automatically become heavy penalties
+- reward strengths more than punishing missing items
+
+==================================================
+PART 3 — DO A REAL AUDIT BEFORE CHANGING
+==================================================
+
+Before implementing, audit:
+1. current assessment form structure
+2. current admin assessment display
+3. current scoring logic for each destination
+4. how the final score is calculated now
+
+Do not guess.
+First understand the current logic, then adjust it.
+
+==================================================
+PART 4 — AFTER IMPLEMENTATION SHOW ME EXACTLY
+==================================================
+
+After the fix, show me:
+
+1. How the admin assessment detail view is now sectioned
+2. What admin list readability improvements were made
+3. What the old scoring logic did
+4. What was changed for:
+   - UK
+   - Europe
+   - USA
+   - Canada
+   - PhD cases
+5. Which files were modified
+6. Confirmation that the scoring is now more lenient and aligned with these rules

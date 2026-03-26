@@ -110,52 +110,90 @@ function DetailView({ id }: { id: number }) {
           </div>
 
           <div className="px-6 py-4 space-y-0">
-            <FieldRow label="Mobile" value={data.mobile as string} />
-            <FieldRow label="Date of Birth" value={data.dateOfBirth as string} />
-            <FieldRow label="Nationality" value={data.nationality as string} />
-            <FieldRow label="Marital Status" value={data.maritalStatus as string} />
-            <FieldRow label="Destinations" value={dests?.join(", ")} />
-            <FieldRow label="Study Level" value={data.studyLevel as string} />
-            <FieldRow label="Course Area" value={data.courseArea as string} />
-            <FieldRow label="Qualification" value={data.highestQualification as string} />
-            <FieldRow label="Performance" value={data.academicPerformance as string} />
-            <FieldRow label="Field Alignment" value={data.fieldAlignment as string} />
-            <FieldRow label="Language Qual" value={data.hasLanguageQualification ? "Yes" : "No"} />
-            <FieldRow label="Language Type" value={data.languageQualificationType as string} />
-            <FieldRow label="Language Score" value={data.languageScore as string} />
-            <FieldRow label="English Level" value={data.englishLevel as string} />
-            <FieldRow label="Budget" value={data.budget as string} />
-            <FieldRow label="Research Exp." value={data.hasResearchExperience ? "Yes" : "No"} />
-            <FieldRow label="Strengths" value={strengths?.join(", ")} />
-            {!!data.previousEducation && Array.isArray(data.previousEducation) && (data.previousEducation as Array<{levelOfStudy?: string; fieldOfStudy?: string}>).length > 0 && (
-              <div className="flex items-start py-2 border-b border-border/50">
-                <span className="text-sm text-muted-foreground w-40 shrink-0">Previous Education</span>
-                <div className="text-sm text-foreground">
-                  {(data.previousEducation as Array<{levelOfStudy?: string; fieldOfStudy?: string}>).map((edu, i) => (
-                    <div key={i}>{edu.levelOfStudy}{edu.fieldOfStudy ? ` — ${edu.fieldOfStudy}` : ""}</div>
-                  ))}
+            {/* SECTION 1: Personal Details */}
+            <div className="mb-4 pb-4 border-b border-border last:border-0">
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3 text-muted-foreground">Personal Details</h3>
+              <FieldRow label="Mobile" value={data.mobile as string} />
+              <FieldRow label="Date of Birth" value={data.dateOfBirth as string} />
+              <FieldRow label="Nationality" value={data.nationality as string} />
+              <FieldRow label="Marital Status" value={data.maritalStatus as string} />
+            </div>
+
+            {/* SECTION 2: Study Destination & Preferences */}
+            <div className="mb-4 pb-4 border-b border-border last:border-0">
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3 text-muted-foreground">Study Destination & Preferences</h3>
+              <FieldRow label="Destinations" value={dests?.join(", ")} />
+              <FieldRow label="Study Level" value={data.studyLevel as string} />
+              <FieldRow label="Course Area" value={data.courseArea as string} />
+            </div>
+
+            {/* SECTION 3: Academic Background */}
+            <div className="mb-4 pb-4 border-b border-border last:border-0">
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3 text-muted-foreground">Academic Background</h3>
+              <FieldRow label="Highest Qualification" value={data.highestQualification as string} />
+              <FieldRow label="Academic Performance" value={data.academicPerformance as string} />
+              <FieldRow label="Field Alignment" value={data.fieldAlignment as string} />
+              {!!data.previousEducation && Array.isArray(data.previousEducation) && (data.previousEducation as Array<{levelOfStudy?: string; fieldOfStudy?: string}>).length > 0 && (
+                <div className="flex items-start py-2 border-b border-border/50">
+                  <span className="text-sm text-muted-foreground w-40 shrink-0">Previous Education</span>
+                  <div className="text-sm text-foreground">
+                    {(data.previousEducation as Array<{levelOfStudy?: string; fieldOfStudy?: string}>).map((edu, i) => (
+                      <div key={i}>{edu.levelOfStudy}{edu.fieldOfStudy ? ` — ${edu.fieldOfStudy}` : ""}</div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            <FieldRow label="Contact Method" value={data.preferredContactMethod as string} />
-            <FieldRow label="How Heard" value={data.howDidYouHear as string} />
-            <FieldRow label="Score Notes" value={data.scoreNotes as string} />
-            <FieldRow label="CV File" value={data.cvFileName as string} />
-            <FieldRow label="Submitted" value={formatDate(data.createdAt as string)} />
-            <FieldRow
-              label="Consent"
-              value={
-                <div className="flex flex-wrap gap-2">
-                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.termsAccepted ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                    {data.termsAccepted ? "✓ Terms Accepted" : "✗ Terms Not Accepted"}
-                  </span>
-                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.marketingOptOut ? "bg-gray-100 text-gray-600" : "bg-blue-100 text-blue-700"}`}>
-                    {data.marketingOptOut ? "Opted Out of Marketing" : "✓ Marketing Emails OK"}
-                  </span>
-                  {data.consentVersion && <span className="text-xs text-muted-foreground">v{data.consentVersion}</span>}
-                </div>
-              }
-            />
+              )}
+            </div>
+
+            {/* SECTION 4: Language & Communication */}
+            <div className="mb-4 pb-4 border-b border-border last:border-0">
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3 text-muted-foreground">Language & Communication</h3>
+              <FieldRow label="Language Qualification" value={data.hasLanguageQualification ? "Yes" : "No"} />
+              {data.hasLanguageQualification && (
+                <>
+                  <FieldRow label="Qualification Type" value={data.languageQualificationType as string} />
+                  <FieldRow label="Score" value={data.languageScore as string} />
+                </>
+              )}
+              {!data.hasLanguageQualification && (
+                <FieldRow label="English Level" value={data.englishLevel as string} />
+              )}
+              <FieldRow label="Preferred Contact Method" value={data.preferredContactMethod as string} />
+            </div>
+
+            {/* SECTION 5: Budget & Additional Info */}
+            <div className="mb-4 pb-4 border-b border-border last:border-0">
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3 text-muted-foreground">Budget & Additional Information</h3>
+              <FieldRow label="Budget" value={data.budget as string} />
+              <FieldRow label="Research Experience" value={data.hasResearchExperience ? "Yes" : "No"} />
+              {strengths && strengths.length > 0 && (
+                <FieldRow label="Additional Strengths" value={strengths.join(", ")} />
+              )}
+              <FieldRow label="CV File" value={data.cvFileName as string} />
+              <FieldRow label="How Heard About Us" value={data.howDidYouHear as string} />
+            </div>
+
+            {/* SECTION 6: Assessment & Submission */}
+            <div className="mb-4 pb-4 border-b border-border last:border-0">
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3 text-muted-foreground">Assessment & Submission</h3>
+              <FieldRow label="Score" value={data.overallScore != null ? `${data.overallScore}% — ${data.scoreBand}` : null} />
+              <FieldRow label="Score Notes" value={data.scoreNotes as string} />
+              <FieldRow label="Submitted" value={formatDate(data.createdAt as string)} />
+              <FieldRow
+                label="Consent Status"
+                value={
+                  <div className="flex flex-wrap gap-2">
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.termsAccepted ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                      {data.termsAccepted ? "✓ Terms Accepted" : "✗ Terms Not Accepted"}
+                    </span>
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${data.marketingOptOut ? "bg-gray-100 text-gray-600" : "bg-blue-100 text-blue-700"}`}>
+                      {data.marketingOptOut ? "Opted Out of Marketing" : "✓ Marketing Emails OK"}
+                    </span>
+                    {data.consentVersion && <span className="text-xs text-muted-foreground">v{data.consentVersion}</span>}
+                  </div>
+                }
+              />
+            </div>
           </div>
 
           <div className="px-6 py-5 border-t border-border space-y-4">
@@ -281,11 +319,28 @@ function ListView() {
                   <th className="px-4 py-3 w-10"></th>
                 </tr></thead>
                 <tbody className="divide-y divide-border">
-                  {items.map((item) => (
-                    <tr key={item.id as number} className="hover:bg-muted/20 transition-colors">
-                      <td className="px-4 py-3 font-medium text-foreground cursor-pointer" onClick={() => navigate(`/admin/assessments/${item.id}`)}>{item.fullName as string}</td>
-                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell cursor-pointer" onClick={() => navigate(`/admin/assessments/${item.id}`)}>{item.email as string}</td>
-                      <td className="px-4 py-3 hidden md:table-cell cursor-pointer" onClick={() => navigate(`/admin/assessments/${item.id}`)}>
+                  {items.map((item) => {
+                    const dests = item.destinations as string[] | undefined;
+                    const courseArea = item.courseArea as string | undefined;
+                    const studyLvl = item.studyLevel as string | undefined;
+                    return (
+                    <tr key={item.id as number} className="hover:bg-muted/20 transition-colors cursor-pointer" onClick={() => navigate(`/admin/assessments/${item.id}`)}>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-col gap-1.5">
+                          <p className="font-semibold text-foreground">{item.fullName as string}</p>
+                          <p className="text-xs text-muted-foreground">{item.email as string}</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {item.overallScore != null && (
+                              <ScoreBadge score={item.overallScore as number} band={item.scoreBand as string} />
+                            )}
+                            {courseArea && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">{courseArea}</span>}
+                            {studyLvl && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">{studyLvl}</span>}
+                            {dests && dests.length > 0 && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">{dests.join(", ")}</span>}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{item.nationality as string}</td>
+                      <td className="px-4 py-3 hidden md:table-cell">
                         {item.overallScore != null ? <ScoreBadge score={item.overallScore as number} band={item.scoreBand as string} /> : "—"}
                       </td>
                       <td className="px-4 py-3 cursor-pointer" onClick={() => navigate(`/admin/assessments/${item.id}`)}><StatusBadge status={item.status as string} /></td>
@@ -296,7 +351,8 @@ function ListView() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

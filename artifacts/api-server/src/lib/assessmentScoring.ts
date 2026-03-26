@@ -119,62 +119,66 @@ function scoreAcademic(profile: AssessmentProfile): number {
 
 function scoreLanguage(profile: AssessmentProfile, destination: string): number {
   if (!profile.hasLanguageQualification) {
-    if (!profile.englishLevel) return 1;
+    if (!profile.englishLevel) return 2;
     const levelMap: Record<string, number> = {
-      "Beginner": 1, "Elementary": 2, "Pre-Intermediate": 3,
-      "Intermediate": 5, "Upper-Intermediate": 7, "Advanced": 9
+      "Beginner": 2, "Elementary": 3, "Pre-Intermediate": 5,
+      "Intermediate": 7, "Upper-Intermediate": 10, "Advanced": 13
     };
-    return levelMap[profile.englishLevel] || 2;
+    return levelMap[profile.englishLevel] || 3;
   }
 
   const rawScore = parseFloat(profile.languageScore || "0");
   const type = profile.languageQualificationType || "";
 
   if (type === "German Language Certificate" && destination === "Germany") {
-    return 15;
+    return 20;
+  }
+
+  if (type === "German Language Certificate" && destination !== "Germany") {
+    return 12;
   }
 
   const isGeneral = type === "IELTS General";
 
   let pts = 0;
-  if (rawScore >= 8.0) pts = 18;
-  else if (rawScore >= 7.5) pts = 16;
-  else if (rawScore >= 7.0) pts = 14;
-  else if (rawScore >= 6.5) pts = 12;
-  else if (rawScore >= 6.0) pts = 10;
-  else if (rawScore >= 5.5) pts = 8;
-  else if (rawScore >= 5.0) pts = 6;
-  else if (rawScore >= 4.5) pts = 4;
-  else pts = 3;
+  if (rawScore >= 8.0) pts = 20;
+  else if (rawScore >= 7.5) pts = 19;
+  else if (rawScore >= 7.0) pts = 18;
+  else if (rawScore >= 6.5) pts = 16;
+  else if (rawScore >= 6.0) pts = 14;
+  else if (rawScore >= 5.5) pts = 12;
+  else if (rawScore >= 5.0) pts = 10;
+  else if (rawScore >= 4.5) pts = 8;
+  else pts = 5;
 
-  if (isGeneral && pts > 10) pts = 10;
+  if (isGeneral && pts > 14) pts = 14;
 
   if (type === "Duolingo English Test") {
-    if (rawScore >= 130) pts = 16;
-    else if (rawScore >= 120) pts = 14;
-    else if (rawScore >= 110) pts = 11;
-    else if (rawScore >= 100) pts = 9;
-    else if (rawScore >= 90) pts = 7;
-    else pts = 4;
+    if (rawScore >= 130) pts = 19;
+    else if (rawScore >= 120) pts = 17;
+    else if (rawScore >= 110) pts = 15;
+    else if (rawScore >= 100) pts = 13;
+    else if (rawScore >= 90) pts = 10;
+    else pts = 7;
   }
 
   if (type === "TOEFL") {
-    if (rawScore >= 110) pts = 18;
-    else if (rawScore >= 100) pts = 15;
-    else if (rawScore >= 90) pts = 13;
-    else if (rawScore >= 80) pts = 10;
-    else if (rawScore >= 70) pts = 8;
-    else if (rawScore >= 60) pts = 6;
-    else pts = 4;
+    if (rawScore >= 110) pts = 20;
+    else if (rawScore >= 100) pts = 18;
+    else if (rawScore >= 90) pts = 16;
+    else if (rawScore >= 80) pts = 14;
+    else if (rawScore >= 70) pts = 11;
+    else if (rawScore >= 60) pts = 8;
+    else pts = 5;
   }
 
   if (type === "PTE Academic") {
-    if (rawScore >= 76) pts = 18;
-    else if (rawScore >= 65) pts = 15;
-    else if (rawScore >= 58) pts = 12;
-    else if (rawScore >= 50) pts = 10;
-    else if (rawScore >= 42) pts = 7;
-    else pts = 5;
+    if (rawScore >= 76) pts = 20;
+    else if (rawScore >= 65) pts = 18;
+    else if (rawScore >= 58) pts = 15;
+    else if (rawScore >= 50) pts = 13;
+    else if (rawScore >= 42) pts = 10;
+    else pts = 7;
   }
 
   return Math.min(20, pts);
@@ -184,17 +188,19 @@ function scoreBudget(budget: string, destination: string): number {
   const euroCountries = ["Germany", "Netherlands"];
   const isEuro = euroCountries.includes(destination);
 
-  if (budget === "over20k") {
-    return isEuro ? 15 : 13;
-  }
-  if (budget === "10k-20k") {
-    if (isEuro) return 11;
-    if (destination === "Canada") return 7;
+  if (isEuro) {
     return 5;
   }
-  if (isEuro) return 6;
-  if (destination === "Canada") return 2;
-  return 1;
+
+  if (budget === "over20k") {
+    return 14;
+  }
+  if (budget === "10k-20k") {
+    if (destination === "Canada") return 10;
+    return 9;
+  }
+  if (destination === "Canada") return 6;
+  return 5;
 }
 
 function scoreAlignment(profile: AssessmentProfile): number {
@@ -266,58 +272,62 @@ function applyCaps(
   let capped = rawTotal;
 
   if (natResult.restricted) {
-    capped = Math.min(capped, 35);
+    capped = Math.min(capped, 45);
   }
 
   const academicGap = getAcademicGap(profile);
+  const isPhd = profile.studyLevel === "PhD / Research";
+
   if (academicGap >= 3) {
-    capped = Math.min(capped, 40);
+    capped = Math.min(capped, 55);
   } else if (academicGap >= 2) {
-    capped = Math.min(capped, 55);
+    capped = Math.min(capped, 65);
   } else if (academicScore <= 5) {
-    capped = Math.min(capped, 55);
+    capped = Math.min(capped, 65);
   }
 
   if (ENGLISH_MEDIUM_DESTINATIONS.includes(destination)) {
-    if (!profile.hasLanguageQualification) {
-      if (languageScore <= 5) {
-        capped = Math.min(capped, 45);
-      } else {
-        capped = Math.min(capped, 58);
-      }
+    if (isPhd && !profile.hasLanguageQualification) {
+      if (languageScore <= 5) capped = Math.min(capped, 50);
+      else capped = Math.min(capped, 70);
+    } else if (!profile.hasLanguageQualification) {
+      if (languageScore <= 5) capped = Math.min(capped, 55);
+      else capped = Math.min(capped, 70);
     } else if (languageScore <= 6) {
-      capped = Math.min(capped, 55);
+      capped = Math.min(capped, 65);
+    }
+  }
+
+  if (["Germany", "Netherlands"].includes(destination)) {
+    if (languageScore < 10) {
+      capped = Math.min(capped, 70);
     }
   }
 
   if (profile.budget === "under10k") {
     if (["UK", "USA", "Australia"].includes(destination)) {
-      capped = Math.min(capped, 42);
+      capped = Math.min(capped, 60);
     } else if (destination === "Canada") {
-      capped = Math.min(capped, 48);
+      capped = Math.min(capped, 65);
     }
   }
 
   const isWeakPerformance = profile.academicPerformance === "Weak";
   const isWeakLanguage = !profile.hasLanguageQualification && languageScore <= 5;
-  const isWeakBudget = budgetScore <= 2;
 
   let weaknessCount = 0;
-  if (isWeakBudget) weaknessCount++;
-  if (languageScore <= 5) weaknessCount++;
+  if (isWeakLanguage) weaknessCount++;
   if (academicScore <= 5 || isWeakPerformance) weaknessCount++;
   if (academicGap >= 2) weaknessCount++;
 
   if (weaknessCount >= 3) {
-    capped = Math.min(capped, 32);
+    capped = Math.min(capped, 50);
   } else if (weaknessCount >= 2) {
-    capped = Math.min(capped, 42);
+    capped = Math.min(capped, 60);
   }
 
-  if (isWeakPerformance && isWeakLanguage && isWeakBudget) {
-    capped = Math.min(capped, 28);
-  } else if (isWeakPerformance && (isWeakLanguage || isWeakBudget)) {
-    capped = Math.min(capped, 35);
+  if (isWeakPerformance && isWeakLanguage) {
+    capped = Math.min(capped, 50);
   }
 
   return capped;
