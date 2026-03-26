@@ -191,6 +191,7 @@ function DetailView({ id }: { id: number }) {
               </div>
             )}
             <FieldRow label="Intended Course Area" value={data.intendedCourseArea as string} />
+            <FieldRow label="Intended Study Level" value={data.intendedStudyLevel as string} />
 
             {/* SECTION 3: Study Preferences */}
             <SectionHeader title="Study Preferences" />

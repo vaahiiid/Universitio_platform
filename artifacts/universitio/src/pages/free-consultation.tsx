@@ -130,6 +130,7 @@ export default function FreeConsultation() {
       previousEducation: [{ fieldOfStudy: "", levelOfStudy: "" }],
       intendedCourseArea: "",
       intendedCourseAreaOther: "",
+      intendedStudyLevel: "",
       nationality: "",
       preferredDestinations: [],
       hasEnglishQualification: undefined,
@@ -389,6 +390,20 @@ export default function FreeConsultation() {
                         </FormItem>
                       )} />
                     )}
+
+                    <FormField control={form.control} name="intendedStudyLevel" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Intended Study Level <span className="text-red-500">*</span></FormLabel>
+                        <p className="text-xs text-muted-foreground mb-2">What level of qualification are you applying for?</p>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl><SelectTrigger><SelectValue placeholder="Select your intended study level" /></SelectTrigger></FormControl>
+                          <SelectContent className="max-h-60">
+                            {EDUCATION_LEVELS.map((level) => <SelectItem key={level} value={level}>{level}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
                   </div>
                 </section>
 

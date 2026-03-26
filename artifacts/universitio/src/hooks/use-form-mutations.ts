@@ -14,6 +14,7 @@ export const consultationSchema = z.object({
   })).min(1, "At least one education entry is required"),
   intendedCourseArea: z.string().min(1, "Please select your intended course area"),
   intendedCourseAreaOther: z.string().optional(),
+  intendedStudyLevel: z.string().min(1, "Please select your intended study level"),
   nationality: z.string().min(1, "Nationality is required"),
   preferredDestinations: z.array(z.string()).min(1, "Please select at least one destination").max(2, "You may choose up to 2 destinations"),
   hasEnglishQualification: z.enum(["yes", "no"], { required_error: "Please indicate your English language status" }),

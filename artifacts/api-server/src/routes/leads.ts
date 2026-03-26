@@ -113,6 +113,7 @@ router.post("/leads/consultation", cvUpload.single("cvFile"), async (req: Reques
       maritalStatus: data.maritalStatus as string,
       preferredDestinations: data.preferredDestinations as string[],
       intendedCourseArea,
+      intendedStudyLevel: data.intendedStudyLevel as string,
       previousEducation: data.previousEducation as Array<{ fieldOfStudy: string; levelOfStudy: string }>,
       hasEnglishQualification: data.hasEnglishQualification as string,
       englishQualificationType,
@@ -356,14 +357,25 @@ router.post("/leads/service-request", async (req: Request, res: Response) => {
 router.get("/admin/cv/:filename", async (req: Request, res: Response) => {
   try {
     const { filename } = req.params;
-    const filePath = path.resolve(CV_UPLOAD_DIR, filename);
+    
+    if (!filename || filename.trim() === "") {
+      return res.status(400).json({ error: "No filename provided" });
+    }
+    
+    const filePath = path.resolve(CV_UPLOAD_DIR, path.basename(filename));
     
     if (!filePath.startsWith(CV_UPLOAD_DIR)) {
       return res.status(403).json({ error: "Access denied" });
     }
     
     if (!fs.existsSync(filePath)) {
+      console.warn(`CV file not found: ${filePath}`);
       return res.status(404).json({ error: "File not found" });
+    }
+    
+    const stat = fs.statSync(filePath);
+    if (!stat.isFile()) {
+      return res.status(400).json({ error: "Invalid file" });
     }
     
     res.download(filePath);

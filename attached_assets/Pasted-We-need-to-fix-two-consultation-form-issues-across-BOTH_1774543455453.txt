@@ -1,0 +1,106 @@
+We need to fix two consultation form issues across BOTH the main website and the admin panel.
+
+This is NOT only a UI task.
+It affects:
+- frontend form clarity
+- backend data handling
+- admin visibility
+- CV file download reliability
+
+Please implement the following carefully.
+
+==================================================
+1. CONSULTATION FORM QUESTION IMPROVEMENT
+==================================================
+
+Current section includes:
+
+Previous Education *
+Add each qualification you hold. You can add more entries below.
+
+Field of Study
+e.g. Computer Science
+
+Level of Study
+Select level
+
+Add Another Qualification
+
+Intended Course Area *
+Select your intended course area
+
+Problem:
+The form asks about previous education, but it does NOT clearly ask about the study level the student now wants to apply for.
+
+I want the form to clearly capture the intended future study level as well.
+
+Required:
+- Update the consultation form so that Intended Course Area also clearly includes / is paired with the level the student wants to study next
+- The user must clearly state the level they are applying for now (for example: Foundation / Bachelor’s / Master’s / PhD / etc.)
+- Keep the form clear and logical
+- Do not make it confusing with the previous education entries
+
+Important:
+- This must be reflected in both:
+  1. the main website consultation form
+  2. the admin consultation detail view
+
+Admin must show this clearly with the same logic as the frontend form.
+
+==================================================
+2. CV DOWNLOAD IN ADMIN IS STILL BROKEN
+==================================================
+
+Current issue:
+The CV link now appears in admin, but when I click download it throws an error.
+
+This means the problem is NOT solved.
+The file link is exposed, but the file is not actually downloadable correctly.
+
+You must fully debug and fix the CV file flow end-to-end.
+
+Check all of this:
+- frontend upload
+- backend storage path
+- saved file URL / file reference
+- admin retrieval logic
+- file serving / download endpoint
+- permissions / broken path / invalid URL generation
+
+Required result:
+- If a user uploaded a CV/resume, I must be able to:
+  - view it
+  - download it
+from the admin panel without errors
+
+Do not stop at showing a link.
+Make the actual file access work.
+
+==================================================
+3. BOTH MAIN SITE + ADMIN MUST BE UPDATED
+==================================================
+
+Any consultation form field changes must be reflected in:
+- the main website form
+- backend save logic
+- admin display
+
+Do not update only one side.
+
+==================================================
+4. VERIFICATION REQUIRED
+==================================================
+
+Before fixing, identify the real cause.
+
+Then after implementation, show me exactly:
+
+1. What change was made to the consultation form question(s)
+2. How the intended future study level is now captured
+3. Which frontend files were modified
+4. Which backend/admin files were modified
+5. Why CV download was failing before
+6. What exact fix made CV download work
+7. Confirmation that:
+   - the new intended study level is visible in admin
+   - CV download now works correctly in admin

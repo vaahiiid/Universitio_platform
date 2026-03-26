@@ -10,6 +10,7 @@ export const consultations = pgTable("consultations", {
   maritalStatus: text("marital_status"),
   preferredDestinations: jsonb("preferred_destinations").$type<string[]>(),
   intendedCourseArea: text("intended_course_area"),
+  intendedStudyLevel: text("intended_study_level"),
   previousEducation: jsonb("previous_education").$type<Array<{ fieldOfStudy: string; levelOfStudy: string }>>(),
   hasEnglishQualification: text("has_english_qualification"),
   englishQualificationType: text("english_qualification_type"),
