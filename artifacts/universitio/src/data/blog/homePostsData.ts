@@ -10,6 +10,15 @@ export interface HomePost {
 
 export const homePostsData: HomePost[] = [
   {
+    id: 93,
+    slug: `scholarship-vs-funding-guide`,
+    title: `Scholarship vs Funding: Full Guide for Students`,
+    date: "2026-03-25",
+    excerpt: `Learn the difference between scholarships, funding, and fully funded programmes. Compare opportunities in the UK, USA, Canada, and Europe.`,
+    image: "blog-images/scholarship-vs-funding-guide.webp",
+    imageAlt: `Scholarship vs Funding Guide: Fully Funded Programs, Study Abroad Opportunities and Financial Support`,
+  },
+  {
     id: 92,
     slug: `solent-university-courses-fees-admission`,
     title: `Solent University Guide: Courses, Fees & Admission`,
@@ -53,14 +62,5 @@ export const homePostsData: HomePost[] = [
     excerpt: `Introduction For international students who want a UK university combining academic quality with creativity and real-world preparation, the University of Brighton offers an attractive option. Known fo...`,
     image: "blog-images/uk-universities-2.webp",
     imageAlt: `University of Brighton: Career-Focused UK Education — UK Universities`,
-  },
-  {
-    id: 5,
-    slug: `uk-student-visa-interview-what-to-expect-and-how-to-pass`,
-    title: `UK Student Visa Interview: What to Expect and How to Pass`,
-    date: "2026-02-21",
-    excerpt: `Introduction Many international students panic when they hear about the UK student visa interview. The reality is far less dramatic than most imagine. The interview, often called a credibility intervi...`,
-    image: "blog-images/visa-3.webp",
-    imageAlt: `UK Student Visa Interview: What to Expect and How to Pass — Visa`,
   }
 ];

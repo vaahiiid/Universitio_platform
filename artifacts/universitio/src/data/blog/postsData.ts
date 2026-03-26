@@ -22,7 +22,7 @@ export const blogPosts: BlogPost[] = [
     author: `Amelia Clarke`,
     excerpt: `Learn the difference between scholarships, funding, and fully funded programmes. Compare opportunities in the UK, USA, Canada, and Europe.`,
     image: "blog-images/scholarship-vs-funding-guide.webp",
-    imageAlt: `Scholarship vs Funding: Full Guide for International Students`,
+    imageAlt: `Scholarship vs Funding Guide: Fully Funded Programs, Study Abroad Opportunities and Financial Support`,
     categories: ["Student Guides"],
     categorySlugs: ["student-guides"],
     tags: ["scholarship vs funding", "fully funded scholarship", "study abroad funding", "UK scholarships international students", "funded PhD", "study abroad financial support"],
