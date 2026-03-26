@@ -15,7 +15,6 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-  {
     id: 93,
     slug: `scholarship-vs-funding-guide`,
     title: `Scholarship vs Funding: Full Guide for Students`,
