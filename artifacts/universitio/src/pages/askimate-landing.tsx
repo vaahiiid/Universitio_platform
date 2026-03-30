@@ -36,9 +36,16 @@ export default function AskiMateLanding() {
     }
   }, []);
 
-  // Auto-scroll to bottom
+  // Auto-scroll chat container to bottom (not entire page)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      // Scroll only the chat container, not the entire page
+      const chatContainer = messagesEndRef.current.closest('.overflow-y-auto');
+      if (chatContainer) {
+        // Scroll to the bottom of the chat container
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    }
   }, [messages]);
 
   const handleSendMessage = async () => {
@@ -242,7 +249,8 @@ export default function AskiMateLanding() {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyPress={(e) => {
-                          if (e.key === "Enter" && !loading) {
+                          if (e.key === "Enter" && !loading && !limitReached) {
+                            e.preventDefault();
                             handleSendMessage();
                           }
                         }}
