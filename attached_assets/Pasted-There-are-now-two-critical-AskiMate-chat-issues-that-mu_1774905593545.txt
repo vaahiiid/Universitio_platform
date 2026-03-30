@@ -1,0 +1,105 @@
+There are now two critical AskiMate chat issues that must be fixed before anything else.
+
+Do NOT add new features.
+Do NOT redesign anything.
+Only debug and fix these chat issues end-to-end.
+
+==================================================
+ISSUE 1 — ADMIN CHAT ENTER KEY DOES NOT WORK
+==================================================
+
+On the admin-side mentor chat interface:
+- pressing Enter does not send the message
+- the admin cannot quickly reply like in a normal chat interface
+
+Required:
+- Enter should send the message
+- Shift+Enter should create a new line (if multiline is supported)
+- the Send button must also work
+- no page jump / no broken focus behavior
+
+==================================================
+ISSUE 2 — USER MESSAGES ARE NOT REACHING ADMIN
+==================================================
+
+The user's messages are not appearing properly in the admin mentor panel.
+
+We need a strict end-to-end debug of the message flow:
+
+User dashboard/profile chat
+→ backend chat endpoint
+→ database save
+→ admin-side retrieval and rendering
+
+Check carefully:
+
+1. USER SEND FLOW
+- does the user message actually get sent to backend?
+- does the request succeed?
+- is it stored in askimate_messages?
+- is conversationId correct?
+- is the correct user/conversation linked?
+
+2. DATABASE
+- when the user sends a message, does it create/update the correct conversation?
+- is askimate_messages receiving the row?
+- is askimate_conversations updated correctly?
+
+3. ADMIN FETCH FLOW
+- is the admin panel querying the correct conversations/messages?
+- is it filtering incorrectly?
+- is it only showing mentor messages?
+- is it missing user-owned or migrated conversations?
+
+4. ADMIN RENDERING
+- if the messages exist in DB, why are they not visible in admin?
+- check rendering logic, mapping, response shape, and state updates
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+After the fix:
+
+1. Logged-in user sends a message from their dashboard chat
+- message is saved
+- message appears in user chat UI
+- admin can see that conversation/message in mentor panel
+
+2. Admin can reply:
+- Enter sends
+- Send button sends
+- mentor reply is saved correctly
+- user can later see mentor reply in their own chat
+
+==================================================
+IMPORTANT
+==================================================
+
+- Do NOT patch superficially
+- find the real root cause(s)
+- this may be frontend + backend + admin retrieval combined
+- fix the actual conversation/message flow
+
+==================================================
+AFTER FIXING
+==================================================
+
+Report clearly:
+
+1. Root cause of admin Enter/send issue
+2. Root cause of user messages not appearing in admin
+3. Whether the problem was:
+   - frontend user send flow
+   - backend save flow
+   - database linkage
+   - admin query/retrieval
+   - admin rendering
+   - or a combination
+
+4. Which files were modified
+5. Confirm:
+   - user messages now reach admin
+   - admin Enter now sends
+   - admin Send button now works
+   - mentor replies are visible to user

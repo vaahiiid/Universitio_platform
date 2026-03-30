@@ -237,9 +237,68 @@ function AskiMateDashboardContent() {
   }, [messages]);
 
   const handleSendMessage = async () => {
-    if (!messageInput.trim() || !user || !selectedConversation) return;
+    if (!messageInput.trim() || !user) return;
 
     const content = messageInput.trim();
+    let convId = selectedConversation;
+
+    // If no conversation selected, create one on first message
+    if (!convId) {
+      setSending(true);
+      try {
+        // First message without a conversation will create it
+        const token = localStorage.getItem("askimate_token");
+        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            message: content,
+          }),
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          setUpdateError(error.error || "Failed to send message");
+          setSending(false);
+          return;
+        }
+
+        const data = await res.json();
+        convId = data.conversation.id;
+        setSelectedConversation(convId);
+        
+        // Add user message to UI
+        setMessages([{
+          id: data.message.id,
+          isUserMessage: true,
+          sender: "user",
+          content: content,
+          createdAt: new Date().toISOString(),
+        }]);
+
+        // Reload conversations to show the new one
+        const convRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/conversations`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (convRes.ok) {
+          const convData = await convRes.json();
+          setConversations(convData.conversations || []);
+        }
+
+        setMessageInput("");
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        setUpdateError("Failed to send message");
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
+
+    // Normal message send to existing conversation
     setMessageInput("");
     setSending(true);
 
@@ -253,7 +312,7 @@ function AskiMateDashboardContent() {
         },
         body: JSON.stringify({
           message: content,
-          conversationId: selectedConversation,
+          conversationId: convId,
         }),
       });
 

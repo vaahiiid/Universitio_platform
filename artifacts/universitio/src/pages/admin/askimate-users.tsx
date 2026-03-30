@@ -278,11 +278,12 @@ function ChatView({
             value={replyText}
             onChange={(e) => setReplyText(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && e.ctrlKey && !sending) {
+              if (e.key === "Enter" && !e.shiftKey && !sending) {
+                e.preventDefault();
                 handleSendReply();
               }
             }}
-            placeholder="Reply as mentor... (Ctrl+Enter to send)"
+            placeholder="Reply as mentor... (Enter to send, Shift+Enter for new line)"
             rows={2}
             className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
           />
