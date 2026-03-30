@@ -1,0 +1,145 @@
+We need to stop all new feature work and fix the AskiMate chat system properly.
+
+This is now a critical product bug affecting the core mentoring flow.
+
+==================================================
+ACTUAL OBSERVED ISSUES
+==================================================
+
+1. In admin, I can see that the user has sent messages (for example 5/5 or even 7 total),
+   but when I open the conversation, the messages are not displayed.
+
+2. Admin still cannot actually send a mentor reply.
+   The send action is still broken.
+
+3. When the user sends messages, admin does not see them properly in real time or when opening the conversation.
+
+4. After the user sends the first 5 free messages, from the 6th message onward:
+   - no proper warning/paywall is shown
+   - the user just feels like Enter/send does nothing
+   - but admin still sees the total message count increasing (for example 7)
+   This means limit enforcement and UI behavior are inconsistent and broken.
+
+==================================================
+THIS MEANS THE MESSAGE FLOW IS STILL BROKEN
+==================================================
+
+You must debug the REAL full chain, not guess.
+
+Trace the exact path:
+
+User chat UI
+→ user send handler
+→ frontend request payload
+→ backend chat endpoint
+→ DB insert in askimate_messages
+→ conversation linkage in askimate_conversations
+→ free-limit enforcement
+→ admin conversation query
+→ admin message rendering
+→ admin reply send handler
+→ backend save of mentor reply
+→ user-side rendering of mentor reply
+
+==================================================
+STRICT DEBUG REQUIREMENTS
+==================================================
+
+You must verify ALL of these with actual data, not assumptions:
+
+1. USER MESSAGE SAVE
+- when user sends a message, is a row actually inserted into askimate_messages?
+- with which conversationId?
+- with which userId?
+- how many rows are inserted per message?
+- is questionCount incremented separately from actual saved messages?
+
+2. ADMIN CONVERSATION FETCH
+- what exact query is used when admin opens a conversation?
+- why does admin see conversation count but not the actual messages?
+- is the query fetching the wrong conversationId?
+- is it filtering out user messages by mistake?
+- is it only expecting mentor messages?
+- is there a mismatch between message schema and render logic?
+
+3. ADMIN SEND FLOW
+- when admin types and presses Enter, what exact handler runs?
+- when admin clicks Send, what exact handler runs?
+- does either one actually call the backend?
+- does the backend save mentor reply into askimate_messages?
+- is the message inserted into the same conversationId?
+- if not, why not?
+
+4. USER LIMIT ENFORCEMENT
+- when free user reaches 5/5, what exactly happens in backend?
+- what exactly happens in frontend?
+- why is the user not seeing the proper warning/paywall?
+- why does count continue to rise to 7 if the limit is supposed to block?
+- are messages being counted but not rendered?
+- are blocked messages still incrementing questionCount?
+- is backend blocking but frontend swallowing the error?
+- or is backend not blocking correctly?
+
+5. USER RECEIVE FLOW
+- after admin reply is saved, does user-side conversation fetch include mentor replies?
+- are mentor replies filtered out by mistake?
+- is user fetching stale state only?
+
+==================================================
+EXPECTED CORRECT BEHAVIOR
+==================================================
+
+After the fix:
+
+1. User sends message
+- message appears in user chat
+- message is saved correctly
+- admin can open the same conversation and see it
+
+2. Admin opens that conversation
+- admin sees all user messages
+- admin can type reply
+- Enter sends
+- Send button sends
+- mentor reply is saved correctly
+
+3. User sees mentor reply in their own chat
+
+4. Free-plan enforcement works cleanly
+- user can send up to 5 free questions
+- on the 6th attempt:
+  - backend blocks it correctly
+  - frontend shows a clear upgrade/paywall warning
+  - count does NOT continue incorrectly
+  - user does NOT feel like the UI is just broken
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT give another guessed fix.
+Do NOT say “fixed” unless you have verified the actual broken step(s).
+
+This is likely a combination of:
+- wrong DB linkage
+- wrong conversation query
+- wrong message render mapping
+- broken admin send handler
+- broken limit-enforcement handling
+
+==================================================
+AFTER FIXING
+==================================================
+
+Report clearly and specifically:
+
+1. Exact root cause(s)
+2. Which parts of the chain were broken
+3. Which files were modified
+4. Whether the messages were being saved but not fetched, or not saved at all
+5. Whether questionCount and actual messages were out of sync
+6. Confirmation that:
+   - admin now sees user messages
+   - admin can send replies
+   - user sees mentor replies
+   - 5-question free limit now shows the correct warning and blocks properly

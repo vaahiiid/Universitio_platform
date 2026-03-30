@@ -159,12 +159,14 @@ function ChatView({
   const fetchMessages = useCallback(async () => {
     setLoading(true);
     try {
+      console.log(`[ADMIN] Fetching messages for conversation ${conversation.id}`);
       const response = await apiFetch<{ data: Message[] }>(
         `/admin/askimate-conversations/${conversation.id}/messages`
       );
+      console.log(`[ADMIN] Fetched ${response.data.length} messages`, response.data);
       setMessages(response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) })));
     } catch (err) {
-      console.error("Failed to fetch messages:", err);
+      console.error("[ADMIN] Failed to fetch messages:", err);
     } finally {
       setLoading(false);
     }

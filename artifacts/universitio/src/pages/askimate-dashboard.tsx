@@ -261,7 +261,7 @@ function AskiMateDashboardContent() {
 
         if (!res.ok) {
           const error = await res.json();
-          setUpdateError(error.error || "Failed to send message");
+          setUpdateError(error.message || error.error || "Failed to send message");
           setSending(false);
           return;
         }
@@ -318,6 +318,7 @@ function AskiMateDashboardContent() {
 
       if (res.ok) {
         const data = await res.json();
+        console.log(`[USER] Message sent to conversation ${convId}:`, data.message);
         // Add user message to UI
         setMessages((prev) => [...prev, {
           id: data.message.id,
@@ -328,7 +329,8 @@ function AskiMateDashboardContent() {
         }]);
       } else {
         const error = await res.json();
-        setUpdateError(error.error || "Failed to send message");
+        console.warn(`[USER] Message blocked - Status ${res.status}:`, error);
+        setUpdateError(error.message || error.error || "Failed to send message");
       }
     } catch (error) {
       console.error("Failed to send message:", error);
@@ -553,6 +555,18 @@ function AskiMateDashboardContent() {
             {activeTab === "chat" && (
               <div className="bg-white rounded-xl border border-border/60 p-8 h-[600px] flex flex-col">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Messages</h2>
+
+                {updateError && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-700 font-medium">{updateError}</p>
+                    <button 
+                      onClick={() => setUpdateError("")}
+                      className="text-xs text-red-600 hover:text-red-800 mt-1 underline"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
 
                 {chatLoading && conversations.length === 0 ? (
                   <div className="flex-1 flex items-center justify-center">
