@@ -1,6 +1,7 @@
 import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Stripe from "stripe";
 import { db, pool } from "@workspace/db";
 import { askimateUsers, askimateWeeklyUsage } from "@workspace/db/schema";
 import { eq, and } from "drizzle-orm";
@@ -9,6 +10,13 @@ const router: IRouter = Router();
 
 const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 const JWT_EXPIRES_IN = "7d";
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
+const STRIPE_REDIRECT_URL = process.env.STRIPE_REDIRECT_URL || "http://localhost:5173/askimate-dashboard";
+
+let stripe: Stripe | null = null;
+if (STRIPE_SECRET_KEY) {
+  stripe = new Stripe(STRIPE_SECRET_KEY);
+}
 
 if (!process.env.JWT_SECRET) {
   console.warn("[ASKIMATE-AUTH] WARNING: JWT_SECRET not set — using fallback. Set JWT_SECRET env var for production.");
@@ -332,5 +340,100 @@ function getCurrentWeek(): string {
   const week = Math.ceil(((now.getTime() - start.getTime()) / 86400000 + 1) / 7);
   return `${year}-W${String(week).padStart(2, "0")}`;
 }
+
+// STRIPE CHECKOUT SESSION
+router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Request, res: Response) => {
+  if (!stripe) {
+    res.status(500).json({ error: "Stripe not configured" });
+    return;
+  }
+
+  try {
+    const userPayload = (req as any).askimateUser as AskimateUserPayload;
+    const { plan } = req.body as { plan?: string };
+
+    if (!plan || !["monthly", "quarterly", "semi-annual"].includes(plan)) {
+      res.status(400).json({ error: "Invalid plan selected" });
+      return;
+    }
+
+    // Plan pricing in pence (£12 = 1200 pence, etc.)
+    const priceMap: { [key: string]: number } = {
+      monthly: 1200,
+      quarterly: 3000,
+      "semi-annual": 6500,
+    };
+
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.id, userPayload.id),
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    // Create ephemeral Stripe session
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "gbp",
+            product_data: {
+              name: "AskiMate AI Premium Mentoring",
+              description: plan === "monthly" ? "Monthly subscription with 3-day free trial" :
+                          plan === "quarterly" ? "3-month subscription with 3-day free trial" :
+                          "6-month subscription with 3-day free trial",
+            },
+            unit_amount: priceMap[plan],
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${STRIPE_REDIRECT_URL}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${STRIPE_REDIRECT_URL}?cancelled=true`,
+      client_reference_id: String(userPayload.id),
+      customer_email: user.email,
+    });
+
+    res.json({ sessionId: session.id, url: session.url });
+  } catch (error) {
+    console.error("[ASKIMATE-AUTH] Checkout session error:", error);
+    res.status(500).json({ error: "Failed to create checkout session" });
+  }
+});
+
+// CONFIRM PREMIUM (called after successful payment)
+router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Request, res: Response) => {
+  try {
+    const userPayload = (req as any).askimateUser as AskimateUserPayload;
+
+    // Update user to premium with trial dates
+    const now = new Date();
+    const trialEnds = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // +3 days
+
+    await db
+      .update(askimateUsers)
+      .set({
+        plan: "premium",
+        trialStartedAt: now,
+        trialEndsAt: trialEnds,
+        updatedAt: new Date(),
+      })
+      .where(eq(askimateUsers.id, userPayload.id));
+
+    res.json({
+      success: true,
+      plan: "premium",
+      trialStartsAt: now,
+      trialEndsAt: trialEnds,
+    });
+  } catch (error) {
+    console.error("[ASKIMATE-AUTH] Confirm premium error:", error);
+    res.status(500).json({ error: "Failed to activate premium" });
+  }
+});
 
 export default router;

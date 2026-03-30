@@ -1,0 +1,124 @@
+We will NOT switch to Autonomous mode.
+
+We will implement a LIGHT but REAL Stripe integration.
+
+Goal:
+Make Premium purchasable and unlock access correctly,
+without over-engineering the billing system.
+
+==================================================
+PHASE NEXT — STRIPE (LITE IMPLEMENTATION)
+==================================================
+
+IMPORTANT:
+- Keep everything simple
+- Do not over-engineer
+- Do not implement full billing system yet
+- Just make Premium purchasable and enforce access
+
+==================================================
+1. STRIPE CHECKOUT (SIMPLE)
+==================================================
+
+Implement Stripe Checkout (hosted page, NOT custom UI).
+
+Plans:
+- Monthly: £12
+- 3 months: £30
+- 6 months: £65
+
+Flow:
+User clicks "Upgrade to Premium"
+→ backend creates Stripe Checkout Session
+→ redirect user to Stripe hosted checkout
+→ after success, redirect back to /askimate-dashboard
+
+==================================================
+2. AFTER PAYMENT (SUCCESS URL LOGIC)
+==================================================
+
+Use success_url to handle activation.
+
+On return:
+- call backend endpoint like:
+  POST /api/askimate/confirm-premium
+
+Backend should:
+- mark user as plan = "premium"
+- set trialStartedAt = now
+- set trialEndsAt = now + 3 days
+
+NOTE:
+No webhook required for now.
+
+==================================================
+3. ACCESS CONTROL (REAL)
+==================================================
+
+Use database plan field only:
+
+IF plan = "premium" → unlimited access
+IF plan = "free" → 5 questions/week
+IF guest → 2 questions
+
+Do NOT rely on Stripe state yet.
+Only use internal DB flag.
+
+==================================================
+4. DASHBOARD UPDATE
+==================================================
+
+In dashboard:
+- show:
+  - "Basic (Free)"
+  - "Premium (Trial)"
+  - "Premium"
+
+If trial active:
+→ show remaining days
+
+Add button:
+→ "Upgrade to Premium"
+
+==================================================
+5. NO COMPLEX BILLING YET
+==================================================
+
+Do NOT implement:
+- Stripe webhooks
+- subscription sync
+- billing portal
+- cancel flows
+- retry logic
+
+We will handle that in a future phase.
+
+==================================================
+6. ADMIN (SIMPLE)
+==================================================
+
+Just show:
+- user plan
+- trial status
+
+No payment tracking needed yet.
+
+==================================================
+7. CLEAN CODE
+==================================================
+
+- Keep Stripe logic isolated
+- Easy to extend later
+- Do not refactor unrelated parts
+
+==================================================
+OUTPUT REQUIRED
+==================================================
+
+After implementation explain:
+
+1. How checkout works
+2. Which endpoint activates premium
+3. How trial is set
+4. Which files changed
+5. What is still missing (for future full Stripe phase)

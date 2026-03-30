@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
@@ -82,7 +82,7 @@ function AskiMateDashboardContent() {
   const [planInfo, setPlanInfo] = useState<any>(null);
 
   // Load plan info on mount
-  React.useEffect(() => {
+  useEffect(() => {
     const loadPlanInfo = async () => {
       try {
         const token = localStorage.getItem("askimate_token");
@@ -102,6 +102,46 @@ function AskiMateDashboardContent() {
       }
     };
     loadPlanInfo();
+  }, []);
+
+  // Handle Stripe checkout success redirect
+  useEffect(() => {
+    const handleCheckoutSuccess = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get("session_id");
+      
+      if (sessionId) {
+        try {
+          const token = localStorage.getItem("askimate_token");
+          const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/confirm-premium`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          if (res.ok) {
+            // Reload plan info to show updated status
+            const planRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/plan-info`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (planRes.ok) {
+              const data = await planRes.json();
+              setPlanInfo(data);
+            }
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setUpdateSuccess(true);
+            setTimeout(() => setUpdateSuccess(false), 5000);
+          }
+        } catch (error) {
+          console.error("Failed to confirm premium:", error);
+        }
+      }
+    };
+    handleCheckoutSuccess();
   }, []);
 
   const getPlanStatus = () => {
@@ -373,56 +413,79 @@ function AskiMateDashboardContent() {
                   <p className="text-2xl font-bold text-foreground mb-4">{getPlanStatus().plan}</p>
                   <p className="text-sm text-muted-foreground mb-4">{getPlanStatus().status}</p>
                   {getPlanStatus().plan.includes("Basic Mentoring") && (
-                    <Button 
-                      onClick={async () => {
-                        try {
-                          const token = localStorage.getItem("askimate_token");
-                          const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/upgrade-to-premium`, {
-                            method: "POST",
-                            headers: { Authorization: `Bearer ${token}` },
-                          });
-                          if (res.ok) {
-                            const data = await res.json();
-                            setPlanInfo(data);
-                            setUpdateSuccess(true);
-                            setTimeout(() => setUpdateSuccess(false), 3000);
-                          }
-                        } catch (error) {
-                          console.error("Upgrade failed:", error);
-                        }
-                      }}
-                      variant="default"
-                      className="bg-primary hover:bg-primary/90 text-white"
-                    >
-                      Upgrade to Premium
-                    </Button>
+                    <div className="space-y-3">
+                      <p className="text-sm text-muted-foreground">Choose your premium plan:</p>
+                      <div className="flex gap-3 flex-wrap">
+                        {[
+                          { label: "Monthly £12", plan: "monthly" },
+                          { label: "3 Months £30", plan: "quarterly" },
+                          { label: "6 Months £65", plan: "semi-annual" },
+                        ].map((option) => (
+                          <Button 
+                            key={option.plan}
+                            onClick={async () => {
+                              try {
+                                const token = localStorage.getItem("askimate_token");
+                                const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/checkout-session`, {
+                                  method: "POST",
+                                  headers: { 
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                  },
+                                  body: JSON.stringify({ plan: option.plan }),
+                                });
+                                if (res.ok) {
+                                  const data = await res.json();
+                                  if (data.url) {
+                                    window.location.href = data.url;
+                                  }
+                                } else {
+                                  setUpdateError("Failed to start checkout");
+                                }
+                              } catch (error) {
+                                console.error("Checkout failed:", error);
+                                setUpdateError("Checkout failed. Please try again.");
+                              }
+                            }}
+                            variant="default"
+                            className="bg-primary hover:bg-primary/90 text-white"
+                          >
+                            {option.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-foreground">Usage This Week</h3>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <p className="text-sm text-muted-foreground">Questions Remaining</p>
-                        <p className="text-sm font-medium text-foreground">3 / 5</p>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div className="bg-primary h-2 rounded-full" style={{ width: "60%" }}></div>
+                {getPlanStatus().plan.includes("Basic Mentoring") && (
+                  <>
+                    <div className="space-y-4">
+                      <h3 className="font-semibold text-foreground">Usage This Week</h3>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <p className="text-sm text-muted-foreground">Questions Remaining</p>
+                            <p className="text-sm font-medium text-foreground">{planInfo?.questionsRemaining || 5} / 5</p>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div className="bg-primary h-2 rounded-full" style={{ width: `${((5 - (planInfo?.questionsRemaining || 5)) / 5) * 100}%` }}></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="mt-8 p-6 bg-primary/5 border border-primary/20 rounded-lg">
-                  <h3 className="font-semibold text-foreground mb-2">Upgrade to Premium</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Get priority support, real-time chat, and full document reviews.
-                  </p>
-                  <Button className="bg-primary hover:bg-primary/90 text-white">
-                    View Premium Plans
-                  </Button>
-                </div>
+                    <div className="mt-8 p-6 bg-primary/5 border border-primary/20 rounded-lg">
+                      <h3 className="font-semibold text-foreground mb-2">Why Upgrade to Premium?</h3>
+                      <ul className="text-sm text-muted-foreground space-y-2">
+                        <li>✓ Unlimited questions anytime</li>
+                        <li>✓ Priority live chat with real-time responses</li>
+                        <li>✓ Full document review support</li>
+                        <li>✓ 3-day free trial included</li>
+                      </ul>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
