@@ -396,6 +396,9 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       cancel_url: `${STRIPE_REDIRECT_URL}?cancelled=true`,
       client_reference_id: String(userPayload.id),
       customer_email: user.email,
+      metadata: {
+        userId: String(userPayload.id),
+      },
     });
 
     res.json({ sessionId: session.id, url: session.url });

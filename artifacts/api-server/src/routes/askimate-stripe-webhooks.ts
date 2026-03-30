@@ -122,10 +122,10 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
   console.log(`[STRIPE-WEBHOOK] Checkout session completed: ${session.id}`);
 
   // Payment is complete; activate premium
-  if (session.client_reference_id && session.payment_status === "paid") {
-    const userId = parseInt(session.client_reference_id, 10);
+  if (session.payment_status === "paid") {
+    const userId = extractUserIdFromMetadata(session.metadata);
 
-    if (!isNaN(userId)) {
+    if (userId) {
       const now = new Date();
       const trialEnds = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // +3 days
 
@@ -140,6 +140,8 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
         .where(eq(askimateUsers.id, userId));
 
       console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook`);
+    } else {
+      console.warn(`[STRIPE-WEBHOOK] Could not extract userId from session ${session.id}`);
     }
   }
 }
@@ -150,10 +152,10 @@ async function handleSubscriptionUpdated(event: SubscriptionUpdatedEvent) {
   const subscription = event.data.object;
   console.log(`[STRIPE-WEBHOOK] Subscription updated: ${subscription.id}, status: ${subscription.status}`);
 
-  // Find user by email
-  const user = await findUserByStripeSubscription(subscription);
-  if (!user) {
-    console.warn(`[STRIPE-WEBHOOK] User not found for subscription ${subscription.id}`);
+  // Find user by metadata
+  const userId = extractUserIdFromMetadata(subscription.metadata);
+  if (!userId) {
+    console.warn(`[STRIPE-WEBHOOK] Could not extract userId from subscription ${subscription.id}`);
     return;
   }
 
@@ -166,12 +168,12 @@ async function handleSubscriptionUpdated(event: SubscriptionUpdatedEvent) {
         plan: "premium",
         updatedAt: new Date(),
       })
-      .where(eq(askimateUsers.id, user.id));
+      .where(eq(askimateUsers.id, userId));
 
-    console.log(`[STRIPE-WEBHOOK] User ${user.id} plan set to premium (subscription active)`);
+    console.log(`[STRIPE-WEBHOOK] User ${userId} plan set to premium (subscription active)`);
   } else if (subscription.status === "past_due" || subscription.status === "unpaid") {
     // Payment failed, but keep premium (allows grace period)
-    console.log(`[STRIPE-WEBHOOK] User ${user.id} subscription ${subscription.status}, keeping premium`);
+    console.log(`[STRIPE-WEBHOOK] User ${userId} subscription ${subscription.status}, keeping premium`);
   }
 }
 
@@ -181,10 +183,10 @@ async function handleSubscriptionDeleted(event: SubscriptionDeletedEvent) {
   const subscription = event.data.object;
   console.log(`[STRIPE-WEBHOOK] Subscription deleted: ${subscription.id}`);
 
-  // Find user by email
-  const user = await findUserByStripeSubscription(subscription);
-  if (!user) {
-    console.warn(`[STRIPE-WEBHOOK] User not found for subscription ${subscription.id}`);
+  // Find user by metadata
+  const userId = extractUserIdFromMetadata(subscription.metadata);
+  if (!userId) {
+    console.warn(`[STRIPE-WEBHOOK] Could not extract userId from subscription ${subscription.id}`);
     return;
   }
 
@@ -197,9 +199,9 @@ async function handleSubscriptionDeleted(event: SubscriptionDeletedEvent) {
       trialEndsAt: null,
       updatedAt: new Date(),
     })
-    .where(eq(askimateUsers.id, user.id));
+    .where(eq(askimateUsers.id, userId));
 
-  console.log(`[STRIPE-WEBHOOK] User ${user.id} downgraded to free (subscription cancelled)`);
+  console.log(`[STRIPE-WEBHOOK] User ${userId} downgraded to free (subscription cancelled)`);
 }
 
 // Handler: invoice.paid
@@ -213,14 +215,14 @@ async function handleInvoicePaid(event: InvoicePaidEvent) {
     return;
   }
 
-  // Find user by subscription
+  // Find user by subscription metadata
   if (typeof invoice.subscription === "string") {
     const subscriptionId = invoice.subscription;
     const subscription = await stripe?.subscriptions.retrieve(subscriptionId);
 
     if (subscription) {
-      const user = await findUserByStripeSubscription(subscription);
-      if (user) {
+      const userId = extractUserIdFromMetadata(subscription.metadata);
+      if (userId) {
         // Ensure user is premium
         await db
           .update(askimateUsers)
@@ -228,9 +230,9 @@ async function handleInvoicePaid(event: InvoicePaidEvent) {
             plan: "premium",
             updatedAt: new Date(),
           })
-          .where(eq(askimateUsers.id, user.id));
+          .where(eq(askimateUsers.id, userId));
 
-        console.log(`[STRIPE-WEBHOOK] User ${user.id} plan confirmed premium after invoice paid`);
+        console.log(`[STRIPE-WEBHOOK] User ${userId} plan confirmed premium after invoice paid`);
       }
     }
   }
@@ -247,57 +249,31 @@ async function handleInvoicePaymentFailed(event: InvoicePaymentFailedEvent) {
     return;
   }
 
-  // Find user by subscription
+  // Find user by subscription metadata
   if (typeof invoice.subscription === "string") {
     const subscriptionId = invoice.subscription;
     const subscription = await stripe?.subscriptions.retrieve(subscriptionId);
 
     if (subscription) {
-      const user = await findUserByStripeSubscription(subscription);
-      if (user) {
+      const userId = extractUserIdFromMetadata(subscription.metadata);
+      if (userId) {
         // Log failure but keep premium (grace period)
         console.log(
-          `[STRIPE-WEBHOOK] User ${user.id} payment failed, keeping premium for grace period`
+          `[STRIPE-WEBHOOK] User ${userId} payment failed, keeping premium for grace period`
         );
       }
     }
   }
 }
 
-// Helper: Find user by Stripe subscription (via customer email)
-async function findUserByStripeSubscription(
-  subscription: Stripe.Subscription
-): Promise<{ id: number; email: string } | null> {
-  if (!subscription.customer) {
+// Helper: Extract userId from Stripe metadata
+function extractUserIdFromMetadata(metadata: Record<string, string> | null | undefined): number | null {
+  if (!metadata || !metadata.userId) {
     return null;
   }
 
-  // Retrieve customer details to get email
-  let customerEmail: string | null = null;
-
-  if (typeof subscription.customer === "string") {
-    const customer = await stripe?.customers.retrieve(subscription.customer);
-    if (customer && !customer.deleted) {
-      customerEmail = (customer as Stripe.Customer).email;
-    }
-  } else {
-    customerEmail = (subscription.customer as Stripe.Customer).email;
-  }
-
-  if (!customerEmail) {
-    return null;
-  }
-
-  // Find user by email
-  const user = await db.query.askimateUsers.findFirst({
-    columns: { id: true, email: true },
-    where: (table) => {
-      const { eq } = require("drizzle-orm");
-      return eq(table.email, customerEmail);
-    },
-  });
-
-  return user || null;
+  const userId = parseInt(metadata.userId, 10);
+  return isNaN(userId) ? null : userId;
 }
 
 export default router;
