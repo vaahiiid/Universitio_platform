@@ -373,13 +373,42 @@ export default function AskiMateLanding() {
                 </li>
               </ul>
 
-              <Button
-                onClick={() => setLocation("/askimate-signup")}
-                className="w-full bg-primary hover:bg-primary/90 text-white"
-                size="lg"
-              >
-                Start Free Trial
-              </Button>
+              <div className="space-y-2">
+                <Button
+                  onClick={async () => {
+                    const token = localStorage.getItem("askimate_token");
+                    if (token) {
+                      // User is logged in, show plan options
+                      try {
+                        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/checkout-session`, {
+                          method: "POST",
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({ plan: "monthly" }),
+                        });
+                        if (res.ok) {
+                          const data = await res.json();
+                          if (data.url) {
+                            window.location.href = data.url;
+                          }
+                        }
+                      } catch (error) {
+                        console.error("Checkout failed:", error);
+                      }
+                    } else {
+                      // Not logged in, go to signup
+                      setLocation("/askimate-signup");
+                    }
+                  }}
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  size="lg"
+                >
+                  Start Free Trial
+                </Button>
+                <p className="text-xs text-center text-muted-foreground">3-day trial, then £12/month. Cancel anytime.</p>
+              </div>
             </div>
           </div>
         </div>
