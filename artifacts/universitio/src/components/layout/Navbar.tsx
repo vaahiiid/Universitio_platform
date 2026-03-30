@@ -72,7 +72,7 @@ export function Navbar() {
                 >
                   {link.name}
                   {"badge" in link && (
-                    <span className="inline-block bg-primary text-white text-xs px-2 py-0.5 rounded-full font-semibold animate-pulse">
+                    <span className="inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold animate-pulse">
                       {link.badge}
                     </span>
                   )}

@@ -3,12 +3,26 @@ import { useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
-import { Mail, Chrome } from "lucide-react";
+import { Mail, Chrome, ArrowLeft } from "lucide-react";
+import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
 export default function AskiMateSignup() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+  const { signup, googleLogin } = useAskiMateAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleBack = () => {
+    if (document.referrer && document.referrer.includes(location.split("/")[2])) {
+      window.history.back();
+    } else {
+      setLocation("/askimate");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-background flex items-center justify-center px-4">
@@ -18,6 +32,15 @@ export default function AskiMateSignup() {
       </Helmet>
 
       <div className="w-full max-w-md">
+        {/* Back Button */}
+        <button
+          onClick={handleBack}
+          className="flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm mb-8"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+
         {/* Header */}
         <div className="text-center mb-8">
           <img
@@ -26,7 +49,12 @@ export default function AskiMateSignup() {
             className="h-10 w-auto object-contain mx-auto mb-6"
           />
           <h1 className="text-3xl font-bold text-foreground mb-2">Create Your Account</h1>
-          <p className="text-muted-foreground">Join AskiMate and get started with mentoring</p>
+          <p className="text-muted-foreground text-sm mb-4">
+            Join AskiMate AI to get expert guidance on your education journey
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Get your first 3 days free on Premium Mentoring. No credit card required.
+          </p>
         </div>
 
         {/* Form */}
@@ -37,7 +65,7 @@ export default function AskiMateSignup() {
               variant="outline"
               size="lg"
               className="w-full"
-              onClick={() => {}}
+              onClick={() => googleLogin()}
             >
               <Chrome className="w-5 h-5 mr-2" />
               Continue with Google
@@ -64,12 +92,56 @@ export default function AskiMateSignup() {
 
           {/* Email & Password Form */}
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              // UI only - no backend yet
+              setError("");
+              setLoading(true);
+              try {
+                await signup(email, password, firstName, lastName);
+                setLocation("/askimate-dashboard");
+              } catch (err) {
+                setError(err instanceof Error ? err.message : "Signup failed");
+              } finally {
+                setLoading(false);
+              }
             }}
             className="space-y-4"
           >
+            {error && (
+              <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+                {error}
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  First name
+                </label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
+                  className="w-full border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Last name
+                </label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Doe"
+                  className="w-full border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  required
+                />
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
                 Email address
@@ -102,8 +174,9 @@ export default function AskiMateSignup() {
               type="submit"
               size="lg"
               className="w-full bg-primary hover:bg-primary/90 text-white"
+              disabled={loading}
             >
-              Create Account
+              {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
 

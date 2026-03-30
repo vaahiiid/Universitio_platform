@@ -28,6 +28,7 @@ export default function AskiMateLanding() {
       name: "Premium Mentoring",
       price: "£12",
       period: "monthly",
+      trial: "3 days free",
       altPrices: [
         { amount: "£30", period: "every 3 months", monthly: "£10/month" },
         { amount: "£65", period: "every 6 months", monthly: "£10.83/month" },
@@ -59,8 +60,8 @@ export default function AskiMateLanding() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 md:pb-28 bg-gradient-to-br from-primary/10 via-background to-background border-b border-border/40">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-block bg-accent text-accent-foreground px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
-            HUMAN-FIRST MENTORING
+          <div className="inline-block bg-red-500 text-white px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
+            🆕 NEW — Try Free for 3 Days
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
             Your Personal Education Mentor
@@ -165,6 +166,12 @@ export default function AskiMateLanding() {
                   <span className="text-4xl font-bold text-foreground">{plan.price}</span>
                   {plan.period && <span className="text-muted-foreground">/{plan.period}</span>}
                 </div>
+
+                {plan.trial && (
+                  <div className="mb-4 text-sm font-semibold text-primary">
+                    {plan.trial}
+                  </div>
+                )}
 
                 {plan.altPrices && (
                   <div className="mb-6 space-y-1 text-sm text-muted-foreground">

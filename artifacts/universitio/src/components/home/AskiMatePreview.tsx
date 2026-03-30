@@ -11,8 +11,8 @@ export function AskiMatePreview() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: Content */}
           <div>
-            <div className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
-              NEW FEATURE
+            <div className="inline-block bg-red-500/10 text-red-600 px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
+              🆕 NEW FEATURE
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
               Meet AskiMate AI
