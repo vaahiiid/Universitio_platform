@@ -374,6 +374,7 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
     }
 
     // Create ephemeral Stripe session
+    const userIdString = String(userPayload.id);
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -394,10 +395,18 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       ],
       success_url: `${STRIPE_REDIRECT_URL}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${STRIPE_REDIRECT_URL}?cancelled=true`,
-      client_reference_id: String(userPayload.id),
+      client_reference_id: userIdString,
       customer_email: user.email,
+      // Session metadata for checkout.session.completed webhook
       metadata: {
-        userId: String(userPayload.id),
+        userId: userIdString,
+      },
+      // Subscription metadata for subscription-related webhooks
+      // (subscription.updated, subscription.deleted, invoice events, etc.)
+      subscription_data: {
+        metadata: {
+          userId: userIdString,
+        },
       },
     });
 
