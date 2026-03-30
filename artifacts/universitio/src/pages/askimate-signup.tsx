@@ -53,7 +53,7 @@ export default function AskiMateSignup() {
             Join AskiMate AI to get expert guidance on your education journey
           </p>
           <p className="text-xs text-muted-foreground">
-            Get your first 3 days free on Premium Mentoring. No credit card required.
+            Start with Basic Mentoring (5 questions per week). Upgrade anytime to Premium.
           </p>
         </div>
 

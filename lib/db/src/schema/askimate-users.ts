@@ -11,8 +11,9 @@ export const askimateUsers = pgTable("askimate_users", {
   marketingConsent: boolean("marketing_consent").notNull().default(false),
   termsAccepted: boolean("terms_accepted").notNull().default(true),
   privacyAccepted: boolean("privacy_accepted").notNull().default(true),
-  plan: text("plan").notNull().default("free"),
-  trialEndsAt: timestamp("trial_ends_at"),
+  plan: text("plan").notNull().default("free"), // "free" or "premium"
+  trialEndsAt: timestamp("trial_ends_at"), // null until premium upgrade
+  trialStartedAt: timestamp("trial_started_at"), // when premium trial started (if applicable)
   googleId: text("google_id").unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

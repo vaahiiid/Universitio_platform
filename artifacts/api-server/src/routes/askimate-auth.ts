@@ -2,8 +2,8 @@ import { Router, type IRouter, type Request, type Response, type NextFunction } 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { db, pool } from "@workspace/db";
-import { askimateUsers } from "@workspace/db/schema";
-import { eq } from "drizzle-orm";
+import { askimateUsers, askimateWeeklyUsage } from "@workspace/db/schema";
+import { eq, and } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -74,10 +74,7 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
     // Hash password
     const passwordHash = await bcrypt.hash(password, 12);
 
-    // Create user with 3-day trial
-    const trialEndsAt = new Date();
-    trialEndsAt.setDate(trialEndsAt.getDate() + 3);
-
+    // Create user on FREE plan (no premium trial until explicit upgrade)
     const [newUser] = await db
       .insert(askimateUsers)
       .values({
@@ -85,8 +82,9 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
         passwordHash,
         firstName,
         lastName,
-        plan: "premium",
-        trialEndsAt,
+        plan: "free", // Start on free plan
+        trialEndsAt: null, // No trial until upgrade
+        trialStartedAt: null,
         termsAccepted: true,
         privacyAccepted: true,
         marketingConsent: false,
@@ -244,5 +242,95 @@ router.patch("/askimate/profile", requireAskimateAuth, async (req: Request, res:
     res.status(500).json({ error: "Failed to update profile" });
   }
 });
+
+// UPGRADE TO PREMIUM (starts 3-day trial)
+router.post("/askimate/upgrade-to-premium", requireAskimateAuth, async (req: Request, res: Response) => {
+  try {
+    const userPayload = (req as any).askimateUser as AskimateUserPayload;
+
+    // Calculate trial end date (3 days from now)
+    const trialStartedAt = new Date();
+    const trialEndsAt = new Date(trialStartedAt);
+    trialEndsAt.setDate(trialEndsAt.getDate() + 3);
+
+    const [upgradedUser] = await db
+      .update(askimateUsers)
+      .set({
+        plan: "premium",
+        trialEndsAt,
+        trialStartedAt,
+        updatedAt: new Date(),
+      })
+      .where(eq(askimateUsers.id, userPayload.id))
+      .returning();
+
+    res.json({
+      plan: upgradedUser.plan,
+      trialEndsAt: upgradedUser.trialEndsAt,
+      trialStartedAt: upgradedUser.trialStartedAt,
+      message: "Upgraded to Premium. 3-day trial started.",
+    });
+  } catch (error) {
+    console.error("[ASKIMATE-AUTH] Premium upgrade error:", error);
+    res.status(500).json({ error: "Failed to upgrade to premium" });
+  }
+});
+
+// GET CURRENT USER PLAN & QUOTA INFO
+router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res: Response) => {
+  try {
+    const userPayload = (req as any).askimateUser as AskimateUserPayload;
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.id, userPayload.id),
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const now = new Date();
+    const trialEnd = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+    let trialStatus = null;
+
+    if (user.plan === "premium" && trialEnd && now < trialEnd) {
+      const daysLeft = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      trialStatus = { isTrialing: true, daysLeft };
+    }
+
+    // Get weekly usage for free users
+    const currentWeek = getCurrentWeek();
+    const usage = await db.query.askimateWeeklyUsage.findFirst({
+      where: (table, { and, eq }) =>
+        and(eq(table.userId, userPayload.id), eq(table.week, currentWeek)),
+    });
+
+    const questionsUsed = usage?.questionsUsed || 0;
+    const questionsRemaining = Math.max(0, 5 - questionsUsed);
+
+    res.json({
+      plan: user.plan,
+      trialStatus,
+      questionsUsed: user.plan === "free" ? questionsUsed : null,
+      questionsRemaining: user.plan === "free" ? questionsRemaining : null,
+      canAskQuestion: user.plan === "premium" || questionsRemaining > 0,
+    });
+  } catch (error) {
+    console.error("[ASKIMATE-AUTH] Plan info error:", error);
+    res.status(500).json({ error: "Failed to fetch plan info" });
+  }
+});
+
+function getCurrentWeek(): string {
+  const now = new Date();
+  const start = new Date(now);
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  start.setDate(diff);
+
+  const year = start.getFullYear();
+  const week = Math.ceil(((now.getTime() - start.getTime()) / 86400000 + 1) / 7);
+  return `${year}-W${String(week).padStart(2, "0")}`;
+}
 
 export default router;

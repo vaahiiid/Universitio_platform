@@ -79,18 +79,51 @@ function AskiMateDashboardContent() {
     }
   };
 
+  const [planInfo, setPlanInfo] = useState<any>(null);
+
+  // Load plan info on mount
+  React.useEffect(() => {
+    const loadPlanInfo = async () => {
+      try {
+        const token = localStorage.getItem("askimate_token");
+        if (token) {
+          const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/plan-info`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setPlanInfo(data);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load plan info:", error);
+      }
+    };
+    loadPlanInfo();
+  }, []);
+
   const getPlanStatus = () => {
     if (!user) return { plan: "Free", status: "No plan" };
-    const now = new Date();
-    const trialEnd = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
     
-    if (user.plan === "premium" && trialEnd && now < trialEnd) {
-      const daysLeft = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-      return { plan: "Premium (Free Trial)", status: `${daysLeft} day${daysLeft !== 1 ? "s" : ""} remaining` };
-    } else if (user.plan === "premium") {
-      return { plan: "Premium", status: "Paid subscription" };
+    if (user.plan === "free") {
+      const remaining = planInfo?.questionsRemaining || 5;
+      return { plan: "Basic Mentoring (Free)", status: `${remaining} questions remaining this week` };
     }
-    return { plan: "Free", status: "Upgrade to unlock priority support" };
+    
+    if (user.plan === "premium" && planInfo?.trialStatus?.isTrialing) {
+      return { 
+        plan: "Premium Mentoring (Free Trial)", 
+        status: `${planInfo.trialStatus.daysLeft} day${planInfo.trialStatus.daysLeft !== 1 ? "s" : ""} remaining` 
+      };
+    }
+    
+    if (user.plan === "premium") {
+      return { plan: "Premium Mentoring", status: "Paid subscription" };
+    }
+    
+    return { plan: "Free", status: "Basic Mentoring" };
   };
 
   return (
@@ -339,8 +372,30 @@ function AskiMateDashboardContent() {
                   <p className="text-sm text-muted-foreground mb-2">Current Plan</p>
                   <p className="text-2xl font-bold text-foreground mb-4">{getPlanStatus().plan}</p>
                   <p className="text-sm text-muted-foreground mb-4">{getPlanStatus().status}</p>
-                  {getPlanStatus().plan.includes("Free") && (
-                    <Button variant="outline">Upgrade to Premium</Button>
+                  {getPlanStatus().plan.includes("Basic Mentoring") && (
+                    <Button 
+                      onClick={async () => {
+                        try {
+                          const token = localStorage.getItem("askimate_token");
+                          const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/upgrade-to-premium`, {
+                            method: "POST",
+                            headers: { Authorization: `Bearer ${token}` },
+                          });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setPlanInfo(data);
+                            setUpdateSuccess(true);
+                            setTimeout(() => setUpdateSuccess(false), 3000);
+                          }
+                        } catch (error) {
+                          console.error("Upgrade failed:", error);
+                        }
+                      }}
+                      variant="default"
+                      className="bg-primary hover:bg-primary/90 text-white"
+                    >
+                      Upgrade to Premium
+                    </Button>
                   )}
                 </div>
 

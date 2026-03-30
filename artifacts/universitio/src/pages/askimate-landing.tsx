@@ -67,7 +67,7 @@ export default function AskiMateLanding() {
             Your Personal Education Mentor
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-            Get expert guidance every step of the way. Whether you're planning your applications or navigating university decisions, AskiMate connects you with real mentors who understand your goals.
+            Get expert guidance every step of the way. Start with 5 free questions per week, then upgrade to Premium Mentoring for unlimited conversations. Get your first 3 days free when you upgrade.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button

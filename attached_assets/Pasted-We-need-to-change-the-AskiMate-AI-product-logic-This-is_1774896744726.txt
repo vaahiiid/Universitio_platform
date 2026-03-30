@@ -1,0 +1,97 @@
+We need to change the AskiMate AI product logic.
+
+This is the intended business flow:
+
+==================================================
+1. EVERYONE STARTS ON THE FREE PLAN
+==================================================
+
+- Every registered user should start on the free plan (Basic Mentoring)
+- No one should automatically become Premium on signup
+- Premium must only start when the user explicitly upgrades
+
+==================================================
+2. GUEST CHAT BEFORE SIGNUP
+==================================================
+
+Before signup/login, users should still be able to interact with the chat.
+
+Required flow:
+- A visitor can open the chat and ask questions
+- The visitor may ask up to 2 questions without registering
+- On the 3rd question attempt, block further chatting and show a message:
+  “To continue the conversation, please sign up”
+- Then send them to sign up / login
+- After signup/login, the same conversation should continue in their profile/dashboard chat
+- This should feel similar to ChatGPT onboarding flow
+
+Important:
+- preserve guest conversation context if possible
+- once the user signs up, attach or migrate the guest conversation to their account cleanly
+
+==================================================
+3. FREE PLAN LOGIC AFTER SIGNUP
+==================================================
+
+Basic Mentoring = free
+
+Rules:
+- up to 5 user questions per week
+- after the 5th question is used, block additional questions for that week
+- then show an upgrade message
+
+Important:
+- count user questions, not total messages including admin replies
+- this should be weekly reset logic
+
+==================================================
+4. PREMIUM UPGRADE FLOW
+==================================================
+
+When the free user reaches the weekly limit, show a clear upgrade/paywall message:
+
+“You’ve used all 5 free questions for this week.
+Upgrade to Premium Mentoring to keep chatting.
+Start your 3-day free trial — cancel anytime.”
+
+Requirements:
+- Premium starts only when the user explicitly upgrades
+- Premium includes the 3-day free trial
+- cancel anytime messaging should be visible
+
+==================================================
+5. ADMIN / DASHBOARD IMPLICATIONS
+==================================================
+
+The system must support:
+- guest chat state
+- registered free user state
+- premium user state
+- weekly question counting
+- trial status
+
+Admin should later be able to understand:
+- whether the conversation started as guest
+- whether the user is free or premium
+- weekly usage / limit state
+
+==================================================
+6. IMPORTANT PRODUCT RULE
+==================================================
+
+Do NOT auto-start Premium at signup.
+Signup = free account only.
+
+Premium trial starts ONLY when the user selects Premium.
+
+==================================================
+7. AFTER IMPLEMENTATION / DESIGN UPDATE
+==================================================
+
+Show me clearly:
+1. how guest chat works
+2. how the 2-question guest limit works
+3. how the 5-question weekly free limit works
+4. how the upgrade/paywall message is shown
+5. how the 3-day premium trial now starts
+6. which files and logic were changed
