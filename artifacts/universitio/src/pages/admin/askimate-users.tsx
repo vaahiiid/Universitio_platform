@@ -1,58 +1,83 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { Search, Download, MessageSquare, FileText, ChevronRight } from "lucide-react";
+import { Search, Download, MessageSquare, FileText, ChevronRight, Loader2, Clock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { apiFetch } from "@/lib/api";
 
-interface AskiMateUser {
+interface AskiMateUserData {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  plan: "Free" | "Premium";
-  joinedDate: string;
-  status: "Active" | "Inactive";
-  questionsAsked: number;
-  documents: number;
+  plan: "free" | "premium";
+  isTrialActive: boolean;
+  trialStartedAt: Date | null;
+  trialEndsAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  weeklyUsage: number;
+  conversationCount: number;
 }
 
-const mockUsers: AskiMateUser[] = [
-  {
-    id: 1,
-    firstName: "Sarah",
-    lastName: "Johnson",
-    email: "sarah.j@example.com",
-    plan: "Premium",
-    joinedDate: "2025-03-15",
-    status: "Active",
-    questionsAsked: 12,
-    documents: 3,
-  },
-  {
-    id: 2,
-    firstName: "Alex",
-    lastName: "Chen",
-    email: "alex.chen@example.com",
-    plan: "Free",
-    joinedDate: "2025-03-10",
-    status: "Active",
-    questionsAsked: 5,
-    documents: 2,
-  },
-  {
-    id: 3,
-    firstName: "Emma",
-    lastName: "Williams",
-    email: "emma.w@example.com",
-    plan: "Premium",
-    joinedDate: "2025-02-28",
-    status: "Inactive",
-    questionsAsked: 8,
-    documents: 1,
-  },
-];
+interface PaginationData {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
 
-function UserListRow({ user, onSelect }: { user: AskiMateUser; onSelect: (user: AskiMateUser) => void }) {
+interface ApiResponse {
+  data: AskiMateUserData[];
+  pagination: PaginationData;
+}
+
+const FREE_LIMIT = 5;
+
+function formatDate(d: Date | string | null) {
+  if (!d) return "—";
+  const date = typeof d === "string" ? new Date(d) : d;
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
+function formatDateTime(d: Date | string | null) {
+  if (!d) return "—";
+  const date = typeof d === "string" ? new Date(d) : d;
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function PlanBadge({ plan, isTrialActive }: { plan: "free" | "premium"; isTrialActive: boolean }) {
+  const isPremium = plan === "premium";
+  if (isPremium && isTrialActive) {
+    return <span className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Trial Active</span>;
+  }
+  if (isPremium) {
+    return <span className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Premium</span>;
+  }
+  return <span className="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">Free</span>;
+}
+
+function UsageBadge({ weeklyUsage, plan }: { weeklyUsage: number; plan: "free" | "premium" }) {
+  if (plan === "premium") return null;
+  const isLimitHit = weeklyUsage >= FREE_LIMIT;
+  return (
+    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${
+      isLimitHit
+        ? "bg-red-100 text-red-700"
+        : "bg-amber-100 text-amber-700"
+    }`}>
+      {weeklyUsage}/{FREE_LIMIT} questions
+    </span>
+  );
+}
+
+function UserListRow({ user, onSelect }: { user: AskiMateUserData; onSelect: (user: AskiMateUserData) => void }) {
   return (
     <button
       onClick={() => onSelect(user)}
@@ -71,168 +96,128 @@ function UserListRow({ user, onSelect }: { user: AskiMateUser; onSelect: (user: 
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="text-right">
-            <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-              user.plan === "Premium"
-                ? "bg-primary/10 text-primary"
-                : "bg-muted text-muted-foreground"
-            }`}>
-              {user.plan}
-            </span>
+          <div className="flex gap-2 flex-wrap justify-end max-w-xs">
+            <PlanBadge plan={user.plan} isTrialActive={user.isTrialActive} />
+            <UsageBadge weeklyUsage={user.weeklyUsage} plan={user.plan} />
           </div>
-          <div className="text-right hidden md:block">
-            <p className="text-sm font-medium text-foreground">{user.questionsAsked} questions</p>
-            <p className="text-xs text-muted-foreground">{user.documents} documents</p>
+          <div className="text-right hidden md:block min-w-20">
+            <p className="text-sm font-medium text-foreground">{user.conversationCount}</p>
+            <p className="text-xs text-muted-foreground">conversations</p>
           </div>
-          <div className={`text-sm font-medium ${
-            user.status === "Active" ? "text-green-600" : "text-muted-foreground"
-          }`}>
-            {user.status}
-          </div>
-          <ChevronRight className="w-5 h-5 text-muted-foreground" />
+          <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
         </div>
       </div>
     </button>
   );
 }
 
-function UserDetailView({ user, onBack }: { user: AskiMateUser; onBack: () => void }) {
-  const [replyMessage, setReplyMessage] = useState("");
+function FieldRow({ label, value }: { label: string; value: React.ReactNode }) {
+  if (!value) return null;
+  return (
+    <div className="grid grid-cols-3 gap-2 py-2 border-b border-border/40 last:border-0">
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
+      <span className="text-sm text-foreground col-span-2">{value}</span>
+    </div>
+  );
+}
+
+function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () => void }) {
+  const daysUntilTrialEnds = user.trialEndsAt
+    ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
+    : null;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <button
-          onClick={onBack}
-          className="text-primary hover:underline font-medium text-sm mb-4"
-        >
-          ← Back to Users
-        </button>
-      </div>
+      <button
+        onClick={onBack}
+        className="text-primary hover:underline font-medium text-sm"
+      >
+        ← Back to Users
+      </button>
 
-      <div className="bg-white rounded-xl border border-border/60 p-8">
+      <div className="bg-white rounded-xl border border-border/60 p-8 space-y-8">
         {/* Profile Section */}
-        <div className="flex items-start gap-6 mb-8 pb-8 border-b border-border/40">
-          <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center text-2xl font-bold text-primary">
-            {user.firstName[0]}{user.lastName[0]}
-          </div>
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-foreground mb-2">
-              {user.firstName} {user.lastName}
-            </h2>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p>Email: {user.email}</p>
-              <p>Plan: <span className={`font-medium ${user.plan === "Premium" ? "text-primary" : ""}`}>{user.plan}</span></p>
-              <p>Status: <span className={`font-medium ${user.status === "Active" ? "text-green-600" : ""}`}>{user.status}</span></p>
-              <p>Joined: {user.joinedDate}</p>
+        <div className="pb-8 border-b border-border/40">
+          <div className="flex items-start gap-6">
+            <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center text-2xl font-bold text-primary flex-shrink-0">
+              {user.firstName[0]}{user.lastName[0]}
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                {user.firstName} {user.lastName}
+              </h2>
+              <div className="space-y-2">
+                <FieldRow label="Email" value={user.email} />
+                <FieldRow label="Joined" value={formatDateTime(user.createdAt)} />
+                <FieldRow label="Last Updated" value={formatDateTime(user.updatedAt)} />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 pb-8 border-b border-border/40">
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">Questions Asked</p>
-            <p className="text-3xl font-bold text-foreground">{user.questionsAsked}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">Documents Uploaded</p>
-            <p className="text-3xl font-bold text-foreground">{user.documents}</p>
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">Last Activity</p>
-            <p className="text-sm font-medium text-foreground">2 hours ago</p>
-          </div>
-        </div>
-
-        {/* Documents Section */}
-        <div className="mb-8 pb-8 border-b border-border/40">
+        {/* Plan & Trial Status */}
+        <div className="pb-8 border-b border-border/40">
           <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-            <FileText className="w-4 h-4" />
-            Uploaded Documents
+            <Zap className="w-4 h-4" />
+            Plan & Trial Status
           </h3>
           <div className="space-y-3">
-            {[
-              { name: "Personal Statement.pdf", size: "245 KB", date: "2025-03-20" },
-              { name: "CV.docx", size: "180 KB", date: "2025-03-18" },
-              { name: "Academic Transcript.pdf", size: "520 KB", date: "2025-03-15" },
-            ].map((doc) => (
-              <div key={doc.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
-                <div>
-                  <p className="text-sm font-medium text-foreground">{doc.name}</p>
-                  <p className="text-xs text-muted-foreground">{doc.size} • {doc.date}</p>
+            <div className="flex items-center justify-between p-4 bg-muted/20 rounded-lg">
+              <span className="text-sm font-medium text-muted-foreground">Current Plan</span>
+              <PlanBadge plan={user.plan} isTrialActive={user.isTrialActive} />
+            </div>
+
+            {user.plan === "premium" && (
+              <>
+                <div className="flex items-center justify-between p-4 bg-muted/20 rounded-lg">
+                  <span className="text-sm font-medium text-muted-foreground">Trial Start</span>
+                  <span className="text-sm text-foreground">{formatDate(user.trialStartedAt)}</span>
                 </div>
-                <Button size="sm" variant="outline">Download</Button>
+                <div className="flex items-center justify-between p-4 bg-muted/20 rounded-lg">
+                  <span className="text-sm font-medium text-muted-foreground">Trial Ends</span>
+                  <span className={`text-sm font-medium ${user.isTrialActive ? "text-green-600" : "text-red-600"}`}>
+                    {formatDate(user.trialEndsAt)} {user.isTrialActive && daysUntilTrialEnds !== null && `(${daysUntilTrialEnds}d left)`}
+                  </span>
+                </div>
+              </>
+            )}
+
+            {user.plan === "free" && (
+              <div className="flex items-center justify-between p-4 bg-muted/20 rounded-lg">
+                <span className="text-sm font-medium text-muted-foreground">Weekly Usage</span>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-medium ${user.weeklyUsage >= FREE_LIMIT ? "text-red-600" : "text-amber-600"}`}>
+                    {user.weeklyUsage}/{FREE_LIMIT}
+                  </span>
+                  {user.weeklyUsage >= FREE_LIMIT && (
+                    <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded">Limit Hit</span>
+                  )}
+                </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
-        {/* Chat History Section */}
+        {/* Usage & Activity */}
         <div>
           <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
             <MessageSquare className="w-4 h-4" />
-            Chat History
+            Activity
           </h3>
-
-          <div className="space-y-4 bg-muted/10 p-4 rounded-lg h-96 overflow-y-auto mb-4">
-            {[
-              {
-                type: "user",
-                message: "What universities would be best for my profile?",
-                time: "2025-03-20 10:30 AM",
-              },
-              {
-                type: "admin",
-                message: "Based on your profile, I'd recommend looking at Russell Group universities. Can you tell me more about your academic performance?",
-                time: "2025-03-20 11:15 AM",
-              },
-              {
-                type: "user",
-                message: "I got AAA in A-levels and 7.5 IELTS",
-                time: "2025-03-20 11:45 AM",
-              },
-              {
-                type: "admin",
-                message: "Excellent results! You're competitive for top UK universities. Let's discuss your preferred fields of study.",
-                time: "2025-03-20 01:30 PM",
-              },
-            ].map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-xs ${
-                    msg.type === "user"
-                      ? "bg-primary text-white rounded-lg rounded-tr-none"
-                      : "bg-white border border-border/40 rounded-lg rounded-tl-none"
-                  } p-3`}
-                >
-                  <p className="text-sm">{msg.message}</p>
-                  <p className={`text-xs mt-2 ${
-                    msg.type === "user" ? "text-white/70" : "text-muted-foreground"
-                  }`}>
-                    {msg.time}
-                  </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 bg-muted/20 rounded-lg">
+              <p className="text-sm text-muted-foreground mb-1">Total Conversations</p>
+              <p className="text-3xl font-bold text-foreground">{user.conversationCount}</p>
+            </div>
+            {user.plan === "free" && (
+              <div className="p-4 bg-muted/20 rounded-lg">
+                <p className="text-sm text-muted-foreground mb-1">This Week's Questions</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-3xl font-bold text-foreground">{user.weeklyUsage}</p>
+                  <span className="text-sm text-muted-foreground">/ {FREE_LIMIT} limit</span>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Reply Input */}
-          <div className="flex gap-3">
-            <textarea
-              value={replyMessage}
-              onChange={(e) => setReplyMessage(e.target.value)}
-              placeholder="Type your reply..."
-              rows={3}
-              className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
-            />
-            <Button className="bg-primary hover:bg-primary/90 text-white self-end">
-              Send
-            </Button>
+            )}
           </div>
         </div>
       </div>
@@ -242,15 +227,39 @@ function UserDetailView({ user, onBack }: { user: AskiMateUser; onBack: () => vo
 
 export default function AskiMateUsersAdmin() {
   const [search, setSearch] = useState("");
-  const [selectedUser, setSelectedUser] = useState<AskiMateUser | null>(null);
-  const [users] = useState<AskiMateUser[]>(mockUsers);
+  const [users, setUsers] = useState<AskiMateUserData[]>([]);
+  const [pagination, setPagination] = useState<PaginationData | null>(null);
+  const [selectedUser, setSelectedUser] = useState<AskiMateUserData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.firstName.toLowerCase().includes(search.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase())
+  const fetchUsers = useCallback(
+    async (pageNum = 1) => {
+      setLoading(true);
+      try {
+        const query = new URLSearchParams({
+          page: String(pageNum),
+          limit: "20",
+          ...(search && { search }),
+        });
+        const response = await apiFetch<ApiResponse>(`/admin/askimate-users?${query}`);
+        setUsers(response.data);
+        setPagination(response.pagination);
+        setPage(pageNum);
+      } catch (err) {
+        console.error("Failed to fetch AskiMate users:", err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [search]
   );
+
+  useEffect(() => {
+    fetchUsers(1);
+  }, [search, fetchUsers]);
+
+  const totalUsers = pagination?.total || 0;
 
   return (
     <AdminLayout>
@@ -262,19 +271,43 @@ export default function AskiMateUsersAdmin() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground">AskiMate AI Users</h1>
-            <p className="text-muted-foreground mt-1">{users.length} users total</p>
+            <p className="text-muted-foreground mt-1">{totalUsers} users total</p>
           </div>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={totalUsers === 0}
+            onClick={() => {
+              const csv = [
+                ["Name", "Email", "Plan", "Trial Active", "Trial Start", "Trial End", "Conversations", "Weekly Usage"].join(","),
+                ...users.map((u) =>
+                  [
+                    `"${u.firstName} ${u.lastName}"`,
+                    u.email,
+                    u.plan,
+                    u.isTrialActive ? "Yes" : "No",
+                    formatDate(u.trialStartedAt),
+                    formatDate(u.trialEndsAt),
+                    u.conversationCount,
+                    u.plan === "free" ? `${u.weeklyUsage}/${FREE_LIMIT}` : "Unlimited",
+                  ].join(",")
+                ),
+              ].join("\n");
+              const blob = new Blob([csv], { type: "text/csv" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "askimate-users.csv";
+              a.click();
+            }}
+          >
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
         </div>
 
         {selectedUser ? (
-          <UserDetailView
-            user={selectedUser}
-            onBack={() => setSelectedUser(null)}
-          />
+          <UserDetailView user={selectedUser} onBack={() => setSelectedUser(null)} />
         ) : (
           <>
             {/* Search */}
@@ -293,16 +326,44 @@ export default function AskiMateUsersAdmin() {
 
             {/* Users List */}
             <div className="bg-white rounded-xl border border-border/60 overflow-hidden">
-              {filteredUsers.length > 0 ? (
-                <div>
-                  {filteredUsers.map((user) => (
-                    <UserListRow
-                      key={user.id}
-                      user={user}
-                      onSelect={setSelectedUser}
-                    />
-                  ))}
+              {loading ? (
+                <div className="p-8 text-center flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                  <span className="text-muted-foreground">Loading users...</span>
                 </div>
+              ) : users.length > 0 ? (
+                <>
+                  <div>
+                    {users.map((user) => (
+                      <UserListRow key={user.id} user={user} onSelect={setSelectedUser} />
+                    ))}
+                  </div>
+                  {pagination && pagination.totalPages > 1 && (
+                    <div className="flex items-center justify-between p-4 border-t border-border/40 bg-muted/10">
+                      <span className="text-sm text-muted-foreground">
+                        Page {pagination.page} of {pagination.totalPages}
+                      </span>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={pagination.page === 1}
+                          onClick={() => fetchUsers(pagination.page - 1)}
+                        >
+                          Previous
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={pagination.page === pagination.totalPages}
+                          onClick={() => fetchUsers(pagination.page + 1)}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="p-8 text-center">
                   <p className="text-muted-foreground">No users found</p>

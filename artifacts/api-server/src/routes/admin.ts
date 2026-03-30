@@ -9,6 +9,9 @@ import {
   contactMessages,
   serviceRequests,
   members,
+  askimateUsers,
+  askimateConversations,
+  askimateWeeklyUsage,
 } from "@workspace/db";
 import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
@@ -754,6 +757,85 @@ router.post("/admin/members/import", async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Member import error:", err);
     res.status(500).json({ error: "Failed to import members" });
+  }
+});
+
+// AskiMate Users Management
+router.get("/admin/askimate-users", async (req: Request, res: Response) => {
+  try {
+    const searchQuery = req.query.search ? String(req.query.search).toLowerCase() : "";
+    const page = parseInt(String(req.query.page || "1"), 10);
+    const limit = parseInt(String(req.query.limit || "20"), 10);
+    const offset = (page - 1) * limit;
+
+    let query = db.select({
+      id: askimateUsers.id,
+      firstName: askimateUsers.firstName,
+      lastName: askimateUsers.lastName,
+      email: askimateUsers.email,
+      plan: askimateUsers.plan,
+      trialStartedAt: askimateUsers.trialStartedAt,
+      trialEndsAt: askimateUsers.trialEndsAt,
+      createdAt: askimateUsers.createdAt,
+      updatedAt: askimateUsers.updatedAt,
+    }).from(askimateUsers);
+
+    if (searchQuery) {
+      query = query.where(
+        or(
+          ilike(askimateUsers.email, `%${searchQuery}%`),
+          ilike(askimateUsers.firstName, `%${searchQuery}%`),
+          ilike(askimateUsers.lastName, `%${searchQuery}%`)
+        )
+      );
+    }
+
+    const [totalResult] = await db
+      .select({ value: count() })
+      .from(askimateUsers);
+
+    const users = await query.orderBy(desc(askimateUsers.createdAt)).limit(limit).offset(offset);
+
+    // Get usage and conversation counts for each user
+    const enrichedUsers = await Promise.all(
+      users.map(async (user) => {
+        const [usageResult] = await db
+          .select({ questionsUsed: askimateWeeklyUsage.questionsUsed })
+          .from(askimateWeeklyUsage)
+          .where(eq(askimateWeeklyUsage.userId, user.id))
+          .orderBy(desc(askimateWeeklyUsage.week))
+          .limit(1);
+
+        const [conversationCount] = await db
+          .select({ count: count() })
+          .from(askimateConversations)
+          .where(eq(askimateConversations.userId, user.id));
+
+        const isTrialActive = user.plan === "premium" && user.trialEndsAt
+          ? new Date(user.trialEndsAt) > new Date()
+          : false;
+
+        return {
+          ...user,
+          weeklyUsage: usageResult?.questionsUsed || 0,
+          conversationCount: conversationCount?.count || 0,
+          isTrialActive,
+          trialStartedAt: user.trialStartedAt ? new Date(user.trialStartedAt) : null,
+          trialEndsAt: user.trialEndsAt ? new Date(user.trialEndsAt) : null,
+        };
+      })
+    );
+
+    const total = totalResult?.value || 0;
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({
+      data: enrichedUsers,
+      pagination: { page, limit, total, totalPages },
+    });
+  } catch (err) {
+    console.error("AskiMate users fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch AskiMate users" });
   }
 });
 
