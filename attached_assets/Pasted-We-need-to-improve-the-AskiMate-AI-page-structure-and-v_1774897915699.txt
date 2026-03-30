@@ -1,0 +1,97 @@
+We need to improve the AskiMate AI page structure and visual hierarchy.
+
+Focus on clarity, conversion, and a premium feel.
+Do NOT make it cluttered or overly promotional.
+
+==================================================
+1. HERO SECTION IMPROVEMENT
+==================================================
+
+Enhance the hero section to feel more engaging and high-quality.
+
+Requirements:
+- keep a strong headline and short supporting paragraph
+- messaging should be clear, confident, and benefit-focused
+- not generic, not overly salesy
+
+Add a visual element on the right side:
+- this should be an animated or dynamic component
+- it can be:
+  - a mock chat interaction
+  - message bubbles appearing
+  - typing animation
+  - subtle motion showing conversation flow
+
+Important:
+- animation should feel clean and modern
+- not distracting or heavy
+- should reinforce the idea of “real-time smart mentoring”
+
+The hero should communicate:
+- what AskiMate AI is
+- why it is useful
+- that users can start immediately
+
+==================================================
+2. SEPARATE SUBSCRIPTION SECTION
+==================================================
+
+Create a dedicated section for plans (not inside the hero).
+
+This section should include:
+
+Basic Mentoring:
+- Free
+- Up to 5 questions per week
+
+Premium Mentoring:
+- £12/month
+- 3-day free trial
+- Cancel anytime
+- Priority responses / extended support
+
+Requirements:
+- clear comparison between plans
+- easy to scan
+- visually clean (cards or similar structure)
+- include a clear CTA for upgrading
+
+Important:
+- do NOT overload with too much text
+- do NOT make it feel like a pricing wall
+- keep it informative but lightweight
+
+==================================================
+3. KEEP CHAT AS PRIMARY ELEMENT
+==================================================
+
+Even with the new sections:
+- chat must still feel like the main feature
+- users should still be able to start chatting immediately
+
+==================================================
+4. DESIGN DIRECTION
+==================================================
+
+- modern
+- minimal
+- premium
+- trustworthy
+- clean spacing
+- consistent with existing Universitio branding
+
+Avoid:
+- clutter
+- aggressive marketing language
+- too many colors or visual noise
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Show me:
+1. how the hero section changed
+2. what animation or visual element was added
+3. where the subscription section is placed
+4. how the plan comparison is structured
+5. which files were modified
