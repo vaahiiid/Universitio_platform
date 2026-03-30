@@ -1,0 +1,99 @@
+We need to improve two key areas on the AskiMate AI page:
+1. subscription value clarity
+2. hero engagement (animation)
+
+Do NOT change the structure. Only improve these two parts.
+
+==================================================
+1. SUBSCRIPTION SECTION — MAKE VALUE CLEAR
+==================================================
+
+The current plans feel too light and do not communicate enough value.
+
+Update both plans so users clearly understand what they get.
+
+--------------------------------------------------
+Basic Mentoring (Free)
+--------------------------------------------------
+
+Keep it simple but meaningful:
+
+- Ask up to 5 questions per week
+- Get clear, structured guidance for your applications
+- Understand your next steps with confidence
+- Explore your study options before committing
+
+--------------------------------------------------
+Premium Mentoring
+--------------------------------------------------
+
+This must feel significantly more valuable.
+
+Include:
+
+- Unlimited or extended questions (make it feel open, not restrictive)
+- Priority responses (faster replies)
+- Full document review support (VERY IMPORTANT)
+  - SOP feedback
+  - CV review
+  - application feedback
+- Ongoing guidance throughout your application journey
+- 3-day free trial
+- Cancel anytime
+
+IMPORTANT:
+- clearly highlight document review as a key benefit
+- this is one of the main upgrade drivers
+- do NOT keep it vague
+
+Design:
+- keep it clean and scannable
+- do not overload with too many bullet points
+- but make Premium clearly stronger than Basic
+
+==================================================
+2. HERO SECTION — ADD ANIMATED ELEMENT
+==================================================
+
+The hero still feels static.
+
+Add a subtle, modern animation that enhances the experience.
+
+Options (choose the best one):
+
+- animated chat bubbles appearing
+- typing indicator effect
+- messages sliding in
+- a small loop showing question → response flow
+
+IMPORTANT:
+- animation must support the idea of real-time mentoring
+- it must NOT replace or hide the real chat
+- it must NOT be heavy or distracting
+- it must feel premium and smooth
+
+The goal:
+- make the hero feel alive
+- make users feel “this is interactive and smart”
+
+==================================================
+3. DO NOT BREAK EXISTING LOGIC
+==================================================
+
+Do NOT change:
+- guest chat behavior
+- limits (2 guest, 5 free weekly)
+- chat positioning
+- page structure
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Show me:
+
+1. how the subscription content was updated
+2. where document review is highlighted
+3. what animation was added in the hero
+4. how the animation works technically
+5. which files were modified

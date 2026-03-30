@@ -152,14 +152,23 @@ export default function AskiMateLanding() {
             </div>
 
             {/* RIGHT: REAL WORKING CHAT INTERFACE */}
-            <div className="flex flex-col">
-              <div className="flex-1 flex flex-col bg-white rounded-2xl border border-border/60 shadow-sm overflow-hidden">
+            <div className="flex flex-col relative">
+              {/* Animated Glow Effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none animate-shimmer"></div>
+              
+              <div className="flex-1 flex flex-col bg-white rounded-2xl border border-border/60 shadow-sm overflow-hidden relative z-10">
                 {/* Chat Header */}
-                <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-b border-border/40 px-6 py-4">
-                  <h2 className="text-sm font-semibold text-foreground">Chat with a Mentor</h2>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {limitReached ? "Sign up to continue" : "Ask your question"}
-                  </p>
+                <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-b border-border/40 px-6 py-4 flex items-start justify-between">
+                  <div>
+                    <h2 className="text-sm font-semibold text-foreground">Chat with a Mentor</h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {limitReached ? "Sign up to continue" : "Ask your question"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5 ml-4">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-green-700 font-medium">Online</span>
+                  </div>
                 </div>
 
                 {/* Chat Messages */}
@@ -284,11 +293,19 @@ export default function AskiMateLanding() {
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">5 questions per week</span>
+                  <span className="text-sm text-foreground">Ask up to 5 questions per week</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">24–48 hour response time</span>
+                  <span className="text-sm text-foreground">Get clear, structured guidance for your applications</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground">Understand your next steps with confidence</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground">Explore your study options before committing</span>
                 </li>
               </ul>
 
@@ -323,15 +340,28 @@ export default function AskiMateLanding() {
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Unlimited questions</span>
+                  <span className="text-sm text-foreground">Ask unlimited questions anytime</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Priority live chat access</span>
+                  <span className="text-sm text-foreground">Priority live chat with real-time responses</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Same-day replies guaranteed</span>
+                  <span className="text-sm font-medium text-foreground">Full document review support</span>
+                </li>
+                <li className="flex items-start gap-3 ml-3 pl-3 border-l-2 border-primary/30">
+                  <span className="text-xs text-foreground">Personal Statement feedback</span>
+                </li>
+                <li className="flex items-start gap-3 ml-3 pl-3 border-l-2 border-primary/30">
+                  <span className="text-xs text-foreground">CV and cover letter review</span>
+                </li>
+                <li className="flex items-start gap-3 ml-3 pl-3 border-l-2 border-primary/30">
+                  <span className="text-xs text-foreground">Application form feedback</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground">Ongoing guidance throughout your journey</span>
                 </li>
               </ul>
 
@@ -434,6 +464,18 @@ export default function AskiMateLanding() {
         }
         .animate-pulse {
           animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes shimmer {
+          0%, 100% {
+            opacity: 0;
+          }
+          50% {
+            opacity: 0.3;
+          }
+        }
+        .animate-shimmer {
+          animation: shimmer 3s ease-in-out infinite;
         }
       `}</style>
     </div>
