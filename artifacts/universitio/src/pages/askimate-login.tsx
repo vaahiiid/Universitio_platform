@@ -93,6 +93,25 @@ export default function AskiMateLogin() {
               setLoading(true);
               try {
                 await login(email, password);
+                
+                // Migrate guest conversation if it exists
+                const guestSessionId = localStorage.getItem("askimate_guest_session_id");
+                const token = localStorage.getItem("askimate_token");
+                if (guestSessionId && token) {
+                  try {
+                    await fetch(`${import.meta.env.BASE_URL}api/askimate/chat/migrate`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({ guestSessionId }),
+                    });
+                  } catch (migrationError) {
+                    console.error("Guest migration failed:", migrationError);
+                  }
+                }
+                
                 setLocation("/askimate-dashboard");
               } catch (err) {
                 setError(err instanceof Error ? err.message : "Login failed");

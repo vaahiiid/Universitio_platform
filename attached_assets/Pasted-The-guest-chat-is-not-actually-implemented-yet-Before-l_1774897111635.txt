@@ -1,0 +1,161 @@
+The guest chat is not actually implemented yet.
+
+Before login/signup, users currently cannot properly access and use the chat as intended.
+This must be fixed together with the chat enforcement logic.
+
+Do NOT switch to Autonomous mode.
+
+==================================================
+PHASE 3B — GUEST CHAT + REAL CHAT ENGINE + LIMIT ENFORCEMENT
+==================================================
+
+This phase must solve BOTH:
+1. guest chat access before signup/login
+2. real chat logic and plan enforcement
+
+Right now, guest chat is not truly available yet, and that must be fixed first.
+
+==================================================
+1. GUEST CHAT MUST EXIST BEFORE SIGNUP/LOGIN
+==================================================
+
+Implement a real guest chat experience on the user side.
+
+Requirements:
+- a visitor must be able to open AskiMate AI chat without signing up
+- they must be able to type and send messages as a guest
+- this should not require login first
+- the chat UI must feel real and usable, not placeholder-only
+
+Important:
+- guest chat access is a core product requirement
+- this is similar to the ChatGPT-style “try it first, then sign up to continue” flow
+
+==================================================
+2. GUEST LIMIT MUST BE ENFORCED
+==================================================
+
+For guest users:
+
+- allow up to 2 user questions
+- on the 3rd question attempt:
+  - block further chat
+  - show a clear message:
+    “To continue the conversation, please sign up”
+  - provide CTA to sign up / log in
+
+Important:
+- count only user questions
+- not mentor/admin replies
+
+==================================================
+3. REAL CHAT MESSAGE FLOW
+==================================================
+
+Implement real chat message handling:
+
+- when guest or user sends a message, it must be saved properly
+- create a conversation if one does not exist
+- save messages in askimate_messages
+- link them to the correct conversation
+
+==================================================
+4. GUEST SESSION HANDLING
+==================================================
+
+Implement guest session support properly:
+
+- generate a guestSessionId
+- store it locally
+- use it to identify the guest conversation
+- preserve guest chat history during the guest session
+
+==================================================
+5. GUEST → USER MIGRATION
+==================================================
+
+After sign up / login:
+
+- if a guestSessionId exists
+- find the guest conversation
+- attach it to the user account
+- set isGuest = false
+- preserve the previous chat history
+
+The user should continue the same conversation inside their profile/dashboard chat.
+
+==================================================
+6. FREE PLAN LIMIT FOR LOGGED-IN USERS
+==================================================
+
+For logged-in users on the free plan:
+
+- allow up to 5 user questions per week
+- track usage in askimate_weekly_usage
+
+On the 6th question:
+- block further questions for that week
+- show:
+  “You’ve used all 5 free questions for this week.
+   Upgrade to Premium Mentoring to continue.
+   Start your 3-day free trial — cancel anytime.”
+
+==================================================
+7. PREMIUM USERS
+==================================================
+
+For premium users:
+- allow unrestricted / premium-level chat access
+- bypass weekly free limit
+
+==================================================
+8. CENTRAL CHAT ENDPOINT
+==================================================
+
+Create or complete the real chat endpoint:
+
+POST /api/askimate/chat
+
+It must:
+- handle guest vs authenticated user
+- enforce guest limit
+- enforce free weekly limit
+- allow premium access
+- save messages correctly
+- return clear structured responses
+
+==================================================
+9. FRONTEND HANDLING
+==================================================
+
+Frontend must properly handle these cases:
+- guest can start chatting
+- guest limit reached → show signup prompt
+- free user limit reached → show premium upgrade prompt
+- after login/signup, migrated conversation appears in dashboard
+
+==================================================
+10. ERROR / STATE RESPONSES
+==================================================
+
+Use clear structured responses such as:
+- GUEST_LIMIT_REACHED
+- FREE_LIMIT_REACHED
+- AUTH_REQUIRED
+- PREMIUM_REQUIRED (if needed)
+
+==================================================
+11. AFTER IMPLEMENTATION
+==================================================
+
+Show me clearly:
+
+1. how guest chat now works before signup/login
+2. where the guest chat UI is accessible
+3. how guestSessionId is handled
+4. how the 2-question guest limit is enforced
+5. how real chat messages are stored
+6. how the 5-question weekly free limit is enforced
+7. how premium bypass works
+8. how guest conversation is migrated after signup/login
+9. which files were modified
