@@ -1,0 +1,74 @@
+Do NOT switch to Autonomous mode.
+
+We will continue in controlled steps.
+
+The current request is too broad, so narrow it properly.
+
+==================================================
+DO ONLY THIS NEXT STEP
+==================================================
+
+Implement ONLY the following:
+
+----------------------------------------
+A. UI/UX REFINEMENTS
+----------------------------------------
+
+1. Add back navigation to Sign Up and Log In pages
+2. Improve the explanatory copy so users understand what AskiMate AI is
+3. Change the “New” badge to red
+4. Show the 3-day free trial clearly in the Premium Mentoring UI
+
+----------------------------------------
+B. AUTH FOUNDATIONS ONLY
+----------------------------------------
+
+Start ONLY the authentication foundation.
+
+Do NOT implement the full backend auth system yet.
+Do NOT build the full subscription model yet.
+Do NOT over-scope database architecture.
+
+For this step, do ONLY:
+
+1. Decide and wire the auth approach cleanly in the project structure
+   - Google login option placeholder or connected foundation
+   - Email login/signup foundation
+
+2. Create the real auth flow structure/screens/hooks/components so the project is ready for real auth
+3. Set up the profile persistence structure only as far as needed for the next step
+4. If needed, add only the minimal schema/foundation for user profiles
+5. Keep everything modular for the next step
+
+----------------------------------------
+IMPORTANT
+----------------------------------------
+
+This step is NOT:
+- full auth completion
+- full session architecture
+- full email verification
+- full Stripe integration
+
+This step IS:
+- UI refinements
+- auth foundation setup
+- minimal persistence preparation
+
+==================================================
+STOP AFTER THIS STEP
+==================================================
+
+After this step, report:
+
+1. Which UI refinements were made
+2. Where back navigation was added
+3. What text/copy was improved
+4. Where the red “New” badge was updated
+5. Where the 3-day free trial is shown
+6. Which files were modified
+7. What auth foundation is now in place
+8. What is real vs still placeholder
+9. What the next implementation step should be
+
+Do NOT continue further until I approve the next step.
