@@ -52,13 +52,45 @@ function AskiMateDashboardContent() {
     setUpdateError("");
     setUpdateSuccess(false);
     try {
-      // Profile save is ready for Phase 3 when updateProfile is connected
-      console.log("Profile saved:", profileData);
-      setUpdateSuccess(true);
-      setTimeout(() => setUpdateSuccess(false), 3000);
+      // Call real API endpoint to update profile
+      await fetch(`${import.meta.env.BASE_URL}api/askimate/profile`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("askimate_token")}`,
+        },
+        body: JSON.stringify({
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
+          mobile: profileData.mobile,
+          dateOfBirth: profileData.dateOfBirth,
+          marketingConsent: profileData.marketingConsent,
+        }),
+      }).then(async (res) => {
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.error || "Failed to save profile");
+        }
+        setUpdateSuccess(true);
+        setTimeout(() => setUpdateSuccess(false), 3000);
+      });
     } catch (error) {
       setUpdateError(error instanceof Error ? error.message : "Failed to save profile");
     }
+  };
+
+  const getPlanStatus = () => {
+    if (!user) return { plan: "Free", status: "No plan" };
+    const now = new Date();
+    const trialEnd = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+    
+    if (user.plan === "premium" && trialEnd && now < trialEnd) {
+      const daysLeft = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      return { plan: "Premium (Free Trial)", status: `${daysLeft} day${daysLeft !== 1 ? "s" : ""} remaining` };
+    } else if (user.plan === "premium") {
+      return { plan: "Premium", status: "Paid subscription" };
+    }
+    return { plan: "Free", status: "Upgrade to unlock priority support" };
   };
 
   return (
@@ -147,12 +179,12 @@ function AskiMateDashboardContent() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Email Address</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Email Address (Cannot be changed)</label>
                     <input
                       type="email"
                       value={profileData.email}
-                      onChange={(e) => handleProfileChange("email", e.target.value)}
-                      className="w-full border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      disabled
+                      className="w-full border border-border rounded-lg px-3 py-2.5 text-sm bg-muted text-muted-foreground cursor-not-allowed"
                     />
                   </div>
 
@@ -177,29 +209,29 @@ function AskiMateDashboardContent() {
                   </div>
 
                   <div className="border-t border-border pt-6 space-y-4">
-                    <h3 className="font-semibold text-foreground">Consent</h3>
+                    <h3 className="font-semibold text-foreground">Consent & Preferences</h3>
 
-                    <label className="flex items-start gap-3 cursor-pointer">
+                    <label className="flex items-start gap-3">
                       <input
                         type="checkbox"
                         checked={profileData.termsAccepted}
-                        onChange={(e) => handleProfileChange("termsAccepted", e.target.checked)}
-                        className="mt-1"
+                        disabled
+                        className="mt-1 cursor-not-allowed"
                       />
                       <span className="text-sm text-muted-foreground">
-                        I agree to the Terms & Conditions
+                        Terms & Conditions accepted (set at signup)
                       </span>
                     </label>
 
-                    <label className="flex items-start gap-3 cursor-pointer">
+                    <label className="flex items-start gap-3">
                       <input
                         type="checkbox"
                         checked={profileData.privacyAccepted}
-                        onChange={(e) => handleProfileChange("privacyAccepted", e.target.checked)}
-                        className="mt-1"
+                        disabled
+                        className="mt-1 cursor-not-allowed"
                       />
                       <span className="text-sm text-muted-foreground">
-                        I agree to the Privacy Policy
+                        Privacy Policy accepted (set at signup)
                       </span>
                     </label>
 
@@ -216,7 +248,22 @@ function AskiMateDashboardContent() {
                     </label>
                   </div>
 
-                  <Button className="bg-primary hover:bg-primary/90 text-white">
+                  {updateError && (
+                    <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+                      {updateError}
+                    </div>
+                  )}
+
+                  {updateSuccess && (
+                    <div className="text-sm text-green-600 bg-green-50 border border-green-200 rounded px-3 py-2">
+                      Profile updated successfully!
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={handleSaveProfile}
+                    className="bg-primary hover:bg-primary/90 text-white"
+                  >
                     Save Changes
                   </Button>
                 </form>
@@ -284,11 +331,17 @@ function AskiMateDashboardContent() {
               <div className="bg-white rounded-xl border border-border/60 p-8">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Your Subscription</h2>
 
-                <div className="p-6 bg-muted/30 rounded-lg mb-6 border border-border/40">
+                <div className={`p-6 rounded-lg mb-6 border ${
+                  getPlanStatus().plan.includes("Premium")
+                    ? "bg-primary/5 border-primary/20"
+                    : "bg-muted/30 border-border/40"
+                }`}>
                   <p className="text-sm text-muted-foreground mb-2">Current Plan</p>
-                  <p className="text-2xl font-bold text-foreground mb-4">Free Plan</p>
-                  <p className="text-sm text-muted-foreground mb-4">5 questions per week • Response within 24–48 hours</p>
-                  <Button variant="outline">View All Plans</Button>
+                  <p className="text-2xl font-bold text-foreground mb-4">{getPlanStatus().plan}</p>
+                  <p className="text-sm text-muted-foreground mb-4">{getPlanStatus().status}</p>
+                  {getPlanStatus().plan.includes("Free") && (
+                    <Button variant="outline">Upgrade to Premium</Button>
+                  )}
                 </div>
 
                 <div className="space-y-4">
