@@ -119,6 +119,7 @@ function AskiMateDashboardContent() {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
+            body: JSON.stringify({ sessionId }),
           });
           if (res.ok) {
             // Reload plan info to show updated status
@@ -135,9 +136,13 @@ function AskiMateDashboardContent() {
             window.history.replaceState({}, document.title, window.location.pathname);
             setUpdateSuccess(true);
             setTimeout(() => setUpdateSuccess(false), 5000);
+          } else {
+            const error = await res.json();
+            setUpdateError(error.error || "Payment verification failed");
           }
         } catch (error) {
           console.error("Failed to confirm premium:", error);
+          setUpdateError("Failed to confirm premium subscription");
         }
       }
     };

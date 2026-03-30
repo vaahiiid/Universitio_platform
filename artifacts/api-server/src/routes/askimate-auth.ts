@@ -407,10 +407,57 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
 
 // CONFIRM PREMIUM (called after successful payment)
 router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Request, res: Response) => {
+  if (!stripe) {
+    res.status(500).json({ error: "Stripe not configured" });
+    return;
+  }
+
   try {
     const userPayload = (req as any).askimateUser as AskimateUserPayload;
+    const { sessionId } = req.body as { sessionId?: string };
 
-    // Update user to premium with trial dates
+    if (!sessionId) {
+      res.status(400).json({ error: "sessionId is required" });
+      return;
+    }
+
+    // Retrieve user
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.id, userPayload.id),
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    // Retrieve Stripe session
+    let stripeSession;
+    try {
+      stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
+    } catch (error) {
+      console.error("[ASKIMATE-AUTH] Stripe session retrieval failed:", error);
+      res.status(400).json({ error: "Invalid payment session" });
+      return;
+    }
+
+    // Validate payment
+    if (stripeSession.payment_status !== "paid") {
+      res.status(400).json({ error: "Invalid payment session: payment not completed" });
+      return;
+    }
+
+    if (stripeSession.status !== "complete") {
+      res.status(400).json({ error: "Invalid payment session: incomplete checkout" });
+      return;
+    }
+
+    if (stripeSession.customer_email !== user.email) {
+      res.status(400).json({ error: "Invalid payment session: email mismatch" });
+      return;
+    }
+
+    // All validations passed - activate premium
     const now = new Date();
     const trialEnds = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // +3 days
 
