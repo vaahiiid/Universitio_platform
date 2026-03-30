@@ -1,0 +1,71 @@
+Do a strict Stripe verification pass.
+
+Do NOT add new features in this step.
+Do NOT refactor unrelated code.
+Only verify the existing Stripe implementation carefully.
+
+==================================================
+VERIFY THESE EVENTS ONE BY ONE
+==================================================
+
+1. checkout.session.completed
+2. customer.subscription.updated
+3. customer.subscription.deleted
+4. invoice.paid
+5. invoice.payment_failed
+
+For EACH event, tell me clearly:
+
+- where userId comes from
+- which object metadata is used
+- which database fields are updated
+- whether plan changes
+- whether trialStartedAt changes
+- whether trialEndsAt changes
+- whether this could accidentally overwrite existing trial data
+- whether the logic is idempotent
+
+==================================================
+ALSO VERIFY THESE PRODUCT RULES
+==================================================
+
+1. Free users stay free unless upgrade/payment really succeeds
+2. Premium trial starts only when intended
+3. Trial dates do not reset accidentally on later events
+4. Cancel/delete events correctly downgrade to free
+5. Failed payment behavior is exactly as intended
+6. Webhook + redirect confirmation do not conflict with each other
+7. Existing premium users do not get corrupted by repeated events
+8. Metadata userId is available for both checkout and subscription lifecycle events
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT just say “it looks correct”.
+I want a precise event-by-event audit.
+
+For each event, label it as one of these:
+- VERIFIED BY ACTUAL TEST
+- VERIFIED BY CODE REVIEW ONLY
+- NOT FULLY VERIFIED
+
+==================================================
+OUTPUT FORMAT
+==================================================
+
+For each Stripe event, report:
+
+Event name:
+UserId source:
+DB fields updated:
+Plan result:
+Trial fields result:
+Risk of accidental overwrite:
+Verification level:
+
+Then at the end, give me:
+
+1. Remaining production risks
+2. Anything still ambiguous
+3. Whether the current Stripe flow is safe for soft launch

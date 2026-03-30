@@ -126,6 +126,18 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
     const userId = extractUserIdFromMetadata(session.metadata);
 
     if (userId) {
+      // CRITICAL: Check if already premium to prevent resetting trial dates on webhook retries
+      const user = await db.query.askimateUsers.findFirst({
+        where: eq(askimateUsers.id, userId),
+      });
+
+      if (user && user.plan === "premium") {
+        // Already premium - skip to prevent resetting trial dates
+        console.log(`[STRIPE-WEBHOOK] User ${userId} already premium, skipping (idempotent)`);
+        return;
+      }
+
+      // First activation: set trial dates
       const now = new Date();
       const trialEnds = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // +3 days
 
@@ -139,7 +151,7 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
         })
         .where(eq(askimateUsers.id, userId));
 
-      console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook`);
+      console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook (first time)`);
     } else {
       console.warn(`[STRIPE-WEBHOOK] Could not extract userId from session ${session.id}`);
     }
@@ -218,22 +230,29 @@ async function handleInvoicePaid(event: InvoicePaidEvent) {
   // Find user by subscription metadata
   if (typeof invoice.subscription === "string") {
     const subscriptionId = invoice.subscription;
-    const subscription = await stripe?.subscriptions.retrieve(subscriptionId);
+    
+    try {
+      const subscription = await stripe?.subscriptions.retrieve(subscriptionId);
 
-    if (subscription) {
-      const userId = extractUserIdFromMetadata(subscription.metadata);
-      if (userId) {
-        // Ensure user is premium
-        await db
-          .update(askimateUsers)
-          .set({
-            plan: "premium",
-            updatedAt: new Date(),
-          })
-          .where(eq(askimateUsers.id, userId));
+      if (subscription) {
+        const userId = extractUserIdFromMetadata(subscription.metadata);
+        if (userId) {
+          // Ensure user is premium
+          await db
+            .update(askimateUsers)
+            .set({
+              plan: "premium",
+              updatedAt: new Date(),
+            })
+            .where(eq(askimateUsers.id, userId));
 
-        console.log(`[STRIPE-WEBHOOK] User ${userId} plan confirmed premium after invoice paid`);
+          console.log(`[STRIPE-WEBHOOK] User ${userId} plan confirmed premium after invoice paid`);
+        } else {
+          console.warn(`[STRIPE-WEBHOOK] Could not extract userId from subscription ${subscriptionId}`);
+        }
       }
+    } catch (error) {
+      console.error(`[STRIPE-WEBHOOK] Failed to retrieve subscription ${subscriptionId}:`, error);
     }
   }
 }
@@ -252,16 +271,23 @@ async function handleInvoicePaymentFailed(event: InvoicePaymentFailedEvent) {
   // Find user by subscription metadata
   if (typeof invoice.subscription === "string") {
     const subscriptionId = invoice.subscription;
-    const subscription = await stripe?.subscriptions.retrieve(subscriptionId);
+    
+    try {
+      const subscription = await stripe?.subscriptions.retrieve(subscriptionId);
 
-    if (subscription) {
-      const userId = extractUserIdFromMetadata(subscription.metadata);
-      if (userId) {
-        // Log failure but keep premium (grace period)
-        console.log(
-          `[STRIPE-WEBHOOK] User ${userId} payment failed, keeping premium for grace period`
-        );
+      if (subscription) {
+        const userId = extractUserIdFromMetadata(subscription.metadata);
+        if (userId) {
+          // Log failure but keep premium (grace period)
+          console.log(
+            `[STRIPE-WEBHOOK] User ${userId} payment failed, keeping premium for grace period`
+          );
+        } else {
+          console.warn(`[STRIPE-WEBHOOK] Could not extract userId from subscription ${subscriptionId}`);
+        }
       }
+    } catch (error) {
+      console.error(`[STRIPE-WEBHOOK] Failed to retrieve subscription ${subscriptionId}:`, error);
     }
   }
 }
