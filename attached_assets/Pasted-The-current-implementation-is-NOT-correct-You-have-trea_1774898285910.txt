@@ -1,0 +1,114 @@
+The current implementation is NOT correct.
+
+You have treated the chat as a visual/mock element.
+That is wrong.
+
+AskiMate AI is a chat-first product.
+The real chat must be the primary element of the page.
+
+==================================================
+RESTRUCTURE THE PAGE COMPLETELY
+==================================================
+
+Follow this structure strictly:
+
+--------------------------------------------------
+1. HERO SECTION (CHAT-FIRST)
+--------------------------------------------------
+
+The FIRST thing the user must see is the REAL working chat.
+
+NOT a mock.
+NOT an image.
+
+Requirements:
+- real chat input
+- user can type immediately
+- guest chat logic must work here (2 questions → then signup)
+
+Alongside the chat (or above it):
+
+- short, strong headline
+- short supporting paragraph
+- a subtle animated visual element that explains what AskiMate is
+
+The animation:
+- must NOT replace the chat
+- must support the idea of smart mentoring / conversation
+- must be lightweight and modern
+
+IMPORTANT:
+Chat is the hero.
+Everything else supports it.
+
+--------------------------------------------------
+2. SUBSCRIPTION SECTION (NEXT SECTION)
+--------------------------------------------------
+
+After the hero:
+
+Create a clean, separate section explaining plans:
+
+Basic Mentoring:
+- Free
+- 5 questions per week
+
+Premium Mentoring:
+- £12/month
+- 3-day free trial
+- Cancel anytime
+
+Keep it:
+- clean
+- simple
+- scannable
+
+--------------------------------------------------
+3. CTA SECTION (AFTER PLANS)
+--------------------------------------------------
+
+Clear call-to-action:
+
+- Sign up
+- Log in
+
+Encourage users to continue their chat inside their account.
+
+--------------------------------------------------
+4. EXPLANATION / WHY ASKIMATE
+--------------------------------------------------
+
+After that:
+
+Explain:
+- what AskiMate does
+- why it is useful
+- who it is for
+
+Keep it structured and easy to scan.
+
+--------------------------------------------------
+IMPORTANT DESIGN RULES
+--------------------------------------------------
+
+- DO NOT use chat as a mock image
+- DO NOT hide chat behind another page
+- DO NOT make the hero text-heavy
+- DO NOT overcomplicate UI
+
+- The page must feel:
+  - interactive
+  - product-first
+  - modern
+  - clean
+
+--------------------------------------------------
+AFTER IMPLEMENTATION
+--------------------------------------------------
+
+Show me clearly:
+
+1. where the real chat is rendered in the hero
+2. how the animation is implemented (without replacing chat)
+3. how the section order was changed
+4. which files were modified
