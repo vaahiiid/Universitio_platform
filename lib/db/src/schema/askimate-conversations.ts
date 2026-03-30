@@ -16,7 +16,8 @@ export const askimateConversations = pgTable("askimate_conversations", {
 export const askimateMessages = pgTable("askimate_messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversation_id").notNull(),
-  isUserMessage: boolean("is_user_message").notNull(), // true = user question, false = mentor reply
+  isUserMessage: boolean("is_user_message").notNull(), // true = user question, false = non-user (AI or mentor)
+  sender: text("sender").notNull().default("ai"), // "user", "ai", or "mentor"
   content: text("content").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

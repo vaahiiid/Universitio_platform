@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { Search, Download, MessageSquare, FileText, ChevronRight, Loader2, Clock, Zap } from "lucide-react";
+import { Search, Download, MessageSquare, ChevronRight, Loader2, Zap, ArrowLeft, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
 
@@ -18,6 +18,23 @@ interface AskiMateUserData {
   updatedAt: Date;
   weeklyUsage: number;
   conversationCount: number;
+}
+
+interface Conversation {
+  id: number;
+  title: string;
+  questionCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface Message {
+  id: number;
+  conversationId: number;
+  sender: "user" | "ai" | "mentor";
+  isUserMessage: boolean;
+  content: string;
+  createdAt: Date;
 }
 
 interface PaginationData {
@@ -50,6 +67,11 @@ function formatDateTime(d: Date | string | null) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function formatTime(d: Date | string) {
+  const date = typeof d === "string" ? new Date(d) : d;
+  return date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
 function PlanBadge({ plan, isTrialActive }: { plan: "free" | "premium"; isTrialActive: boolean }) {
@@ -111,17 +133,215 @@ function UserListRow({ user, onSelect }: { user: AskiMateUserData; onSelect: (us
   );
 }
 
-function FieldRow({ label, value }: { label: string; value: React.ReactNode }) {
-  if (!value) return null;
+function ChatView({
+  user,
+  conversation,
+  onBack,
+}: {
+  user: AskiMateUserData;
+  conversation: Conversation;
+  onBack: () => void;
+}) {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [replyText, setReplyText] = useState("");
+  const [sending, setSending] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const fetchMessages = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await apiFetch<{ data: Message[] }>(
+        `/admin/askimate-conversations/${conversation.id}/messages`
+      );
+      setMessages(response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) })));
+    } catch (err) {
+      console.error("Failed to fetch messages:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [conversation.id]);
+
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
+
+  const handleSendReply = async () => {
+    if (!replyText.trim()) return;
+
+    setSending(true);
+    try {
+      const response = await apiFetch<{ data: Message }>(
+        `/admin/askimate-conversations/${conversation.id}/mentor-reply`,
+        {
+          method: "POST",
+          body: JSON.stringify({ message: replyText }),
+        }
+      );
+
+      setMessages([
+        ...messages,
+        { ...response.data, createdAt: new Date(response.data.createdAt) },
+      ]);
+      setReplyText("");
+    } catch (err) {
+      console.error("Failed to send mentor reply:", err);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const getSenderLabel = (sender: "user" | "ai" | "mentor") => {
+    switch (sender) {
+      case "user":
+        return `${user.firstName} ${user.lastName}`;
+      case "ai":
+        return "AskiMate AI";
+      case "mentor":
+        return "Mentor";
+      default:
+        return "Unknown";
+    }
+  };
+
+  const getSenderColor = (sender: "user" | "ai" | "mentor") => {
+    switch (sender) {
+      case "user":
+        return "bg-primary text-white";
+      case "ai":
+        return "bg-blue-100 text-blue-900 border border-blue-200";
+      case "mentor":
+        return "bg-green-100 text-green-900 border border-green-200";
+      default:
+        return "bg-gray-100 text-gray-900";
+    }
+  };
+
   return (
-    <div className="grid grid-cols-3 gap-2 py-2 border-b border-border/40 last:border-0">
-      <span className="text-sm font-medium text-muted-foreground">{label}</span>
-      <span className="text-sm text-foreground col-span-2">{value}</span>
+    <div className="space-y-6 h-[calc(100vh-200px)] flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <button onClick={onBack} className="text-primary hover:underline font-medium text-sm">
+          ← Back
+        </button>
+        <div>
+          <h2 className="text-lg font-bold text-foreground">{conversation.title}</h2>
+          <p className="text-xs text-muted-foreground">{conversation.questionCount} questions</p>
+        </div>
+        <div className="w-20" />
+      </div>
+
+      {/* Messages Container */}
+      <div className="bg-white rounded-xl border border-border/60 flex-1 overflow-y-auto p-6 space-y-4">
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+          </div>
+        ) : messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            <p>No messages yet</p>
+          </div>
+        ) : (
+          <>
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-lg rounded-lg px-4 py-2 ${getSenderColor(msg.sender)}`}
+                >
+                  <p className="text-xs font-semibold mb-1 opacity-70">
+                    {getSenderLabel(msg.sender)} • {formatTime(msg.createdAt)}
+                  </p>
+                  <p className="text-sm break-words">{msg.content}</p>
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </>
+        )}
+      </div>
+
+      {/* Reply Input */}
+      <div className="bg-white rounded-xl border border-border/60 p-4">
+        <div className="flex gap-3">
+          <textarea
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.ctrlKey && !sending) {
+                handleSendReply();
+              }
+            }}
+            placeholder="Reply as mentor... (Ctrl+Enter to send)"
+            rows={2}
+            className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
+          />
+          <Button
+            onClick={handleSendReply}
+            disabled={!replyText.trim() || sending}
+            className="bg-primary hover:bg-primary/90 text-white self-end"
+          >
+            {sending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
 
 function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () => void }) {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      setLoading(true);
+      try {
+        const response = await apiFetch<{ data: Conversation[] }>(
+          `/admin/askimate-users/${user.id}/conversations`
+        );
+        setConversations(
+          response.data.map((c) => ({
+            ...c,
+            createdAt: new Date(c.createdAt),
+            updatedAt: new Date(c.updatedAt),
+          }))
+        );
+      } catch (err) {
+        console.error("Failed to fetch conversations:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConversations();
+  }, [user.id]);
+
+  if (selectedConversation) {
+    return (
+      <ChatView
+        user={user}
+        conversation={selectedConversation}
+        onBack={() => setSelectedConversation(null)}
+      />
+    );
+  }
+
   const daysUntilTrialEnds = user.trialEndsAt
     ? Math.max(0, Math.ceil((new Date(user.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
     : null;
@@ -146,10 +366,9 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
               <h2 className="text-2xl font-bold text-foreground mb-2">
                 {user.firstName} {user.lastName}
               </h2>
-              <div className="space-y-2">
-                <FieldRow label="Email" value={user.email} />
-                <FieldRow label="Joined" value={formatDateTime(user.createdAt)} />
-                <FieldRow label="Last Updated" value={formatDateTime(user.updatedAt)} />
+              <div className="space-y-1 text-sm text-muted-foreground">
+                <p>Email: {user.email}</p>
+                <p>Joined: {formatDateTime(user.createdAt)}</p>
               </div>
             </div>
           </div>
@@ -198,27 +417,42 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
           </div>
         </div>
 
-        {/* Usage & Activity */}
+        {/* Conversations */}
         <div>
           <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
             <MessageSquare className="w-4 h-4" />
-            Activity
+            Conversations ({conversations.length})
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-muted/20 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Total Conversations</p>
-              <p className="text-3xl font-bold text-foreground">{user.conversationCount}</p>
+
+          {loading ? (
+            <div className="flex items-center justify-center p-8">
+              <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
             </div>
-            {user.plan === "free" && (
-              <div className="p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">This Week's Questions</p>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-3xl font-bold text-foreground">{user.weeklyUsage}</p>
-                  <span className="text-sm text-muted-foreground">/ {FREE_LIMIT} limit</span>
-                </div>
-              </div>
-            )}
-          </div>
+          ) : conversations.length === 0 ? (
+            <div className="p-6 text-center bg-muted/20 rounded-lg">
+              <p className="text-muted-foreground">No conversations yet</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {conversations.map((conv) => (
+                <button
+                  key={conv.id}
+                  onClick={() => setSelectedConversation(conv)}
+                  className="w-full text-left p-4 bg-muted/20 hover:bg-muted/40 rounded-lg transition-colors border border-border/40"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground">{conv.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {conv.questionCount} questions • {formatDateTime(conv.updatedAt)}
+                      </p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -279,17 +513,14 @@ export default function AskiMateUsersAdmin() {
             disabled={totalUsers === 0}
             onClick={() => {
               const csv = [
-                ["Name", "Email", "Plan", "Trial Active", "Trial Start", "Trial End", "Conversations", "Weekly Usage"].join(","),
+                ["Name", "Email", "Plan", "Trial Active", "Conversations"].join(","),
                 ...users.map((u) =>
                   [
                     `"${u.firstName} ${u.lastName}"`,
                     u.email,
                     u.plan,
                     u.isTrialActive ? "Yes" : "No",
-                    formatDate(u.trialStartedAt),
-                    formatDate(u.trialEndsAt),
                     u.conversationCount,
-                    u.plan === "free" ? `${u.weeklyUsage}/${FREE_LIMIT}` : "Unlimited",
                   ].join(",")
                 ),
               ].join("\n");

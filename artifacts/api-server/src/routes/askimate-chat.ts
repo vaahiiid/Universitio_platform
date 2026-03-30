@@ -145,6 +145,7 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       .values({
         conversationId: conversation.id,
         isUserMessage: true,
+        sender: "user",
         content: message,
       })
       .returning();

@@ -839,4 +839,118 @@ router.get("/admin/askimate-users", async (req: Request, res: Response) => {
   }
 });
 
+// GET /admin/askimate-users/:userId/conversations
+router.get("/admin/askimate-users/:userId/conversations", async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(String(req.params.userId), 10);
+    if (!Number.isFinite(userId) || userId <= 0) {
+      res.status(400).json({ error: "Invalid user ID" });
+      return;
+    }
+
+    const conversations = await db
+      .select({
+        id: askimateConversations.id,
+        title: askimateConversations.title,
+        questionCount: askimateConversations.questionCount,
+        createdAt: askimateConversations.createdAt,
+        updatedAt: askimateConversations.updatedAt,
+      })
+      .from(askimateConversations)
+      .where(eq(askimateConversations.userId, userId))
+      .orderBy(desc(askimateConversations.updatedAt));
+
+    res.json({ data: conversations });
+  } catch (err) {
+    console.error("Conversation fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch conversations" });
+  }
+});
+
+// GET /admin/askimate-conversations/:conversationId/messages
+router.get("/admin/askimate-conversations/:conversationId/messages", async (req: Request, res: Response) => {
+  try {
+    const conversationId = parseInt(String(req.params.conversationId), 10);
+    if (!Number.isFinite(conversationId) || conversationId <= 0) {
+      res.status(400).json({ error: "Invalid conversation ID" });
+      return;
+    }
+
+    const messages = await db
+      .select({
+        id: askimateMessages.id,
+        conversationId: askimateMessages.conversationId,
+        sender: askimateMessages.sender,
+        isUserMessage: askimateMessages.isUserMessage,
+        content: askimateMessages.content,
+        createdAt: askimateMessages.createdAt,
+      })
+      .from(askimateMessages)
+      .where(eq(askimateMessages.conversationId, conversationId))
+      .orderBy(askimateMessages.createdAt);
+
+    res.json({ data: messages });
+  } catch (err) {
+    console.error("Messages fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch messages" });
+  }
+});
+
+// POST /admin/askimate-conversations/:conversationId/mentor-reply
+router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async (req: Request, res: Response) => {
+  try {
+    const conversationId = parseInt(String(req.params.conversationId), 10);
+    const { message } = req.body as { message: string };
+
+    if (!Number.isFinite(conversationId) || conversationId <= 0) {
+      res.status(400).json({ error: "Invalid conversation ID" });
+      return;
+    }
+
+    if (!message || message.trim().length === 0) {
+      res.status(400).json({ error: "Message cannot be empty" });
+      return;
+    }
+
+    // Verify conversation exists
+    const [conversation] = await db
+      .select({ id: askimateConversations.id })
+      .from(askimateConversations)
+      .where(eq(askimateConversations.id, conversationId))
+      .limit(1);
+
+    if (!conversation) {
+      res.status(404).json({ error: "Conversation not found" });
+      return;
+    }
+
+    // Insert mentor message
+    const [inserted] = await db
+      .insert(askimateMessages)
+      .values({
+        conversationId,
+        content: message.trim(),
+        isUserMessage: false,
+        sender: "mentor",
+      })
+      .returning({
+        id: askimateMessages.id,
+        sender: askimateMessages.sender,
+        content: askimateMessages.content,
+        createdAt: askimateMessages.createdAt,
+      });
+
+    // Update conversation timestamp
+    await db
+      .update(askimateConversations)
+      .set({ updatedAt: new Date() })
+      .where(eq(askimateConversations.id, conversationId));
+
+    res.json({ data: inserted });
+  } catch (err) {
+    console.error("Mentor reply error:", err);
+    res.status(500).json({ error: "Failed to send mentor reply" });
+  }
+});
+
 export default router;

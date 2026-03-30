@@ -9,6 +9,7 @@ import { Check, MessageSquare, BookOpen, Zap, Sparkles } from "lucide-react";
 interface Message {
   id?: number;
   isUserMessage: boolean;
+  sender?: "user" | "ai" | "mentor";
   content: string;
   createdAt?: string;
 }
@@ -84,6 +85,7 @@ export default function AskiMateLanding() {
             ...prev.slice(0, -1),
             {
               isUserMessage: false,
+              sender: "ai",
               content:
                 "You've reached your 2 free guest questions. Sign up to continue your conversation with 5 free questions per week.",
             },
@@ -100,6 +102,7 @@ export default function AskiMateLanding() {
 
       const mentorResponse: Message = {
         isUserMessage: false,
+        sender: "ai",
         content: "Thank you for your question. Our mentor will review this and get back to you within 24-48 hours.",
       };
 
@@ -196,14 +199,21 @@ export default function AskiMateLanding() {
                       key={idx}
                       className={`flex ${msg.isUserMessage ? "justify-end" : "justify-start"}`}
                     >
-                      <div
-                        className={`max-w-xs px-4 py-2.5 rounded-lg text-sm leading-relaxed ${
-                          msg.isUserMessage
-                            ? "bg-primary text-white rounded-br-none"
-                            : "bg-muted/50 text-foreground rounded-bl-none"
-                        }`}
-                      >
-                        {msg.content}
+                      <div>
+                        {msg.sender === "mentor" && (
+                          <p className="text-xs font-semibold text-green-600 mb-1 ml-1">Mentor</p>
+                        )}
+                        <div
+                          className={`max-w-xs px-4 py-2.5 rounded-lg text-sm leading-relaxed ${
+                            msg.isUserMessage
+                              ? "bg-primary text-white rounded-br-none"
+                              : msg.sender === "mentor"
+                                ? "bg-green-100 text-green-900 rounded-bl-none border border-green-200"
+                                : "bg-muted/50 text-foreground rounded-bl-none"
+                          }`}
+                        >
+                          {msg.content}
+                        </div>
                       </div>
                     </div>
                   ))}
