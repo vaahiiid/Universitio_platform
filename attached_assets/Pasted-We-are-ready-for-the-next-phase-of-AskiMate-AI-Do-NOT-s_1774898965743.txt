@@ -1,0 +1,145 @@
+We are ready for the next phase of AskiMate AI.
+
+Do NOT switch to Autonomous mode.
+Implement this in a controlled way.
+
+==================================================
+PHASE NEXT — STRIPE + PREMIUM ACTIVATION + ACCESS CONTROL
+==================================================
+
+Now implement the real subscription flow for Premium Mentoring.
+
+Important:
+- keep the existing guest/free chat logic
+- do not break the current chat-first UX
+- do not redesign unrelated parts
+- make Premium activation real
+
+==================================================
+1. STRIPE INTEGRATION
+==================================================
+
+Implement Stripe subscription flow for Premium Mentoring.
+
+Requirements:
+- connect Premium Mentoring to Stripe
+- support:
+  - Monthly: £12
+  - 3 months: £30
+  - 6 months: £65
+- prepare the subscription model cleanly for future extension
+
+Important:
+- use real Stripe product/price structure
+- keep code modular and production-safe
+
+==================================================
+2. 3-DAY FREE TRIAL MUST BE REAL
+==================================================
+
+Premium should include a real 3-day free trial.
+
+Rules:
+- free trial starts ONLY when user explicitly upgrades to Premium
+- signup alone must not start Premium trial
+- user should see clearly that Premium includes:
+  - 3-day free trial
+  - cancel anytime
+
+Implement the trial in a real way with Stripe/subscription logic if possible.
+If Stripe trial handling needs a specific structure, do it correctly.
+
+==================================================
+3. PREMIUM ACTIVATION FLOW
+==================================================
+
+When a free user reaches the weekly limit and clicks upgrade:
+
+- take them to the Premium upgrade/payment flow
+- after successful checkout:
+  - mark them as Premium
+  - activate trial or premium subscription correctly
+  - unlock Premium chat access
+
+==================================================
+4. ACCESS CONTROL / PLAN ENFORCEMENT
+==================================================
+
+Implement real plan-based access control:
+
+Guest:
+- 2 questions max
+
+Free user:
+- 5 questions per week
+
+Premium user:
+- unrestricted / premium-level access
+
+This logic must now depend on real subscription state, not only local/product placeholder logic.
+
+==================================================
+5. SUBSCRIPTION STATUS IN USER DASHBOARD
+==================================================
+
+In the user dashboard/profile, show subscription details clearly:
+
+- current plan
+- free / premium
+- if Premium trial is active:
+  - show remaining trial time
+- if paid subscription is active:
+  - show active status
+- if canceled:
+  - show correct status
+- show billing period if useful
+
+==================================================
+6. MANAGE SUBSCRIPTION
+==================================================
+
+User should be able to:
+- upgrade to Premium
+- see trial/premium status
+- cancel subscription (or access Stripe billing portal if used)
+- understand what happens after cancelation
+
+==================================================
+7. ADMIN VISIBILITY
+==================================================
+
+In admin, add visibility for AskiMate AI subscription status.
+
+Admin should be able to see for each user:
+- free vs premium
+- trial active or not
+- subscription status
+- plan duration if relevant
+- upgrade/payment-related status if available
+
+Do not redesign the whole admin, just make the data visible and usable.
+
+==================================================
+8. KEEP UX CLEAN
+==================================================
+
+Important:
+- payment flow should feel simple
+- pricing section should stay clean
+- trial messaging should stay clear
+- no confusing plan states
+
+==================================================
+9. AFTER IMPLEMENTATION
+==================================================
+
+Report clearly:
+
+1. Which files were modified
+2. How Stripe was integrated
+3. How the 3-day trial now works
+4. Exactly when Premium trial starts
+5. How plan access is enforced
+6. What the user sees in dashboard
+7. What the admin sees
+8. What still remains for the next phase
