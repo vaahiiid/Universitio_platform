@@ -1,0 +1,110 @@
+Good start.
+
+Now make these refinements AND move to the next phase at the same time.
+
+==================================================
+PART 1 — UI/UX REFINEMENTS
+==================================================
+
+Please improve the current AskiMate AI implementation with these changes:
+
+1. SIGN UP / LOG IN PAGES
+- Add a clear way to go back to the previous page
+- This can be:
+  - a back button
+  - or a clear “Back” / “Return” link
+- It must be visible and intuitive
+
+2. EXPLANATION / COPY
+- The current pages still do not explain clearly enough what AskiMate AI is
+- Keep the UI simple and clean, but improve the copy
+- Add slightly better explanatory text so users immediately understand:
+  - what AskiMate AI is
+  - who it is for
+  - why they should sign up
+
+3. “NEW” BADGE
+- Change the “New” badge color to red
+- Keep it tasteful and clean, not too flashy
+- It should still feel premium
+
+4. FREE TRIAL
+- Add a 3-day free trial for Premium Mentoring in the UI
+- Make this visible in the pricing section and premium plan messaging
+- This is UI/UX + flow preparation, but also use it in the next phase logic
+
+==================================================
+PART 2 — START PHASE 2
+==================================================
+
+Now begin Phase 2 as well.
+
+Phase 2 scope:
+- real authentication
+- sign up / sign in flow
+- Google login
+- email sign up / login
+- email verification flow preparation
+- account/session handling
+- user profile persistence
+
+Important:
+- do this carefully
+- keep architecture clean
+- do not overbuild unrelated features
+- continue using the current AskiMate AI structure from Phase 1
+
+==================================================
+PHASE 2 REQUIREMENTS
+==================================================
+
+1. AUTH
+Implement real auth for:
+- Continue with Google
+- Continue with Email
+
+2. USER ACCOUNT FLOW
+User should be able to:
+- sign up
+- log in
+- log out
+- stay signed in
+- access their own dashboard/profile after login
+
+3. PROFILE PERSISTENCE
+Profile data should no longer be only UI.
+Persist:
+- First name
+- Last name
+- Email
+- Mobile
+- Date of birth (optional)
+- Terms acceptance
+- Privacy acceptance
+- Marketing consent
+
+4. PREPARE FOR EMAIL VERIFICATION
+If full email verification is not fully implemented in this exact step, structure it properly so it is ready for the next step.
+But if you can implement it now cleanly, do it.
+
+5. PREMIUM TRIAL PREPARATION
+Structure the account/subscription model so Premium Mentoring can support:
+- 3-day free trial
+- then paid subscription after trial
+Do not fully build Stripe yet unless required for flow structure, but prepare the logic cleanly.
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Please report clearly:
+
+1. Which UI refinements were made
+2. How sign up / log in back navigation was added
+3. What copy was improved
+4. Where the red “New” badge was updated
+5. Where the 3-day free trial is now shown
+6. Which files were modified
+7. What Phase 2 auth flow is now working
+8. What is real now vs what is still placeholder
+9. Whether profile data is now persisted
