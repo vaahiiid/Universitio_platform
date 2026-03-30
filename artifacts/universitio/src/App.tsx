@@ -13,6 +13,10 @@ import Contact from "@/pages/Contact";
 import Services from "@/pages/Services";
 import FreeConsultation from "@/pages/free-consultation";
 import AssessmentForm from "@/pages/assessment-form";
+import AskiMateLanding from "@/pages/askimate-landing";
+import AskiMateSignup from "@/pages/askimate-signup";
+import AskiMateLogin from "@/pages/askimate-login";
+import AskiMateDashboard from "@/pages/askimate-dashboard";
 
 const BlogPage = lazy(() => import("@/pages/blog-page"));
 const BlogPostPage = lazy(() => import("@/pages/blog-post"));
@@ -34,6 +38,7 @@ const MessagesPage = lazy(() => import("@/pages/admin/messages"));
 const BlogImportPage = lazy(() => import("@/pages/admin/blog-import"));
 const MembersPage = lazy(() => import("@/pages/admin/members"));
 const ServiceRequestsPage = lazy(() => import("@/pages/admin/service-requests"));
+const AskiMateUsersPage = lazy(() => import("@/pages/admin/askimate-users"));
 
 const queryClient = new QueryClient();
 
@@ -99,6 +104,10 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/free-consultation" component={FreeConsultation} />
           <Route path="/assessment-form" component={AssessmentForm} />
+          <Route path="/askimate" component={AskiMateLanding} />
+          <Route path="/askimate-signup" component={AskiMateSignup} />
+          <Route path="/askimate-login" component={AskiMateLogin} />
+          <Route path="/askimate-dashboard" component={AskiMateDashboard} />
           <Route path="/blog" component={BlogPage} />
           <Route path="/blog/category/:category" component={BlogCategoryPage} />
           <Route path="/blog/:slug" component={BlogPostPage} />
@@ -135,6 +144,9 @@ function Router() {
           </Route>
           <Route path="/admin/service-requests/:id?">
             {() => <AdminGuard><ServiceRequestsPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/askimate-users/:id?">
+            {() => <AdminGuard><AskiMateUsersPage /></AdminGuard>}
           </Route>
           <Route path="/admin/:rest*">
             {() => <AdminGuard><Redirect to="/admin" /></AdminGuard>}

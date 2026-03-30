@@ -1,0 +1,148 @@
+Do NOT switch to Autonomous mode.
+
+We will build AskiMate AI in controlled phases.
+
+For now, do ONLY Phase 1.
+Do NOT build the whole system in one pass.
+Do NOT do broad backend/database architecture yet.
+Do NOT over-scope the task.
+
+==================================================
+PHASE 1 ONLY — UI/UX SKELETON
+==================================================
+
+Build ONLY the product structure and UI/UX skeleton.
+
+Important:
+- No AI logic yet
+- No Stripe/payment integration yet
+- No full database implementation yet
+- No full authentication backend yet
+- Focus on screens, navigation, layout, and product flow
+
+==================================================
+1. MAIN SITE INTEGRATION
+==================================================
+
+- Add “AskiMate AI” to the main navigation
+- Add a subtle animated “New” badge next to it
+- Add a homepage section introducing AskiMate AI
+
+==================================================
+2. PUBLIC LANDING PAGE
+==================================================
+
+Create a dedicated AskiMate AI landing page.
+
+This page should explain:
+- who it is for
+- that it is ideal for students who want to apply by themselves but still need guidance
+- that it has two plans:
+  - Basic Mentoring
+  - Premium Mentoring
+- that support is currently human-first
+
+==================================================
+3. AUTH SCREENS (UI ONLY)
+==================================================
+
+Create UI-only pages for:
+- Sign up
+- Login
+
+Include visual options for:
+- Continue with Google
+- Continue with Email
+
+No full auth backend yet.
+
+==================================================
+4. USER AREA (UI ONLY)
+==================================================
+
+Create the UI skeleton for a user dashboard/profile area where the user can:
+
+- view/edit profile
+- upload documents
+- access chat
+- see subscription section
+
+Profile fields:
+- First name
+- Last name
+- Email
+- Mobile
+- Date of birth (optional)
+- Terms & Conditions consent
+- Privacy Policy consent
+- Marketing consent yes/no
+
+==================================================
+5. CHAT UI (UI ONLY)
+==================================================
+
+Create a clean chat interface for the user side.
+
+Important:
+- this is a human mentoring chat UI only
+- no AI logic yet
+- no live backend yet
+- just the structure and experience
+
+==================================================
+6. ADMIN UI (UI ONLY)
+==================================================
+
+Create the admin-side UI skeleton for AskiMate AI.
+
+Admin should have:
+- users list
+- user detail page
+- profile view
+- uploaded documents area
+- chat history view
+- reply interface
+
+UI only for now.
+
+==================================================
+7. PLANS UI
+==================================================
+
+Display the two plans in the UI:
+
+Basic Mentoring
+- Free
+- Up to 5 questions per week
+- Response within 24–48 hours
+- General guidance
+
+Premium Mentoring
+- £12 monthly
+- £30 every 3 months
+- £65 every 6 months
+- show equivalent monthly price in the UI
+- Ask questions anytime
+- Priority live chat access
+- Real-time responses when online
+- Same-day replies guaranteed
+- Full document review
+- Personalised application strategy
+- Continuous support throughout the journey
+
+Do NOT build Stripe yet.
+Only build the pricing UI.
+
+==================================================
+8. STOP AFTER PHASE 1
+==================================================
+
+After Phase 1, report:
+1. Which files were created/modified
+2. The user flow
+3. The admin flow
+4. Where AskiMate AI appears in menu and homepage
+5. How the page structure is organised
+
+Do NOT continue to database/auth/payment implementation yet.
+Wait for my confirmation before Phase 2.

@@ -38,6 +38,7 @@ export function Navbar() {
   const navLinks = [
     { name: "About Us", href: "/about" },
     { name: "Our Services", href: "/services" },
+    { name: "AskiMate AI", href: "/askimate", badge: "New" },
     { name: "Agents", href: "/#agents" },
     { name: "Earn as a Student", href: "/#earn" },
     { name: "Contact", href: "/contact" },
@@ -67,9 +68,14 @@ export function Navbar() {
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors"
+                  className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors flex items-center gap-2"
                 >
                   {link.name}
+                  {"badge" in link && (
+                    <span className="inline-block bg-primary text-white text-xs px-2 py-0.5 rounded-full font-semibold animate-pulse">
+                      {link.badge}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>

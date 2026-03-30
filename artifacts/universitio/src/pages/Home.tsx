@@ -6,6 +6,7 @@ import { TrustIndicators } from "@/components/home/TrustIndicators";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { WhyChoosePreview } from "@/components/home/WhyChoosePreview";
+import { AskiMatePreview } from "@/components/home/AskiMatePreview";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { StudyDestinations } from "@/components/home/StudyDestinations";
 import { Partnerships } from "@/components/home/Partnerships";
@@ -34,6 +35,8 @@ export default function Home() {
         <TrustStrip />
         {/* 4 — Services Preview */}
         <ServicesPreview />
+        {/* 4.5 — AskiMate Preview */}
+        <AskiMatePreview />
         {/* 5 — Why Choose Preview */}
         <WhyChoosePreview />
         {/* 6 — Assessment CTA: capture undecided users after they understand the service */}
