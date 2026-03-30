@@ -36,3 +36,4 @@ NODE_ENV = "production"
 [userenv.shared]
 STRIPE_SECRET_KEY = "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"
 STRIPE_REDIRECT_URL = "https://universitio.com/askimate-dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}"
+STRIPE_WEBHOOK_SECRET = "whsec_JDiuw7S1SvMECs6FOpEenbbvQQECZmjH"
