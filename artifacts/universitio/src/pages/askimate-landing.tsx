@@ -152,7 +152,7 @@ export default function AskiMateLanding() {
       <Navbar />
 
       {/* Interactive Hero Section */}
-      <section className="flex-1 py-12 md:py-16 bg-gradient-to-br from-primary/5 via-background to-background border-b border-border/40">
+      <section className="flex-1 pt-20 md:pt-24 pb-12 md:pb-16 bg-gradient-to-br from-primary/5 via-background to-background border-b border-border/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Grid: Chat on left, Info on right */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
@@ -175,10 +175,7 @@ export default function AskiMateLanding() {
                         <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                           <MessageSquare className="w-6 h-6 text-primary" />
                         </div>
-                        <p className="text-sm font-medium text-foreground mb-1">Ask your first question</p>
-                        <p className="text-xs text-muted-foreground">
-                          {limitReached ? "Sign up to continue" : "You have 2 free questions"}
-                        </p>
+                        <p className="text-sm font-medium text-foreground">Ask your first question</p>
                       </div>
                     </div>
                   )}
@@ -258,13 +255,6 @@ export default function AskiMateLanding() {
                         Send
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2 text-center">
-                      {limitReached
-                        ? "Limit reached - sign up to continue"
-                        : messages.length >= 2
-                          ? "1 question remaining"
-                          : "2 free questions"}
-                    </p>
                   </div>
                 )}
               </div>
