@@ -1,0 +1,133 @@
+Great — proceed to the next step.
+
+Do NOT switch to Autonomous mode.
+Implement carefully and cleanly.
+
+==================================================
+PHASE 2C — REAL BACKEND AUTH + SESSIONS
+==================================================
+
+Now replace the current auth placeholders with a real working authentication system.
+
+Important:
+- Do NOT implement Stripe yet
+- Do NOT implement subscription gating yet
+- Do NOT build chat backend yet
+- Focus ONLY on real auth, sessions, and secure user handling
+
+==================================================
+1. EMAIL AUTH (FULLY WORKING)
+==================================================
+
+Implement real email-based authentication:
+
+- Sign up with email + password
+- Login with email + password
+- Secure password hashing (e.g. bcrypt)
+- Proper validation (no weak inputs)
+- Proper error handling (user exists, wrong password, etc.)
+
+==================================================
+2. GOOGLE AUTH (WORKING)
+==================================================
+
+Implement real Google authentication:
+
+- Use proper OAuth flow
+- On success:
+  - create user if not exists
+  - log in user if exists
+- Link Google account to user profile
+
+If full Google OAuth cannot be completed cleanly in this step,
+then implement it properly as the NEXT step — but structure must be ready.
+
+==================================================
+3. SESSION MANAGEMENT
+==================================================
+
+Implement real session handling:
+
+- User stays logged in after refresh
+- Use secure session strategy (JWT or session-based)
+- Protect routes:
+  - dashboard/profile requires auth
+- Logout must properly clear session
+
+==================================================
+4. USER DATABASE (MINIMAL BUT REAL)
+==================================================
+
+Create/extend user schema with:
+
+- id
+- email
+- password (hashed)
+- firstName
+- lastName
+- mobile
+- dateOfBirth (optional)
+- marketingConsent
+- termsAccepted
+- createdAt
+
+Requirements:
+- No over-engineering
+- Keep schema clean and extendable
+
+==================================================
+5. CONNECT FRONTEND TO REAL AUTH
+==================================================
+
+Replace placeholder auth logic with real API calls:
+
+- signup → backend
+- login → backend
+- logout → backend/session clear
+- auth state → real user session
+
+==================================================
+6. BASIC PROFILE SAVE (REAL)
+==================================================
+
+Make profile fully real:
+
+- user can update profile
+- data is saved in DB
+- data loads correctly after login/refresh
+
+==================================================
+7. SECURITY BASICS
+==================================================
+
+- Passwords must be hashed
+- Do NOT store plain passwords
+- Validate inputs
+- Prevent obvious abuse
+
+==================================================
+8. DO NOT TOUCH THESE YET
+==================================================
+
+- Stripe
+- subscription enforcement
+- chat backend logic
+- AI features
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Report clearly:
+
+1. What auth system was implemented (JWT, session, etc.)
+2. Whether email signup/login is fully working
+3. Whether Google login is fully working or pending
+4. How sessions are handled
+5. Which routes are protected
+6. What user schema looks like
+7. Whether profile persistence is now fully real
+8. What remains for the next phase
+
+STOP after this phase.
+Wait for next instruction.

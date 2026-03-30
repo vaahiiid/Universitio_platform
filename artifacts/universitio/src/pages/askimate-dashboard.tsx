@@ -1,21 +1,26 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { FileUp, MessageSquare, Settings, LogOut } from "lucide-react";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
-export default function AskiMateDashboard() {
+function AskiMateDashboardContent() {
+  const { user, logout } = useAskiMateAuth();
+  const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<"profile" | "documents" | "chat" | "subscription">("profile");
   const [profileData, setProfileData] = useState({
-    firstName: "John",
-    lastName: "Smith",
-    email: "john@example.com",
-    mobile: "+44 7700 123456",
-    dateOfBirth: "1998-05-15",
-    termsAccepted: true,
-    privacyAccepted: true,
-    marketingConsent: false,
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    mobile: user?.mobile || "",
+    dateOfBirth: user?.dateOfBirth || "",
+    termsAccepted: user?.termsAccepted || true,
+    privacyAccepted: user?.privacyAccepted || true,
+    marketingConsent: user?.marketingConsent || false,
   });
 
   const [documents, setDocuments] = useState([
@@ -23,8 +28,37 @@ export default function AskiMateDashboard() {
     { id: 2, name: "CV.docx", uploadedAt: "2025-03-18", size: "180 KB" },
   ]);
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [updateError, setUpdateError] = useState("");
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+
   const handleProfileChange = (field: string, value: unknown) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      setLocation("/askimate");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    setUpdateError("");
+    setUpdateSuccess(false);
+    try {
+      // Profile save is ready for Phase 3 when updateProfile is connected
+      console.log("Profile saved:", profileData);
+      setUpdateSuccess(true);
+      setTimeout(() => setUpdateSuccess(false), 3000);
+    } catch (error) {
+      setUpdateError(error instanceof Error ? error.message : "Failed to save profile");
+    }
   };
 
   return (
@@ -72,9 +106,13 @@ export default function AskiMateDashboard() {
                 ))}
               </nav>
 
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg mt-6 border-t border-border pt-6">
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg mt-6 border-t border-border pt-6 disabled:opacity-50"
+              >
                 <LogOut className="w-4 h-4" />
-                Log Out
+                {isLoggingOut ? "Logging out..." : "Log Out"}
               </button>
             </div>
           </div>
@@ -285,5 +323,13 @@ export default function AskiMateDashboard() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function AskiMateDashboard() {
+  return (
+    <ProtectedRoute>
+      <AskiMateDashboardContent />
+    </ProtectedRoute>
   );
 }

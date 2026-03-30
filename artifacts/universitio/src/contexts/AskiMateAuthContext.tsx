@@ -1,18 +1,18 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface AskiMateUser {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
   mobile?: string;
   dateOfBirth?: string;
+  marketingConsent: boolean;
   termsAccepted: boolean;
   privacyAccepted: boolean;
-  marketingConsent: boolean;
   plan: "free" | "premium";
   trialEndsAt?: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 interface AskiMateAuthContextType {
@@ -28,6 +28,8 @@ interface AskiMateAuthContextType {
 
 const AskiMateAuthContext = createContext<AskiMateAuthContextType | undefined>(undefined);
 
+const API_BASE = `${import.meta.env.BASE_URL}api`;
+
 export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AskiMateUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,13 +40,23 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
       try {
         const token = localStorage.getItem("askimate_token");
         if (token) {
-          // Verify token is still valid and get user data
-          // This is a placeholder for future implementation
-          setLoading(false);
-        } else {
-          setLoading(false);
+          const response = await fetch(`${API_BASE}/askimate/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+          } else {
+            // Token is invalid, clear it
+            localStorage.removeItem("askimate_token");
+          }
         }
-      } catch {
+        setLoading(false);
+      } catch (error) {
+        console.error("Auth check failed:", error);
         setLoading(false);
       }
     };
@@ -53,9 +65,22 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
-      // Placeholder for real signup implementation
-      // This will call backend endpoint when implemented
-      console.log("Signup:", { email, firstName, lastName });
+      const response = await fetch(`${API_BASE}/askimate/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, firstName, lastName }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Signup failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("askimate_token", data.token);
+      setUser(data.user);
     } catch (error) {
       console.error("Signup failed:", error);
       throw error;
@@ -64,9 +89,22 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      // Placeholder for real login implementation
-      // This will call backend endpoint when implemented
-      console.log("Login:", { email });
+      const response = await fetch(`${API_BASE}/askimate/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Login failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("askimate_token", data.token);
+      setUser(data.user);
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -75,6 +113,15 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
+      const token = localStorage.getItem("askimate_token");
+      if (token) {
+        await fetch(`${API_BASE}/askimate/logout`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
       localStorage.removeItem("askimate_token");
       setUser(null);
     } catch (error) {
@@ -85,10 +132,27 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = async (updates: Partial<AskiMateUser>) => {
     try {
-      // Placeholder for real profile update
-      if (user) {
-        setUser({ ...user, ...updates });
+      const token = localStorage.getItem("askimate_token");
+      if (!token) {
+        throw new Error("Not authenticated");
       }
+
+      const response = await fetch(`${API_BASE}/askimate/profile`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Profile update failed");
+      }
+
+      const updatedUser = await response.json();
+      setUser((prev) => (prev ? { ...prev, ...updatedUser } : null));
     } catch (error) {
       console.error("Profile update failed:", error);
       throw error;
@@ -97,8 +161,9 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
 
   const googleLogin = async () => {
     try {
-      // Placeholder for Google OAuth implementation
-      console.log("Google login triggered");
+      // Google OAuth flow placeholder — ready for next phase
+      console.log("Google login initiated (placeholder for Phase 2 OAuth implementation)");
+      throw new Error("Google login not yet implemented");
     } catch (error) {
       console.error("Google login failed:", error);
       throw error;
