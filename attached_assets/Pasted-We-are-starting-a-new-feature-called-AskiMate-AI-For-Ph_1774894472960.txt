@@ -1,0 +1,153 @@
+We are starting a new feature called AskiMate AI.
+
+For Phase 1, build ONLY the UI/UX skeleton and product structure.
+Do NOT implement AI yet.
+Do NOT implement Stripe/payment gating yet.
+Do NOT implement full auth logic yet.
+Focus only on screens, navigation, flow, and reusable structure.
+
+GOAL:
+Create the first product structure for a human-first mentoring feature where:
+- users can sign up / log in
+- access their profile
+- upload documents
+- chat from their own dashboard
+- admin can view user profiles and reply from admin
+
+==================================================
+1. MAIN SITE INTEGRATION
+==================================================
+
+- Add “AskiMate AI” to the main navigation
+- Add a subtle animated “New” badge next to AskiMate AI
+- Add a homepage section introducing AskiMate AI
+
+==================================================
+2. PUBLIC LANDING PAGE
+==================================================
+
+Create a dedicated page for AskiMate AI.
+
+This page should explain:
+- who it is for
+- that it is ideal for students who want to apply by themselves but need guidance
+- that it includes a free/basic mentoring plan and a premium mentoring plan
+- that support is currently human-first
+- that users can subscribe and chat through their account
+
+Keep the design modern, premium, and consistent with the current site.
+
+==================================================
+3. AUTH SCREENS (UI ONLY)
+==================================================
+
+Create:
+- Sign up page
+- Login page
+
+Support UI for:
+- Continue with Google
+- Continue with Email
+
+==================================================
+4. USER DASHBOARD / PROFILE
+==================================================
+
+Create a user dashboard/profile area where the user can:
+
+- view/edit profile
+- upload documents
+- access chat
+- see subscription section
+
+Profile fields:
+- First name
+- Last name
+- Email
+- Mobile
+- Date of birth (optional / can complete later)
+- Terms & Conditions consent
+- Privacy Policy consent
+- Marketing consent yes/no
+
+==================================================
+5. USER CHAT AREA
+==================================================
+
+Create a clean human mentoring chat interface inside the user dashboard.
+
+Important:
+- user chats from their own profile/dashboard
+- no AI yet
+- no payment gating yet
+- make the layout suitable for future subscription access control
+
+==================================================
+6. ADMIN SIDE
+==================================================
+
+Create an admin module for AskiMate AI.
+
+Admin must be able to:
+
+- see a list of AskiMate AI users
+- open each user profile
+- see profile details
+- see uploaded documents
+- view/download documents
+- see chat history
+- reply to the user from admin
+
+Important:
+- admin replies from admin panel
+- user chats from their own dashboard/profile
+
+==================================================
+7. PLANS UI
+==================================================
+
+Show the two plans in the UI:
+
+Basic Mentoring
+- Free
+- Up to 5 questions per week
+- Response within 24–48 hours
+- General guidance
+
+Premium Mentoring
+- £12 monthly
+- £30 every 3 months
+- £65 every 6 months
+- show equivalent monthly price in the UI
+- Ask questions anytime
+- Priority live chat access
+- Real-time responses when online
+- Same-day replies guaranteed
+- Full document review
+- Personalised application strategy
+- Continuous support throughout the journey
+
+Do NOT build Stripe yet.
+Only build the pricing/subscription UI structure.
+
+==================================================
+8. DESIGN DIRECTION
+==================================================
+
+- modern
+- premium
+- product-like
+- clean
+- not crowded
+- aligned with current branding
+
+==================================================
+9. AFTER IMPLEMENTATION
+==================================================
+
+Show me:
+- which files were created/modified
+- the user flow
+- the admin flow
+- where AskiMate AI appears in menu and homepage
+- how the profile/chat/admin structure is organised
