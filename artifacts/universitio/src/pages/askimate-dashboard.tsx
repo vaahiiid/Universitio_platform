@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { FileUp, MessageSquare, Settings, LogOut } from "lucide-react";
+import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send } from "lucide-react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
@@ -31,6 +31,15 @@ function AskiMateDashboardContent() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
+
+  // Chat state
+  const [conversations, setConversations] = useState<any[]>([]);
+  const [selectedConversation, setSelectedConversation] = useState<number | null>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [messageInput, setMessageInput] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
@@ -169,6 +178,105 @@ function AskiMateDashboardContent() {
     }
     
     return { plan: "Free", status: "Basic Mentoring" };
+  };
+
+  // Load conversations when chat tab opens
+  useEffect(() => {
+    if (activeTab === "chat" && user) {
+      const loadConversations = async () => {
+        setChatLoading(true);
+        try {
+          const token = localStorage.getItem("askimate_token");
+          const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/conversations`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setConversations(data.conversations || []);
+            if (data.conversations && data.conversations.length > 0 && !selectedConversation) {
+              setSelectedConversation(data.conversations[0].id);
+            }
+          }
+        } catch (error) {
+          console.error("Failed to load conversations:", error);
+        } finally {
+          setChatLoading(false);
+        }
+      };
+      loadConversations();
+    }
+  }, [activeTab, user]);
+
+  // Load messages when conversation is selected
+  useEffect(() => {
+    if (selectedConversation) {
+      const loadMessages = async () => {
+        setChatLoading(true);
+        try {
+          const token = localStorage.getItem("askimate_token");
+          const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${selectedConversation}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setMessages(data.messages || []);
+          }
+        } catch (error) {
+          console.error("Failed to load messages:", error);
+        } finally {
+          setChatLoading(false);
+        }
+      };
+      loadMessages();
+    }
+  }, [selectedConversation]);
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSendMessage = async () => {
+    if (!messageInput.trim() || !user || !selectedConversation) return;
+
+    const content = messageInput.trim();
+    setMessageInput("");
+    setSending(true);
+
+    try {
+      const token = localStorage.getItem("askimate_token");
+      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          message: content,
+          conversationId: selectedConversation,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        // Add user message to UI
+        setMessages((prev) => [...prev, {
+          id: data.message.id,
+          isUserMessage: true,
+          sender: "user",
+          content: content,
+          createdAt: new Date().toISOString(),
+        }]);
+      } else {
+        const error = await res.json();
+        setUpdateError(error.error || "Failed to send message");
+      }
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      setUpdateError("Failed to send message");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -387,20 +495,84 @@ function AskiMateDashboardContent() {
               <div className="bg-white rounded-xl border border-border/60 p-8 h-[600px] flex flex-col">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Messages</h2>
 
-                <div className="flex-1 flex flex-col items-center justify-center text-center mb-6">
-                  <MessageSquare className="w-16 h-16 text-muted-foreground/30 mb-4" />
-                  <p className="text-muted-foreground">No messages yet</p>
-                  <p className="text-sm text-muted-foreground">Your mentor will reply here</p>
-                </div>
+                {chatLoading && conversations.length === 0 ? (
+                  <div className="flex-1 flex items-center justify-center">
+                    <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                  </div>
+                ) : conversations.length === 0 ? (
+                  <div className="flex-1 flex flex-col items-center justify-center text-center">
+                    <MessageSquare className="w-16 h-16 text-muted-foreground/30 mb-4" />
+                    <p className="text-muted-foreground">No conversations yet</p>
+                    <p className="text-sm text-muted-foreground">Start a conversation on the AskiMate page</p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Messages List */}
+                    <div className="flex-1 overflow-y-auto mb-6 space-y-4 pr-2">
+                      {messages.length === 0 && !chatLoading && (
+                        <div className="flex items-center justify-center h-full text-center">
+                          <div>
+                            <MessageSquare className="w-12 h-12 text-muted-foreground/20 mx-auto mb-2" />
+                            <p className="text-sm text-muted-foreground">No messages in this conversation yet</p>
+                          </div>
+                        </div>
+                      )}
+                      {messages.map((msg) => (
+                        <div
+                          key={msg.id}
+                          className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div>
+                            {msg.sender === "mentor" && (
+                              <p className="text-xs font-semibold text-green-600 mb-1 ml-1">Mentor</p>
+                            )}
+                            <div
+                              className={`max-w-xs px-4 py-2.5 rounded-lg text-sm ${
+                                msg.sender === "user"
+                                  ? "bg-primary text-white rounded-br-none"
+                                  : msg.sender === "mentor"
+                                    ? "bg-green-100 text-green-900 rounded-bl-none border border-green-200"
+                                    : "bg-muted/50 text-foreground rounded-bl-none"
+                              }`}
+                            >
+                              {msg.content}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <div ref={messagesEndRef} />
+                    </div>
 
-                <div className="flex gap-3">
-                  <input
-                    type="text"
-                    placeholder="Type your message or question..."
-                    className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
-                  />
-                  <Button className="bg-primary hover:bg-primary/90 text-white">Send</Button>
-                </div>
+                    {/* Input Area */}
+                    <div className="flex gap-3 pt-4 border-t border-border/40">
+                      <input
+                        type="text"
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey && !sending) {
+                            e.preventDefault();
+                            handleSendMessage();
+                          }
+                        }}
+                        placeholder="Type your question... (Enter to send)"
+                        className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                        disabled={sending}
+                      />
+                      <Button
+                        onClick={handleSendMessage}
+                        disabled={!messageInput.trim() || sending}
+                        className="bg-primary hover:bg-primary/90 text-white"
+                      >
+                        {sending ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Send className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
 

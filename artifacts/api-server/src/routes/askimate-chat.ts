@@ -299,4 +299,42 @@ router.post("/askimate/chat/migrate", async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/askimate/conversations - Get all conversations for authenticated user
+router.get("/askimate/conversations", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Get all conversations for user
+    const conversations = await db.query.askimateConversations.findMany({
+      where: eq(askimateConversations.userId, userId),
+    });
+
+    res.json({
+      conversations: conversations.sort((a, b) => 
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      ),
+    });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Get conversations error:", error);
+    res.status(500).json({ error: "Failed to fetch conversations" });
+  }
+});
+
 export default router;

@@ -1,0 +1,87 @@
+There is a critical bug in AskiMate AI.
+
+On the user profile/dashboard chat page, typing a message does not properly send to admin.
+The Send button does not work.
+The chat cannot actually be started from the user side.
+
+This must be fixed immediately before any further feature work.
+
+==================================================
+PROBLEM
+==================================================
+
+On the user profile/dashboard chat:
+- user can type
+- but the message is not sent properly
+- the Send button does not work
+- chat is not actually starting
+
+This breaks the core mentoring flow.
+
+==================================================
+TASK
+==================================================
+
+Do a strict end-to-end debug of the user-side chat flow.
+
+Check all of these:
+
+1. Frontend chat input state
+- is textarea/input bound correctly?
+- is message state updating correctly?
+- is the Send button wired to the send handler?
+- is Enter/send logic broken?
+- is button disabled incorrectly?
+
+2. Frontend request flow
+- when user clicks Send, is the API request actually fired?
+- check request payload shape
+- check auth token handling
+- check conversationId handling
+
+3. Backend chat endpoint
+- is it receiving authenticated user chat correctly?
+- is it expecting guest-only flow by mistake?
+- is it creating or finding a user conversation correctly?
+- is it rejecting valid requests?
+
+4. Database save flow
+- when user sends a message, is it saved in askimate_messages?
+- is askimate_conversations updated/created correctly?
+
+5. Frontend refresh/rendering
+- after successful send, does the message appear in the chat UI?
+- is there a silent error?
+- is there a state mismatch?
+
+==================================================
+IMPORTANT
+==================================================
+
+- Do NOT redesign the page
+- Do NOT add unrelated features
+- Fix the actual send-message flow
+- This is a core blocking bug
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+When a logged-in user types a message in their profile/dashboard chat and clicks Send:
+
+- the message must be sent successfully
+- it must be saved correctly
+- it must appear in the chat
+- it must be available for admin/mentor to see and reply to
+
+==================================================
+AFTER FIXING
+==================================================
+
+Report clearly:
+
+1. What the root cause was
+2. Whether it was frontend, backend, DB, or multiple issues
+3. Which files were modified
+4. Confirm that user-side Send now works correctly
+5. Confirm that admin can now receive that conversation/message
