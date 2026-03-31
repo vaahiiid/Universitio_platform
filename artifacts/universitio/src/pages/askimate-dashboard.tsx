@@ -40,6 +40,8 @@ function AskiMateDashboardContent() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [editingConvId, setEditingConvId] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState("");
+  const [showNewMessageButton, setShowNewMessageButton] = useState(false);
+  const [lastNewMessageId, setLastNewMessageId] = useState<number | null>(null);
   
   // Message detection: single source of truth for message identity
   const knownMessageIds = useRef<Set<number>>(new Set());
@@ -333,6 +335,8 @@ function AskiMateDashboardContent() {
     if (selectedConversation) {
       setMessages([]);
       setMessageInput("");
+      setLastNewMessageId(null);
+      setShowNewMessageButton(false);
       knownMessageIds.current.clear();
     }
   }, [selectedConversation]);
@@ -368,15 +372,30 @@ function AskiMateDashboardContent() {
               newMessages.forEach((msg: any) => {
                 // Check if incoming BEFORE adding to knownMessageIds
                 if (isIncomingMessage(msg, 'user')) {
-                  // Trigger notification for new incoming message
-                  playNotificationSound();
+                  // Track the last new message for highlighting
+                  setLastNewMessageId(msg.id);
                   
-                  // Show toast for all incoming mentor messages, regardless of which tab the user is on
-                  const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
-                  toast({
-                    title: "New message from your mentor",
-                    description: preview,
-                  });
+                  // Only trigger notifications if user is NOT inside the active chat
+                  // If inside chat, show visual feedback instead
+                  if (activeTab !== 'chat' || !selectedConversation) {
+                    playNotificationSound();
+                    
+                    const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+                    toast({
+                      title: "New message from your mentor",
+                      description: preview,
+                    });
+                  } else if (activeTab === 'chat') {
+                    // Inside chat: show button to scroll to new message if not near bottom
+                    const container = messagesContainerRef.current;
+                    if (container) {
+                      const isNearBottom = 
+                        container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+                      if (!isNearBottom) {
+                        setShowNewMessageButton(true);
+                      }
+                    }
+                  }
                 }
                 
                 // NOW mark as known (after notification check)
@@ -933,18 +952,22 @@ function AskiMateDashboardContent() {
                       {messages.map((msg) => (
                         <div
                           key={msg.id}
-                          className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                          className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} ${
+                            msg.id === lastNewMessageId ? "animate-pulse" : ""
+                          }`}
                         >
                           <div>
                             {msg.sender === "mentor" && (
                               <p className="text-xs font-semibold text-green-600 mb-1 ml-1">Mentor</p>
                             )}
                             <div
-                              className={`max-w-xs px-4 py-2.5 rounded-lg text-sm ${
+                              className={`max-w-xs px-4 py-2.5 rounded-lg text-sm transition-all ${
                                 msg.sender === "user"
                                   ? "bg-primary text-white rounded-br-none"
                                   : msg.sender === "mentor"
-                                    ? "bg-green-100 text-green-900 rounded-bl-none border border-green-200"
+                                    ? `bg-green-100 text-green-900 rounded-bl-none border border-green-200 ${
+                                        msg.id === lastNewMessageId ? "ring-2 ring-green-400" : ""
+                                      }`
                                     : "bg-muted/50 text-foreground rounded-bl-none"
                               }`}
                             >
@@ -961,6 +984,19 @@ function AskiMateDashboardContent() {
                         </div>
                       ))}
                       <div ref={messagesEndRef} />
+                      
+                      {/* Floating "New message" button when scrolled up */}
+                      {showNewMessageButton && (
+                        <button
+                          onClick={() => {
+                            messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+                            setShowNewMessageButton(false);
+                          }}
+                          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center gap-2"
+                        >
+                          <span>↓ New message</span>
+                        </button>
+                      )}
                     </div>
 
                     {/* Input Area */}

@@ -168,6 +168,8 @@ function ChatView({
   const [replyText, setReplyText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [showNewMessageButton, setShowNewMessageButton] = useState(false);
+  const [lastNewMessageId, setLastNewMessageId] = useState<number | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -178,6 +180,8 @@ function ChatView({
   useEffect(() => {
     setMessages([]);
     setReplyText("");
+    setLastNewMessageId(null);
+    setShowNewMessageButton(false);
     knownMessageIds.current.clear();
   }, [conversation.id]);
 
@@ -226,14 +230,30 @@ function ChatView({
         newMessages.forEach((msg: any) => {
           // Check if incoming BEFORE adding to knownMessageIds
           if (isIncomingMessage(msg, 'admin')) {
-            // Trigger notification for new incoming message
-            playNotificationSound();
+            // Track the last new message for highlighting
+            setLastNewMessageId(msg.id);
             
-            const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
-            toast({
-              title: `New message from ${user.firstName} ${user.lastName}`,
-              description: preview,
-            });
+            // Only trigger notifications if admin is NOT inside this conversation
+            // If inside conversation, show visual feedback instead
+            if (!conversation) {
+              playNotificationSound();
+              
+              const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+              toast({
+                title: `New message from ${user.firstName} ${user.lastName}`,
+                description: preview,
+              });
+            } else {
+              // Inside conversation: show button to scroll to new message if not near bottom
+              const container = messagesContainerRef.current;
+              if (container) {
+                const isNearBottom = 
+                  container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+                if (!isNearBottom) {
+                  setShowNewMessageButton(true);
+                }
+              }
+            }
           }
           
           // NOW mark as known (after notification check)
@@ -433,10 +453,14 @@ Sending request...
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} ${
+                  msg.id === lastNewMessageId ? "animate-pulse" : ""
+                }`}
               >
                 <div
-                  className={`max-w-lg rounded-lg px-4 py-2 ${getSenderColor(msg.sender)}`}
+                  className={`max-w-lg rounded-lg px-4 py-2 transition-all ${getSenderColor(msg.sender)} ${
+                    msg.id === lastNewMessageId ? "ring-2 ring-blue-400" : ""
+                  }`}
                 >
                   <p className="text-xs font-semibold mb-1 opacity-70">
                     {getSenderLabel(msg.sender)} • {formatTime(msg.createdAt)}
@@ -446,6 +470,19 @@ Sending request...
               </div>
             ))}
             <div ref={messagesEndRef} />
+            
+            {/* Floating "New message" button when scrolled up */}
+            {showNewMessageButton && (
+              <button
+                onClick={() => {
+                  messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+                  setShowNewMessageButton(false);
+                }}
+                className="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors text-sm font-medium flex items-center gap-2"
+              >
+                <span>↓ New message from user</span>
+              </button>
+            )}
           </>
         )}
       </div>
