@@ -371,13 +371,12 @@ function AskiMateDashboardContent() {
                   // Trigger notification for new incoming message
                   playNotificationSound();
                   
-                  if (activeTab !== 'chat') {
-                    const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
-                    toast({
-                      title: "New message from your mentor",
-                      description: preview,
-                    });
-                  }
+                  // Show toast for all incoming mentor messages, regardless of which tab the user is on
+                  const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+                  toast({
+                    title: "New message from your mentor",
+                    description: preview,
+                  });
                 }
                 
                 // NOW mark as known (after notification check)
