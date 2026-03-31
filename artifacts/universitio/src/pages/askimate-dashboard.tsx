@@ -1183,15 +1183,15 @@ function AskiMateDashboardContent() {
 
       {/* Floating Notification Popup */}
       {notificationPopup && (
-        <div className="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg max-w-sm z-50 animate-in slide-in-from-bottom-4">
+        <div className="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-lg shadow-2xl max-w-sm z-50">
           <div className="flex items-start gap-3">
             <div className="flex-1">
-              <p className="font-semibold text-sm mb-1">New message from Mentor</p>
-              <p className="text-sm opacity-90">{notificationPopup.content}</p>
+              <p className="font-bold text-base mb-2">Mentor sent a new message</p>
+              <p className="text-sm font-medium">{notificationPopup.content}</p>
             </div>
             <button
               onClick={() => setNotificationPopup(null)}
-              className="text-white opacity-75 hover:opacity-100 text-xl leading-none"
+              className="text-white opacity-80 hover:opacity-100 text-2xl leading-none font-bold ml-2"
             >
               ×
             </button>
