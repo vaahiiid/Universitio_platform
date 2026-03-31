@@ -227,7 +227,7 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         conversationId: conversation.id,
         isUserMessage: false,
         sender: "ai",
-        content: "به زودی پاسخ شما داده خواهد شد و از پیام شما به AskiMate در Universitio ممنونیم.",
+        content: "Thank you for your message. We've received it and will get back to you shortly.",
       });
     }
 
@@ -395,7 +395,7 @@ router.post("/askimate/conversations", async (req: Request, res: Response) => {
       conversationId: newConversation.id,
       isUserMessage: false,
       sender: "ai",
-      content: "سلام! من AskiMate هستم، محصولی از Universitio. اینجا هستم تا بهت کمک کنم مسیر تحصیلی‌ات را پیدا کنی. چه سوالی داری؟",
+      content: "Hi, I'm AskiMate, a product of Universitio. I'm here to help you find the right study path, explore your options, and guide you through your journey.",
     });
 
     res.json({ success: true, conversation: newConversation });
