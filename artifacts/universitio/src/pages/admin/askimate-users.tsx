@@ -146,6 +146,7 @@ function ChatView({
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState("");
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -158,6 +159,7 @@ function ChatView({
 
   const fetchMessages = useCallback(async () => {
     setLoading(true);
+    setError("");
     try {
       console.log(`
 ==== [ADMIN] CONVERSATION DEBUG ====
@@ -178,7 +180,9 @@ Fetching messages...
       
       setMessages(response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) })));
     } catch (err) {
-      console.error("[ADMIN] FETCH FAILED:", err);
+      const errMsg = err instanceof Error ? err.message : "Failed to fetch messages";
+      console.error("[ADMIN] FETCH FAILED:", errMsg);
+      setError(errMsg);
     } finally {
       setLoading(false);
     }
@@ -192,6 +196,7 @@ Fetching messages...
     if (!replyText.trim()) return;
 
     setSending(true);
+    setError("");
     const msgText = replyText;
     try {
       console.log(`
@@ -219,7 +224,9 @@ Sending request...
       setReplyText("");
       console.log(`==== END SEND ====`);
     } catch (err) {
-      console.error(`[ADMIN SEND] FAILED:`, err);
+      const errMsg = err instanceof Error ? err.message : "Failed to send reply";
+      console.error(`[ADMIN SEND] FAILED:`, errMsg);
+      setError(errMsg);
     } finally {
       setSending(false);
     }
@@ -273,6 +280,17 @@ Sending request...
 
       {/* Messages Container */}
       <div className="bg-white rounded-xl border border-border/60 flex-1 overflow-y-auto p-6 space-y-4">
+        {error && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
+            <p className="text-sm font-medium text-red-700">{error}</p>
+            <button 
+              onClick={fetchMessages}
+              className="text-xs text-red-600 hover:text-red-800 mt-2 underline"
+            >
+              Try again
+            </button>
+          </div>
+        )}
         {loading ? (
           <div className="flex items-center justify-center h-full">
             <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />

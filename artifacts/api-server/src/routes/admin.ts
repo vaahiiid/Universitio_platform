@@ -11,6 +11,7 @@ import {
   members,
   askimateUsers,
   askimateConversations,
+  askimateMessages,
   askimateWeeklyUsage,
 } from "@workspace/db";
 import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
