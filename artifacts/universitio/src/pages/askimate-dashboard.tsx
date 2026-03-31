@@ -12,7 +12,7 @@ import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMess
 function AskiMateDashboardContent() {
   const { user, logout } = useAskiMateAuth();
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<"profile" | "documents" | "chat" | "subscription">("chat");
+  const [activeTab, setActiveTab] = useState<"profile" | "chat" | "subscription">("chat");
   const [profileData, setProfileData] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -23,11 +23,6 @@ function AskiMateDashboardContent() {
     privacyAccepted: user?.privacyAccepted || true,
     marketingConsent: user?.marketingConsent || false,
   });
-
-  const [documents, setDocuments] = useState([
-    { id: 1, name: "Personal Statement.pdf", uploadedAt: "2025-03-20", size: "245 KB" },
-    { id: 2, name: "CV.docx", uploadedAt: "2025-03-18", size: "180 KB" },
-  ]);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [updateError, setUpdateError] = useState("");
@@ -479,9 +474,8 @@ function AskiMateDashboardContent() {
 
               <nav className={`${activeTab === "chat" ? "space-y-1" : "space-y-2"}`}>
                 {[
-                  { id: "chat", label: "Messages", icon: MessageSquare },
+                  { id: "chat", label: "Chat", icon: MessageSquare },
                   { id: "profile", label: "Profile", icon: Settings },
-                  { id: "documents", label: "Documents", icon: FileUp },
                   { id: "subscription", label: "Subscription", icon: FileUp },
                 ].map((item) => (
                   <button
@@ -642,44 +636,11 @@ function AskiMateDashboardContent() {
               </div>
             )}
 
-            {/* Documents Tab */}
-            {activeTab === "documents" && (
-              <div className="bg-white rounded-xl border border-border/60 p-8">
-                <h2 className="text-2xl font-bold text-foreground mb-6">Your Documents</h2>
-
-                <div className="mb-8 p-6 border-2 border-dashed border-border/60 rounded-lg text-center hover:border-primary/40 transition-colors cursor-pointer">
-                  <FileUp className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                  <p className="font-medium text-foreground mb-1">Drop files to upload</p>
-                  <p className="text-sm text-muted-foreground">or click to browse</p>
-                  <p className="text-xs text-muted-foreground mt-2">Supports PDF, DOC, DOCX</p>
-                </div>
-
-                <div className="space-y-3">
-                  {documents.map((doc) => (
-                    <div key={doc.id} className="flex items-center justify-between p-4 border border-border/40 rounded-lg hover:bg-muted/30 transition-colors">
-                      <div>
-                        <p className="font-medium text-foreground">{doc.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          Uploaded {doc.uploadedAt} • {doc.size}
-                        </p>
-                      </div>
-                      <button className="text-red-600 hover:text-red-700 font-medium text-sm">
-                        Delete
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                <p className="text-xs text-muted-foreground mt-6">
-                  Free plan: up to 3 documents. Premium: unlimited uploads.
-                </p>
-              </div>
-            )}
 
             {/* Chat Tab */}
             {activeTab === "chat" && (
               <div className="bg-white rounded-xl border border-border/60 p-8 h-[calc(100vh-200px)] flex flex-col">
-                <h2 className="text-2xl font-bold text-foreground mb-6">Messages</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-6">Chat</h2>
 
                 <div className="flex gap-6 flex-1 overflow-hidden">
                   {/* Conversation List Sidebar */}

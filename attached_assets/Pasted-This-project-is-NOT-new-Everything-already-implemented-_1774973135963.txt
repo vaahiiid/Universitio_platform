@@ -1,0 +1,88 @@
+This project is NOT new. Everything already implemented must be preserved.
+
+We are continuing the existing Universitio + AskiMate system.
+Do NOT redesign the system.
+Do NOT rebuild from scratch.
+Do NOT break existing working logic.
+
+This phase is focused ONLY on USER DASHBOARD UX improvements.
+
+==================================================
+GOAL
+==================================================
+
+Improve the user-side AskiMate dashboard to have a consistent, clean chat experience similar to modern chat products (e.g. ChatGPT style), without changing the underlying system.
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. Rename "Messages" to "Chat"
+- Update sidebar label
+- Update any header/title references
+- Do NOT change routing unless necessary
+
+2. Remove "Documents" section completely
+- Remove from sidebar
+- Remove related routes/components if not used anywhere else
+- Ensure no broken navigation or references remain
+
+3. Keep "Subscription" exactly as is
+- Do NOT modify logic or behavior
+- Only ensure it fits correctly in the updated layout
+
+4. Fix layout inconsistency between chat and other pages
+Current issue:
+- Chat page layout differs from Profile/Subscription layout
+
+Required:
+- Sidebar must remain visually consistent across ALL sections
+- Main content area should not shift or resize unexpectedly
+- No layout jump when switching between Chat / Profile / Subscription
+
+5. Improve Chat page structure (UI only, not logic)
+- Chat list (conversations) should be clearly visible and stable
+- Chat area should not cause layout shifts
+- Ensure proper spacing and alignment
+- Ensure chat feels like a core product, not a secondary page
+
+6. Preserve all existing functionality:
+- conversation switching
+- open/closed status
+- message sending
+- unread badges
+- delta polling logic
+- sound notifications
+- usage limits
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT change backend
+- Do NOT change APIs
+- Do NOT modify conversation data model
+- Do NOT touch admin panel
+- Do NOT introduce new features (like rename chat yet — that is next phase)
+- Only UI/UX consistency improvements
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+- Sidebar shows: Chat, Profile, Subscription (clean and consistent)
+- No Documents section
+- Layout is stable across all pages
+- No UI jumping when navigating
+- Chat page feels integrated and primary
+- No functionality is broken
+
+==================================================
+DELIVERABLE
+==================================================
+
+Explain:
+1. what UI components were updated
+2. what was removed (Documents)
+3. how layout consistency was achieved
+4. confirmation that no functionality was affected
