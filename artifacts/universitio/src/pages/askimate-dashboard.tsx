@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "wouter";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send, Trash2, Menu, X } from "lucide-react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -649,15 +648,14 @@ function AskiMateDashboardContent() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <DashboardLayout>
       <Helmet>
         <title>Dashboard — AskiMate AI</title>
         <meta name="description" content="Your AskiMate profile and mentoring dashboard." />
       </Helmet>
-      <Navbar />
 
       {/* Mobile Header with Hamburger Menu */}
-      <div className="lg:hidden fixed top-20 left-0 right-0 bg-white border-b border-border/60 px-4 py-3 flex items-center gap-3 z-40">
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-white border-b border-border/60 px-4 py-3 flex items-center gap-3 z-40">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="p-2 hover:bg-muted rounded-lg transition-colors"
@@ -724,12 +722,12 @@ function AskiMateDashboardContent() {
         </>
       )}
 
-      <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20 lg:mt-0">
-        {/* Desktop + Mobile Responsive Grid */}
-        <div className="grid gap-8 grid-cols-1 lg:grid-cols-5">
+      <div className="flex-1 w-full h-full flex flex-col pt-16 lg:pt-0 lg:flex-row">
+        {/* Desktop + Mobile Responsive Layout */}
+        <div className="flex-1 flex gap-0 lg:gap-8 lg:px-8 lg:py-12 lg:max-w-7xl lg:mx-auto w-full h-full">
           {/* Desktop Sidebar - Always Full on Large Screens, Hidden on Mobile */}
-          <div className="hidden lg:block lg:col-span-1">
-            <div className="bg-white rounded-xl border border-border/60 sticky top-32 p-6">
+          <div className="hidden lg:flex lg:flex-col lg:w-56 flex-shrink-0">
+            <div className="bg-white rounded-xl border border-border/60 sticky top-6 p-6 h-fit">
               {/* Profile Card - Always Full on Desktop */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">
@@ -782,7 +780,7 @@ function AskiMateDashboardContent() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="flex-1 space-y-6 overflow-auto">
             {/* Profile Tab */}
             {activeTab === "profile" && (
               <div className="bg-white rounded-xl border border-border/60 p-8">
@@ -1484,9 +1482,7 @@ function AskiMateDashboardContent() {
           </div>
         </div>
       )}
-
-      <Footer />
-    </div>
+    </DashboardLayout>
   );
 }
 

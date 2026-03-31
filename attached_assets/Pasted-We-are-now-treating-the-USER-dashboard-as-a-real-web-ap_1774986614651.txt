@@ -1,0 +1,234 @@
+We are now treating the USER dashboard as a real web app, not as part of the public marketing website.
+
+This is a deliberate product decision.
+
+Do NOT make a shallow cosmetic change.
+Implement this deeply and cleanly.
+
+==================================================
+PRODUCT DECISION
+==================================================
+
+The logged-in USER dashboard must behave like a standalone web app:
+- focused
+- responsive
+- app-like
+- modern
+- distraction-free
+
+The public website navigation must be removed from inside the user dashboard.
+
+The dashboard should no longer feel like “a page inside the website”.
+It should feel like “a product”.
+
+==================================================
+MAIN GOAL
+==================================================
+
+Transform the USER dashboard into a true web-app experience.
+
+That means:
+
+1. Remove the public website menu/header from inside the user dashboard
+2. Keep only app navigation relevant to the user dashboard
+3. Make the whole dashboard responsive and clean
+4. Make chat feel like the core of the product
+5. Make mobile feel like a real chat app, not a squeezed web page
+
+==================================================
+REMOVE FROM USER DASHBOARD
+==================================================
+
+Remove the public website header/navigation from the logged-in user dashboard.
+
+This includes things like:
+- About Us
+- Our Services
+- AskiMate AI (public nav version)
+- Agents
+- Earn as a Student
+- Contact
+- Blog
+- Free Assessment
+- Free Consultation
+
+These do NOT belong inside the user dashboard.
+
+Also remove any public-site footer from the user dashboard if it is still visible in the dashboard/chat area.
+
+The user dashboard should be visually isolated from the public marketing site.
+
+==================================================
+KEEP / BUILD INSIDE USER DASHBOARD
+==================================================
+
+Keep only dashboard/app navigation such as:
+- Chat
+- Profile
+- Subscription
+- Logout
+
+If there is a justified support/help entry, it can be included only if it fits naturally.
+
+Do NOT mix public-site navigation with app navigation.
+
+==================================================
+DESKTOP UX REQUIREMENTS
+==================================================
+
+On desktop:
+- the dashboard must feel like a clean app layout
+- left sidebar stays consistent and full
+- icon + label always visible
+- content area should feel structured and spacious
+- chat should feel like the main product area, not a website section
+
+The desktop layout should have:
+- stable sidebar
+- stable content area
+- no public-site chrome around it
+
+==================================================
+MOBILE UX REQUIREMENTS
+==================================================
+
+On mobile:
+- the dashboard must feel like a mobile web app
+- not like a website page with pieces squeezed together
+
+Requirements:
+1. use a hamburger menu for dashboard navigation
+2. remove public-site top navigation entirely from dashboard
+3. prioritize chat area visually
+4. keep chat input stable
+5. keep active/archived chat access usable in a mobile-friendly way
+6. avoid long-page website feel
+
+The mobile dashboard should feel close to:
+- messaging app
+- compact customer portal
+- task-focused product UI
+
+==================================================
+CHAT AS CORE PRODUCT
+==================================================
+
+The Chat section is the core experience.
+
+Design the dashboard around that reality:
+- Chat should feel primary
+- Profile and Subscription should feel secondary tools
+- navigation should support the chat workflow, not distract from it
+
+==================================================
+APP-LIKE LAYOUT REQUIREMENTS
+==================================================
+
+Implement a proper app-shell style layout for the USER dashboard:
+
+- one app container
+- one dashboard navigation system
+- one content region
+- no public-site header/footer inside dashboard
+- responsive behavior by breakpoint
+- stable layout across Chat / Profile / Subscription
+
+The dashboard should feel cohesive in all states:
+- empty chat
+- active chat
+- archived chat
+- profile editing
+- subscription state
+
+==================================================
+VISUAL DIRECTION
+==================================================
+
+Keep the existing brand and style language,
+but make the result feel more like a polished SaaS/web app.
+
+Desired qualities:
+- clean
+- modern
+- calm
+- clear hierarchy
+- focused
+- responsive
+- professional
+
+Avoid:
+- website clutter
+- duplicate navigation systems
+- marketing-page feel inside the dashboard
+- inconsistent sidebar/header behavior
+
+==================================================
+IMPORTANT TECHNICAL REQUIREMENTS
+==================================================
+
+1. Do NOT break current working chat behavior
+2. Do NOT break Active / Archived model
+3. Do NOT break End Chat
+4. Do NOT break rename/delete chat
+5. Do NOT break notifications
+6. Do NOT break message rendering
+7. Do NOT break mobile chat improvements already made
+8. Do NOT break scroll behavior fixes already working
+
+This is a layout/app-shell redesign for the USER dashboard only.
+It is NOT a backend refactor.
+
+==================================================
+RESPONSIVE BEHAVIOR
+==================================================
+
+Desktop:
+- full app sidebar
+- consistent dashboard shell
+- no public-site header/nav/footer
+
+Tablet:
+- still clean and app-like
+- may use compact responsive sidebar if needed
+- but must remain coherent
+
+Mobile:
+- hamburger navigation
+- chat-first experience
+- no public site chrome
+- only dashboard UI
+
+==================================================
+IF NEEDED
+==================================================
+
+If necessary, create a dedicated dashboard-specific layout/container for the logged-in user pages so they are fully separated from the public-site layout.
+
+This is acceptable and encouraged if it creates a cleaner architecture.
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+After implementation, the USER dashboard should:
+- feel like a standalone web app
+- have no public-site navigation clutter
+- be fully responsive
+- be attractive and modern
+- have a stable desktop experience
+- have a strong mobile chat-first experience
+- keep all current working chat/product functionality intact
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+
+1. what public-site elements were removed from the user dashboard
+2. what dashboard/app-shell structure is now used
+3. how desktop layout now works
+4. how mobile layout now works
+5. whether a dedicated dashboard layout was created
+6. what files were changed
+7. confirm that working chat functionality was preserved
