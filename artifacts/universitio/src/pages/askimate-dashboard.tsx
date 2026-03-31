@@ -631,6 +631,84 @@ function AskiMateDashboardContent() {
               <div className="bg-white rounded-xl border border-border/60 p-8 h-[600px] flex flex-col">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Messages</h2>
 
+                <div className="flex gap-6 flex-1 overflow-hidden">
+                  {/* Conversation List Sidebar */}
+                  <div className="w-44 border-r border-border/40 pr-4 overflow-y-auto space-y-2">
+                    <p className="text-xs font-semibold text-muted-foreground mb-3">Conversations</p>
+                    {conversations.length === 0 ? (
+                      <p className="text-xs text-muted-foreground">No conversations yet</p>
+                    ) : (
+                      conversations.map((conv) => (
+                        <button
+                          key={conv.id}
+                          onClick={() => setSelectedConversation(conv.id)}
+                          className={`w-full text-left p-2.5 rounded text-sm truncate transition-colors ${
+                            selectedConversation === conv.id
+                              ? "bg-primary/10 text-primary font-medium"
+                              : "text-foreground hover:bg-muted/30"
+                          }`}
+                          title={conv.title}
+                        >
+                          <div className="truncate">{conv.title}</div>
+                          <div className={`text-xs px-1.5 py-0.5 rounded mt-1 inline-block ${conv.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                            {conv.status === "closed" ? "Closed" : "Open"}
+                          </div>
+                        </button>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Chat Content */}
+                  <div className="flex-1 flex flex-col overflow-hidden">
+                    {/* Conversation Header */}
+                    {selectedConversation && (
+                      <div className="mb-4 pb-3 border-b border-border/40">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-semibold text-foreground text-sm">
+                              {conversations.find(c => c.id === selectedConversation)?.title}
+                            </h3>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {conversations.find(c => c.id === selectedConversation)?.status === "closed" ? "Closed" : "Open"}
+                            </p>
+                          </div>
+                          {conversations.find(c => c.id === selectedConversation)?.status === "open" && (
+                            <button
+                              onClick={async () => {
+                                try {
+                                  await fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${selectedConversation}/close`, {
+                                    method: "POST",
+                                    headers: { Authorization: `Bearer ${localStorage.getItem("askimate_token")}` },
+                                  });
+                                  // Reload conversations
+                                  const token = localStorage.getItem("askimate_token");
+                                  const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/conversations`, {
+                                    headers: { Authorization: `Bearer ${token}` },
+                                  });
+                                  if (res.ok) {
+                                    const data = await res.json();
+                                    setConversations(data.conversations || []);
+                                  }
+                                } catch (err) {
+                                  console.error("Failed to close conversation:", err);
+                                }
+                              }}
+                              className="text-xs text-red-600 hover:text-red-700 font-medium"
+                            >
+                              Close
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Closed Conversation Banner */}
+                    {selectedConversation && conversations.find(c => c.id === selectedConversation)?.status === "closed" && (
+                      <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-xs text-red-700 font-medium">This conversation has been closed</p>
+                      </div>
+                    )}
+
                 {updateError && (
                   <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-sm text-red-700 font-medium">{updateError}</p>
@@ -717,6 +795,8 @@ function AskiMateDashboardContent() {
                     </div>
                   </>
                 )}
+                  </div>
+                </div>
               </div>
             )}
 
