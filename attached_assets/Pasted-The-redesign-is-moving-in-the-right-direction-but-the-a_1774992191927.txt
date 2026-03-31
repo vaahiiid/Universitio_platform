@@ -1,0 +1,180 @@
+The redesign is moving in the right direction, but the actual chat experience is still NOT truly user-friendly or mobile-friendly.
+
+Do NOT redesign everything from scratch again.
+Do NOT break the good changes already made.
+Fix the remaining chat experience and system-message behavior properly.
+
+==================================================
+PART 1 — CHAT MUST BE A REAL APP PANEL (USER + ADMIN)
+==================================================
+
+Current problem:
+Both the USER chat and ADMIN chat still behave too much like desktop pages squeezed into a panel.
+
+Major issues:
+- there is still page scroll + chat scroll conflict
+- the chat does not behave like a stable app chat panel
+- mobile is not truly responsive
+- the layout still feels desktop-first, not mobile-first
+
+This must be corrected.
+
+==================================================
+REQUIRED CHAT ARCHITECTURE (VERY IMPORTANT)
+==================================================
+
+For BOTH user chat and admin chat:
+
+1. PAGE MUST NOT SCROLL THROUGH CHAT
+- the overall page should remain stable
+- the navbar/topbar should stay fixed
+- the lower action/navigation areas should stay fixed where appropriate
+- the input area should stay fixed/anchored
+- ONLY the messages area should scroll
+
+2. ONLY MESSAGE AREA SCROLLS
+Implement the chat panel as a true app-style layout:
+- top bar / logo / header fixed
+- chat action area fixed or compact
+- message list is the ONLY scrollable area
+- input fixed at bottom
+- no extra page scroll around it
+
+3. MOBILE FIRST-VIEW FIT
+On mobile:
+- everything important must fit in the first viewport
+- user should not need initial page scroll to reach the input
+- the message list should flex/shrink as needed
+- the input/send area must already be visible
+
+4. NO DESKTOP-LIKE BROKEN MOBILE LAYOUT
+For admin chat and user chat on mobile:
+- no oversized desktop-style panels
+- no content wider/taller than viewport in a broken way
+- no awkward double-scroll setup
+- no layout that feels like a shrunk desktop page
+
+==================================================
+PART 2 — USER CHAT UX FIXES
+==================================================
+
+Fix the USER chat so it is truly mobile-friendly and app-like.
+
+Required:
+1. Navbar/topbar remains fixed
+2. Chat action area remains compact
+3. Input remains fixed and visible
+4. Only messages scroll
+5. No page-level scroll through the chat experience
+6. Entire first mobile viewport should already show the usable chat interface
+
+==================================================
+PART 3 — ADMIN CHAT UX FIXES
+==================================================
+
+Fix the ADMIN chat so it is also truly responsive and user-friendly.
+
+Required:
+1. Mobile admin chat must fit the viewport correctly
+2. Sending must work correctly on mobile
+3. The message area must be usable
+4. Input must be usable and visible
+5. Mobile admin experience must feel like a messaging app:
+   - list view
+   - open chat view
+   - back to list
+6. Only messages area should scroll in the opened chat
+
+==================================================
+PART 4 — AUTO SYSTEM MESSAGE WHEN USER SENDS AND ADMIN IS OFFLINE
+==================================================
+
+Required:
+When the user sends a message and admin is not currently available/online,
+automatically send a system message to the user.
+
+The message should say something like:
+
+"به زودی پاسخ شما داده خواهد شد و از پیام شما به AskiMate در Universitio ممنونیم."
+
+Requirements:
+1. This should be a system/mentor-style informational message
+2. It should not spam repeatedly on every tiny action
+3. It should trigger in a sensible way when user sends a message and no admin is currently available
+4. Keep the implementation simple and reliable
+5. If true online-presence detection does not exist in the current architecture, explain that clearly and implement the best safe fallback rule
+
+==================================================
+PART 5 — AUTO WELCOME MESSAGE WHEN A NEW CHAT IS CREATED
+==================================================
+
+Required:
+When a new chat is opened/created, automatically send a welcome message.
+
+It should introduce AskiMate and Universitio in a helpful way, for example:
+
+"من AskiMate هستم، یک محصول از Universitio، و اینجا هستم تا بهت کمک کنم مسیرت را برای تحصیل پیدا کنی..."
+
+You may polish the wording slightly, but keep the meaning:
+- friendly
+- helpful
+- introductory
+- education/study-path focused
+
+Requirements:
+1. It should happen automatically when a truly new chat is created
+2. It should not duplicate every time the chat is reopened
+3. It should appear as the initial chat message in a clean way
+4. It should fit the existing chat model
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break the current active/archived chat model
+- Do NOT break End Chat
+- Do NOT break rename/delete chat
+- Do NOT break notifications that already work
+- Do NOT break message rendering that is now fixed
+- Do NOT redesign unrelated dashboard sections
+- Focus only on:
+  1. real app-style chat panel behavior
+  2. mobile responsiveness for user + admin chat
+  3. auto offline acknowledgement message
+  4. auto welcome message for new chat
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+After the fix:
+
+USER CHAT:
+- no page scroll fighting chat scroll
+- only messages scroll
+- input visible in first mobile viewport
+- feels like a real chat app
+
+ADMIN CHAT:
+- mobile responsive
+- input usable
+- send works
+- viewport fits correctly
+- feels like a real chat operations app
+
+AUTO MESSAGES:
+- new chat gets a clean welcome message once
+- user gets a clean acknowledgement message when admin is unavailable
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. how page scroll vs chat scroll was fixed for USER
+2. how page scroll vs chat scroll was fixed for ADMIN
+3. how mobile viewport fit was implemented for both
+4. how the “admin unavailable” auto-message works
+5. how the new-chat welcome message works
+6. what files were changed
+7. confirm no unrelated working behavior was broken

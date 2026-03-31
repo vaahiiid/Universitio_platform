@@ -31,7 +31,7 @@ const NAV_ITEMS = [
   { label: "AskiMate Users", path: "/admin/askimate-users", icon: Zap, unreadKey: null, section: "Products" },
 ];
 
-export function AdminLayout({ children }: { children: React.ReactNode }) {
+export function AdminLayout({ children, fullHeight = false }: { children: React.ReactNode; fullHeight?: boolean }) {
   const { email, logout } = useAdminAuth();
   const [location] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -122,7 +122,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="bg-slate-50 flex overflow-hidden" style={{ height: "100dvh" }}>
       <Helmet>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
@@ -139,8 +139,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <div className="flex-1 lg:ml-60">
-        <header className="sticky top-0 z-20 bg-white border-b border-border px-4 sm:px-6 h-14 flex items-center gap-3">
+      <div className="flex-1 lg:ml-60 flex flex-col overflow-hidden">
+        <header className="flex-shrink-0 z-20 bg-white border-b border-border px-4 sm:px-6 h-14 flex items-center gap-3">
           <button
             className="lg:hidden p-1.5 rounded-lg hover:bg-muted"
             onClick={() => setSidebarOpen(true)}
@@ -155,7 +155,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           )}
         </header>
 
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className={fullHeight ? "flex-1 overflow-hidden" : "flex-1 overflow-auto p-4 sm:p-6 lg:p-8"}>
+          {children}
+        </main>
       </div>
     </div>
   );

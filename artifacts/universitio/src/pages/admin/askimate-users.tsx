@@ -686,13 +686,13 @@ export default function AskiMateUsersAdmin() {
   const totalUsers = pagination?.total || 0;
 
   return (
-    <AdminLayout>
+    <AdminLayout fullHeight>
       <Helmet>
         <title>AskiMate Users — Admin</title>
       </Helmet>
 
       {/* ── Two-panel messaging layout ─────────────────────────────────── */}
-      <div className="-m-4 sm:-m-6 lg:-m-8 flex overflow-hidden border-t border-border/60 bg-white" style={{ height: "calc(100dvh - 56px)" }}>
+      <div className="flex overflow-hidden border-t border-border/60 bg-white h-full">
 
         {/* ── LEFT PANEL: User list ────────────────────────────────────── */}
         <div className={`flex flex-col border-r border-border/60 flex-shrink-0 w-full lg:w-80 xl:w-96 ${mobileShowPanel ? "hidden lg:flex" : "flex"}`}>

@@ -500,7 +500,7 @@ function AskiMateDashboardContent() {
       </Helmet>
 
       {/* ─── APP SHELL ─────────────────────────────────────────────────────── */}
-      <div className="h-screen w-screen flex flex-col overflow-hidden bg-slate-50">
+      <div className="flex flex-col overflow-hidden bg-slate-50 flex-1 min-h-0">
 
         {/* ── TOP HEADER ─────────────────────────────────────────────────── */}
         <header className="h-14 flex-shrink-0 bg-white border-b border-border/60 flex items-center justify-between px-4 lg:px-6 z-20">

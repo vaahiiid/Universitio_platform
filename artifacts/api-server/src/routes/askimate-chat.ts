@@ -7,7 +7,7 @@ import {
   askimateWeeklyUsage,
   askimateUsers,
 } from "@workspace/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, ne, desc } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -212,6 +212,25 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       }
     }
 
+    // Auto-acknowledgement: if no mentor/ai reply within the last 5 minutes, send one now
+    // This is a simple offline-fallback — no real-time presence detection exists in this architecture
+    const lastNonUserMsg = await db.query.askimateMessages.findFirst({
+      where: and(
+        eq(askimateMessages.conversationId, conversation.id),
+        ne(askimateMessages.sender, "user")
+      ),
+      orderBy: desc(askimateMessages.createdAt),
+    });
+    const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
+    if (!lastNonUserMsg || (lastNonUserMsg.createdAt && new Date(lastNonUserMsg.createdAt) < fiveMinAgo)) {
+      await db.insert(askimateMessages).values({
+        conversationId: conversation.id,
+        isUserMessage: false,
+        sender: "ai",
+        content: "به زودی پاسخ شما داده خواهد شد و از پیام شما به AskiMate در Universitio ممنونیم.",
+      });
+    }
+
     // Return response with guest session ID if guest
     res.json({
       success: true,
@@ -370,6 +389,14 @@ router.post("/askimate/conversations", async (req: Request, res: Response) => {
         status: "open",
       })
       .returning();
+
+    // Auto welcome message — inserted once at creation, never duplicated
+    await db.insert(askimateMessages).values({
+      conversationId: newConversation.id,
+      isUserMessage: false,
+      sender: "ai",
+      content: "سلام! من AskiMate هستم، محصولی از Universitio. اینجا هستم تا بهت کمک کنم مسیر تحصیلی‌ات را پیدا کنی. چه سوالی داری؟",
+    });
 
     res.json({ success: true, conversation: newConversation });
   } catch (error) {
