@@ -1,0 +1,107 @@
+Implement a clean responsive navigation/layout improvement for the USER dashboard only.
+
+Do NOT redesign the whole product.
+Do NOT break current chat functionality, archive behavior, notifications, rename/delete chat, or message rendering.
+Do NOT touch admin side.
+
+==================================================
+GOAL
+==================================================
+
+Make the user dashboard navigation consistent and modern:
+
+DESKTOP:
+- left sidebar must always stay in the normal full version
+- icon + text labels must always be visible
+- this must be true even inside the Chat view
+
+MOBILE:
+- switch to a hamburger-based navigation
+- make the Chat experience chat-first and optimized
+- user should mainly see the chat area
+- archive list and navigation should still be easily accessible in a modern UX way
+
+==================================================
+DESKTOP REQUIREMENTS
+==================================================
+
+1. CONSISTENT SIDEBAR
+- On desktop widths, the left sidebar must always use the full version:
+  - avatar/user info
+  - icon + label text
+  - Chat / Profile / Subscription / Logout
+- Do NOT collapse it to icon-only when user is inside Chat
+- Chat view should visually match the normal sidebar style used in Profile/Subscription
+
+2. NO DIFFERENT CHAT-SPECIFIC DESKTOP SIDEBAR
+- Remove the current desktop inconsistency where Chat view uses a different compact sidebar
+- There should be one consistent desktop sidebar pattern across all user dashboard sections
+
+==================================================
+MOBILE REQUIREMENTS
+==================================================
+
+3. HAMBURGER NAVIGATION
+- On mobile/smaller screens, replace the fixed sidebar with a hamburger menu
+- The hamburger should open a modern mobile menu/drawer/sheet
+- It must include:
+  - Chat
+  - Profile
+  - Subscription
+  - Logout
+
+4. CHAT-FIRST MOBILE UX
+- When user is on mobile and inside Chat:
+  - prioritize the chat content area
+  - the message area should be the main focus
+  - chat list / archived chats should still be accessible in a clean way
+- A good acceptable pattern is:
+  - hamburger for dashboard navigation
+  - chat list in a collapsible panel / drawer / top section / slide-over
+- The UX should feel modern and optimized, not cramped
+
+5. ARCHIVED / ACTIVE CHAT ACCESS ON MOBILE
+- User must still be able to:
+  - see active chat
+  - see archived chats
+  - create new chat when allowed
+  - rename/delete chats
+- But this should be presented in a mobile-friendly way, not just squeezed desktop layout
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break current Active / Archived chat model
+- Do NOT break End Chat
+- Do NOT break delete chat / rename chat
+- Do NOT break notifications
+- Do NOT break scroll behavior
+- Do NOT break chat sending
+- Do NOT redesign the content logic
+- Only improve the responsive layout/navigation UX for the user dashboard
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+DESKTOP:
+- sidebar is always full and consistent
+- Chat / Profile / Subscription all use the same sidebar style
+
+MOBILE:
+- hamburger navigation works cleanly
+- chat area is prioritized
+- active/archived chat access remains easy
+- overall UX feels modern and optimized
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report:
+1. what changed in desktop sidebar behavior
+2. how the mobile hamburger navigation works
+3. how chat list / archived chats are accessed on mobile
+4. what files were changed
+5. confirm that existing chat functionality was not broken

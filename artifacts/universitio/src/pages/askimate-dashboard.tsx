@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send, Trash2 } from "lucide-react";
+import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send, Trash2, Menu, X } from "lucide-react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -46,6 +46,7 @@ function AskiMateDashboardContent() {
   const [notificationMessageId, setNotificationMessageId] = useState<number | null>(null);
   const [notificationPreview, setNotificationPreview] = useState("");
   const [deletingConvId, setDeletingConvId] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Message detection: single source of truth for message identity
   const knownMessageIds = useRef<Set<number>>(new Set());
@@ -654,13 +655,82 @@ function AskiMateDashboardContent() {
       </Helmet>
       <Navbar />
 
-      <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
-        <div className={`grid gap-8 ${activeTab === "chat" ? "grid-cols-1 lg:grid-cols-5" : "grid-cols-1 lg:grid-cols-4"}`}>
-          {/* Compact Navigation Sidebar */}
-          <div className={`${activeTab === "chat" ? "lg:col-span-1" : "lg:col-span-1"}`}>
-            <div className={`bg-white rounded-xl border border-border/60 sticky top-32 ${activeTab === "chat" ? "p-4" : "p-6"}`}>
-              {/* Profile Card - More Compact in Chat Mode */}
-              <div className={`${activeTab === "chat" ? "hidden" : "flex items-center gap-4 mb-6"}`}>
+      {/* Mobile Header with Hamburger Menu */}
+      <div className="lg:hidden fixed top-20 left-0 right-0 bg-white border-b border-border/60 px-4 py-3 flex items-center gap-3 z-40">
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 hover:bg-muted rounded-lg transition-colors"
+          title="Menu"
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+        <div className="flex-1">
+          <h2 className="font-semibold text-foreground">
+            {activeTab === "chat" ? "Chat" : activeTab === "profile" ? "Profile" : "Subscription"}
+          </h2>
+        </div>
+        {activeTab === "chat" && unreadCount > 0 && (
+          <span className="inline-flex items-center justify-center text-xs font-bold text-white bg-red-600 rounded-full w-6 h-6">
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        )}
+      </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <>
+          <div className="lg:hidden fixed inset-0 bg-black/50 z-30 mt-24" onClick={() => setMobileMenuOpen(false)} />
+          <div className="lg:hidden fixed top-24 left-0 right-0 bg-white border-b border-border/60 p-6 z-40">
+            {/* Mobile Navigation */}
+            <nav className="space-y-2 mb-6">
+              {[
+                { id: "chat", label: "Chat", icon: MessageSquare },
+                { id: "profile", label: "Profile", icon: Settings },
+                { id: "subscription", label: "Subscription", icon: FileUp },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id as any);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === item.id
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4 flex-shrink-0" />
+                  <span className="flex-1 text-left">{item.label}</span>
+                  {item.id === "chat" && unreadCount > 0 && (
+                    <span className="inline-flex items-center justify-center text-xs font-bold text-white bg-red-600 rounded-full w-5 h-5">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </nav>
+
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg border-t border-border pt-4 disabled:opacity-50"
+            >
+              <LogOut className="w-4 h-4 flex-shrink-0" />
+              <span className="flex-1 text-left">Log Out</span>
+            </button>
+          </div>
+        </>
+      )}
+
+      <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20 lg:mt-0">
+        {/* Desktop + Mobile Responsive Grid */}
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-5">
+          {/* Desktop Sidebar - Always Full on Large Screens, Hidden on Mobile */}
+          <div className="hidden lg:block lg:col-span-1">
+            <div className="bg-white rounded-xl border border-border/60 sticky top-32 p-6">
+              {/* Profile Card - Always Full on Desktop */}
+              <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">
                   {profileData.firstName[0]}
                 </div>
@@ -670,18 +740,8 @@ function AskiMateDashboardContent() {
                 </div>
               </div>
 
-              {/* Compact Profile Indicator in Chat Mode */}
-              {activeTab === "chat" && (
-                <div className="text-center mb-4 pb-4 border-b border-border/40">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-sm mx-auto mb-2">
-                    {profileData.firstName[0]}
-                  </div>
-                  <p className="text-xs text-foreground font-medium truncate">{profileData.firstName}</p>
-                  <p className="text-xs text-muted-foreground">Free Plan</p>
-                </div>
-              )}
-
-              <nav className={`${activeTab === "chat" ? "space-y-1" : "space-y-2"}`}>
+              {/* Navigation - Always Full on Desktop */}
+              <nav className="space-y-2">
                 {[
                   { id: "chat", label: "Chat", icon: MessageSquare },
                   { id: "profile", label: "Profile", icon: Settings },
@@ -691,17 +751,15 @@ function AskiMateDashboardContent() {
                     key={item.id}
                     onClick={() => setActiveTab(item.id as any)}
                     title={item.label}
-                    className={`relative w-full flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      activeTab === "chat" ? "justify-center" : "gap-3"
-                    } ${
+                    className={`relative w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       activeTab === item.id
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground hover:bg-muted"
                     }`}
                   >
                     <item.icon className="w-4 h-4 flex-shrink-0" />
-                    {activeTab !== "chat" && <span className="flex-1 text-left">{item.label}</span>}
-                    {item.id === "chat" && unreadCount > 0 && activeTab !== "chat" && (
+                    <span className="flex-1 text-left">{item.label}</span>
+                    {item.id === "chat" && unreadCount > 0 && (
                       <span className="inline-flex items-center justify-center text-xs font-bold text-white bg-red-600 rounded-full w-5 h-5 ml-1">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
@@ -714,18 +772,16 @@ function AskiMateDashboardContent() {
                 onClick={handleLogout}
                 disabled={isLoggingOut}
                 title="Log Out"
-                className={`w-full flex items-center px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg mt-4 border-t border-border pt-4 disabled:opacity-50 ${
-                  activeTab === "chat" ? "justify-center" : "gap-3"
-                }`}
+                className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg mt-4 border-t border-border pt-4 disabled:opacity-50"
               >
                 <LogOut className="w-4 h-4" />
-                {activeTab !== "chat" && <span className="flex-1 text-left">Log Out</span>}
+                <span className="flex-1 text-left">Log Out</span>
               </button>
             </div>
           </div>
 
-          {/* Main Content - Expands in Chat Mode */}
-          <div className={`${activeTab === "chat" ? "lg:col-span-4 space-y-6" : "lg:col-span-3 space-y-6"}`}>
+          {/* Main Content */}
+          <div className="lg:col-span-4 space-y-6">
             {/* Profile Tab */}
             {activeTab === "profile" && (
               <div className="bg-white rounded-xl border border-border/60 p-8">
