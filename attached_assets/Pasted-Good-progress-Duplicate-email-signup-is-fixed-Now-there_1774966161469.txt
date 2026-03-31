@@ -1,0 +1,110 @@
+Good progress.
+
+Duplicate email signup is fixed.
+
+Now there are TWO remaining AskiMate issues that must be fixed carefully.
+
+Do NOT work on unrelated features.
+Do NOT redesign the page.
+Only fix these two specific problems.
+
+==================================================
+ISSUE 1 — NEW USERS CANNOT START A NEW CHAT
+==================================================
+
+Right now, newly created accounts cannot start a new conversation from their dashboard/profile chat area.
+
+Observed behavior:
+- existing users with previous conversations can continue chatting
+- but new users see an empty state and cannot start a first conversation properly
+
+This must be fixed.
+
+Required behavior:
+1. A newly registered/logged-in user with no previous conversations must still be able to start a new chat
+2. The chat UI must provide a working way to start the first conversation
+3. On first message:
+   - create the conversation automatically
+   - save the first message
+   - show the conversation immediately in the user chat UI
+   - make it visible to admin in the matching admin conversation list
+
+Important:
+- do not require the user to first go somewhere else
+- do not leave them stuck on “No conversations yet”
+- first-message flow must work from the dashboard/profile chat directly
+
+Please debug:
+- whether selectedConversation is null and blocking send
+- whether the UI disables send when there is no conversation yet
+- whether backend supports first-message conversation creation for authenticated users in dashboard flow
+- whether frontend is failing to call the create/send path for first-time users
+
+==================================================
+ISSUE 2 — UNREAD / MESSAGE COUNT BADGE STILL NOT WORKING
+==================================================
+
+The red unread/message-count badge is still not correctly implemented.
+
+We need proper unread notification behavior.
+
+Required behavior:
+1. When user sends a new message:
+   - admin should see an unread badge/count for that conversation or user
+
+2. When admin sends a reply:
+   - user should see an unread badge/count in their dashboard/chat area
+
+3. When the recipient opens that conversation:
+   - unread count should reset correctly
+
+4. Badge should be clearly visible and red
+5. Count should reflect unread messages, not just total messages
+
+Important:
+- do not fake the badge using total conversation count
+- use real unread logic
+- make sure unread state is updated both ways:
+  - user → admin
+  - admin → user
+
+Please verify:
+- message schema has correct read/unread tracking
+- unread count query is correct
+- opening a conversation marks relevant messages as read
+- polling / realtime refresh updates the badge count
+- badge UI is actually rendered in both user and admin sides
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+After the fix:
+
+A. New user flow
+- new user opens Messages tab
+- sends first message
+- conversation is created immediately
+- message appears
+- admin sees it too
+
+B. Unread badge flow
+- user sends message → admin sees red unread count
+- admin opens conversation → unread resets
+- admin replies → user sees red unread count
+- user opens conversation → unread resets
+
+==================================================
+AFTER FIXING
+==================================================
+
+Report clearly:
+
+1. Root cause of why new users could not start a first chat
+2. Which files were modified
+3. How first-message conversation creation now works
+4. How unread badges are calculated
+5. Where red unread badges now appear
+6. Confirm that both directions now work:
+   - user → admin unread
+   - admin → user unread

@@ -39,6 +39,7 @@ function AskiMateDashboardContent() {
   const [messageInput, setMessageInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
@@ -54,6 +55,7 @@ function AskiMateDashboardContent() {
       setSelectedConversation(null);
       setMessages([]);
       setMessageInput("");
+      setUnreadCount(0);
       setLocation("/askimate");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -263,6 +265,28 @@ function AskiMateDashboardContent() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Poll unread count every 3 seconds
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const token = localStorage.getItem("askimate_token");
+        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/unread-count`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUnreadCount(data.unreadCount || 0);
+        }
+      } catch (error) {
+        console.error("Failed to fetch unread count:", error);
+      }
+    };
+
+    const interval = setInterval(fetchUnreadCount, 3000);
+    fetchUnreadCount(); // Fetch immediately on mount
+    return () => clearInterval(interval);
+  }, [activeTab]);
+
   const handleSendMessage = async () => {
     if (!messageInput.trim() || !user) return;
 
@@ -407,7 +431,12 @@ function AskiMateDashboardContent() {
                     }`}
                   >
                     <item.icon className="w-4 h-4" />
-                    {item.label}
+                    <span className="flex-1 text-left">{item.label}</span>
+                    {item.id === "chat" && unreadCount > 0 && (
+                      <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-600 rounded-full">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
                   </button>
                 ))}
               </nav>
@@ -599,12 +628,6 @@ function AskiMateDashboardContent() {
                   <div className="flex-1 flex items-center justify-center">
                     <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                   </div>
-                ) : conversations.length === 0 ? (
-                  <div className="flex-1 flex flex-col items-center justify-center text-center">
-                    <MessageSquare className="w-16 h-16 text-muted-foreground/30 mb-4" />
-                    <p className="text-muted-foreground">No conversations yet</p>
-                    <p className="text-sm text-muted-foreground">Start a conversation on the AskiMate page</p>
-                  </div>
                 ) : (
                   <>
                     {/* Messages List */}
@@ -613,7 +636,9 @@ function AskiMateDashboardContent() {
                         <div className="flex items-center justify-center h-full text-center">
                           <div>
                             <MessageSquare className="w-12 h-12 text-muted-foreground/20 mx-auto mb-2" />
-                            <p className="text-sm text-muted-foreground">No messages in this conversation yet</p>
+                            <p className="text-sm text-muted-foreground">
+                              {conversations.length === 0 ? "Start a new conversation below" : "No messages in this conversation yet"}
+                            </p>
                           </div>
                         </div>
                       )}

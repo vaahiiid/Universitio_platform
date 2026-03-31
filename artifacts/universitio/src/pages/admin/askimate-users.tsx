@@ -538,6 +538,7 @@ export default function AskiMateUsersAdmin() {
   const [selectedUser, setSelectedUser] = useState<AskiMateUserData | null>(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const fetchUsers = useCallback(
     async (pageNum = 1) => {
@@ -565,6 +566,22 @@ export default function AskiMateUsersAdmin() {
     fetchUsers(1);
   }, [search, fetchUsers]);
 
+  // Poll unread count every 3 seconds
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await apiFetch<{ unreadCount: number }>("/admin/unread-count");
+        setUnreadCount(response.unreadCount || 0);
+      } catch (err) {
+        console.error("Failed to fetch unread count:", err);
+      }
+    };
+
+    const interval = setInterval(fetchUnreadCount, 3000);
+    fetchUnreadCount(); // Fetch immediately on mount
+    return () => clearInterval(interval);
+  }, []);
+
   const totalUsers = pagination?.total || 0;
 
   return (
@@ -576,7 +593,14 @@ export default function AskiMateUsersAdmin() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">AskiMate AI Users</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-bold text-foreground">AskiMate AI Users</h1>
+              {unreadCount > 0 && (
+                <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-bold text-white bg-red-600 rounded-full">
+                  {unreadCount > 99 ? "99+" : unreadCount} unread
+                </span>
+              )}
+            </div>
             <p className="text-muted-foreground mt-1">{totalUsers} users total</p>
           </div>
           <Button
