@@ -42,7 +42,9 @@ function AskiMateDashboardContent() {
   const [editingTitle, setEditingTitle] = useState("");
   const [showNewMessageButton, setShowNewMessageButton] = useState(false);
   const [lastNewMessageId, setLastNewMessageId] = useState<number | null>(null);
-  const [notificationPopup, setNotificationPopup] = useState<{ id: number; content: string } | null>(null);
+  const [visibleNotification, setVisibleNotification] = useState(false);
+  const [notificationMessageId, setNotificationMessageId] = useState<number | null>(null);
+  const [notificationPreview, setNotificationPreview] = useState("");
   
   // Message detection: single source of truth for message identity
   const knownMessageIds = useRef<Set<number>>(new Set());
@@ -413,31 +415,35 @@ function AskiMateDashboardContent() {
 
   // Show notification for new mentor messages when user is NOT in chat tab
   useEffect(() => {
+    // Only show notification when user is outside chat
     if (!selectedConversation || activeTab === 'chat') return;
     
     // Find the last message if any mentor messages exist
     const lastMentorMessage = [...messages].reverse().find(msg => msg.sender === 'mentor');
     
-    if (lastMentorMessage && lastMentorMessage.id !== lastNewMessageId) {
-      // This is a new mentor message
-      setLastNewMessageId(lastMentorMessage.id);
+    if (lastMentorMessage && lastMentorMessage.id !== notificationMessageId) {
+      // This is a new mentor message we haven't notified about yet
+      setNotificationMessageId(lastMentorMessage.id);
       
-      // Play sound and show notifications
+      // Create preview text
       const preview = lastMentorMessage.content.length > 50 
         ? lastMentorMessage.content.substring(0, 50) + '...' 
         : lastMentorMessage.content;
       
-      playNotificationSound();
-      toast({
-        title: "New message from your mentor",
-        description: preview,
-      });
+      setNotificationPreview(preview);
+      setVisibleNotification(true);
       
-      // Show floating notification popup
-      setNotificationPopup({ id: lastMentorMessage.id, content: preview });
-      setTimeout(() => setNotificationPopup(null), 5000);
+      // Play sound once
+      playNotificationSound();
+      
+      // Auto-hide notification after 5 seconds
+      const timer = setTimeout(() => {
+        setVisibleNotification(false);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
     }
-  }, [messages, selectedConversation, activeTab, lastNewMessageId]);
+  }, [messages, selectedConversation, activeTab, notificationMessageId]);
 
   // Auto-scroll to bottom only if user is already near bottom
   useEffect(() => {
@@ -1181,17 +1187,18 @@ function AskiMateDashboardContent() {
         </div>
       </div>
 
-      {/* Floating Notification Popup */}
-      {notificationPopup && (
-        <div className="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-lg shadow-2xl max-w-sm z-50">
+      {/* Guaranteed-visible notification box - mounted at top level */}
+      {visibleNotification && (
+        <div className="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-lg shadow-2xl max-w-sm z-50 animate-pulse">
           <div className="flex items-start gap-3">
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <p className="font-bold text-base mb-2">Mentor sent a new message</p>
-              <p className="text-sm font-medium">{notificationPopup.content}</p>
+              <p className="text-sm font-medium break-words">{notificationPreview}</p>
             </div>
             <button
-              onClick={() => setNotificationPopup(null)}
-              className="text-white opacity-80 hover:opacity-100 text-2xl leading-none font-bold ml-2"
+              onClick={() => setVisibleNotification(false)}
+              className="text-white opacity-80 hover:opacity-100 text-2xl leading-none font-bold ml-2 flex-shrink-0"
+              aria-label="Close notification"
             >
               ×
             </button>

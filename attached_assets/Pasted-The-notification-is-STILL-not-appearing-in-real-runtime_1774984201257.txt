@@ -1,0 +1,81 @@
+The notification is STILL not appearing in real runtime.
+
+Stop relying on the current toast/popup implementation.
+Do NOT try to patch the existing notification approach again.
+
+Fix this with a SIMPLE, GUARANTEED-VISIBLE fallback implementation.
+
+==================================================
+ONLY FIX THIS ONE ISSUE
+==================================================
+
+When the user is NOT inside the Chat view and a new mentor/admin message arrives:
+
+REQUIRED:
+1. Show a fixed, top-level red notification box on the user dashboard
+2. Position: bottom-right
+3. Text must clearly say:
+   "Mentor sent a new message"
+4. It must be bold, visible, and above the UI
+5. It must appear reliably in real runtime
+6. It must play a sound once
+7. It must auto-hide after a few seconds OR allow manual close
+8. It must trigger only once per new message
+9. It must work when user is on:
+   - Profile
+   - Subscription
+   - any non-chat dashboard section
+
+==================================================
+IMPORTANT IMPLEMENTATION RULE
+==================================================
+
+Do NOT use the existing toast path as the primary mechanism.
+Instead:
+
+- mount a dedicated notification box at TOP LEVEL of the user dashboard component
+- control it with simple explicit state
+- trigger it directly from the confirmed new-message detection path
+
+If needed, create a dedicated state like:
+- visibleNotification
+- notificationMessageId
+- notificationPreview
+
+But keep it simple and reliable.
+
+==================================================
+DEBUG REQUIREMENTS
+==================================================
+
+You must verify all of these:
+1. The new-message detection path is actually firing
+2. The visibleNotification state is actually being set
+3. The notification component is actually mounted in the rendered tree
+4. The box is not hidden by:
+   - overflow
+   - z-index
+   - conditional rendering bugs
+5. The user is outside Chat when it triggers
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT touch admin side
+- Do NOT touch archive behavior
+- Do NOT touch scroll logic
+- Do NOT touch message rendering
+- Do NOT redesign the page
+- Fix ONLY this notification issue
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. why the previous notification approach still failed
+2. what guaranteed-visible fallback you implemented
+3. what file was changed
+4. confirm that this new notification box is mounted at top-level and not dependent on the old toast path
+5. if it still cannot work, explain exactly where the runtime path is failing
