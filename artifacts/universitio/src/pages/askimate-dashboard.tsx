@@ -612,7 +612,7 @@ function AskiMateDashboardContent() {
                     key={item.id}
                     onClick={() => setActiveTab(item.id as any)}
                     title={item.label}
-                    className={`w-full flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`relative w-full flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       activeTab === "chat" ? "justify-center" : "gap-3"
                     } ${
                       activeTab === item.id

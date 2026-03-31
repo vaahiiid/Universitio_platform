@@ -1,0 +1,56 @@
+The recent fixes improved some behavior, but two critical issues are still NOT fixed.
+
+Do NOT touch any currently working logic unless it is directly related to the two issues below.
+Do NOT refactor unrelated code.
+Do NOT break notifications, scroll behavior, or message detection that is already working.
+
+Fix ONLY these two issues:
+
+1. USER SIDEBAR CHAT BADGE
+Current behavior:
+- Toast notification appears at bottom-right when a new mentor message arrives
+- But there is NO unread badge/count next to the "Chat" menu item in the user dashboard
+
+Required behavior:
+- Show unread count badge next to "Chat" in the user sidebar
+- Badge must update correctly when:
+  - a new mentor message arrives
+  - the user is on Profile or Subscription
+  - the user opens/read the chat and unread becomes zero
+- Badge must use the existing unread count source of truth
+- Do NOT create a second unread system
+- Do NOT rely only on toast
+- Badge should disappear when unread count is zero
+
+2. ADMIN DUPLICATE SEND BUG
+Current behavior:
+- When admin sends one message, it gets sent/displayed twice
+
+Required behavior:
+- One admin submit must create exactly one message
+- Prevent duplicate submit from:
+  - Enter key + form submit both firing
+  - button click + form submit both firing
+  - optimistic append + server append both rendering the same message
+  - polling re-adding the freshly sent admin message
+- Use message.id as the identity check
+- Ensure admin send flow is single-path and deterministic
+
+Important:
+- Check the admin send handler carefully
+- There must be only ONE actual send trigger
+- If optimistic UI is used, make sure the server-returned/polled message does not duplicate it
+- If no optimistic UI is needed, remove it and rely on server-confirmed append only
+
+STRICT RULES:
+- Do NOT redesign UI
+- Do NOT add new systems
+- Do NOT change backend architecture
+- Do NOT break current polling
+- Do NOT break current notifications
+- Only fix these two behaviors cleanly
+
+Deliverable:
+1. Explain exactly why the admin duplicate send was happening
+2. Explain exactly how the Chat sidebar badge is wired to unread count
+3. Confirm that no unrelated behavior was changed

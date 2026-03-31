@@ -306,6 +306,10 @@ Sending request...
       console.log(`[ADMIN SEND] SUCCESS - Response:`, response.data);
       console.log(`[ADMIN SEND] Inserted: id=${response.data.id} | sender=${response.data.sender} | conversationId=${response.data.conversationId}`);
       
+      // Critical: Add sent message ID to knownMessageIds BEFORE updating UI
+      // This prevents polling from treating it as a new message and duplicating it
+      knownMessageIds.current.add(response.data.id);
+      
       setMessages([
         ...messages,
         { ...response.data, createdAt: new Date(response.data.createdAt) },
