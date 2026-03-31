@@ -903,8 +903,8 @@ function AskiMateDashboardContent() {
 
             {/* Chat Tab */}
             {activeTab === "chat" && (
-              <div className="bg-white rounded-xl border border-border/60 p-4 md:p-8 flex flex-col h-[calc(100vh-60px-2rem)] md:h-[calc(100vh-3rem)]">
-                <h2 className="text-2xl font-bold text-foreground mb-4 md:mb-6">Chat</h2>
+              <div className="bg-white rounded-xl border border-border/60 p-2 md:p-8 flex flex-col h-[calc(100vh-60px-2rem)] md:h-[calc(100vh-3rem)]">
+                <h2 className="hidden md:block text-2xl font-bold text-foreground mb-4 md:mb-6">Chat</h2>
 
                 <div className="flex gap-6 flex-1 overflow-hidden min-h-0">
                   {/* Desktop Conversation List Sidebar - Hidden on Mobile */}
@@ -1142,24 +1142,29 @@ function AskiMateDashboardContent() {
                   <div className="flex-1 flex flex-col overflow-hidden">
                     {/* Conversation Header */}
                     {selectedConversation && (
-                      <div className="mb-4 pb-3 border-b border-border/40">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
+                      <div className="mb-2 pb-2 border-b border-border/40">
+                        <div className="flex items-center justify-between gap-2 md:gap-0">
+                          <div className="flex items-center gap-2 md:gap-0 min-w-0 flex-1">
                             <button
                               onClick={() => setMobileChatListOpen(true)}
-                              className="md:hidden p-2 hover:bg-muted rounded transition-colors"
+                              className="md:hidden p-1.5 hover:bg-muted rounded transition-colors flex-shrink-0"
                               title="View chats"
                             >
                               <MessageSquare className="w-4 h-4" />
                             </button>
-                            <div>
-                              <h3 className="font-semibold text-foreground text-sm">
+                            {/* Desktop: Show large title + status */}
+                            <div className="hidden md:block min-w-0">
+                              <h3 className="font-semibold text-foreground text-sm truncate">
                                 {conversations.find(c => c.id === selectedConversation)?.title}
                               </h3>
                               <p className="text-xs text-muted-foreground mt-0.5">
                                 {conversations.find(c => c.id === selectedConversation)?.status === "closed" ? "Archived" : "Active"}
                               </p>
                             </div>
+                            {/* Mobile: Show tiny subtitle only */}
+                            <p className="md:hidden text-xs text-muted-foreground truncate flex-1">
+                              {conversations.find(c => c.id === selectedConversation)?.title}
+                            </p>
                           </div>
                           {conversations.find(c => c.id === selectedConversation)?.status === "open" && (
                             <button
@@ -1183,7 +1188,7 @@ function AskiMateDashboardContent() {
                                   console.error("Failed to end conversation:", err);
                                 }
                               }}
-                              className="text-xs text-amber-600 hover:text-amber-700 font-medium"
+                              className="text-xs text-amber-600 hover:text-amber-700 font-medium whitespace-nowrap flex-shrink-0"
                             >
                               End Chat
                             </button>

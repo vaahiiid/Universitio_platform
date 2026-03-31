@@ -1,0 +1,117 @@
+Refine the MOBILE chat header UI for the USER dashboard.
+
+Do NOT touch desktop layout unless needed for consistency.
+Do NOT break the scroll fix that is now working.
+Do NOT break chat functionality, notifications, archive behavior, rename/delete, or End Chat.
+
+==================================================
+PROBLEM
+==================================================
+
+On mobile, the chat view still wastes too much vertical space at the top.
+
+The current mobile chat panel shows too much repeated information:
+- large "Chat" heading inside the chat panel
+- large conversation title such as "New Chat"
+- status text such as "Active"
+- End Chat in the same large header block
+
+This pushes the actual messages and input too far down.
+The user wants the chat to start higher and feel more like a real chat app.
+
+==================================================
+GOAL
+==================================================
+
+Make the mobile chat header compact and minimal.
+
+The mobile screen should prioritize:
+- messages
+- typing input
+- stable chat experience
+
+Not repeated headings.
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. REMOVE LARGE REPEATED CHAT HEADING INSIDE THE CHAT PANEL
+On mobile:
+- remove the big "Chat" heading inside the chat content area
+- do NOT repeat a large heading if the top bar already says Chat
+
+2. REMOVE LARGE CONVERSATION TITLE BLOCK
+On mobile:
+- remove the large "New Chat" / conversation name block from the main chat header area
+- remove the large status block if it consumes vertical space
+
+3. CONVERSATION NAME RULE
+On mobile, conversation identity is enough in one of these places:
+- only in the chat list
+OR
+- as a very small subtle label/tab above the messages
+
+Do NOT keep it as a large block header.
+
+4. KEEP END CHAT, BUT MAKE IT LIGHTER
+- End Chat must remain available
+- Move it to a compact, non-intrusive place
+- Good options:
+  - small text action top-right
+  - compact icon/text action in the top chat toolbar
+- It must stay visible, but not consume much height
+
+5. TOP BAR SHOULD BE ENOUGH
+On mobile, the top area should mainly consist of:
+- hamburger
+- logo
+- "Chat" label
+
+That should be the main navigation/header identity.
+The inner chat panel should not repeat the same structure again.
+
+6. SAVE VERTICAL SPACE
+Reduce top padding/margins on mobile so that:
+- messages start higher
+- input becomes reachable sooner
+- chat feels app-like
+
+7. DESKTOP SAFETY
+- Do not make desktop worse
+- This refinement is primarily for mobile
+- Desktop may keep more context if needed, but avoid redundant clutter there too
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break the current chat-only scroll behavior
+- Do NOT reintroduce page scrolling issues
+- Do NOT break mobile input behavior
+- Do NOT break End Chat functionality
+- Do NOT break chat list / archived chat access
+- Do NOT redesign unrelated sections
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+On mobile:
+- the red-circled header clutter is gone or greatly reduced
+- messages start higher on screen
+- input is more naturally in view
+- End Chat is still available but unobtrusive
+- conversation name is only in the list or as a tiny subtle label
+- the screen feels more like a chat app and less like a page with repeated titles
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end explain:
+1. which header/title elements were removed on mobile
+2. where End Chat now appears
+3. where conversation name now appears
+4. how vertical space was reduced
+5. confirm the scroll fix remains intact
