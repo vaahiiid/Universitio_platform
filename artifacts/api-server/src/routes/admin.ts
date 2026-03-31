@@ -853,6 +853,7 @@ router.get("/admin/askimate-users/:userId/conversations", async (req: Request, r
       .select({
         id: askimateConversations.id,
         title: askimateConversations.title,
+        status: askimateConversations.status,
         questionCount: askimateConversations.questionCount,
         createdAt: askimateConversations.createdAt,
         updatedAt: askimateConversations.updatedAt,
@@ -861,7 +862,27 @@ router.get("/admin/askimate-users/:userId/conversations", async (req: Request, r
       .where(eq(askimateConversations.userId, userId))
       .orderBy(desc(askimateConversations.updatedAt));
 
-    res.json({ data: conversations });
+    // Fetch unread count per conversation
+    const conversationsWithUnread = await Promise.all(
+      conversations.map(async (conv) => {
+        const [unreadResult] = await db
+          .select({ count: count() })
+          .from(askimateMessages)
+          .where(
+            and(
+              eq(askimateMessages.conversationId, conv.id),
+              eq(askimateMessages.sender, "user"),
+              eq(askimateMessages.isRead, false)
+            )
+          );
+        return {
+          ...conv,
+          unreadCount: unreadResult?.count || 0,
+        };
+      })
+    );
+
+    res.json({ data: conversationsWithUnread });
   } catch (err) {
     console.error("Conversation fetch error:", err);
     res.status(500).json({ error: "Failed to fetch conversations" });

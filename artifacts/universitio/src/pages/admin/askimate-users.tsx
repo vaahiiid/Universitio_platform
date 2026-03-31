@@ -19,12 +19,15 @@ interface AskiMateUserData {
   updatedAt: Date;
   weeklyUsage: number;
   conversationCount: number;
+  unreadCount?: number;
 }
 
 interface Conversation {
   id: number;
   title: string;
+  status?: "open" | "closed";
   questionCount: number;
+  unreadCount?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -101,19 +104,31 @@ function UsageBadge({ weeklyUsage, plan }: { weeklyUsage: number; plan: "free" |
 }
 
 function UserListRow({ user, onSelect }: { user: AskiMateUserData; onSelect: (user: AskiMateUserData) => void }) {
+  const hasUnread = (user.unreadCount || 0) > 0;
+  
   return (
     <button
       onClick={() => onSelect(user)}
-      className="w-full border-b border-border/40 hover:bg-muted/30 transition-colors p-4 text-left"
+      className={`w-full border-b border-border/40 transition-colors p-4 text-left ${
+        hasUnread
+          ? "bg-blue-50/50 hover:bg-blue-50 border-b-blue-100"
+          : "hover:bg-muted/30"
+      }`}
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-sm font-semibold text-primary">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
+              hasUnread
+                ? "bg-blue-100 text-blue-700"
+                : "bg-primary/10 text-primary"
+            }`}>
               {user.firstName[0]}{user.lastName[0]}
             </div>
             <div>
-              <p className="font-medium text-foreground">{user.firstName} {user.lastName}</p>
+              <p className={`font-medium ${hasUnread ? "text-foreground font-semibold" : "text-foreground"}`}>
+                {user.firstName} {user.lastName}
+              </p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
           </div>
@@ -124,10 +139,13 @@ function UserListRow({ user, onSelect }: { user: AskiMateUserData; onSelect: (us
             <UsageBadge weeklyUsage={user.weeklyUsage} plan={user.plan} />
           </div>
           <div className="text-right hidden md:block min-w-20">
+            {hasUnread && (
+              <p className="text-sm font-bold text-blue-600">{user.unreadCount} unread</p>
+            )}
             <p className="text-sm font-medium text-foreground">{user.conversationCount}</p>
             <p className="text-xs text-muted-foreground">conversations</p>
           </div>
-          <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+          <ChevronRight className={`w-5 h-5 flex-shrink-0 ${hasUnread ? "text-blue-600" : "text-muted-foreground"}`} />
         </div>
       </div>
     </button>
@@ -572,28 +590,42 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
             </div>
           ) : (
             <div className="space-y-2">
-              {conversations.map((conv) => (
+              {conversations.map((conv) => {
+                const hasUnread = (conv.unreadCount || 0) > 0;
+                return (
                 <button
                   key={conv.id}
                   onClick={() => setSelectedConversation(conv)}
-                  className="w-full text-left p-4 bg-muted/20 hover:bg-muted/40 rounded-lg transition-colors border border-border/40"
+                  className={`w-full text-left p-4 rounded-lg transition-colors border ${
+                    hasUnread
+                      ? "bg-blue-50/50 hover:bg-blue-50 border-blue-200"
+                      : "bg-muted/20 hover:bg-muted/40 border-border/40"
+                  }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-foreground">{conv.title}</p>
+                        <p className={`font-medium ${hasUnread ? "text-foreground font-semibold" : "text-foreground"}`}>
+                          {conv.title}
+                        </p>
                         <span className={`text-xs px-2 py-1 rounded ${conv.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
                           {conv.status === "closed" ? "Closed" : "Open"}
                         </span>
+                        {hasUnread && (
+                          <span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">
+                            {conv.unreadCount} unread
+                          </span>
+                        )}
                       </div>
                       <p className="text-xs text-muted-foreground">
                         {conv.questionCount} questions • {formatDateTime(conv.updatedAt)}
                       </p>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    <ChevronRight className={`w-4 h-4 ${hasUnread ? "text-blue-600" : "text-muted-foreground"}`} />
                   </div>
                 </button>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -648,12 +680,50 @@ export default function AskiMateUsersAdmin() {
     }
   };
 
-  // Poll unread count every 3 seconds as fallback
+  // Fetch unread counts per user and update list
+  const fetchPerUserUnreadCounts = useCallback(async () => {
+    try {
+      const unreadPerUser = new Map<number, number>();
+      
+      // Get unread count for each user's conversations
+      for (const user of users) {
+        try {
+          const response = await apiFetch<{ data: Conversation[] }>(
+            `/admin/askimate-users/${user.id}/conversations`
+          );
+          const totalUnread = (response.data || []).reduce((sum, conv) => sum + (conv.unreadCount || 0), 0);
+          unreadPerUser.set(user.id, totalUnread);
+        } catch (err) {
+          console.error(`Failed to fetch conversations for user ${user.id}:`, err);
+        }
+      }
+      
+      // Update users with unread counts
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => ({
+          ...user,
+          unreadCount: unreadPerUser.get(user.id) || 0,
+        }))
+      );
+    } catch (err) {
+      console.error("Failed to fetch per-user unread counts:", err);
+    }
+  }, [users]);
+
+  // Poll global unread count every 3 seconds
   useEffect(() => {
     const interval = setInterval(fetchUnreadCount, 3000);
     fetchUnreadCount(); // Fetch immediately on mount
     return () => clearInterval(interval);
   }, []);
+
+  // Poll per-user unread counts every 4 seconds (slightly offset from global polling)
+  useEffect(() => {
+    if (users.length > 0 && !selectedUser) {
+      const interval = setInterval(fetchPerUserUnreadCounts, 4000);
+      return () => clearInterval(interval);
+    }
+  }, [users.length, selectedUser, fetchPerUserUnreadCounts]);
 
   const totalUsers = pagination?.total || 0;
 

@@ -1,0 +1,91 @@
+This project is NOT new. Everything already implemented must be preserved.
+
+We are continuing the existing Universitio + AskiMate system.
+Do NOT redesign the system.
+Do NOT rebuild from scratch.
+Do NOT break existing logic.
+
+This phase improves the ADMIN PANEL experience for AskiMate.
+
+==================================================
+GOAL
+==================================================
+
+Make the admin side responsive, visible, and actionable.
+
+Admin must be able to immediately see:
+- which users have new messages
+- how many unread messages exist
+- which conversations need attention
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. Global Unread Indicator (Critical)
+- Add unread badge count next to "AskiMate Users" in admin sidebar
+- Shows total unread messages across all users
+- Updates live (using existing polling logic)
+
+2. User-Level Unread Visibility
+- In AskiMate Users list:
+  - Show unread message count per user
+  - Visually highlight users with unread messages
+  - Most active users should be more visible
+
+3. Conversation-Level Visibility
+- When admin opens a user:
+  - Show ALL conversations for that user clearly
+  - Each conversation must show:
+    - title
+    - open / closed status
+    - unread count
+
+4. Live Activity Feedback
+- When a user sends a message:
+  - Admin should see a visible indicator (badge or highlight)
+  - No need for page refresh
+  - Should feel responsive (based on current polling system)
+
+5. Chat View Improvements
+- Inside conversation view:
+  - clearly show user info (name, email, etc.)
+  - show conversation title
+  - show status (open/closed)
+  - allow admin to close/reopen conversation clearly
+
+6. UX Improvements
+- Users with unread messages should be visually distinct
+- Admin should not need to guess where new activity is
+- No UI clutter
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT change backend structure significantly
+- Do NOT break existing chat logic
+- Do NOT remove existing admin features
+- Use existing unread logic
+- Do NOT introduce WebSocket
+- Keep polling-based system
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+- Admin sees unread badge in sidebar
+- Admin immediately sees which users have activity
+- Admin sees unread per user and per conversation
+- Admin can quickly jump to active conversations
+- No page reload required
+
+==================================================
+DELIVERABLE
+==================================================
+
+Explain:
+1. how unread is displayed globally
+2. how unread per user is shown
+3. how conversations are displayed per user
+4. how admin is notified of new activity
