@@ -905,10 +905,10 @@ function AskiMateDashboardContent() {
 
             {/* Chat Tab */}
             {activeTab === "chat" && (
-              <div className="bg-white rounded-xl border border-border/60 p-8 h-[calc(100vh-200px)] flex flex-col">
-                <h2 className="text-2xl font-bold text-foreground mb-6">Chat</h2>
+              <div className="bg-white rounded-xl border border-border/60 p-4 md:p-8 flex flex-col md:h-[calc(100vh-200px)]">
+                <h2 className="text-2xl font-bold text-foreground mb-4 md:mb-6">Chat</h2>
 
-                <div className="flex gap-6 flex-1 overflow-hidden">
+                <div className="flex gap-6 flex-1 overflow-hidden min-h-0">
                   {/* Desktop Conversation List Sidebar - Hidden on Mobile */}
                   <div className="hidden md:flex md:flex-col md:w-56 border-r border-border/40 pr-4 overflow-y-auto space-y-3">
                     {/* New Chat button - only visible when no active chat exists */}
@@ -1234,8 +1234,8 @@ function AskiMateDashboardContent() {
                   </div>
                 ) : (
                   <>
-                    {/* Messages List */}
-                    <div ref={messagesContainerRef} className="flex-1 overflow-y-auto mb-6 space-y-4 pr-2">
+                    {/* Messages List - Controlled scrolling on mobile */}
+                    <div ref={messagesContainerRef} className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 min-h-0">
                       {messages.length === 0 && !chatLoading && (
                         <div className="flex items-center justify-center h-full text-center">
                           <div>
@@ -1308,7 +1308,7 @@ function AskiMateDashboardContent() {
 
                     {/* Input Area - Disabled for archived chats */}
                     {conversations.find(c => c.id === selectedConversation)?.status === "open" ? (
-                      <div className="flex gap-3 pt-4 border-t border-border/40">
+                      <div className="flex gap-3 pt-3 md:pt-4 border-t border-border/40 flex-shrink-0">
                         <input
                           type="text"
                           value={messageInput}
@@ -1320,7 +1320,7 @@ function AskiMateDashboardContent() {
                             }
                           }}
                           placeholder="Type your question... (Enter to send)"
-                          className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                          className="flex-1 border border-border rounded-lg px-4 py-3 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                           disabled={sending}
                         />
                         <Button

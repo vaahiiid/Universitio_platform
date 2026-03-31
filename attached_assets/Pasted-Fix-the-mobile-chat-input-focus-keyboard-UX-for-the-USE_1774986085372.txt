@@ -1,0 +1,92 @@
+Fix the mobile chat input focus/keyboard UX for the USER chat dashboard.
+
+Do NOT redesign desktop.
+Do NOT break the new mobile chat layout that is now working.
+Do NOT break message sending, archive behavior, notifications, or chat navigation.
+
+==================================================
+PROBLEM
+==================================================
+
+On mobile, when the user taps the message input field:
+- the browser zooms or shifts focus aggressively
+- the whole chat view scrolls/jumps
+- the page moves down toward the input
+- the chat no longer feels stable like a chat app
+
+This is NOT acceptable.
+
+==================================================
+GOAL
+==================================================
+
+Make the mobile chat feel stable like a real messaging app:
+- when input is focused, the chat layout should remain visually stable
+- the message area should stay usable
+- the input should remain anchored properly
+- no aggressive zoom/jump/scroll effect
+
+==================================================
+REQUIRED FIXES
+==================================================
+
+1. PREVENT MOBILE INPUT ZOOM
+- Ensure the message input font-size is at least 16px on mobile
+- This is important especially for iPhone/Safari to prevent auto-zoom on focus
+
+2. STABLE MOBILE CHAT LAYOUT
+- Keep the chat container height stable on mobile
+- Avoid the entire page reflowing when the keyboard opens
+- The chat should behave like an app-style panel, not a long web page
+
+3. INPUT ANCHORED AT BOTTOM
+- On mobile chat view, keep the input area visually anchored at the bottom
+- When keyboard opens, it should remain usable and not cause the whole page to jump uncontrollably
+
+4. CONTROLLED SCROLL AREA
+- The message list should be the scrollable area
+- Not the whole page
+- Prevent the full page from jumping to the input field on focus
+
+5. USE MOBILE-SAFE HEIGHT HANDLING
+- Use a proper mobile viewport height approach if needed:
+  - dvh / svh / viewport-safe handling
+  - or a stable flex layout with overflow control
+- Avoid brittle hacks that break on iOS/Android
+
+6. KEEP CHAT APP FEEL
+- User should still see the chat area naturally when typing
+- It should feel like a messaging app, not like the browser is fighting the layout
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break desktop layout
+- Do NOT break current mobile hamburger/chat-first UX
+- Do NOT break notifications
+- Do NOT break message sending
+- Do NOT redesign unrelated components
+- Only fix the mobile input/keyboard/focus behavior
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+On mobile:
+- tapping the input does NOT zoom the page
+- chat layout remains stable
+- the page does NOT awkwardly jump down to the input
+- the message list remains readable
+- the input remains usable at the bottom
+- overall feel is like a real chat app
+
+==================================================
+DELIVERABLE
+==================================================
+
+Explain:
+1. what caused the mobile zoom/jump behavior
+2. what CSS/layout changes were made
+3. how the message list vs page scrolling is handled now
+4. confirm desktop behavior was not changed
