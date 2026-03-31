@@ -1,0 +1,128 @@
+Fix the mobile UX for the user chat dashboard properly.
+
+Do NOT patch the current layout.
+The current mobile view is just a squeezed desktop layout and is NOT acceptable.
+
+You must implement a real mobile-first chat UX.
+
+==================================================
+PROBLEM
+==================================================
+
+On mobile:
+- the layout still shows two columns
+- chat is compressed
+- chat list is visible but unusable
+- overall UX is broken
+
+This must be redesigned for mobile.
+
+==================================================
+MOBILE UX REQUIREMENTS
+==================================================
+
+1. CHAT-FIRST MOBILE VIEW
+
+When user is inside Chat on mobile:
+- show ONLY the chat view
+- do NOT show two columns
+- hide the left chat list panel
+
+Layout:
+
+TOP:
+- hamburger icon (☰)
+- "Chat" title
+
+MIDDLE:
+- full-width message list
+
+BOTTOM:
+- message input (fixed at bottom)
+
+2. CHAT LIST ACCESS
+
+User must still access:
+- Active chats
+- Archived chats
+- New chat
+
+BUT:
+
+- this must NOT be a side column
+- implement it as one of these:
+  - slide-over panel
+  - drawer
+  - separate mobile view
+  - top panel toggle
+
+3. HAMBURGER MENU
+
+On mobile:
+- hamburger opens navigation:
+  - Chat
+  - Profile
+  - Subscription
+  - Logout
+
+4. NO DESKTOP LAYOUT ON MOBILE
+
+- remove grid / flex split layout for mobile
+- do NOT render left panel and chat panel side by side
+- use breakpoint (md / lg) to switch layouts
+
+Example logic:
+- mobile: single column (chat OR list)
+- desktop: two-column layout
+
+5. KEEP ALL FUNCTIONALITY
+
+Must still support:
+- active chat
+- archived chat
+- new chat
+- rename
+- delete
+- end chat
+- notifications
+
+==================================================
+DESKTOP MUST NOT CHANGE
+==================================================
+
+- keep current desktop layout
+- only fix mobile behavior
+
+==================================================
+IMPLEMENTATION HINT
+==================================================
+
+Use responsive breakpoints:
+
+- mobile:
+  - hide left sidebar
+  - render only chat OR list
+
+- desktop:
+  - render both panels
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+On mobile:
+- no two-column layout
+- chat fills full screen
+- input always usable
+- navigation accessible via hamburger
+- chat list accessible via clean mobile UX
+
+==================================================
+DELIVERABLE
+==================================================
+
+Explain:
+1. how mobile layout differs from desktop
+2. how chat list is accessed on mobile
+3. what components were conditionally rendered
+4. confirm desktop was not broken
