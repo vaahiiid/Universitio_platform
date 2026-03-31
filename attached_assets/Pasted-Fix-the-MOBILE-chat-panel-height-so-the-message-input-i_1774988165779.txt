@@ -1,0 +1,94 @@
+Fix the MOBILE chat panel height so the message input is visible in the FIRST viewport without needing an initial scroll.
+
+Do NOT redesign unrelated parts.
+Do NOT remove working functionality.
+Do NOT break the current chat-only scroll behavior.
+Do NOT break notifications, archive behavior, rename/delete, or End Chat.
+
+==================================================
+REAL ISSUE
+==================================================
+
+On mobile, the chat panel is too tall.
+As a result:
+- the message input falls below the first visible viewport
+- the user has to scroll to reach the typing area
+- this is wrong for a chat app
+
+The issue is NOT mainly the header labels.
+The main issue is that the chat panel height is too large and not fitted correctly to the available mobile viewport.
+
+==================================================
+GOAL
+==================================================
+
+When the user opens Chat on mobile:
+- the input area must already be visible in the first viewport
+- no initial scroll should be needed to reach the typing area
+- the chat panel should fit naturally within the available screen space
+
+==================================================
+REQUIRED FIX
+==================================================
+
+1. REDUCE EFFECTIVE CHAT PANEL HEIGHT
+- Recalculate the mobile chat panel height based on the actual available viewport
+- The chat panel must not extend so far down that the input is pushed below the first visible screen
+
+2. INPUT MUST BE VISIBLE IMMEDIATELY
+- On mobile initial load, the typing input and send button must already be visible
+- The user should not need to scroll first just to find the input
+
+3. MESSAGE AREA MUST TAKE THE FLEXIBLE SPACE
+- Reduce the height of the messages area as needed
+- The messages area should become the flexible/scrollable part
+- Not the input
+- Not the overall page
+
+4. FIT TO VISIBLE MOBILE VIEWPORT
+- Use a stable mobile viewport-aware height calculation if needed
+- Respect the top bar/header space
+- Respect safe usable space
+- Make the chat panel fit the remaining visible area
+
+5. DO NOT BREAK CHAT SCROLL ARCHITECTURE
+- Keep the current improvement where only the chat area scrolls
+- Do NOT reintroduce full page scrolling
+- Do NOT break the logo/top bar if it must remain
+
+6. MOBILE-FIRST PRIORITY
+- On mobile, usability of input is more important than showing too much empty message space
+- It is acceptable to reduce visible message area height if that keeps the input visible immediately
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+On mobile initial load:
+- the input is already visible
+- the send button is already visible
+- the user does not need to scroll first
+- the message area still works normally
+- the chat still feels stable and app-like
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign desktop unless needed for consistency
+- Do NOT break current scroll fix
+- Do NOT break active/archived behavior
+- Do NOT break End Chat
+- Do NOT break notifications
+- Do NOT touch admin side
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end explain:
+1. what was making the chat panel too tall
+2. how the chat height was reduced/fitted
+3. how the input is now guaranteed to appear in the first viewport
+4. what file(s) were changed
+5. confirm no unrelated behavior was broken

@@ -903,7 +903,7 @@ function AskiMateDashboardContent() {
 
             {/* Chat Tab */}
             {activeTab === "chat" && (
-              <div className="bg-white rounded-xl border border-border/60 p-2 md:p-8 flex flex-col h-[calc(100vh-60px-2rem)] md:h-[calc(100vh-3rem)]">
+              <div className="bg-white rounded-xl border border-border/60 p-1 md:p-8 flex flex-col h-[calc(100dvh-76px)] md:h-[calc(100vh-3rem)]">
                 <h2 className="hidden md:block text-2xl font-bold text-foreground mb-4 md:mb-6">Chat</h2>
 
                 <div className="flex gap-6 flex-1 overflow-hidden min-h-0">
@@ -1142,7 +1142,7 @@ function AskiMateDashboardContent() {
                   <div className="flex-1 flex flex-col overflow-hidden">
                     {/* Conversation Header */}
                     {selectedConversation && (
-                      <div className="mb-2 pb-2 border-b border-border/40">
+                      <div className="mb-1 pb-1 border-b border-border/40">
                         <div className="flex items-center justify-between gap-2 md:gap-0">
                           <div className="flex items-center gap-2 md:gap-0 min-w-0 flex-1">
                             <button
@@ -1311,7 +1311,7 @@ function AskiMateDashboardContent() {
 
                     {/* Input Area - Disabled for archived chats */}
                     {conversations.find(c => c.id === selectedConversation)?.status === "open" ? (
-                      <div className="flex gap-3 pt-3 md:pt-4 border-t border-border/40 flex-shrink-0">
+                      <div className="flex gap-2 md:gap-3 pt-2 md:pt-4 border-t border-border/40 flex-shrink-0">
                         <input
                           type="text"
                           value={messageInput}
@@ -1323,7 +1323,7 @@ function AskiMateDashboardContent() {
                             }
                           }}
                           placeholder="Type your question... (Enter to send)"
-                          className="flex-1 border border-border rounded-lg px-4 py-3 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                          className="flex-1 border border-border rounded-lg px-3 md:px-4 py-2 md:py-3 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                           disabled={sending}
                         />
                         <Button
