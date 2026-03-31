@@ -8,6 +8,7 @@ export const askimateConversations = pgTable("askimate_conversations", {
   title: text("title").default("New Conversation"),
   isGuest: boolean("is_guest").notNull().default(true),
   questionCount: integer("question_count").default(0),
+  status: text("status").notNull().default("open"), // "open" or "closed"
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

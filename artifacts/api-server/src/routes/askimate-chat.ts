@@ -104,6 +104,15 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       conversation = newConversation;
     }
 
+    // Check if conversation is closed
+    if (conversation.status === "closed") {
+      res.status(403).json({
+        error: "CONVERSATION_CLOSED",
+        message: "This conversation is closed. Contact support to reopen.",
+      });
+      return;
+    }
+
     // Check limits
     if (!isAuthenticated) {
       // Guest limit: 2 questions
@@ -460,6 +469,100 @@ router.get("/askimate/unread-count", async (req: Request, res: Response) => {
   } catch (error) {
     console.error("[ASKIMATE-CHAT] Unread count error:", error);
     res.status(500).json({ error: "Failed to fetch unread count" });
+  }
+});
+
+// POST /api/askimate/chat/:conversationId/close - User closes their conversation
+router.post("/askimate/chat/:conversationId/close", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    const conversationId = Number(req.params.conversationId);
+
+    // Verify conversation belongs to user
+    const conversation = await db.query.askimateConversations.findFirst({
+      where: eq(askimateConversations.id, conversationId),
+    });
+
+    if (!conversation || conversation.userId !== userId) {
+      res.status(403).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const [updated] = await db
+      .update(askimateConversations)
+      .set({ status: "closed", updatedAt: new Date() })
+      .where(eq(askimateConversations.id, conversationId))
+      .returning();
+
+    res.json({ success: true, conversation: updated });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Close conversation error:", error);
+    res.status(500).json({ error: "Failed to close conversation" });
+  }
+});
+
+// POST /api/askimate/chat/:conversationId/reopen - User reopens their conversation
+router.post("/askimate/chat/:conversationId/reopen", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    const conversationId = Number(req.params.conversationId);
+
+    // Verify conversation belongs to user
+    const conversation = await db.query.askimateConversations.findFirst({
+      where: eq(askimateConversations.id, conversationId),
+    });
+
+    if (!conversation || conversation.userId !== userId) {
+      res.status(403).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const [updated] = await db
+      .update(askimateConversations)
+      .set({ status: "open", updatedAt: new Date() })
+      .where(eq(askimateConversations.id, conversationId))
+      .returning();
+
+    res.json({ success: true, conversation: updated });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Reopen conversation error:", error);
+    res.status(500).json({ error: "Failed to reopen conversation" });
   }
 });
 

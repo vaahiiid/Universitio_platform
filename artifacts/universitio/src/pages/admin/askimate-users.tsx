@@ -302,16 +302,52 @@ Sending request...
           ← Back
         </button>
         <div>
-          <h2 className="text-lg font-bold text-foreground">{conversation.title}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-bold text-foreground">{conversation.title}</h2>
+            <span className={`text-xs px-2 py-1 rounded ${conversation.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+              {conversation.status === "closed" ? "Closed" : "Open"}
+            </span>
+          </div>
           <p className="text-xs text-muted-foreground">{conversation.questionCount} questions</p>
         </div>
-        <button 
-          onClick={fetchMessages}
-          disabled={loading}
-          className="text-primary hover:underline font-medium text-sm disabled:text-muted-foreground"
-        >
-          {loading ? "Refetching..." : "Refetch"}
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={fetchMessages}
+            disabled={loading}
+            className="text-primary hover:underline font-medium text-sm disabled:text-muted-foreground"
+          >
+            {loading ? "Refetching..." : "Refetch"}
+          </button>
+          {conversation.status === "closed" ? (
+            <button 
+              onClick={async () => {
+                try {
+                  await apiFetch(`/admin/askimate-conversations/${conversation.id}/reopen`, { method: "POST" });
+                  fetchMessages();
+                } catch (err) {
+                  console.error("Failed to reopen conversation:", err);
+                }
+              }}
+              className="text-blue-600 hover:underline font-medium text-sm"
+            >
+              Reopen
+            </button>
+          ) : (
+            <button 
+              onClick={async () => {
+                try {
+                  await apiFetch(`/admin/askimate-conversations/${conversation.id}/close`, { method: "POST" });
+                  fetchMessages();
+                } catch (err) {
+                  console.error("Failed to close conversation:", err);
+                }
+              }}
+              className="text-red-600 hover:underline font-medium text-sm"
+            >
+              Close
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Messages Container */}
@@ -529,7 +565,12 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <p className="font-medium text-foreground">{conv.title}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-foreground">{conv.title}</p>
+                        <span className={`text-xs px-2 py-1 rounded ${conv.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                          {conv.status === "closed" ? "Closed" : "Open"}
+                        </span>
+                      </div>
                       <p className="text-xs text-muted-foreground">
                         {conv.questionCount} questions • {formatDateTime(conv.updatedAt)}
                       </p>

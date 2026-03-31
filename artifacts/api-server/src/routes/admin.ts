@@ -1003,4 +1003,48 @@ router.get("/admin/unread-count", async (req: Request, res: Response) => {
   }
 });
 
+// POST /admin/askimate-conversations/:conversationId/close - Close a conversation
+router.post("/admin/askimate-conversations/:conversationId/close", async (req: Request, res: Response) => {
+  try {
+    const conversationId = parseInt(String(req.params.conversationId), 10);
+    if (!Number.isFinite(conversationId) || conversationId <= 0) {
+      res.status(400).json({ error: "Invalid conversation ID" });
+      return;
+    }
+
+    const [updated] = await db
+      .update(askimateConversations)
+      .set({ status: "closed", updatedAt: new Date() })
+      .where(eq(askimateConversations.id, conversationId))
+      .returning();
+
+    res.json({ success: true, conversation: updated });
+  } catch (err) {
+    console.error("Close conversation error:", err);
+    res.status(500).json({ error: "Failed to close conversation" });
+  }
+});
+
+// POST /admin/askimate-conversations/:conversationId/reopen - Reopen a conversation
+router.post("/admin/askimate-conversations/:conversationId/reopen", async (req: Request, res: Response) => {
+  try {
+    const conversationId = parseInt(String(req.params.conversationId), 10);
+    if (!Number.isFinite(conversationId) || conversationId <= 0) {
+      res.status(400).json({ error: "Invalid conversation ID" });
+      return;
+    }
+
+    const [updated] = await db
+      .update(askimateConversations)
+      .set({ status: "open", updatedAt: new Date() })
+      .where(eq(askimateConversations.id, conversationId))
+      .returning();
+
+    res.json({ success: true, conversation: updated });
+  } catch (err) {
+    console.error("Reopen conversation error:", err);
+    res.status(500).json({ error: "Failed to reopen conversation" });
+  }
+});
+
 export default router;
