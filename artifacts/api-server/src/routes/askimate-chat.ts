@@ -83,6 +83,12 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         res.status(404).json({ error: "Conversation not found" });
         return;
       }
+
+      // CRITICAL: Verify authenticated user owns this conversation
+      if (isAuthenticated && conversation.userId !== userId) {
+        res.status(403).json({ error: "Unauthorised" });
+        return;
+      }
     } else {
       // Create new conversation
       const [newConversation] = await db
@@ -216,6 +222,22 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
 // GET /api/askimate/chat/:conversationId - Get conversation history
 router.get("/askimate/chat/:conversationId", async (req: Request, res: Response) => {
   try {
+    const authHeader = req.headers.authorization;
+    let userId: number | null = null;
+    
+    // Check if authenticated
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const jwt = require("jsonwebtoken");
+      const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+        userId = decoded.id;
+      } catch {
+        // Token invalid, but allow guest access
+      }
+    }
+
     const conversationId = Number(req.params.conversationId);
 
     const conversation = await db.query.askimateConversations.findFirst({
@@ -224,6 +246,12 @@ router.get("/askimate/chat/:conversationId", async (req: Request, res: Response)
 
     if (!conversation) {
       res.status(404).json({ error: "Conversation not found" });
+      return;
+    }
+
+    // CRITICAL: Verify user owns this conversation (not guest access for authenticated users)
+    if (userId && conversation.userId !== userId) {
+      res.status(403).json({ error: "Unauthorised" });
       return;
     }
 
@@ -360,6 +388,16 @@ router.post("/askimate/chat/:conversationId/mark-read", async (req: Request, res
     }
 
     const conversationId = Number(req.params.conversationId);
+
+    // CRITICAL: Verify conversation belongs to user
+    const conversation = await db.query.askimateConversations.findFirst({
+      where: eq(askimateConversations.id, conversationId),
+    });
+
+    if (!conversation || conversation.userId !== userId) {
+      res.status(403).json({ error: "Unauthorised" });
+      return;
+    }
 
     // Mark all unread mentor messages in this conversation as read
     await db

@@ -49,6 +49,11 @@ function AskiMateDashboardContent() {
     setIsLoggingOut(true);
     try {
       await logout();
+      // Clear all user-specific chat state to prevent leakage to next user
+      setConversations([]);
+      setSelectedConversation(null);
+      setMessages([]);
+      setMessageInput("");
       setLocation("/askimate");
     } catch (error) {
       console.error("Logout failed:", error);

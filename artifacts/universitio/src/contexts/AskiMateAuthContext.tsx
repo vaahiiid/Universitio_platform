@@ -122,7 +122,9 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
           },
         });
       }
+      // Clear ALL user-specific state
       localStorage.removeItem("askimate_token");
+      localStorage.removeItem("askimate_guest_session_id"); // Critical: prevent leakage to next user
       setUser(null);
     } catch (error) {
       console.error("Logout failed:", error);

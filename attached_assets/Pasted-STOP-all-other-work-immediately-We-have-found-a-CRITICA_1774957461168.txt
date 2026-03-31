@@ -1,0 +1,156 @@
+STOP all other work immediately.
+
+We have found a CRITICAL DATA ISOLATION AND ACCOUNT INTEGRITY BUG in AskiMate AI.
+
+This is a high-severity issue.
+Do NOT work on UX polish, notifications, Stripe improvements, or anything else until this is fully fixed.
+
+==================================================
+CRITICAL BUGS
+==================================================
+
+1. Duplicate signup with the same email must be prevented strictly
+2. Different users are seeing the wrong chat history
+3. User A’s messages appear when logging in or signing up as User B
+4. This means user data, conversations, and profile isolation are broken
+5. Payment/subscription isolation may also be unsafe until this is verified
+
+This is a serious user-data separation problem.
+
+==================================================
+TOP PRIORITY GOAL
+==================================================
+
+Every user must have:
+- their own account
+- their own profile
+- their own conversations
+- their own messages
+- their own subscription state
+
+No user should ever see another user’s data.
+
+==================================================
+PART 1 — STRICT EMAIL UNIQUENESS
+==================================================
+
+Verify and enforce email uniqueness properly.
+
+Requirements:
+1. Signup with an email that already exists must fail cleanly
+2. This must be enforced:
+   - in backend validation
+   - in database uniqueness
+3. Return a clear user-friendly error message:
+   - for example: "An account with this email already exists"
+
+Check:
+- DB unique constraint
+- backend signup logic
+- case sensitivity issues (EMAIL vs email)
+- trimming/normalization issues
+
+==================================================
+PART 2 — FIX USER / CHAT / PROFILE ISOLATION
+==================================================
+
+You must audit the full data ownership model and fix it.
+
+Check all of these carefully:
+
+1. AUTH USER ID
+- after login/signup, what exact userId is stored in auth/session?
+- is the current user identity correct on every request?
+
+2. PROFILE FETCH
+- when loading profile/dashboard, is it scoped strictly by authenticated userId?
+- can any stale session or shared local state leak another profile?
+
+3. CONVERSATION FETCH
+- when loading user chat, is it fetching conversations strictly by the current authenticated userId?
+- is it incorrectly using guestSessionId or old localStorage values?
+- is it loading the last conversation globally instead of the current user’s conversation?
+
+4. GUEST → USER MIGRATION
+- this is a likely source of the bug
+- verify whether guest conversation migration is attaching the guest chat to the wrong account
+- verify whether guestSessionId remains in localStorage and causes the next user to inherit the previous guest/user conversation
+- if needed, clear guest session state safely after migration
+
+5. MESSAGE FETCH
+- user-side chat must only load messages for conversations owned by the current user
+- admin-side can see all, user-side must not
+
+6. LOCAL STORAGE / CLIENT STATE
+- check whether any cached conversationId / guestSessionId / token survives incorrectly across logout/login
+- on logout, all user-specific local chat state must be cleared
+- no new user should inherit old conversation state from previous login
+
+==================================================
+PART 3 — VERIFY PAYMENT / SUBSCRIPTION ISOLATION
+==================================================
+
+Since chat ownership is broken, verify subscription ownership too.
+
+Check:
+1. Is plan/subscription state fetched strictly by current authenticated userId?
+2. Can one user ever see another user’s premium/free/trial state?
+3. Is Stripe metadata/user binding still safe per user?
+
+Do not assume it is safe.
+Verify it.
+
+==================================================
+PART 4 — REQUIRED FIXES
+==================================================
+
+Implement the minimal but complete fix so that:
+
+- duplicate email signup is blocked
+- logout clears all user-specific local state
+- guest chat state does not leak into another user account
+- dashboard/profile/chat only load current user data
+- conversations/messages are strictly scoped to current userId
+- subscription/plan display is strictly scoped to current userId
+
+==================================================
+PART 5 — REQUIRED VERIFICATION
+==================================================
+
+After fixing, verify with a real multi-user scenario:
+
+Test scenario:
+1. User A signs up and sends messages
+2. Log out
+3. User B signs up/logs in with a different email
+4. User B must NOT see User A’s chat, profile, or subscription data
+5. Log back into User A
+6. User A must still see only User A data
+
+Also verify:
+7. Trying to sign up again with User A’s email must fail cleanly
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT give me a guessed fix.
+Do NOT say “likely caused by”.
+I need the actual root cause(s) and the actual fix.
+
+This is a data separation/security issue.
+
+==================================================
+AFTER FIXING
+==================================================
+
+Report clearly:
+
+1. Exact root cause of duplicate-email issue
+2. Exact root cause of cross-user chat leakage
+3. Whether guestSession/localStorage was involved
+4. Which files were modified
+5. Confirmation that:
+   - duplicate signup is blocked
+   - User A and User B now have completely separate profiles/chats
+   - subscription state is user-isolated too
