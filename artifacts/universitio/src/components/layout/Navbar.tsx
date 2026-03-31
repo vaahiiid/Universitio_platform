@@ -124,9 +124,14 @@ export function Navbar() {
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="block w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
+                className="flex items-center gap-2 w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
               >
                 {link.name}
+                {"badge" in link && (
+                  <span className="inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold animate-pulse">
+                    {link.badge}
+                  </span>
+                )}
               </button>
             ))}
             <button

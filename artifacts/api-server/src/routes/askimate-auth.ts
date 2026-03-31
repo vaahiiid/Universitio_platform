@@ -375,6 +375,8 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
 
     // Create ephemeral Stripe session
     const userIdString = String(userPayload.id);
+    // Strip any existing query string from the redirect URL to build clean success/cancel URLs
+    const baseRedirectUrl = STRIPE_REDIRECT_URL.split("?")[0];
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -384,29 +386,21 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
             currency: "gbp",
             product_data: {
               name: "AskiMate AI Premium Mentoring",
-              description: plan === "monthly" ? "Monthly subscription with 3-day free trial" :
-                          plan === "quarterly" ? "3-month subscription with 3-day free trial" :
-                          "6-month subscription with 3-day free trial",
+              description: plan === "monthly" ? "Monthly — 30 days of unlimited access" :
+                          plan === "quarterly" ? "3 months of unlimited access" :
+                          "6 months of unlimited access",
             },
             unit_amount: priceMap[plan],
           },
           quantity: 1,
         },
       ],
-      success_url: `${STRIPE_REDIRECT_URL}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${STRIPE_REDIRECT_URL}?cancelled=true`,
+      success_url: `${baseRedirectUrl}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseRedirectUrl}?cancelled=true`,
       client_reference_id: userIdString,
       customer_email: user.email,
-      // Session metadata for checkout.session.completed webhook
       metadata: {
         userId: userIdString,
-      },
-      // Subscription metadata for subscription-related webhooks
-      // (subscription.updated, subscription.deleted, invoice events, etc.)
-      subscription_data: {
-        metadata: {
-          userId: userIdString,
-        },
       },
     });
 

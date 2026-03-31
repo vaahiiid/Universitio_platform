@@ -1,530 +1,445 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "wouter";
-import { useState, useEffect, useRef } from "react";
-import { Navbar } from "@/components/layout/Navbar";
+import { useRef } from "react";
 import { Footer } from "@/components/layout/Footer";
+import { AskiMateNavbar } from "@/components/layout/AskiMateNavbar";
 import { Button } from "@/components/ui/button";
-import { Check, MessageSquare, BookOpen, Zap, Sparkles } from "lucide-react";
-
-interface Message {
-  id?: number;
-  isUserMessage: boolean;
-  sender?: "user" | "ai" | "mentor";
-  content: string;
-  createdAt?: string;
-}
+import {
+  Check,
+  MessageSquare,
+  BookOpen,
+  Zap,
+  Star,
+  ArrowRight,
+  Users,
+  Clock,
+  Shield,
+  ChevronRight,
+} from "lucide-react";
+import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
 export default function AskiMateLanding() {
   const [, setLocation] = useLocation();
-  const [guestSessionId, setGuestSessionId] = useState<string | null>(null);
-  const [conversationId, setConversationId] = useState<number | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [limitReached, setLimitReached] = useState(false);
-  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated, user } = useAskiMateAuth();
+  const packagesRef = useRef<HTMLElement>(null);
 
-  // Initialize guest session
-  useEffect(() => {
-    const stored = localStorage.getItem("askimate_guest_session_id");
-    if (stored) {
-      setGuestSessionId(stored);
+  const scrollToPackages = () => {
+    const el = document.getElementById("packages");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleStartChat = () => {
+    if (isAuthenticated) {
+      setLocation("/askimate-dashboard");
     } else {
-      const newSessionId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem("askimate_guest_session_id", newSessionId);
-      setGuestSessionId(newSessionId);
+      setLocation("/askimate-signup");
     }
-  }, []);
+  };
 
-  // Auto-scroll chat container to bottom (not entire page)
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      // Scroll only the chat container, not the entire page
-      const chatContainer = messagesEndRef.current.closest('.overflow-y-auto');
-      if (chatContainer) {
-        // Scroll to the bottom of the chat container
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
+  const handleCheckout = async (plan: string) => {
+    const token = localStorage.getItem("askimate_token");
+    if (!token) {
+      setLocation("/askimate-signup");
+      return;
     }
-  }, [messages]);
-
-  const handleSendMessage = async () => {
-    if (!inputValue.trim() || !guestSessionId) return;
-
-    const userMessage: Message = {
-      isUserMessage: true,
-      content: inputValue,
-    };
-
-    setMessages([...messages, userMessage]);
-    const sentMessage = inputValue;
-    setInputValue("");
-    setLoading(true);
-
     try {
-      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/checkout-session`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-          "X-Guest-Session-Id": guestSessionId,
         },
-        body: JSON.stringify({
-          message: sentMessage,
-          conversationId: conversationId || undefined,
-        }),
+        body: JSON.stringify({ plan }),
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (data.error === "GUEST_LIMIT_REACHED") {
-          setLimitReached(true);
-          setShowSignupPrompt(true);
-          setMessages((prev) => [
-            ...prev.slice(0, -1),
-            {
-              isUserMessage: false,
-              sender: "ai",
-              content:
-                "You've reached your 2 free guest questions. Sign up to continue your conversation with 5 free questions per week.",
-            },
-          ]);
-          setLoading(false);
-          return;
-        }
-        throw new Error(data.error || "Failed to send message");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.url) window.location.href = data.url;
       }
-
-      if (!conversationId) {
-        setConversationId(data.conversation.id);
-      }
-
-      const mentorResponse: Message = {
-        isUserMessage: false,
-        sender: "ai",
-        content: "Thank you for your question. Our mentor will review this and get back to you within 24-48 hours.",
-      };
-
-      setMessages((prev) => [...prev, mentorResponse]);
     } catch (err) {
-      console.error("Error sending message:", err);
-      setMessages((prev) => prev.slice(0, -1));
-    } finally {
-      setLoading(false);
+      console.error("Checkout failed:", err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Helmet>
-        <title>AskiMate AI — Your Personal Education Mentor</title>
-        <meta name="description" content="Get personalised mentoring guidance for your education journey. Real mentors, real answers, real support." />
+        <title>AskiMate AI — Your Personal Education Mentor | Universitio</title>
+        <meta
+          name="description"
+          content="Get personalised mentoring from real education experts. Ask any question about studying in the UK — university applications, visas, accommodation and more."
+        />
         <link rel="canonical" href="https://universitio.com/askimate" />
       </Helmet>
-      <Navbar />
 
-      {/* HERO: REAL CHAT-FIRST SECTION */}
-      <section className="pt-20 md:pt-24 pb-12 md:pb-16 bg-gradient-to-br from-primary/10 via-background to-background border-b border-border/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            {/* LEFT: Hero Text with Subtle Animation */}
-            <div className="flex flex-col justify-center">
-              <div className="inline-block w-fit mb-6">
-                <div className="flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 border border-primary/20">
-                  <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                  <span className="text-sm font-medium text-primary">Powered by Real Mentors</span>
-                </div>
-              </div>
+      <AskiMateNavbar />
 
-              <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
-                Smart Guidance, Instantly
-              </h1>
+      {/* ─── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden">
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(66,20,125,0.12) 0%, transparent 70%)",
+          }}
+        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(66,20,125,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(66,20,125,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
-                Ask your mentors anything. Get real answers tailored to your education journey. Start with 2 free questions, upgrade for unlimited access.
-              </p>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-xs font-medium text-primary">Real mentors online now</span>
+          </div>
 
-              <ul className="space-y-3">
-                <li className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-sm text-foreground">Expert mentors online now</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-sm text-foreground">Start free, no credit card</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                  <span className="text-sm text-foreground">Get personalized guidance</span>
-                </li>
-              </ul>
-            </div>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6 tracking-tight">
+            Expert education guidance,
+            <span
+              className="block"
+              style={{ color: "#42147d" }}
+            >
+              whenever you need it
+            </span>
+          </h1>
 
-            {/* RIGHT: REAL WORKING CHAT INTERFACE */}
-            <div className="flex flex-col relative">
-              {/* Animated Glow Effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none animate-shimmer"></div>
-              
-              <div className="flex-1 flex flex-col bg-white rounded-2xl border border-border/60 shadow-sm overflow-hidden relative z-10">
-                {/* Chat Header */}
-                <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-b border-border/40 px-6 py-4 flex items-start justify-between">
-                  <div>
-                    <h2 className="text-sm font-semibold text-foreground">Chat with a Mentor</h2>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {limitReached ? "Sign up to continue" : "Ask your question"}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1.5 ml-4">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-green-700 font-medium">Online</span>
-                  </div>
-                </div>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Ask real questions about UK universities, visa applications, accommodation,
+            and more. Our experienced mentors are here to give you clear, honest answers
+            — not generic advice.
+          </p>
 
-                {/* Chat Messages */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-96 max-h-96">
-                  {messages.length === 0 && (
-                    <div className="flex items-center justify-center h-full text-center">
-                      <div>
-                        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <MessageSquare className="w-6 h-6 text-primary" />
-                        </div>
-                        <p className="text-sm font-medium text-foreground">Ask your first question</p>
-                      </div>
-                    </div>
-                  )}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+            <Button
+              onClick={handleStartChat}
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 h-13 text-base shadow-lg hover:shadow-primary/30 hover:-translate-y-px transition-all"
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              {isAuthenticated && user ? `Continue as ${user.firstName}` : "Start Chat Free"}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+            <Button
+              onClick={scrollToPackages}
+              variant="outline"
+              size="lg"
+              className="rounded-full px-8 h-13 text-base border-primary/30 text-primary hover:bg-primary/5"
+            >
+              View Packages
+            </Button>
+          </div>
 
-                  {messages.map((msg, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex ${msg.isUserMessage ? "justify-end" : "justify-start"}`}
-                    >
-                      <div>
-                        {msg.sender === "mentor" && (
-                          <p className="text-xs font-semibold text-green-600 mb-1 ml-1">Mentor</p>
-                        )}
-                        <div
-                          className={`max-w-xs px-4 py-2.5 rounded-lg text-sm leading-relaxed ${
-                            msg.isUserMessage
-                              ? "bg-primary text-white rounded-br-none"
-                              : msg.sender === "mentor"
-                                ? "bg-green-100 text-green-900 rounded-bl-none border border-green-200"
-                                : "bg-muted/50 text-foreground rounded-bl-none"
-                          }`}
-                        >
-                          {msg.content}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {loading && (
-                    <div className="flex justify-start">
-                      <div className="bg-muted/50 text-foreground px-4 py-2.5 rounded-lg rounded-bl-none text-sm">
-                        Typing...
-                      </div>
-                    </div>
-                  )}
-
-                  <div ref={messagesEndRef} />
-                </div>
-
-                {/* Chat Input / Signup Prompt */}
-                {showSignupPrompt ? (
-                  <div className="border-t border-border/40 bg-amber-50 p-4">
-                    <p className="text-sm text-amber-900 mb-3 font-medium">
-                      You've used your 2 free guest questions
-                    </p>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={() => setLocation("/askimate-signup")}
-                        className="flex-1 bg-primary hover:bg-primary/90 text-white text-sm"
-                      >
-                        Sign Up Free
-                      </Button>
-                      <Button
-                        onClick={() => setLocation("/askimate-login")}
-                        variant="outline"
-                        className="flex-1 text-sm"
-                      >
-                        Log In
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="border-t border-border/40 p-4 bg-white">
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === "Enter" && !loading && !limitReached) {
-                            e.preventDefault();
-                            handleSendMessage();
-                          }
-                        }}
-                        placeholder="Ask anything..."
-                        className="flex-1 px-4 py-2.5 rounded-lg border border-border/60 bg-white text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-                        disabled={loading || limitReached}
-                      />
-                      <Button
-                        onClick={handleSendMessage}
-                        disabled={loading || !inputValue.trim() || limitReached}
-                        className="bg-primary hover:bg-primary/90 text-white px-4"
-                        size="sm"
-                      >
-                        Send
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-green-500" />
+              No credit card required
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-green-500" />
+              5 free questions per week
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Check className="w-4 h-4 text-green-500" />
+              Real human mentors
+            </span>
           </div>
         </div>
       </section>
 
-      {/* PLANS SECTION */}
-      <section className="py-16 md:py-20 bg-background">
+      {/* ─── SOCIAL PROOF BAR ────────────────────────────────────────────── */}
+      <div className="border-y border-border/40 bg-muted/20 py-5">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-primary" />
+              <span><strong className="text-foreground">1,200+</strong> students helped</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
+              <span><strong className="text-foreground">4.9 / 5</strong> average rating</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-primary" />
+              <span>Typically responds in <strong className="text-foreground">&lt; 2 hours</strong></span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-primary" />
+              <span>ICEF accredited — <strong className="text-foreground">Co. No. 15168670</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── HOW IT WORKS ─────────────────────────────────────────────────── */}
+      <section className="py-20 md:py-24 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Choose Your Plan
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              How it works
             </h2>
-            <p className="text-muted-foreground">
-              Start free and upgrade anytime
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Getting expert guidance has never been simpler
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            {/* Basic Plan */}
-            <div className="rounded-2xl border border-border/60 p-8 bg-white hover:border-border transition-colors">
-              <h3 className="text-2xl font-bold text-foreground mb-2">Basic Mentoring</h3>
-              <p className="text-muted-foreground text-sm mb-6">For students learning independently</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "01",
+                icon: MessageSquare,
+                title: "Ask your question",
+                desc: "Type anything — from UCAS applications to student visa requirements. Nothing is too small or too complex.",
+              },
+              {
+                step: "02",
+                icon: Users,
+                title: "Mentor reviews it",
+                desc: "A real Universitio mentor reads your question and crafts a personalised, accurate response just for you.",
+              },
+              {
+                step: "03",
+                icon: Zap,
+                title: "Get clear guidance",
+                desc: "Receive actionable next steps, not vague advice. Clarify follow-ups at any time in the same conversation.",
+              },
+            ].map((item) => (
+              <div key={item.step} className="relative text-center">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 mb-5 mx-auto">
+                  <item.icon className="w-6 h-6 text-primary" />
+                </div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 text-7xl font-black text-primary/5 -z-0 leading-none select-none">
+                  {item.step}
+                </div>
+                <h3 className="font-semibold text-foreground text-lg mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY ASKIMATE ─────────────────────────────────────────────────── */}
+      <section className="py-20 md:py-24 bg-muted/20 border-y border-border/40">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Why students choose AskiMate
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Backed by Universitio — a registered UK education consultancy
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: BookOpen,
+                title: "Real expertise",
+                desc: "Our mentors have first-hand experience navigating UK education, applications, and visas.",
+              },
+              {
+                icon: MessageSquare,
+                title: "Personalised answers",
+                desc: "Every response is tailored to your specific situation — not a generic FAQ answer.",
+              },
+              {
+                icon: Clock,
+                title: "Fast responses",
+                desc: "Most questions are answered within 2 hours during business hours. No long waits.",
+              },
+              {
+                icon: Shield,
+                title: "Trusted & regulated",
+                desc: "Universitio is a registered UK company (No. 15168670) and ICEF accredited.",
+              },
+              {
+                icon: Zap,
+                title: "Start free",
+                desc: "5 free questions per week with no credit card required. Upgrade only when you need more.",
+              },
+              {
+                icon: Star,
+                title: "Proven results",
+                desc: "Over 1,200 students have used AskiMate to successfully navigate their education journey.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="p-6 bg-white rounded-2xl border border-border/60 hover:border-primary/30 hover:shadow-sm transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                  <item.icon className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-semibold text-foreground mb-1.5">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PACKAGES / PRICING ──────────────────────────────────────────── */}
+      <section id="packages" ref={packagesRef} className="py-20 md:py-28 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Simple, honest pricing
+            </h2>
+            <p className="text-muted-foreground">
+              Start free. Upgrade only when you need more support.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {/* Basic */}
+            <div className="rounded-2xl border border-border/70 bg-white p-8">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Free Plan</p>
+              <h3 className="text-2xl font-bold text-foreground mb-1">Basic Mentoring</h3>
+              <p className="text-sm text-muted-foreground mb-6">Perfect to get started</p>
 
               <div className="mb-8">
-                <div className="text-5xl font-bold text-foreground">Free</div>
-                <p className="text-sm text-muted-foreground mt-1">Forever</p>
+                <span className="text-5xl font-black text-foreground">Free</span>
+                <span className="text-sm text-muted-foreground ml-2">forever</span>
               </div>
 
               <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Ask up to 5 questions per week</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Get clear, structured guidance for your applications</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Understand your next steps with confidence</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Explore your study options before committing</span>
-                </li>
+                {[
+                  "5 questions per week",
+                  "Clear, structured guidance",
+                  "UCAS & university queries",
+                  "Student visa questions",
+                  "Accommodation advice",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <Check className="w-4.5 h-4.5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-foreground">{item}</span>
+                  </li>
+                ))}
               </ul>
 
               <Button
                 onClick={() => setLocation("/askimate-signup")}
                 variant="outline"
-                className="w-full"
+                className="w-full rounded-xl border-primary/30 text-primary hover:bg-primary/5"
                 size="lg"
               >
-                Get Started
+                Get Started Free
+                <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
 
-            {/* Premium Plan */}
-            <div className="rounded-2xl border-2 border-primary p-8 bg-gradient-to-br from-primary/5 to-background relative">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <span className="bg-primary text-white px-4 py-1 rounded-full text-xs font-semibold">
+            {/* Premium */}
+            <div
+              className="rounded-2xl border-2 p-8 relative"
+              style={{
+                background: "linear-gradient(135deg, rgba(66,20,125,0.04) 0%, #fff 60%)",
+                borderColor: "#42147d",
+              }}
+            >
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span className="bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm">
                   Most Popular
                 </span>
               </div>
 
-              <h3 className="text-2xl font-bold text-foreground mb-2">Premium Mentoring</h3>
-              <p className="text-muted-foreground text-sm mb-6">For priority support & real-time access</p>
+              <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#42147d" }}>
+                Premium Plan
+              </p>
+              <h3 className="text-2xl font-bold text-foreground mb-1">Premium Mentoring</h3>
+              <p className="text-sm text-muted-foreground mb-6">For priority support & full access</p>
 
               <div className="mb-8">
-                <div className="text-5xl font-bold text-foreground">
-                  £12<span className="text-2xl text-muted-foreground">/month</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">3-day free trial, cancel anytime</p>
+                <span className="text-5xl font-black text-foreground">£12</span>
+                <span className="text-sm text-muted-foreground ml-1">/month</span>
+                <p className="text-xs text-muted-foreground mt-1">Billed monthly · cancel anytime</p>
               </div>
 
               <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Ask unlimited questions anytime</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Priority live chat with real-time responses</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm font-medium text-foreground">Full document review support</span>
-                </li>
-                <li className="flex items-start gap-3 ml-3 pl-3 border-l-2 border-primary/30">
-                  <span className="text-xs text-foreground">Personal Statement feedback</span>
-                </li>
-                <li className="flex items-start gap-3 ml-3 pl-3 border-l-2 border-primary/30">
-                  <span className="text-xs text-foreground">CV and cover letter review</span>
-                </li>
-                <li className="flex items-start gap-3 ml-3 pl-3 border-l-2 border-primary/30">
-                  <span className="text-xs text-foreground">Application form feedback</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-foreground">Ongoing guidance throughout your journey</span>
-                </li>
+                {[
+                  { text: "Unlimited questions", strong: true },
+                  { text: "Priority replies — typically within 1 hour", strong: false },
+                  { text: "Personal Statement feedback", strong: false },
+                  { text: "CV & cover letter review", strong: false },
+                  { text: "Application form guidance", strong: false },
+                  { text: "Ongoing support throughout your journey", strong: false },
+                ].map((item) => (
+                  <li key={item.text} className="flex items-start gap-3">
+                    <Check className="w-4.5 h-4.5 text-primary flex-shrink-0 mt-0.5" />
+                    <span className={`text-sm ${item.strong ? "font-semibold text-foreground" : "text-foreground"}`}>
+                      {item.text}
+                    </span>
+                  </li>
+                ))}
               </ul>
 
               <div className="space-y-2">
                 <Button
-                  onClick={async () => {
-                    const token = localStorage.getItem("askimate_token");
-                    if (token) {
-                      // User is logged in, show plan options
-                      try {
-                        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/checkout-session`, {
-                          method: "POST",
-                          headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({ plan: "monthly" }),
-                        });
-                        if (res.ok) {
-                          const data = await res.json();
-                          if (data.url) {
-                            window.location.href = data.url;
-                          }
-                        }
-                      } catch (error) {
-                        console.error("Checkout failed:", error);
-                      }
-                    } else {
-                      // Not logged in, go to signup
-                      setLocation("/askimate-signup");
-                    }
-                  }}
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  onClick={() => handleCheckout("monthly")}
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl shadow-md hover:shadow-primary/30 hover:-translate-y-px transition-all"
                   size="lg"
                 >
-                  Start Free Trial
+                  Get Premium — £12/month
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-                <p className="text-xs text-center text-muted-foreground">3-day trial, then £12/month. Cancel anytime.</p>
+                <p className="text-xs text-center text-muted-foreground">Secure checkout via Stripe</p>
+              </div>
+
+              {/* Other billing options */}
+              <div className="mt-5 pt-5 border-t border-border/40">
+                <p className="text-xs text-muted-foreground mb-3 font-medium">Other billing options:</p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => handleCheckout("quarterly")}
+                    className="flex items-center justify-between text-sm text-foreground hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-primary/5"
+                  >
+                    <span>3 months</span>
+                    <span className="font-semibold">£30 <span className="text-xs text-green-600 font-normal">(save £6)</span></span>
+                  </button>
+                  <button
+                    onClick={() => handleCheckout("semi-annual")}
+                    className="flex items-center justify-between text-sm text-foreground hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-primary/5"
+                  >
+                    <span>6 months</span>
+                    <span className="font-semibold">£65 <span className="text-xs text-green-600 font-normal">(save £7)</span></span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA SECTION */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-primary/10 via-background to-background border-y border-border/40">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+      {/* ─── FINAL CTA ────────────────────────────────────────────────────── */}
+      <section className="py-20 md:py-24 border-t border-border/40 bg-gradient-to-br from-primary/8 via-primary/4 to-transparent">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Ready to get expert guidance?
           </h2>
-          <p className="text-muted-foreground mb-6">
-            Join thousands of students getting personalized mentoring. Your first 2 questions are free.
+          <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
+            Join thousands of students who have navigated their UK education journey with confidence.
+            Your first 5 questions are completely free.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
-              onClick={() => setLocation("/askimate-signup")}
-              className="bg-primary hover:bg-primary/90 text-white"
+              onClick={handleStartChat}
               size="lg"
+              className="bg-primary hover:bg-primary/90 text-white rounded-full px-10 h-13 text-base shadow-lg"
             >
-              Sign Up Now
+              {isAuthenticated && user ? "Go to Dashboard" : "Start Free — No Card Needed"}
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button
-              onClick={() => setLocation("/askimate-login")}
-              variant="outline"
-              size="lg"
-            >
-              Already Have an Account?
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY ASKIMATE SECTION */}
-      <section className="py-16 md:py-20 bg-background">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Choose AskiMate?
-            </h2>
-            <p className="text-muted-foreground">
-              Designed for students who want to succeed independently
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 border border-border/60 rounded-xl hover:border-border transition-colors">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <MessageSquare className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Real Mentors</h3>
-              <p className="text-sm text-muted-foreground">
-                Connect with experienced mentors who have personally navigated education decisions and can guide you through yours.
-              </p>
-            </div>
-
-            <div className="p-6 border border-border/60 rounded-xl hover:border-border transition-colors">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <BookOpen className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Personalized Guidance</h3>
-              <p className="text-sm text-muted-foreground">
-                Get advice tailored to your situation, goals, and challenges—not generic answers.
-              </p>
-            </div>
-
-            <div className="p-6 border border-border/60 rounded-xl hover:border-border transition-colors">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <Zap className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Flexible & Affordable</h3>
-              <p className="text-sm text-muted-foreground">
-                Start free with 5 questions per week, upgrade to Premium when you need more support.
-              </p>
-            </div>
+            {!isAuthenticated && (
+              <Button
+                onClick={() => setLocation("/askimate-login")}
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 h-13 text-base border-primary/30 text-primary hover:bg-primary/5"
+              >
+                Already have an account?
+              </Button>
+            )}
           </div>
         </div>
       </section>
 
       <Footer />
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.5;
-          }
-        }
-        .animate-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes shimmer {
-          0%, 100% {
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.3;
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 3s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 }
