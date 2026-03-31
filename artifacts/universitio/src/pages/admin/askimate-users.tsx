@@ -692,7 +692,7 @@ export default function AskiMateUsersAdmin() {
       </Helmet>
 
       {/* ── Two-panel messaging layout ─────────────────────────────────── */}
-      <div className="-mx-4 sm:-mx-6 lg:-mx-8 -mb-4 sm:-mb-6 lg:-mb-8 flex overflow-hidden border-t border-border/60 bg-white" style={{ height: "calc(100dvh - 56px)" }}>
+      <div className="-m-4 sm:-m-6 lg:-m-8 flex overflow-hidden border-t border-border/60 bg-white" style={{ height: "calc(100dvh - 56px)" }}>
 
         {/* ── LEFT PANEL: User list ────────────────────────────────────── */}
         <div className={`flex flex-col border-r border-border/60 flex-shrink-0 w-full lg:w-80 xl:w-96 ${mobileShowPanel ? "hidden lg:flex" : "flex"}`}>

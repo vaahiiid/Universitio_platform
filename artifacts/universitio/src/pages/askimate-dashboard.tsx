@@ -65,6 +65,7 @@ function AskiMateDashboardContent() {
   const [visibleNotification, setVisibleNotification] = useState(false);
   const [notificationMessageId, setNotificationMessageId] = useState<number | null>(null);
   const [notificationPreview, setNotificationPreview] = useState("");
+  const [notificationConvId, setNotificationConvId] = useState<number | null>(null);
 
   // ─ Refs ────────────────────────────────────────────────────────────────
   const knownMessageIds = useRef<Set<number>>(new Set());
@@ -358,6 +359,17 @@ function AskiMateDashboardContent() {
             }
             if (newMsgs.length === 0) return prev;
             newMsgs.forEach((m: any) => knownMessageIds.current.add(m.id));
+            // Detect new incoming (mentor/ai) messages and trigger indicator
+            const incomingNew = newMsgs.filter((m: any) => m.sender !== "user");
+            if (incomingNew.length > 0) {
+              const lastIncoming = incomingNew[incomingNew.length - 1];
+              setLastNewMessageId(lastIncoming.id);
+              const container = messagesContainerRef.current;
+              if (container) {
+                const nearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+                if (!nearBottom) setShowNewMessageButton(true);
+              }
+            }
             return [...prev, ...newMsgs];
           });
         }
@@ -389,6 +401,7 @@ function AskiMateDashboardContent() {
     const last = [...messages].reverse().find((m) => m.sender === "mentor");
     if (last && last.id !== notificationMessageId) {
       setNotificationMessageId(last.id);
+      setNotificationConvId(selectedConversation);
       const preview = last.content.length > 50 ? last.content.slice(0, 50) + "…" : last.content;
       setNotificationPreview(preview);
       setVisibleNotification(true);
@@ -794,21 +807,13 @@ function AskiMateDashboardContent() {
 
                         <div className="flex items-center gap-1 flex-shrink-0">
                           {selectedConv.status === "open" && (
-                            <>
-                              <button
-                                onClick={() => { setEditingConvId(selectedConv.id); setEditingTitle(selectedConv.title); }}
-                                className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
-                                title="Rename"
-                              >
-                                <Pencil className="w-3.5 h-3.5" />
-                              </button>
-                              <button
-                                onClick={handleEndChat}
-                                className="text-xs text-amber-600 hover:text-amber-700 font-medium px-2.5 py-1 rounded-lg hover:bg-amber-50 transition-colors"
-                              >
-                                End Chat
-                              </button>
-                            </>
+                            <button
+                              onClick={() => { setEditingConvId(selectedConv.id); setEditingTitle(selectedConv.title); }}
+                              className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
+                              title="Rename"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
                           )}
                           <button
                             onClick={() => setDeletingConvId(selectedConv.id)}
@@ -900,8 +905,25 @@ function AskiMateDashboardContent() {
 
                       {/* Input area */}
                       {selectedConv.status === "open" ? (
-                        <div className="px-4 py-3 border-t border-border/60 bg-white flex-shrink-0">
-                          <div className="flex gap-2">
+                        <div className="border-t border-border/60 bg-white flex-shrink-0">
+                          {/* Chat action bar: End Chat + New Chat */}
+                          <div className="flex items-center gap-4 px-4 pt-2.5">
+                            <button
+                              onClick={createNewConversation}
+                              className="text-xs text-primary hover:text-primary/80 flex items-center gap-1 font-medium transition-colors"
+                            >
+                              <Plus className="w-3 h-3" />
+                              New Chat
+                            </button>
+                            <button
+                              onClick={handleEndChat}
+                              className="text-xs text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                            >
+                              End Chat
+                            </button>
+                          </div>
+                          {/* Send row */}
+                          <div className="px-4 pt-2 pb-3 flex gap-2">
                             <input
                               type="text"
                               value={messageInput}
@@ -926,8 +948,19 @@ function AskiMateDashboardContent() {
                           </div>
                         </div>
                       ) : (
-                        <div className="px-4 py-3 border-t border-border/60 bg-white text-xs text-muted-foreground text-center flex-shrink-0">
-                          This archived chat is read-only. Create a new chat to continue.
+                        <div className="border-t border-border/60 bg-white flex-shrink-0">
+                          <div className="flex items-center justify-center gap-3 px-4 pt-2.5">
+                            <button
+                              onClick={createNewConversation}
+                              className="text-xs text-primary hover:text-primary/80 flex items-center gap-1 font-medium transition-colors"
+                            >
+                              <Plus className="w-3 h-3" />
+                              New Chat
+                            </button>
+                          </div>
+                          <p className="px-4 pt-1.5 pb-3 text-xs text-muted-foreground text-center">
+                            This archived chat is read-only.
+                          </p>
                         </div>
                       )}
                     </>
@@ -1176,14 +1209,22 @@ function AskiMateDashboardContent() {
 
       {/* ─── NOTIFICATION TOAST ─────────────────────────────────────────────── */}
       {visibleNotification && (
-        <div className="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 bg-[#42147d] text-white px-5 py-3.5 rounded-xl shadow-2xl max-w-xs z-50">
+        <div
+          className="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 bg-[#42147d] text-white px-5 py-3.5 rounded-xl shadow-2xl max-w-xs z-50 cursor-pointer select-none"
+          onClick={() => {
+            setActiveTab("chat");
+            if (notificationConvId) setSelectedConversation(notificationConvId);
+            setVisibleNotification(false);
+          }}
+        >
           <div className="flex items-start gap-3">
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm mb-1">Mentor sent a new message</p>
               <p className="text-xs text-white/80 break-words">{notificationPreview}</p>
+              <p className="text-xs text-white/50 mt-1.5">Tap to open chat →</p>
             </div>
             <button
-              onClick={() => setVisibleNotification(false)}
+              onClick={(e) => { e.stopPropagation(); setVisibleNotification(false); }}
               className="text-white/70 hover:text-white text-lg leading-none font-bold ml-1 flex-shrink-0"
             >
               ×
