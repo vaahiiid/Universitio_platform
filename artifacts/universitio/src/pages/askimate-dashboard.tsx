@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send } from "lucide-react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
+import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMessages, isIncomingMessage } from "@/utils/askimate-realtime";
 
 function AskiMateDashboardContent() {
   const { user, logout } = useAskiMateAuth();
@@ -40,6 +41,8 @@ function AskiMateDashboardContent() {
   const [chatLoading, setChatLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [lastMessageId, setLastMessageId] = useState<number | null>(null);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
@@ -217,8 +220,8 @@ function AskiMateDashboardContent() {
   // Load messages when conversation is selected
   useEffect(() => {
     if (selectedConversation) {
-      const loadMessages = async () => {
-        setChatLoading(true);
+      const loadMessages = async (isDelta: boolean = false) => {
+        if (!isDelta) setChatLoading(true);
         try {
           const token = localStorage.getItem("askimate_token");
           const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${selectedConversation}`, {
@@ -226,21 +229,46 @@ function AskiMateDashboardContent() {
           });
           if (res.ok) {
             const data = await res.json();
-            const newMessages = data.messages || [];
-            // Smart merge: only update if messages actually changed
+            const allMessages = data.messages || [];
+            
+            // Delta update: only append new messages on polls (not on initial load)
             setMessages((prev) => {
-              const prevIds = new Set(prev.map((m: any) => m.id));
-              const newIds = new Set(newMessages.map((m: any) => m.id));
-              if (prevIds.size === newIds.size && [...prevIds].every((id) => newIds.has(id))) {
-                return prev; // No change, don't re-render
+              if (!isDelta || prev.length === 0) {
+                // Initial load: set all messages
+                const lastId = getLastMessageId(allMessages);
+                if (lastId) setLastMessageId(lastId);
+                return allMessages;
               }
-              return newMessages; // New messages, update
+              
+              // Delta update: only append messages newer than last known ID
+              const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
+              if (incomingNew.length === 0) return prev;
+              
+              // Play notification sound for incoming mentor messages
+              incomingNew.forEach((msg: any) => {
+                if (isIncomingMessage(msg, 'user')) {
+                  playNotificationSound();
+                }
+              });
+              
+              // Update unread count for incoming messages
+              const unreadIncoming = incomingNew.filter((msg: any) => msg.sender === 'mentor' && !msg.isRead);
+              if (unreadIncoming.length > 0) {
+                setUnreadCount((prev) => prev + unreadIncoming.length);
+              }
+              
+              // Update last message ID
+              const newLastId = getLastMessageId(incomingNew);
+              if (newLastId) setLastMessageId(newLastId);
+              
+              // Append new messages
+              return mergeNewMessages(prev, incomingNew);
             });
           }
         } catch (error) {
           console.error("Failed to load messages:", error);
         } finally {
-          setChatLoading(false);
+          if (!isDelta) setChatLoading(false);
         }
       };
       
@@ -259,11 +287,12 @@ function AskiMateDashboardContent() {
       
       loadMessages();
       markAsRead();
+      setInitialLoadDone(true);
       
-      // Polling: Refetch messages every 4 seconds
+      // Delta polling: Check for new messages every 2 seconds (lightweight, only fetches deltas)
       const interval = setInterval(() => {
-        loadMessages();
-      }, 4000);
+        loadMessages(true); // isDelta=true: only fetch and append new messages
+      }, 2000);
 
       return () => clearInterval(interval);
     }

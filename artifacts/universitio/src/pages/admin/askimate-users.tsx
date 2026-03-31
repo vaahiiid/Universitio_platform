@@ -4,6 +4,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Search, Download, MessageSquare, ChevronRight, Loader2, Zap, ArrowLeft, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
+import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMessages, isIncomingMessage } from "@/utils/askimate-realtime";
 
 interface AskiMateUserData {
   id: number;
@@ -147,6 +148,8 @@ function ChatView({
   const [replyText, setReplyText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [lastMessageId, setLastMessageId] = useState<number | null>(null);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom only on new messages (not on every poll)
@@ -163,45 +166,51 @@ function ChatView({
     }
   }, [messages.length]); // Only trigger on length change, not full array change
 
-  const fetchMessages = useCallback(async () => {
-    setLoading(true);
+  const fetchMessages = useCallback(async (isDelta: boolean = false) => {
+    if (!isDelta) setLoading(true);
     setError("");
     try {
-      console.log(`
-==== [ADMIN] CONVERSATION DEBUG ====
-conversationId: ${conversation.id}
-conversationTitle: ${conversation.title}
-conversationQuestionCount: ${conversation.questionCount}
-Fetching messages...
-`);
       const response = await apiFetch<{ data: Message[] }>(
         `/admin/askimate-conversations/${conversation.id}/messages`
       );
       
-      console.log(`[ADMIN] FETCH RESULT: ${response.data.length} messages returned`);
-      response.data.forEach((msg, idx) => {
-        console.log(`  [${idx + 1}] id=${msg.id} | conversationId=${msg.conversationId} | sender=${msg.sender} | isUserMessage=${msg.isUserMessage} | createdAt=${msg.createdAt} | content=${msg.content.substring(0, 50)}`);
-      });
-      console.log(`==== END DEBUG ====`);
+      const allMessages = response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) }));
       
-      const newMessages = response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) }));
-      // Smart merge: only update if messages actually changed
+      // Delta update: only append new messages on polls (not on initial load)
       setMessages((prev) => {
-        const prevIds = new Set(prev.map((m) => m.id));
-        const newIds = new Set(newMessages.map((m) => m.id));
-        if (prevIds.size === newIds.size && [...prevIds].every((id) => newIds.has(id))) {
-          return prev; // No change, don't re-render
+        if (!isDelta || prev.length === 0) {
+          // Initial load: set all messages
+          const lastId = getLastMessageId(allMessages);
+          if (lastId) setLastMessageId(lastId);
+          return allMessages;
         }
-        return newMessages; // New messages, update
+        
+        // Delta update: only append messages newer than last known ID
+        const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
+        if (incomingNew.length === 0) return prev;
+        
+        // Play notification sound for incoming user messages
+        incomingNew.forEach((msg: any) => {
+          if (isIncomingMessage(msg, 'admin')) {
+            playNotificationSound();
+          }
+        });
+        
+        // Update last message ID
+        const newLastId = getLastMessageId(incomingNew);
+        if (newLastId) setLastMessageId(newLastId);
+        
+        // Append new messages
+        return mergeNewMessages(prev, incomingNew);
       });
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Failed to fetch messages";
       console.error("[ADMIN] FETCH FAILED:", errMsg);
       setError(errMsg);
     } finally {
-      setLoading(false);
+      if (!isDelta) setLoading(false);
     }
-  }, [conversation.id]);
+  }, [conversation.id, lastMessageId]);
 
   useEffect(() => {
     fetchMessages();
@@ -219,14 +228,17 @@ Fetching messages...
     markAsRead();
   }, [fetchMessages, conversation.id]);
 
-  // Polling: Refetch messages every 4 seconds
+  // Delta polling: Check for new messages every 2 seconds (lightweight, only fetches deltas)
   useEffect(() => {
+    fetchMessages();
+    setInitialLoadDone(true);
+    
     const interval = setInterval(() => {
-      fetchMessages();
-    }, 4000);
+      fetchMessages(true); // isDelta=true: only fetch and append new messages
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, [fetchMessages]);
+  }, [fetchMessages, conversation.id]);
 
   const handleSendReply = async () => {
     if (!replyText.trim()) return;

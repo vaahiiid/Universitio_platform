@@ -1,0 +1,83 @@
+Do NOT switch to Autonomous mode.
+You must complete this in the current mode.
+
+Do NOT reduce the scope.
+Do NOT split the task into smaller substitute phases.
+Do NOT change the requested behavior.
+
+The goal is to implement real-time-like chat behavior in the EXISTING system, without breaking architecture.
+
+==================================================
+IMPORTANT CONSTRAINT
+==================================================
+
+You are NOT allowed to introduce heavy infrastructure like full WebSocket servers if it requires large architectural changes.
+
+Instead:
+- improve the current system to behave like real-time
+- eliminate visible polling/flicker
+- make updates feel instant and smooth
+
+==================================================
+WHAT YOU MUST DO
+==================================================
+
+1. Keep the existing backend and endpoints.
+2. Replace aggressive polling with a lightweight, optimized incremental update strategy:
+   - no full refetch
+   - no UI flicker
+   - no full component remount
+3. Only fetch new messages (delta updates), not the entire conversation.
+4. Append new messages to the chat smoothly.
+5. Preserve scroll position.
+6. Prevent duplicate messages.
+
+7. Implement near-instant update behavior:
+   - use short-interval smart polling OR event-based triggers if already available
+   - but UI must feel real-time (no jumping, no flashing)
+
+8. Apply this to BOTH:
+   - user chat page
+   - admin conversation page
+
+9. Implement live unread updates:
+   - update badge counts without full reload
+   - sync read/unread state properly
+
+10. Add a lightweight notification sound:
+   - only for incoming messages
+   - not for self messages
+   - not on initial load
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign the system
+- Do NOT change database structure
+- Do NOT remove conversation-based architecture
+- Do NOT break ownership/security validation
+- Do NOT introduce breaking backend changes
+- Do NOT degrade performance
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+- Chat feels live and smooth
+- No visible flicker
+- No full-page or full-chat reload
+- Messages appear instantly (or near-instant)
+- Works for both user and admin
+- Existing system remains fully functional
+
+==================================================
+DELIVERABLE
+==================================================
+
+After implementation, explain:
+1. exactly what was changed
+2. how polling was improved or replaced
+3. how duplicate messages are prevented
+4. how unread state is synced
+5. what limitations still remain (if any)
