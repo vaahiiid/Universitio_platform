@@ -222,12 +222,11 @@ function ChatView({
         // On delta poll: only add new messages
         if (newMessages.length === 0) return prev;
         
-        // Process new messages: sound + toast
+        // Process new messages: sound + toast BEFORE marking as known
         newMessages.forEach((msg: any) => {
-          knownMessageIds.current.add(msg.id);
-          
-          // Sound + toast trigger: only for NEW messages from user
+          // Check if incoming BEFORE adding to knownMessageIds
           if (isIncomingMessage(msg, 'admin')) {
+            // Trigger notification for new incoming message
             playNotificationSound();
             
             const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
@@ -236,6 +235,9 @@ function ChatView({
               description: preview,
             });
           }
+          
+          // NOW mark as known (after notification check)
+          knownMessageIds.current.add(msg.id);
         });
         
         return [...prev, ...newMessages];

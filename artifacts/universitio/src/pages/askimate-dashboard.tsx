@@ -364,12 +364,11 @@ function AskiMateDashboardContent() {
               // On delta poll: only add new messages
               if (newMessages.length === 0) return prev;
               
-              // Process new messages: sound + toast
+              // Process new messages: sound + toast BEFORE marking as known
               newMessages.forEach((msg: any) => {
-                knownMessageIds.current.add(msg.id);
-                
-                // Sound + toast trigger: only for NEW messages from mentor/AI
+                // Check if incoming BEFORE adding to knownMessageIds
                 if (isIncomingMessage(msg, 'user')) {
+                  // Trigger notification for new incoming message
                   playNotificationSound();
                   
                   if (activeTab !== 'chat') {
@@ -380,6 +379,9 @@ function AskiMateDashboardContent() {
                     });
                   }
                 }
+                
+                // NOW mark as known (after notification check)
+                knownMessageIds.current.add(msg.id);
               });
               
               return [...prev, ...newMessages];
