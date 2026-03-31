@@ -8,7 +8,7 @@ import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send } from "lucide-r
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMessages, isIncomingMessage } from "@/utils/askimate-realtime";
+import { playNotificationSound, isIncomingMessage } from "@/utils/askimate-realtime";
 
 function AskiMateDashboardContent() {
   const { user, logout } = useAskiMateAuth();
@@ -29,8 +29,6 @@ function AskiMateDashboardContent() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
-  const MAX_NOTIFIED_IDS = 150; // Prevent unbounded Set growth
 
   // Chat state
   const [conversations, setConversations] = useState<any[]>([]);
@@ -40,11 +38,11 @@ function AskiMateDashboardContent() {
   const [chatLoading, setChatLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [lastMessageId, setLastMessageId] = useState<number | null>(null);
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const [editingConvId, setEditingConvId] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState("");
-  const [lastPlayedSoundId, setLastPlayedSoundId] = useState<number | null>(null);
+  
+  // Message detection: single source of truth for message identity
+  const knownMessageIds = useRef<Set<number>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
@@ -56,19 +54,6 @@ function AskiMateDashboardContent() {
     if (!date) return "";
     const d = typeof date === "string" ? new Date(date) : date;
     return d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false });
-  };
-
-  // Track notifications safely without unbounded growth
-  const addNotifiedMessageId = (id: number) => {
-    setNotifiedMessageIds((prev) => {
-      const newSet = new Set([...prev, id]);
-      // Keep only the most recent 150 IDs to prevent memory bloat
-      if (newSet.size > MAX_NOTIFIED_IDS) {
-        const arr = Array.from(newSet).sort((a, b) => a - b);
-        return new Set(arr.slice(-MAX_NOTIFIED_IDS));
-      }
-      return newSet;
-    });
   };
 
   const createNewConversation = async () => {
@@ -342,23 +327,20 @@ function AskiMateDashboardContent() {
     }
   }, [activeTab, user, selectedConversation]);
 
-  // Reset state when conversation changes (prevent state leaking between conversations)
+  // Reset state when conversation changes
   useEffect(() => {
     if (selectedConversation) {
       setMessages([]);
-      setLastMessageId(null);
-      setInitialLoadDone(false);
       setMessageInput("");
-      setNotifiedMessageIds(new Set());
-      setLastPlayedSoundId(null);
+      knownMessageIds.current.clear();
     }
   }, [selectedConversation]);
 
   // Load messages when conversation is selected
   useEffect(() => {
     if (selectedConversation) {
-      const loadMessages = async (isDelta: boolean = false) => {
-        if (!isDelta) setChatLoading(true);
+      const loadMessages = async (isInitial: boolean = true) => {
+        if (isInitial) setChatLoading(true);
         try {
           const token = localStorage.getItem("askimate_token");
           const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${selectedConversation}`, {
@@ -368,29 +350,27 @@ function AskiMateDashboardContent() {
             const data = await res.json();
             const allMessages = data.messages || [];
             
-            // Delta update: only append new messages on polls (not on initial load)
             setMessages((prev) => {
-              if (!isDelta || prev.length === 0) {
-                // Initial load: set all messages
-                const lastId = getLastMessageId(allMessages);
-                if (lastId) setLastMessageId(lastId);
+              // Determine which messages are truly new
+              const newMessages = allMessages.filter((msg: any) => !knownMessageIds.current.has(msg.id));
+              
+              // On initial load: add all messages
+              if (isInitial) {
+                allMessages.forEach((msg: any) => knownMessageIds.current.add(msg.id));
                 return allMessages;
               }
               
-              // Delta update: only append messages newer than last known ID
-              const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
-              if (incomingNew.length === 0) return prev;
+              // On delta poll: only add new messages
+              if (newMessages.length === 0) return prev;
               
-              // Play notification sound and show toast for incoming mentor messages (ONCE per message)
-              incomingNew.forEach((msg: any) => {
-                if (isIncomingMessage(msg, 'user') && !notifiedMessageIds.has(msg.id)) {
-                  // CRITICAL: Only play sound if we haven't played it for this message yet
-                  if (lastPlayedSoundId !== msg.id) {
-                    playNotificationSound();
-                    setLastPlayedSoundId(msg.id);
-                  }
+              // Process new messages: sound + toast
+              newMessages.forEach((msg: any) => {
+                knownMessageIds.current.add(msg.id);
+                
+                // Sound + toast trigger: only for NEW messages from mentor/AI
+                if (isIncomingMessage(msg, 'user')) {
+                  playNotificationSound();
                   
-                  // Show toast notification with message preview (only show if not in chat tab)
                   if (activeTab !== 'chat') {
                     const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
                     toast({
@@ -398,28 +378,16 @@ function AskiMateDashboardContent() {
                       description: preview,
                     });
                   }
-                  
-                  // Mark as notified (with bounded Set growth)
-                  addNotifiedMessageId(msg.id);
                 }
               });
               
-              // Note: Do NOT update unread count here. The server-based polling (3s interval)
-              // is the single source of truth to prevent double counting. Sound plays here, but
-              // unread count is fetched from server to ensure consistency.
-              
-              // Update last message ID
-              const newLastId = getLastMessageId(incomingNew);
-              if (newLastId) setLastMessageId(newLastId);
-              
-              // Append new messages
-              return mergeNewMessages(prev, incomingNew);
+              return [...prev, ...newMessages];
             });
           }
         } catch (error) {
           console.error("Failed to load messages:", error);
         } finally {
-          if (!isDelta) setChatLoading(false);
+          if (isInitial) setChatLoading(false);
         }
       };
       
@@ -431,26 +399,24 @@ function AskiMateDashboardContent() {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
           });
-          // Immediately refresh unread count so badge clears right away
-          // (instead of waiting up to 3 seconds for fallback polling)
           setTimeout(() => fetchUnreadCount(), 100);
         } catch (error) {
           console.error("Failed to mark as read:", error);
         }
       };
       
-      loadMessages();
+      // Initial load + mark as read
+      loadMessages(true);
       markAsRead();
-      setInitialLoadDone(true);
       
-      // Delta polling: Check for new messages every 2 seconds (lightweight, only fetches deltas)
+      // Poll for new messages every 2 seconds
       const interval = setInterval(() => {
-        loadMessages(true); // isDelta=true: only fetch and append new messages
+        loadMessages(false);
       }, 2000);
 
       return () => clearInterval(interval);
     }
-  }, [selectedConversation]);
+  }, [selectedConversation, activeTab, toast]);
 
   // Auto-scroll to bottom only on new messages (not on every poll)
   useEffect(() => {

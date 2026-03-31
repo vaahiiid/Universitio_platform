@@ -5,7 +5,7 @@ import { Search, Download, MessageSquare, ChevronRight, Loader2, Zap, ArrowLeft,
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMessages, isIncomingMessage } from "@/utils/askimate-realtime";
+import { playNotificationSound, isIncomingMessage } from "@/utils/askimate-realtime";
 
 interface AskiMateUserData {
   id: number;
@@ -168,35 +168,17 @@ function ChatView({
   const [replyText, setReplyText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
-  const [lastMessageId, setLastMessageId] = useState<number | null>(null);
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
-  const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
-  const [lastPlayedSoundId, setLastPlayedSoundId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const MAX_NOTIFIED_IDS = 150; // Prevent unbounded Set growth
+  
+  // Message detection: single source of truth for message identity
+  const knownMessageIds = useRef<Set<number>>(new Set());
 
-  // Reset notification tracking when conversation changes (prevent state leaking)
+  // Reset all state when conversation changes
   useEffect(() => {
     setMessages([]);
-    setNotifiedMessageIds(new Set());
-    setLastPlayedSoundId(null);
-    setLastMessageId(null);
-    setInitialLoadDone(false);
     setReplyText("");
+    knownMessageIds.current.clear();
   }, [conversation.id]);
-
-  // Track notifications safely without unbounded growth
-  const addNotifiedMessageId = (id: number) => {
-    setNotifiedMessageIds((prev) => {
-      const newSet = new Set([...prev, id]);
-      // Keep only the most recent 150 IDs to prevent memory bloat
-      if (newSet.size > MAX_NOTIFIED_IDS) {
-        const arr = Array.from(newSet).sort((a, b) => a - b);
-        return new Set(arr.slice(-MAX_NOTIFIED_IDS));
-      }
-      return newSet;
-    });
-  };
 
   // Auto-scroll to bottom only on new messages (not on every poll)
   useEffect(() => {
@@ -212,8 +194,8 @@ function ChatView({
     }
   }, [messages.length]); // Only trigger on length change, not full array change
 
-  const fetchMessages = useCallback(async (isDelta: boolean = false) => {
-    if (!isDelta) setLoading(true);
+  const fetchMessages = useCallback(async (isInitial: boolean = true) => {
+    if (isInitial) setLoading(true);
     setError("");
     try {
       const response = await apiFetch<{ data: Message[] }>(
@@ -222,55 +204,45 @@ function ChatView({
       
       const allMessages = response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) }));
       
-      // Delta update: only append new messages on polls (not on initial load)
       setMessages((prev) => {
-        if (!isDelta || prev.length === 0) {
-          // Initial load: set all messages
-          const lastId = getLastMessageId(allMessages);
-          if (lastId) setLastMessageId(lastId);
+        // Determine which messages are truly new
+        const newMessages = allMessages.filter((msg: any) => !knownMessageIds.current.has(msg.id));
+        
+        // On initial load: add all messages
+        if (isInitial) {
+          allMessages.forEach((msg: any) => knownMessageIds.current.add(msg.id));
           return allMessages;
         }
         
-        // Delta update: only append messages newer than last known ID
-        const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
-        if (incomingNew.length === 0) return prev;
+        // On delta poll: only add new messages
+        if (newMessages.length === 0) return prev;
         
-        // Play notification sound and show toast for incoming user messages (ONCE per message)
-        incomingNew.forEach((msg: any) => {
-          if (isIncomingMessage(msg, 'admin') && !notifiedMessageIds.has(msg.id)) {
-            // CRITICAL: Only play sound if we haven't played it for this message yet
-            if (lastPlayedSoundId !== msg.id) {
-              playNotificationSound();
-              setLastPlayedSoundId(msg.id);
-            }
+        // Process new messages: sound + toast
+        newMessages.forEach((msg: any) => {
+          knownMessageIds.current.add(msg.id);
+          
+          // Sound + toast trigger: only for NEW messages from user
+          if (isIncomingMessage(msg, 'admin')) {
+            playNotificationSound();
             
-            // Show toast notification with message preview
             const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
             toast({
               title: `New message from ${user.firstName} ${user.lastName}`,
               description: preview,
             });
-            
-            // Mark as notified (with bounded Set growth)
-            addNotifiedMessageId(msg.id);
           }
         });
         
-        // Update last message ID
-        const newLastId = getLastMessageId(incomingNew);
-        if (newLastId) setLastMessageId(newLastId);
-        
-        // Append new messages
-        return mergeNewMessages(prev, incomingNew);
+        return [...prev, ...newMessages];
       });
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Failed to fetch messages";
       console.error("[ADMIN] FETCH FAILED:", errMsg);
       setError(errMsg);
     } finally {
-      if (!isDelta) setLoading(false);
+      if (isInitial) setLoading(false);
     }
-  }, [conversation.id, lastMessageId, notifiedMessageIds, user.firstName, user.lastName, toast, lastPlayedSoundId]);
+  }, [conversation.id, user.firstName, user.lastName, toast]);
 
   useEffect(() => {
     fetchMessages();
@@ -291,13 +263,12 @@ function ChatView({
     markAsRead();
   }, [fetchMessages, conversation.id]);
 
-  // Delta polling: Check for new messages every 2 seconds (lightweight, only fetches deltas)
+  // Poll for new messages every 2 seconds
   useEffect(() => {
-    fetchMessages();
-    setInitialLoadDone(true);
+    fetchMessages(true);
     
     const interval = setInterval(() => {
-      fetchMessages(true); // isDelta=true: only fetch and append new messages
+      fetchMessages(false);
     }, 2000);
 
     return () => clearInterval(interval);
