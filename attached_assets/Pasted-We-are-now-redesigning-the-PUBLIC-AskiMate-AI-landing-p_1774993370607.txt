@@ -1,0 +1,233 @@
+We are now redesigning the PUBLIC AskiMate AI landing page (before login) as a real product landing page, separate from the Universitio marketing website.
+
+Do NOT treat this as a small patch.
+This page is the front door of the product and must feel polished, modern, mobile-friendly, and conversion-focused.
+
+==================================================
+MAIN GOAL
+==================================================
+
+Redesign the AskiMate AI public landing page before login so it becomes:
+
+- a standalone product landing page
+- mobile-friendly
+- modern and conversion-oriented
+- separate from the Universitio public website navigation
+- clearly connected to login, signup, packages, and starting chat
+
+==================================================
+PART 1 — REMOVE THE CURRENT CHAT FROM THE TOP
+==================================================
+
+Current problem:
+The chat starts directly from the first screen.
+This is not the right UX for the product landing page.
+
+Required:
+1. Remove the chat interface from the top/hero area of the public AskiMate page
+2. Replace it with a proper HERO SECTION
+
+The hero section should include:
+- strong product headline
+- short supportive subtext
+- CTA 1: "Start Chat"
+- CTA 2: "View Packages"
+
+Behavior:
+- "Start Chat" should lead to login/signup or directly into chat if already authenticated
+- "View Packages" should scroll/jump down to the pricing/packages section
+
+==================================================
+PART 2 — FULL UI/UX REDESIGN OF THE PUBLIC ASKIMATE PAGE
+==================================================
+
+Give the page a strong product UI/UX.
+
+The page should feel like:
+- a real SaaS product landing page
+- not a patched website section
+- not a copy of the Universitio website
+
+Design direction:
+- modern
+- elegant
+- mobile-first
+- clean hierarchy
+- strong CTA structure
+- clear product positioning
+
+You are allowed to redesign the page layout fully,
+but keep branding aligned with AskiMate / Universitio.
+
+==================================================
+PART 3 — REMOVE UNIVERSITIO WEBSITE MENU ITEMS FROM ASKIMATE PAGE
+==================================================
+
+On the public AskiMate landing page, remove the Universitio website navigation items such as:
+- Free Assessment
+- Free Consultation
+- and other irrelevant Universitio marketing-site navigation items
+
+Instead, the top navigation/header for AskiMate should focus on product actions.
+
+Required top-right actions:
+- Login
+- Sign up
+
+If the user is already signed in:
+- instead of Login / Sign up, show the user’s name
+- clicking the user name should open a dropdown / popover / sheet
+- show who the signed-in user is
+- include useful account-related actions if appropriate
+
+This page must feel like the product’s own landing page, not the Universitio marketing site.
+
+==================================================
+PART 4 — PACKAGES / PRICING SECTION MUST WORK
+==================================================
+
+Current problem:
+Packages do not open/work when clicked.
+
+Required:
+1. Redesign or fix the pricing/packages section so it is fully interactive and clear
+2. Clicking a package must do something meaningful
+3. Packages should clearly show:
+   - plan name
+   - what is included
+   - usage/message limits
+   - pricing
+4. The CTA on each package must work properly
+
+==================================================
+PART 5 — STRIPE / PAYMENT FLOW MUST ACTUALLY WORK
+==================================================
+
+Current problem:
+Stripe code was already provided previously, but payment is not working properly:
+- not on the public AskiMate page
+- not in profile/subscription area
+
+Required:
+1. Properly connect/fix the Stripe payment flow
+2. User must be able to buy a package successfully
+3. After successful purchase:
+   - the user account must be updated based on the purchased package
+   - plan status must reflect correctly
+   - usage allowance must be applied correctly
+
+Do NOT leave this as fake or visual-only.
+Implement the real flow.
+
+If there is any missing Stripe config or environment dependency, clearly identify it.
+But fix everything that is fixable in the existing architecture.
+
+==================================================
+PART 6 — ACCOUNT / PACKAGE BALANCE / DAILY REMAINING USAGE
+==================================================
+
+After a user purchases a package:
+
+The system must show clearly:
+- current package
+- how much usage/messages remain
+- ideally how much remains for the day, if that is how the package logic works
+- plan status in a user-friendly way
+
+This should appear in the appropriate logged-in user areas such as:
+- profile
+- subscription/account section
+- or both if needed
+
+The information must be understandable to the user.
+Not hidden in backend state only.
+
+==================================================
+PART 7 — MOBILE UX OF PUBLIC ASKIMATE PAGE
+==================================================
+
+Current problem:
+Mobile version is not good enough.
+
+Required:
+1. Fully improve mobile responsiveness
+2. Hero section must work beautifully on mobile
+3. Package cards must be readable and tappable on mobile
+4. Navigation/header must work well on mobile
+5. Overall page must feel premium and mobile-first
+
+==================================================
+PART 8 — MOBILE HAMBURGER "NEW" INDICATOR
+==================================================
+
+Current problem:
+In mobile hamburger navigation, the red animated "new" indicator is missing or not working properly.
+
+Required:
+1. Fix the mobile hamburger new indicator
+2. It should be visible and clear when there is a relevant new state
+3. Keep it tasteful, not ugly
+4. Ensure it actually renders in real runtime
+
+==================================================
+PART 9 — AUTHENTICATION STATE IN HEADER
+==================================================
+
+Required behavior:
+If user is NOT logged in:
+- show Login
+- show Sign up
+
+If user IS logged in:
+- show the user name instead
+- clicking the user name opens a small user menu/dropdown
+- show identity/account shortcut cleanly
+
+This must work properly on:
+- desktop
+- mobile
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break the existing working user dashboard/chat features
+- Do NOT break the current user/admin app redesign
+- Do NOT mix Universitio marketing-site navigation into the AskiMate product landing page
+- Do NOT leave package CTA as non-functional
+- Do NOT fake payment success without actual account update logic
+- Do NOT do a shallow visual patch only
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+After implementation:
+
+1. Public AskiMate landing page feels like a standalone product page
+2. Top hero is clean and conversion-oriented
+3. No public chat widget at the top
+4. Packages section works
+5. Stripe flow works
+6. Purchased package updates the user account correctly
+7. User can see remaining usage clearly
+8. Login/signup vs signed-in user state works properly in header
+9. Mobile version feels polished and product-grade
+10. Mobile hamburger new indicator works
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+
+1. how the hero section was redesigned
+2. what changed in navigation/header
+3. how packages section now works
+4. how Stripe/payment flow now works
+5. how purchased package updates account state
+6. where remaining usage is shown
+7. how signed-in user state is shown in header
+8. how mobile UX was improved
+9. what files were changed
+10. any limitation that still remains
