@@ -398,6 +398,11 @@ function AskiMateDashboardContent() {
     }
   }, [messages, selectedConversation, activeTab, notificationMessageId]);
 
+  // ─ Auto-clear notification when user switches to chat tab ──────────────
+  useEffect(() => {
+    if (activeTab === "chat") setVisibleNotification(false);
+  }, [activeTab]);
+
   // ─ Auto scroll ─────────────────────────────────────────────────────────
   useEffect(() => {
     const container = messagesContainerRef.current;

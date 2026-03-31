@@ -191,7 +191,7 @@ function AdminChatPanel({
   const fetchMessages = useCallback(async (isInitial = true) => {
     try {
       const response = await apiFetch<{ data: Message[] }>(
-        `/admin/askimate-users/${user.id}/conversations/${conversation.id}/messages`
+        `/admin/askimate-conversations/${conversation.id}/messages`
       );
       const all = response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) }));
 
@@ -240,9 +240,8 @@ function AdminChatPanel({
     markAsRead();
   }, [fetchMessages, conversation.id, fetchUnreadCount]);
 
-  // Poll every 2s
+  // Poll every 2s (initial load handled by the effect above)
   useEffect(() => {
-    fetchMessages(true);
     const interval = setInterval(() => fetchMessages(false), 2000);
     return () => clearInterval(interval);
   }, [fetchMessages]);
@@ -373,8 +372,8 @@ function AdminChatPanel({
 
       {/* Reply input */}
       {localConvStatus === "open" ? (
-        <div className="px-4 py-3 border-t border-border/60 bg-white flex-shrink-0">
-          <div className="flex gap-2">
+        <div className="px-4 pt-3 pb-4 border-t border-border/60 bg-white flex-shrink-0">
+          <div className="flex items-end gap-2">
             <textarea
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
@@ -384,23 +383,26 @@ function AdminChatPanel({
                   handleSendReply();
                 }
               }}
-              placeholder="Reply as mentor… (Enter to send, Shift+Enter for new line)"
-              rows={2}
-              className="flex-1 border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none bg-slate-50"
+              placeholder="Reply as mentor…"
+              rows={1}
+              className="flex-1 border border-border rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none bg-slate-50 leading-relaxed"
+              style={{ minHeight: "42px", maxHeight: "120px", overflowY: "auto" }}
               disabled={sending}
             />
             <Button
               onClick={handleSendReply}
               disabled={!replyText.trim() || sending}
-              className="bg-primary hover:bg-primary/90 text-white rounded-xl self-end flex-shrink-0"
+              className="bg-primary hover:bg-primary/90 text-white rounded-2xl flex-shrink-0 h-[42px] w-[42px] p-0"
             >
               {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>
           </div>
+          <p className="text-xs text-muted-foreground mt-1.5 px-1">Enter to send · Shift+Enter for new line</p>
         </div>
       ) : (
-        <div className="px-4 py-3 border-t border-border/60 bg-white text-xs text-muted-foreground text-center flex-shrink-0">
-          This conversation is closed. Reopen it to reply.
+        <div className="px-4 py-4 border-t border-border/60 bg-white flex items-center justify-center gap-2 flex-shrink-0">
+          <span className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
+          <p className="text-xs text-muted-foreground">This conversation is closed. Reopen it to reply.</p>
         </div>
       )}
     </div>
@@ -515,7 +517,13 @@ function AdminUserPanel({
             return (
               <button
                 key={conv.id}
-                onClick={() => setSelectedConvId(conv.id)}
+                onClick={() => {
+                  setSelectedConvId(conv.id);
+                  // Immediately clear unread badge for this tab — server confirms via mark-read
+                  if ((conv.unreadCount || 0) > 0) {
+                    setConversations((prev) => prev.map((c) => c.id === conv.id ? { ...c, unreadCount: 0 } : c));
+                  }
+                }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                   selectedConvId === conv.id
                     ? "bg-primary text-white"
@@ -667,6 +675,12 @@ export default function AskiMateUsersAdmin() {
   const handleSelectUser = (user: AskiMateUserData) => {
     setSelectedUser(user);
     setMobileShowPanel(true);
+    // Immediately clear this user's unread badge — mark-read will confirm server-side
+    const cleared = user.unreadCount || 0;
+    if (cleared > 0) {
+      setUsers((prev) => prev.map((u) => u.id === user.id ? { ...u, unreadCount: 0 } : u));
+      setGlobalUnreadCount((prev) => Math.max(0, prev - cleared));
+    }
   };
 
   const totalUsers = pagination?.total || 0;
@@ -678,7 +692,7 @@ export default function AskiMateUsersAdmin() {
       </Helmet>
 
       {/* ── Two-panel messaging layout ─────────────────────────────────── */}
-      <div className="flex h-[calc(100vh-56px)] overflow-hidden rounded-xl border border-border/60 shadow-sm bg-white">
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8 -mb-4 sm:-mb-6 lg:-mb-8 flex overflow-hidden border-t border-border/60 bg-white" style={{ height: "calc(100dvh - 56px)" }}>
 
         {/* ── LEFT PANEL: User list ────────────────────────────────────── */}
         <div className={`flex flex-col border-r border-border/60 flex-shrink-0 w-full lg:w-80 xl:w-96 ${mobileShowPanel ? "hidden lg:flex" : "flex"}`}>

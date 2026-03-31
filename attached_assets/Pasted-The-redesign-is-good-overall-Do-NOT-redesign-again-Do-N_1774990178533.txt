@@ -1,0 +1,61 @@
+The redesign is good overall. Do NOT redesign again.
+Do NOT touch the parts that are already working well.
+
+Only fix these remaining admin/polish issues cleanly:
+
+==================================================
+FIX ONLY THESE 4 ISSUES
+==================================================
+
+1. ADMIN PAGE ERROR
+There is still an error visible in the admin page.
+You must identify the exact runtime error and fix it.
+Do NOT guess.
+Inspect the actual rendered admin page and fix the real cause.
+
+2. ADMIN CHAT INPUT / TYPING AREA ALIGNMENT
+The typing area in the admin chat is slightly misaligned / not polished.
+Make the admin reply input area clean, aligned, and visually consistent.
+It should feel like a proper messaging input bar.
+
+3. ADMIN MOBILE RESPONSIVENESS
+The admin redesign is still not truly mobile responsive.
+Fix the mobile admin experience properly:
+- user list should be usable on mobile
+- active chat view should be usable on mobile
+- no squeezed desktop layout
+- no broken overflow
+- proper back/navigation behavior on mobile
+- message area and input should remain usable
+
+4. NOTIFICATION AUTO-CLEAR AFTER SEEN
+Notifications are now good, but once the user/admin has seen/read the relevant message/chat, the visible notification should clear automatically.
+That means:
+- unread badge / popup state should reduce or disappear after seen/read
+- do NOT require manual stale cleanup
+- keep the existing unread source of truth
+- do NOT create a separate fake unread system
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break the redesign that is already working
+- Do NOT redesign user dashboard again
+- Do NOT break chat sending
+- Do NOT break notifications that already work
+- Do NOT break active/archived logic
+- Do NOT break rename/delete/end chat
+- Only fix these 4 items
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. what the admin page error was and how it was fixed
+2. what was adjusted in the admin typing area
+3. how admin mobile responsiveness was fixed
+4. how auto-clear after seen now works
+5. what files were changed
+6. confirm no unrelated working behavior was changed
