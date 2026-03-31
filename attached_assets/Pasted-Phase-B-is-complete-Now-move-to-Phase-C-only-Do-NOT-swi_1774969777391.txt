@@ -1,0 +1,82 @@
+Phase B is complete.
+
+Now move to Phase C only.
+
+Do NOT switch to Autonomous mode.
+Do NOT redesign unrelated parts.
+Do NOT break the current working chat flow.
+
+==================================================
+PHASE C — CHAT-FIRST USER DASHBOARD
+==================================================
+
+We now need to restructure the logged-in user experience so that AskiMate feels like a chat-first product.
+
+Right now, the dashboard still feels too much like a general account page.
+We want the chat experience to become the main focus.
+
+==================================================
+GOAL
+==================================================
+
+Make the user dashboard feel primarily like a mentoring/chat workspace, with profile/account tools in supporting positions.
+
+==================================================
+REQUIREMENTS
+==================================================
+
+1. CHAT MUST BE THE MAIN AREA
+- the main central area of the user dashboard should prioritize the chat experience
+- the user should immediately feel that chat is the core product
+
+2. SUPPORTING AREAS SHOULD BE SECONDARY
+Profile, documents, subscription, etc. should still exist, but they should feel secondary/supporting.
+
+3. KEEP CONVERSATION LIST CLEAR
+- keep the conversation/thread list visible and usable
+- do not hide or break the current conversation lifecycle work
+- open/closed states should remain clear
+
+4. IMPROVE INFORMATION HIERARCHY
+The user should understand this order:
+- current conversation
+- conversation list/history
+- then supporting account tools (profile, documents, subscription)
+
+5. KEEP THE UI CLEAN
+- modern
+- minimal
+- not crowded
+- not over-designed
+- consistent with the current brand
+
+6. DO NOT BREAK EXISTING FEATURES
+Keep working:
+- unread badges
+- open/closed conversations
+- close button
+- admin ↔ user message flow
+- free-limit behavior
+- premium status behavior
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+The user dashboard should feel more like:
+- a messaging / mentoring workspace
+
+And less like:
+- a generic profile page with chat buried inside it
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Report clearly:
+
+1. how the dashboard layout was restructured
+2. what is now primary vs secondary
+3. which files were modified
+4. how chat-first hierarchy was achieved
+5. confirmation that existing chat functionality still works

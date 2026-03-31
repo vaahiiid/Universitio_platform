@@ -11,7 +11,7 @@ import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 function AskiMateDashboardContent() {
   const { user, logout } = useAskiMateAuth();
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<"profile" | "documents" | "chat" | "subscription">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "documents" | "chat" | "subscription">("chat");
   const [profileData, setProfileData] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -419,11 +419,12 @@ function AskiMateDashboardContent() {
       <Navbar />
 
       <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border border-border/60 p-6 sticky top-32">
-              <div className="flex items-center gap-4 mb-6">
+        <div className={`grid gap-8 ${activeTab === "chat" ? "grid-cols-1 lg:grid-cols-5" : "grid-cols-1 lg:grid-cols-4"}`}>
+          {/* Compact Navigation Sidebar */}
+          <div className={`${activeTab === "chat" ? "lg:col-span-1" : "lg:col-span-1"}`}>
+            <div className={`bg-white rounded-xl border border-border/60 sticky top-32 ${activeTab === "chat" ? "p-4" : "p-6"}`}>
+              {/* Profile Card - More Compact in Chat Mode */}
+              <div className={`${activeTab === "chat" ? "hidden" : "flex items-center gap-4 mb-6"}`}>
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">
                   {profileData.firstName[0]}
                 </div>
@@ -433,26 +434,40 @@ function AskiMateDashboardContent() {
                 </div>
               </div>
 
-              <nav className="space-y-2">
+              {/* Compact Profile Indicator in Chat Mode */}
+              {activeTab === "chat" && (
+                <div className="text-center mb-4 pb-4 border-b border-border/40">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-sm mx-auto mb-2">
+                    {profileData.firstName[0]}
+                  </div>
+                  <p className="text-xs text-foreground font-medium truncate">{profileData.firstName}</p>
+                  <p className="text-xs text-muted-foreground">Free Plan</p>
+                </div>
+              )}
+
+              <nav className={`${activeTab === "chat" ? "space-y-1" : "space-y-2"}`}>
                 {[
+                  { id: "chat", label: "Messages", icon: MessageSquare },
                   { id: "profile", label: "Profile", icon: Settings },
                   { id: "documents", label: "Documents", icon: FileUp },
-                  { id: "chat", label: "Messages", icon: MessageSquare },
                   { id: "subscription", label: "Subscription", icon: FileUp },
                 ].map((item) => (
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id as any)}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    title={item.label}
+                    className={`w-full flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      activeTab === "chat" ? "justify-center" : "gap-3"
+                    } ${
                       activeTab === item.id
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground hover:bg-muted"
                     }`}
                   >
-                    <item.icon className="w-4 h-4" />
-                    <span className="flex-1 text-left">{item.label}</span>
+                    <item.icon className="w-4 h-4 flex-shrink-0" />
+                    {activeTab !== "chat" && <span className="flex-1 text-left">{item.label}</span>}
                     {item.id === "chat" && unreadCount > 0 && (
-                      <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-600 rounded-full">
+                      <span className={`inline-flex items-center justify-center text-xs font-bold text-white bg-red-600 rounded-full ${activeTab === "chat" ? "w-5 h-5 absolute -top-2 -right-2" : "w-6 h-6"}`}>
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
@@ -463,16 +478,19 @@ function AskiMateDashboardContent() {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg mt-6 border-t border-border pt-6 disabled:opacity-50"
+                title="Log Out"
+                className={`w-full flex items-center px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg mt-4 border-t border-border pt-4 disabled:opacity-50 ${
+                  activeTab === "chat" ? "justify-center" : "gap-3"
+                }`}
               >
                 <LogOut className="w-4 h-4" />
-                {isLoggingOut ? "Logging out..." : "Log Out"}
+                {activeTab !== "chat" && <span className="flex-1 text-left">Log Out</span>}
               </button>
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+          {/* Main Content - Expands in Chat Mode */}
+          <div className={`${activeTab === "chat" ? "lg:col-span-4 space-y-6" : "lg:col-span-3 space-y-6"}`}>
             {/* Profile Tab */}
             {activeTab === "profile" && (
               <div className="bg-white rounded-xl border border-border/60 p-8">
@@ -628,12 +646,12 @@ function AskiMateDashboardContent() {
 
             {/* Chat Tab */}
             {activeTab === "chat" && (
-              <div className="bg-white rounded-xl border border-border/60 p-8 h-[600px] flex flex-col">
+              <div className="bg-white rounded-xl border border-border/60 p-8 h-[calc(100vh-200px)] flex flex-col">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Messages</h2>
 
                 <div className="flex gap-6 flex-1 overflow-hidden">
                   {/* Conversation List Sidebar */}
-                  <div className="w-44 border-r border-border/40 pr-4 overflow-y-auto space-y-2">
+                  <div className="w-56 border-r border-border/40 pr-4 overflow-y-auto space-y-2">
                     <p className="text-xs font-semibold text-muted-foreground mb-3">Conversations</p>
                     {conversations.length === 0 ? (
                       <p className="text-xs text-muted-foreground">No conversations yet</p>
