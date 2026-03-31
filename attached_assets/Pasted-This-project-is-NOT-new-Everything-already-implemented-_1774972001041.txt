@@ -1,0 +1,167 @@
+This project is NOT new. Everything already implemented must be preserved.
+
+We are continuing the existing Universitio + AskiMate system.
+Do NOT redesign the product.
+Do NOT rebuild from scratch.
+Do NOT break existing working logic.
+Do NOT remove current conversation-based architecture.
+Only implement the specific improvements below in a safe, compatible way.
+
+==================================================
+PROJECT CONTEXT
+==================================================
+
+AskiMate already has:
+
+USER SIDE:
+- authenticated user dashboard
+- conversation-based chat
+- multiple threads
+- open / closed conversation status
+- unread badge system
+- free plan weekly usage limit
+- working user ↔ admin messaging
+
+ADMIN SIDE:
+- AskiMate users list
+- user detail page
+- conversation view
+- mentor reply input
+- close / reopen conversation
+- unread visibility exists in some form
+
+CURRENT KNOWN BEHAVIOR:
+- chat currently updates via polling
+- polling causes visible fetch/reload behavior and UI jumping/flicker
+- messages are not truly real-time
+- user/admin experience does not feel like a live chat
+
+CRITICAL RULES:
+- preserve all existing business logic
+- preserve ownership validation and security
+- preserve conversationId-based message structure
+- preserve open/closed conversation lifecycle
+- preserve weekly usage logic
+- preserve current routes unless absolutely necessary
+- preserve current UI structure as much as possible
+- improve behavior, not architecture for its own sake
+
+==================================================
+GOAL OF THIS PHASE
+==================================================
+
+Upgrade AskiMate chat from polling-based pseudo-live updates to proper live real-time updates with smooth UX on BOTH user and admin sides.
+
+This phase is ONLY about:
+1. removing flicker / page jumping caused by polling
+2. making message delivery feel instant/live
+3. showing live unread/badge changes
+4. adding lightweight notification feedback when a new message arrives
+
+Do NOT implement unrelated redesigns in this phase.
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. Replace polling-based message refresh for AskiMate chat with real-time live updates.
+   Preferred approach:
+   - use WebSocket if the stack supports it cleanly
+   - otherwise use Server-Sent Events as fallback
+   - do NOT use periodic full refetch polling for active chat windows anymore
+
+2. Live updates must work on BOTH:
+   - user chat page
+   - admin conversation page
+
+3. When a user sends a message:
+   - admin should receive it live without manual refetch
+   - unread indicators should update live
+   - the chat should append the new message without rerendering the whole thread
+   - no scroll jump
+   - no flicker
+
+4. When admin sends a mentor reply:
+   - user should receive it live immediately
+   - unread indicators should update live even if the user is currently on another section such as profile/subscription
+   - user should hear a subtle notification sound only for newly received mentor messages
+   - badge/count near the chat menu item should update live
+   - if user is currently inside the active open conversation, append the message instantly without full redraw
+
+5. Notification behavior:
+   - add a lightweight “ding” sound for newly received messages only
+   - do NOT play sound for messages sent by the current viewer
+   - do NOT repeatedly play sound on reconnect or initial load
+   - only play sound for genuinely new inbound messages
+
+6. Preserve read/unread logic:
+   - do not break existing unread model
+   - when a message is seen/opened in the relevant conversation view, unread state should clear correctly
+   - live counts should decrease/clear when messages become read
+
+7. Preserve current message list rendering style as much as possible.
+   Only update the minimal changed parts:
+   - append incoming messages
+   - update status/badge states
+   - avoid full component remounts
+   - avoid refetching the full page
+
+8. Admin page must no longer rely on a manual “Refetch” workflow for real-time conversation updates.
+   If the refetch button exists, it can remain as a fallback utility, but the conversation itself must stay live automatically.
+
+==================================================
+TECHNICAL IMPLEMENTATION EXPECTATIONS
+==================================================
+
+- Reuse current backend and data model as much as possible
+- Add only the minimum new infrastructure necessary for real-time message events
+- Emit events scoped correctly:
+  - by user
+  - by conversation
+  - by admin viewer where relevant
+- Do NOT leak events across users
+- Maintain strict ownership and access validation for all subscriptions/channels/streams
+- Clean up listeners/subscriptions on unmount/logout/navigation
+- Prevent duplicate event handlers and duplicate rendered messages
+- Ensure logout clears live subscriptions cleanly
+- Handle reconnect safely without duplicate notifications
+
+==================================================
+ACCEPTANCE CRITERIA
+==================================================
+
+A. USER SIDE
+- User opens chat page and no flicker/jump happens from polling
+- Admin sends a reply and it appears instantly
+- Badge near chat/menu updates live
+- If user is on profile/subscription instead of chat, the badge still updates live
+- Subtle sound plays once for each new mentor message
+- No duplicate messages
+- No full-page refresh behavior
+
+B. ADMIN SIDE
+- Admin opens a conversation and no polling flicker/jump happens
+- User sends a new message and it appears instantly
+- Unread indicators update live
+- Admin does not need to manually refetch to see new messages
+- No duplicate messages
+- No full-page redraw behavior
+
+C. SYSTEM SAFETY
+- Existing chat still works end-to-end
+- Open/closed conversation logic still blocks sending when closed
+- Existing security/ownership protections remain intact
+- Weekly usage logic remains intact
+
+==================================================
+DELIVERABLE
+==================================================
+
+Implement the changes directly in the existing codebase.
+At the end, provide:
+1. a short summary of what files were changed
+2. what real-time mechanism was used
+3. any fallback behavior still remaining
+4. any migration/setup steps if required
+
+Do not change unrelated UI/UX in this phase.
