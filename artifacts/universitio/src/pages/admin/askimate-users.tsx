@@ -764,6 +764,16 @@ export default function AskiMateUsersAdmin() {
   const [editingUser, setEditingUser] = useState<AskiMateUserData | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<AskiMateUserData | null>(null);
 
+  // Listen for navigation back to users list from menu click
+  useEffect(() => {
+    const handleResetSelected = () => {
+      setSelectedUser(null);
+    };
+
+    window.addEventListener("askimate-reset-selected-user", handleResetSelected);
+    return () => window.removeEventListener("askimate-reset-selected-user", handleResetSelected);
+  }, []);
+
   const fetchUsers = useCallback(
     async (pageNum = 1) => {
       setLoading(true);

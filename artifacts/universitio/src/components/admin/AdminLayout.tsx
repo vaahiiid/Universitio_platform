@@ -81,7 +81,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               )}
               <Link
                 href={item.path}
-                onClick={() => setSidebarOpen(false)}
+                onClick={() => {
+                  setSidebarOpen(false);
+                  // Reset nested AskiMate Users state when clicking menu item
+                  if (item.label === "AskiMate Users") {
+                    window.dispatchEvent(new CustomEvent("askimate-reset-selected-user"));
+                  }
+                }}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all mb-0.5 ${
                   active
                     ? "bg-white/15 text-white"
