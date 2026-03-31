@@ -19,6 +19,7 @@ export const askimateMessages = pgTable("askimate_messages", {
   isUserMessage: boolean("is_user_message").notNull(), // true = user question, false = non-user (AI or mentor)
   sender: text("sender").notNull().default("ai"), // "user", "ai", or "mentor"
   content: text("content").notNull(),
+  isRead: boolean("is_read").notNull().default(false), // Track read status for notifications
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

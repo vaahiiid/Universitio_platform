@@ -190,6 +190,27 @@ Fetching messages...
 
   useEffect(() => {
     fetchMessages();
+    
+    // Mark all messages as read for admin
+    const markAsRead = async () => {
+      try {
+        await apiFetch(`/admin/askimate-conversations/${conversation.id}/mark-read`, {
+          method: "POST",
+        });
+      } catch (err) {
+        console.error("Failed to mark messages as read:", err);
+      }
+    };
+    markAsRead();
+  }, [fetchMessages, conversation.id]);
+
+  // Polling: Refetch messages every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchMessages();
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, [fetchMessages]);
 
   const handleSendReply = async () => {

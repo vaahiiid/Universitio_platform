@@ -1,0 +1,102 @@
+Now that the chat system is working, we need to improve UX with TWO features:
+
+1. Unread message notifications (badge with count)
+2. Real-time updates WITHOUT manual refresh
+
+Do NOT over-engineer.
+Do NOT use WebSockets yet.
+Implement a clean polling-based solution.
+
+==================================================
+FEATURE 1 — UNREAD MESSAGE COUNT
+==================================================
+
+We need unread counters per conversation.
+
+Database:
+- Add a field to askimate_messages:
+  - isRead: boolean (default false)
+
+Behavior:
+
+1. When a message is created:
+   - if sender = user → message is unread for admin
+   - if sender = admin → message is unread for user
+
+2. When admin opens a conversation:
+   - mark all messages in that conversation as read for admin
+
+3. When user opens chat:
+   - mark all messages as read for user
+
+4. API:
+- Add endpoint:
+  GET /api/askimate/unread-count
+  → returns total unread messages for current user
+
+- Admin endpoint:
+  GET /api/admin/unread-count
+
+5. UI:
+- Show badge (red circle with number) on:
+  - conversation list
+  - or chat icon
+
+==================================================
+FEATURE 2 — REAL-TIME (POLLING)
+==================================================
+
+We implement lightweight polling.
+
+1. In chat view (both user and admin):
+
+- Every 3–5 seconds:
+  → refetch messages for current conversation
+
+- Only update UI if:
+  - new message count changed
+
+2. Use setInterval with cleanup:
+- clear interval on unmount
+- avoid duplicate intervals
+
+3. When new messages arrive:
+- auto-scroll to bottom
+- update unread counters
+
+==================================================
+IMPORTANT RULES
+==================================================
+
+- Do NOT reload the page
+- Do NOT use window.location.reload
+- Only update state
+
+- Do NOT break existing chat flow
+- Keep current API structure
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+1. User sends message:
+→ admin sees it within a few seconds (no refresh)
+
+2. Admin replies:
+→ user sees it within a few seconds
+
+3. Unread count:
+→ increases when new message arrives
+→ resets when conversation is opened
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Tell me:
+1. What DB changes were made
+2. Which endpoints were added
+3. Where polling was implemented
+4. Confirmation:
+   - no refresh needed
+   - unread badge working for both sides

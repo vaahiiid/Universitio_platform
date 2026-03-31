@@ -954,4 +954,53 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
   }
 });
 
+// POST /admin/askimate-conversations/:conversationId/mark-read - Mark messages as read for admin
+router.post("/admin/askimate-conversations/:conversationId/mark-read", async (req: Request, res: Response) => {
+  try {
+    const conversationId = parseInt(String(req.params.conversationId), 10);
+    if (!Number.isFinite(conversationId) || conversationId <= 0) {
+      res.status(400).json({ error: "Invalid conversation ID" });
+      return;
+    }
+
+    // Mark all unread user messages in this conversation as read
+    await db
+      .update(askimateMessages)
+      .set({ isRead: true })
+      .where(
+        and(
+          eq(askimateMessages.conversationId, conversationId),
+          eq(askimateMessages.isRead, false),
+          eq(askimateMessages.sender, "user")
+        )
+      );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Mark as read error:", err);
+    res.status(500).json({ error: "Failed to mark as read" });
+  }
+});
+
+// GET /admin/unread-count - Get unread user messages count
+router.get("/admin/unread-count", async (req: Request, res: Response) => {
+  try {
+    // Count all unread user messages (sender = "user")
+    const [result] = await db
+      .select({ count: count() })
+      .from(askimateMessages)
+      .where(
+        and(
+          eq(askimateMessages.isRead, false),
+          eq(askimateMessages.sender, "user")
+        )
+      );
+
+    res.json({ unreadCount: result?.count || 0 });
+  } catch (err) {
+    console.error("Admin unread count error:", err);
+    res.status(500).json({ error: "Failed to fetch unread count" });
+  }
+});
+
 export default router;

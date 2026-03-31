@@ -337,4 +337,92 @@ router.get("/askimate/conversations", async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/askimate/chat/:conversationId/mark-read - Mark messages as read for user
+router.post("/askimate/chat/:conversationId/mark-read", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    const conversationId = Number(req.params.conversationId);
+
+    // Mark all unread mentor messages in this conversation as read
+    await db
+      .update(askimateMessages)
+      .set({ isRead: true })
+      .where(
+        and(
+          eq(askimateMessages.conversationId, conversationId),
+          eq(askimateMessages.isRead, false),
+          eq(askimateMessages.sender, "mentor")
+        )
+      );
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Mark as read error:", error);
+    res.status(500).json({ error: "Failed to mark as read" });
+  }
+});
+
+// GET /api/askimate/unread-count - Get unread message count for user
+router.get("/askimate/unread-count", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Count unread messages for user's conversations
+    const [result] = await db
+      .select({ count: count() })
+      .from(askimateMessages)
+      .innerJoin(
+        askimateConversations,
+        eq(askimateMessages.conversationId, askimateConversations.id)
+      )
+      .where(
+        and(
+          eq(askimateConversations.userId, userId),
+          eq(askimateMessages.isRead, false),
+          eq(askimateMessages.sender, "mentor") // User only sees mentor/admin messages as unread
+        )
+      );
+
+    res.json({ unreadCount: result?.count || 0 });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Unread count error:", error);
+    res.status(500).json({ error: "Failed to fetch unread count" });
+  }
+});
+
 export default router;

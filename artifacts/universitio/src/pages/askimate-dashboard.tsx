@@ -227,7 +227,29 @@ function AskiMateDashboardContent() {
           setChatLoading(false);
         }
       };
+      
+      // Mark messages as read
+      const markAsRead = async () => {
+        try {
+          const token = localStorage.getItem("askimate_token");
+          await fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${selectedConversation}/mark-read`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        } catch (error) {
+          console.error("Failed to mark as read:", error);
+        }
+      };
+      
       loadMessages();
+      markAsRead();
+      
+      // Polling: Refetch messages every 4 seconds
+      const interval = setInterval(() => {
+        loadMessages();
+      }, 4000);
+
+      return () => clearInterval(interval);
     }
   }, [selectedConversation]);
 
