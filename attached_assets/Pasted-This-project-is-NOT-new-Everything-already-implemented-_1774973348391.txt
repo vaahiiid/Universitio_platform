@@ -1,0 +1,101 @@
+This project is NOT new. Everything already implemented must be preserved.
+
+We are continuing the existing Universitio + AskiMate system.
+Do NOT redesign the system.
+Do NOT rebuild from scratch.
+Do NOT break existing logic.
+
+This phase upgrades the USER CHAT EXPERIENCE to a conversation-based interface similar to modern chat products (e.g. ChatGPT).
+
+==================================================
+GOAL
+==================================================
+
+Transform the user chat area into a proper multi-conversation chat interface.
+
+Users must be able to:
+- see all conversations clearly
+- create new conversations
+- rename conversations
+- close conversations
+- switch between them easily
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. Conversation List UI
+- Display a clear list of all user conversations
+- Each item must show:
+  - conversation title (or default title if empty)
+  - open / closed status
+- Active conversation must be visually highlighted
+
+2. Create New Chat
+- Add "New Chat" button
+- Creates a new conversation via existing backend
+- Immediately switches user into that conversation
+
+3. Conversation Naming
+- Each conversation must have a title
+- If backend already supports title → use it
+- If not:
+  - allow user to rename locally and persist via API
+- Default title can be:
+  - first message preview OR "New Chat"
+
+4. Rename Conversation
+- User can rename any conversation
+- Simple UX (inline edit or modal)
+- Must persist via API
+
+5. Close Conversation
+- Preserve existing close logic
+- Improve visibility:
+  - closed chats clearly labeled
+  - cannot send messages in closed chats
+
+6. Conversation Switching
+- Clicking a conversation loads it instantly
+- No flicker
+- No full page reload
+- Scroll position handled cleanly
+
+7. Layout Adjustment
+- Chat area must feel like:
+  - left: conversation list
+  - right: chat messages
+- Must NOT break existing sidebar (Profile / Subscription)
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT change backend structure unless absolutely required
+- If title field does not exist, extend minimally
+- Do NOT break existing conversationId logic
+- Do NOT break unread logic
+- Do NOT break delta polling system
+- Do NOT affect admin panel
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+- User sees list of chats like ChatGPT
+- Can create new chat
+- Can rename chats
+- Can close chats
+- Can switch chats smoothly
+- Chat feels like a real product, not a tab
+
+==================================================
+DELIVERABLE
+==================================================
+
+Explain:
+1. how conversations are listed
+2. how new chat is created
+3. how renaming works
+4. how titles are stored
+5. what minimal backend changes (if any) were made

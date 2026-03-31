@@ -38,10 +38,81 @@ function AskiMateDashboardContent() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [lastMessageId, setLastMessageId] = useState<number | null>(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [editingConvId, setEditingConvId] = useState<number | null>(null);
+  const [editingTitle, setEditingTitle] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const createNewConversation = async () => {
+    try {
+      // Send first message to create new conversation
+      const token = localStorage.getItem("askimate_token");
+      const response = await fetch("/api/askimate/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          message: "Hi, I'd like to start a new conversation.",
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSelectedConversation(data.conversationId);
+        // Refresh conversations list
+        await fetchConversations();
+        setMessages([]);
+        setLastMessageId(null);
+      }
+    } catch (error) {
+      console.error("Failed to create new conversation:", error);
+    }
+  };
+
+  const renameConversation = async (conversationId: number, newTitle: string) => {
+    try {
+      const token = localStorage.getItem("askimate_token");
+      const response = await fetch(`/api/askimate/conversations/${conversationId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title: newTitle }),
+      });
+
+      if (response.ok) {
+        setConversations((prev) =>
+          prev.map((conv) =>
+            conv.id === conversationId ? { ...conv, title: newTitle } : conv
+          )
+        );
+        setEditingConvId(null);
+        setEditingTitle("");
+      }
+    } catch (error) {
+      console.error("Failed to rename conversation:", error);
+    }
+  };
+
+  const fetchConversations = async () => {
+    try {
+      const token = localStorage.getItem("askimate_token");
+      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/conversations`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setConversations(data.conversations || []);
+      }
+    } catch (error) {
+      console.error("Failed to load conversations:", error);
+    }
   };
 
   const handleLogout = async () => {
@@ -644,29 +715,80 @@ function AskiMateDashboardContent() {
 
                 <div className="flex gap-6 flex-1 overflow-hidden">
                   {/* Conversation List Sidebar */}
-                  <div className="w-56 border-r border-border/40 pr-4 overflow-y-auto space-y-2">
-                    <p className="text-xs font-semibold text-muted-foreground mb-3">Conversations</p>
-                    {conversations.length === 0 ? (
-                      <p className="text-xs text-muted-foreground">No conversations yet</p>
-                    ) : (
-                      conversations.map((conv) => (
-                        <button
-                          key={conv.id}
-                          onClick={() => setSelectedConversation(conv.id)}
-                          className={`w-full text-left p-2.5 rounded text-sm truncate transition-colors ${
-                            selectedConversation === conv.id
-                              ? "bg-primary/10 text-primary font-medium"
-                              : "text-foreground hover:bg-muted/30"
-                          }`}
-                          title={conv.title}
-                        >
-                          <div className="truncate">{conv.title}</div>
-                          <div className={`text-xs px-1.5 py-0.5 rounded mt-1 inline-block ${conv.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
-                            {conv.status === "closed" ? "Closed" : "Open"}
+                  <div className="w-56 border-r border-border/40 pr-4 overflow-y-auto space-y-3">
+                    <button
+                      onClick={createNewConversation}
+                      className="w-full px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
+                    >
+                      + New Chat
+                    </button>
+                    
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground mb-2">Conversations</p>
+                      {conversations.length === 0 ? (
+                        <p className="text-xs text-muted-foreground">No conversations yet</p>
+                      ) : (
+                        conversations.map((conv) => (
+                          <div
+                            key={conv.id}
+                            className={`group w-full text-left p-2.5 rounded text-sm transition-colors cursor-pointer ${
+                              selectedConversation === conv.id
+                                ? "bg-primary/10 text-primary font-medium"
+                                : "text-foreground hover:bg-muted/30"
+                            }`}
+                            onClick={() => {
+                              setSelectedConversation(conv.id);
+                              setEditingConvId(null);
+                            }}
+                          >
+                            {editingConvId === conv.id ? (
+                              <input
+                                autoFocus
+                                type="text"
+                                value={editingTitle}
+                                onChange={(e) => setEditingTitle(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    renameConversation(conv.id, editingTitle);
+                                  } else if (e.key === "Escape") {
+                                    setEditingConvId(null);
+                                    setEditingTitle("");
+                                  }
+                                }}
+                                onBlur={() => {
+                                  if (editingTitle.trim()) {
+                                    renameConversation(conv.id, editingTitle);
+                                  } else {
+                                    setEditingConvId(null);
+                                  }
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full px-2 py-1 rounded text-xs bg-white border border-primary text-foreground"
+                              />
+                            ) : (
+                              <>
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="truncate flex-1">{conv.title}</div>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setEditingConvId(conv.id);
+                                      setEditingTitle(conv.title);
+                                    }}
+                                    className="opacity-0 group-hover:opacity-100 text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:bg-muted/70 transition-all"
+                                  >
+                                    Rename
+                                  </button>
+                                </div>
+                                <div className={`text-xs px-1.5 py-0.5 rounded mt-1 inline-block ${conv.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                                  {conv.status === "closed" ? "Closed" : "Open"}
+                                </div>
+                              </>
+                            )}
                           </div>
-                        </button>
-                      ))
-                    )}
+                        ))
+                      )}
+                    </div>
                   </div>
 
                   {/* Chat Content */}

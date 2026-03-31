@@ -566,4 +566,58 @@ router.post("/askimate/chat/:conversationId/reopen", async (req: Request, res: R
   }
 });
 
+// PUT /api/askimate/conversations/:conversationId - Update conversation title
+router.put("/askimate/conversations/:conversationId", async (req: Request, res: Response) => {
+  try {
+    const { conversationId } = req.params;
+    const { title } = req.body as { title: string };
+
+    if (!title || title.trim().length === 0) {
+      res.status(400).json({ error: "Title cannot be empty" });
+      return;
+    }
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Verify user owns this conversation
+    const conversation = await db.query.askimateConversations.findFirst({
+      where: eq(askimateConversations.id, parseInt(conversationId)),
+    });
+
+    if (!conversation || conversation.userId !== userId) {
+      res.status(403).json({ error: "Unauthorised" });
+      return;
+    }
+
+    // Update title
+    const [updated] = await db
+      .update(askimateConversations)
+      .set({ title: title.trim(), updatedAt: new Date() })
+      .where(eq(askimateConversations.id, parseInt(conversationId)))
+      .returning();
+
+    res.json({ success: true, conversation: updated });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Update conversation error:", error);
+    res.status(500).json({ error: "Failed to update conversation" });
+  }
+});
+
 export default router;
