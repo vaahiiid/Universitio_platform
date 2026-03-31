@@ -722,9 +722,9 @@ function AskiMateDashboardContent() {
         </>
       )}
 
-      <div className="flex-1 w-full h-full flex flex-col pt-16 lg:pt-0 lg:flex-row">
+      <div className="flex-1 w-full flex flex-col pt-[60px] lg:pt-0 lg:flex-row overflow-hidden">
         {/* Desktop + Mobile Responsive Layout */}
-        <div className="flex-1 flex gap-0 lg:gap-8 lg:px-8 lg:py-12 lg:max-w-7xl lg:mx-auto w-full h-full">
+        <div className="flex-1 flex gap-0 lg:gap-8 lg:px-8 lg:py-12 lg:max-w-7xl lg:mx-auto w-full overflow-hidden">
           {/* Desktop Sidebar - Always Full on Large Screens, Hidden on Mobile */}
           <div className="hidden lg:flex lg:flex-col lg:w-56 flex-shrink-0">
             <div className="bg-white rounded-xl border border-border/60 sticky top-6 p-6 h-fit">
@@ -780,10 +780,10 @@ function AskiMateDashboardContent() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 space-y-6 overflow-auto">
+          <div className="flex-1 space-y-6 overflow-hidden">
             {/* Profile Tab */}
             {activeTab === "profile" && (
-              <div className="bg-white rounded-xl border border-border/60 p-8">
+              <div className="bg-white rounded-xl border border-border/60 p-8 flex flex-col h-[calc(100vh-60px-2rem)] md:h-[calc(100vh-3rem)] overflow-y-auto">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Profile Settings</h2>
 
                 <form className="space-y-6">
@@ -903,7 +903,7 @@ function AskiMateDashboardContent() {
 
             {/* Chat Tab */}
             {activeTab === "chat" && (
-              <div className="bg-white rounded-xl border border-border/60 p-4 md:p-8 flex flex-col md:h-[calc(100vh-200px)]">
+              <div className="bg-white rounded-xl border border-border/60 p-4 md:p-8 flex flex-col h-[calc(100vh-60px-2rem)] md:h-[calc(100vh-3rem)]">
                 <h2 className="text-2xl font-bold text-foreground mb-4 md:mb-6">Chat</h2>
 
                 <div className="flex gap-6 flex-1 overflow-hidden min-h-0">
@@ -1227,13 +1227,13 @@ function AskiMateDashboardContent() {
                 )}
 
                 {chatLoading && conversations.length === 0 ? (
-                  <div className="flex-1 flex items-center justify-center">
+                  <div className="flex-1 flex items-center justify-center min-h-0">
                     <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                   </div>
                 ) : (
                   <>
                     {/* Messages List - Controlled scrolling on mobile */}
-                    <div ref={messagesContainerRef} className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 min-h-0">
+                    <div ref={messagesContainerRef} className="flex-1 overflow-y-auto space-y-4 pr-2 min-h-0">
                       {messages.length === 0 && !chatLoading && (
                         <div className="flex items-center justify-center h-full text-center">
                           <div>
@@ -1347,7 +1347,7 @@ function AskiMateDashboardContent() {
 
             {/* Subscription Tab */}
             {activeTab === "subscription" && (
-              <div className="bg-white rounded-xl border border-border/60 p-8">
+              <div className="bg-white rounded-xl border border-border/60 p-8 flex flex-col h-[calc(100vh-60px-2rem)] md:h-[calc(100vh-3rem)] overflow-y-auto">
                 <h2 className="text-2xl font-bold text-foreground mb-6">Your Subscription</h2>
 
                 <div className={`p-6 rounded-lg mb-6 border ${

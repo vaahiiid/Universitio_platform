@@ -1,0 +1,167 @@
+Fix the USER chat page so it behaves like a real web app chat screen.
+
+The logo/header should remain visible, but the page must NOT scroll like a normal website page.
+Only the chat message area should scroll.
+
+Do NOT redesign the whole dashboard.
+Do NOT remove the logo/header.
+Do NOT break current chat functionality.
+Do NOT break active/archived chat behavior.
+Do NOT break rename/delete/end chat.
+Do NOT break notifications.
+
+==================================================
+REAL PROBLEM
+==================================================
+
+Current behavior is wrong:
+
+1. The whole PAGE scrolls
+2. The chat itself does NOT behave like an isolated app panel
+3. On mobile and desktop, the page keeps moving down instead of only the chat area scrolling
+4. The chat still visually jumps during fetch/poll/update
+
+This is not acceptable for a web-app chat experience.
+
+==================================================
+GOAL
+==================================================
+
+Make the user chat feel like a real app:
+
+- logo/header stays visible
+- dashboard shell stays stable
+- the page itself does NOT scroll through the whole site/dashboard
+- ONLY the chat messages area scrolls
+- input stays anchored
+- fetch/polling must not visually jump the chat
+
+==================================================
+REQUIRED FIXES
+==================================================
+
+1. PAGE VS CHAT SCROLL SEPARATION
+
+Implement the layout so that:
+
+- the overall page/dashboard shell is stable
+- the chat panel has a fixed usable height
+- ONLY the message list area inside the chat is scrollable
+
+This means:
+- do NOT let the whole page become the scrolling area
+- do NOT let footer/empty page space become part of chat scrolling behavior
+
+2. STABLE CHAT PANEL HEIGHT
+
+Create a proper app-like chat container layout:
+
+- header/logo area stays at top
+- chat container fills the remaining viewport/app area
+- inside chat container:
+  - chat header
+  - messages area (scrollable)
+  - input area (anchored at bottom)
+
+Use a proper flex layout and stable height handling.
+If needed, use:
+- min-h-0
+- flex-1
+- overflow-hidden
+- overflow-y-auto
+- dvh/svh-safe sizing
+
+3. ONLY MESSAGE AREA SCROLLS
+
+The message list itself must be the scroll container.
+Not:
+- body
+- page wrapper
+- entire dashboard content
+
+4. PREVENT FETCH / POLL JUMPING
+
+The chat currently still jumps during fetch/poll/update.
+Fix this.
+
+Requirements:
+- polling must append/merge without remounting the chat container
+- do NOT reset scroll position on fetch
+- do NOT recreate the message scroll container
+- do NOT full-rerender the chat panel
+- preserve the user’s current scroll unless explicitly auto-scrolling for allowed cases
+
+5. KEEP INTENTIONAL AUTO-SCROLL RULES
+
+Preserve the good behavior already intended:
+- if user is near bottom and a relevant new message arrives, allow smooth scroll
+- if user is reading older messages, do NOT force jump
+- after successful self-send, scroll appropriately to latest message
+
+But:
+- fetch itself must never cause visual jumping
+
+6. MOBILE + DESKTOP
+
+Apply this properly on both:
+- desktop
+- mobile
+
+DESKTOP:
+- stable app-shell feel
+- page should not awkwardly scroll through empty space
+
+MOBILE:
+- should feel like a real chat app
+- not like a long page
+- input anchored
+- message list scrollable
+- page itself should stay stable
+
+7. KEEP LOGO / TOP BAR
+
+The logo/top bar should remain.
+But it should be outside the message scroll area.
+It must not participate in chat scrolling.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Keep the logo/top bar
+- Do NOT remove current branding
+- Do NOT redesign unrelated dashboard sections
+- Do NOT touch admin side
+- Do NOT break current user features
+- Focus ONLY on:
+  1. page-vs-chat scroll architecture
+  2. stable chat container
+  3. no fetch jumping
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+After the fix:
+
+- logo stays visible
+- page/dashboard shell feels stable
+- whole page does NOT endlessly scroll through chat area
+- only messages area scrolls
+- input stays anchored
+- fetch/poll updates do NOT make chat jump
+- chat feels like a proper web app panel
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end explain exactly:
+
+1. what was causing page-level scrolling
+2. which container is now the only scrollable area
+3. how the chat panel height is controlled
+4. what caused the fetch/poll jumping
+5. what was changed to stop the jumping
+6. what files were changed
+7. confirm logo/top bar was preserved
