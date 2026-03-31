@@ -418,7 +418,7 @@ function AskiMateDashboardContent() {
 
       return () => clearInterval(interval);
     }
-  }, [selectedConversation, activeTab, toast]);
+  }, [selectedConversation]);
 
   // Auto-scroll to bottom only if user is already near bottom
   useEffect(() => {
