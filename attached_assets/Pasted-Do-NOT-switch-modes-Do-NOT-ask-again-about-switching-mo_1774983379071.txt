@@ -1,0 +1,143 @@
+Do NOT switch modes.
+Do NOT ask again about switching modes.
+Continue in current mode and FIX the issues properly.
+
+You must go deep enough to fix the REAL runtime behavior.
+Do NOT give explanations without actually fixing the problem.
+Do NOT claim success unless it works in the running UI.
+
+==================================================
+FOCUS — ONLY THESE 2 USER-SIDE ISSUES FIRST
+==================================================
+
+Do NOT touch admin redesign yet.
+Do NOT change working features.
+Fix ONLY these two problems completely:
+
+--------------------------------------------------
+ISSUE 1 — USER DOES NOT SEE NEW MESSAGE NOTIFICATION
+--------------------------------------------------
+
+Current problem:
+When the user is NOT inside the chat and admin sends a message:
+- user does NOT notice it
+- no visible reliable notification
+
+This is NOT acceptable.
+
+You must implement a RELIABLE notification that actually works in runtime.
+
+REQUIRED BEHAVIOR:
+When a new admin message arrives AND user is online:
+
+1. SHOW A VISIBLE POPUP
+- A clear red notification popup (bottom-right or bottom-left)
+- must be visually obvious
+- must include:
+  - "New message"
+  - short preview of message
+- must auto-hide after a few seconds OR allow manual close
+
+2. PLAY SOUND
+- play sound exactly once per new message
+- no loops
+- no duplicates
+
+3. WORK OUTSIDE CHAT
+- must trigger when user is in:
+  - Profile
+  - Subscription
+  - any non-chat tab
+
+4. DO NOT RELY ONLY ON BADGE
+- badge alone is NOT enough
+- popup + sound is required
+
+5. NO DUPLICATES
+- one message = one notification
+
+6. MUST WORK IN REAL RUNTIME
+- not just code-level logic
+- verify it actually triggers
+
+If this still fails:
+EXPLAIN EXACTLY WHY (state issue, effect issue, polling issue, etc.)
+
+--------------------------------------------------
+ISSUE 2 — ADMIN MESSAGE LOOKS WRONG UNTIL RE-ENTER
+--------------------------------------------------
+
+Current problem:
+- when admin sends message
+- user sees it immediately BUT UI is wrong
+- when user leaves chat and comes back → it becomes correct
+
+This means:
+→ local render object ≠ fetched object
+
+You MUST fix this at root level.
+
+REQUIRED FIX:
+
+1. SAME MESSAGE SHAPE
+Ensure message object is IDENTICAL in both cases:
+- immediately after send
+- after polling/fetch
+
+Check:
+- id
+- sender / role
+- createdAt
+- content
+- any flags used for styling
+
+2. REMOVE MISMATCH
+- DO NOT use different temporary structures
+- DO NOT use partial objects
+- DO NOT transform differently in different paths
+
+3. FIX RENDER CONDITIONS
+Check:
+- alignment logic (left/right)
+- styling conditions
+- any "isAdmin" / "isUser" flags
+
+4. NO NEED TO RE-ENTER CHAT
+UI must be correct immediately after message arrives
+
+5. VALIDATE IN REAL UI
+- send message from admin
+- see it instantly correct in user UI
+
+If not fixable:
+EXPLAIN EXACT ROOT CAUSE
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign admin panel yet
+- Do NOT break Active / Archived chat model
+- Do NOT break End Chat
+- Do NOT break scroll behavior
+- Do NOT refactor unrelated code
+- Do NOT introduce new bugs
+- Keep changes minimal but correct
+
+==================================================
+DELIVERABLE (MANDATORY)
+==================================================
+
+After implementation, report:
+
+1. EXACT root cause of notification failure
+2. EXACT root cause of admin message UI mismatch
+3. WHAT code was changed (brief)
+4. CONFIRM real runtime behavior:
+   - notification visible outside chat
+   - sound plays once
+   - admin message renders correctly immediately
+
+If ANY part is not working:
+DO NOT say "done"
+Explain exactly why and where it fails

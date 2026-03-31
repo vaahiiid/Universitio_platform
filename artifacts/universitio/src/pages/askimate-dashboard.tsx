@@ -369,48 +369,8 @@ function AskiMateDashboardContent() {
               // On delta poll: only add new messages
               if (newMessages.length === 0) return prev;
               
-              // Process new messages: sound + toast BEFORE marking as known
+              // Mark new messages as known to prevent duplicate processing
               newMessages.forEach((msg: any) => {
-                // Check if incoming BEFORE adding to knownMessageIds
-                if (isIncomingMessage(msg, 'user')) {
-                  // Track the last new message for highlighting
-                  setLastNewMessageId(msg.id);
-                  
-                  // Get the conversation status
-                  const conversation = conversations.find(c => c.id === selectedConversation);
-                  
-                  // Only trigger notifications for ACTIVE conversations
-                  // Archived (closed) conversations don't notify
-                  if (conversation?.status === "open") {
-                    // Only trigger notifications if user is NOT inside the active chat
-                    // If inside chat, show visual feedback instead
-                    if (activeTab !== 'chat' || !selectedConversation) {
-                      playNotificationSound();
-                      
-                      const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
-                      toast({
-                        title: "New message from your mentor",
-                        description: preview,
-                      });
-                      
-                      // Show floating notification popup
-                      setNotificationPopup({ id: msg.id, content: preview });
-                      setTimeout(() => setNotificationPopup(null), 5000);
-                    } else if (activeTab === 'chat') {
-                      // Inside chat: show button to scroll to new message if not near bottom
-                      const container = messagesContainerRef.current;
-                      if (container) {
-                        const isNearBottom = 
-                          container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-                        if (!isNearBottom) {
-                          setShowNewMessageButton(true);
-                        }
-                      }
-                    }
-                  }
-                }
-                
-                // NOW mark as known (after notification check)
                 knownMessageIds.current.add(msg.id);
               });
               
@@ -450,6 +410,34 @@ function AskiMateDashboardContent() {
       return () => clearInterval(interval);
     }
   }, [selectedConversation]);
+
+  // Show notification for new mentor messages when user is NOT in chat tab
+  useEffect(() => {
+    if (!selectedConversation || activeTab === 'chat') return;
+    
+    // Find the last message if any mentor messages exist
+    const lastMentorMessage = [...messages].reverse().find(msg => msg.sender === 'mentor');
+    
+    if (lastMentorMessage && lastMentorMessage.id !== lastNewMessageId) {
+      // This is a new mentor message
+      setLastNewMessageId(lastMentorMessage.id);
+      
+      // Play sound and show notifications
+      const preview = lastMentorMessage.content.length > 50 
+        ? lastMentorMessage.content.substring(0, 50) + '...' 
+        : lastMentorMessage.content;
+      
+      playNotificationSound();
+      toast({
+        title: "New message from your mentor",
+        description: preview,
+      });
+      
+      // Show floating notification popup
+      setNotificationPopup({ id: lastMentorMessage.id, content: preview });
+      setTimeout(() => setNotificationPopup(null), 5000);
+    }
+  }, [messages, selectedConversation, activeTab, lastNewMessageId]);
 
   // Auto-scroll to bottom only if user is already near bottom
   useEffect(() => {
