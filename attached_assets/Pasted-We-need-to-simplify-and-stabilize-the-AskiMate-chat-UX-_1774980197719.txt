@@ -1,0 +1,54 @@
+We need to simplify and stabilize the AskiMate chat UX by introducing a clearer conversation lifecycle.
+
+Do NOT redesign the whole system.
+Do NOT break existing message sending, polling, admin reply flow, or security.
+Do NOT change working backend architecture unless minimally necessary.
+
+Implement the following UX model cleanly:
+
+1. ACTIVE CHAT + ARCHIVE MODEL
+- User can create a new chat
+- User can end a chat
+- When a chat is ended, it must move to an Archived Chats section
+- Archived chats must be read-only
+- Active chats remain in the main chat list
+
+2. CHAT LIST STRUCTURE
+- Separate the user chat list into:
+  - Active Chats
+  - Archived Chats
+- Archived chats should not behave like active chats
+- Active and archived chats must be visually distinct
+
+3. NOTIFICATION RULES
+- When user is OUTSIDE the active chat (e.g. Profile/Subscription):
+  - if a new mentor message arrives for an active open chat:
+    - show toast
+    - play sound
+    - update unread badge next to Chat
+- When user is INSIDE the active chat:
+  - do NOT rely on toast/sound
+  - show the new message in the chat immediately
+  - if user is scrolled up, show a “↓ New message” indicator
+
+4. ARCHIVED CHAT RULES
+- Archived chats must not trigger active-chat notification behavior
+- Archived chats remain viewable but read-only
+- If reopening is supported, only do it in a clean explicit way
+- Otherwise user should create a new chat instead of reusing archived ones
+
+5. ADMIN SIDE
+- Admin should clearly see whether a conversation is active or archived/closed
+- Admin notifications should focus on active chats only
+- Do NOT duplicate messages
+- Do NOT break current admin send flow
+
+6. KEEP CURRENT WORKING FEATURES
+- Preserve current message logic
+- Preserve unread count source of truth
+- Preserve polling system
+- Preserve ownership validation
+- Preserve open/closed chat controls where still needed
+
+Goal:
+Make chat behavior predictable, clean, and stable by simplifying the conversation lifecycle and separating active chats from archived chats.

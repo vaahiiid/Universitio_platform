@@ -233,24 +233,28 @@ function ChatView({
             // Track the last new message for highlighting
             setLastNewMessageId(msg.id);
             
-            // Only trigger notifications if admin is NOT inside this conversation
-            // If inside conversation, show visual feedback instead
-            if (!conversation) {
-              playNotificationSound();
-              
-              const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
-              toast({
-                title: `New message from ${user.firstName} ${user.lastName}`,
-                description: preview,
-              });
-            } else {
-              // Inside conversation: show button to scroll to new message if not near bottom
-              const container = messagesContainerRef.current;
-              if (container) {
-                const isNearBottom = 
-                  container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-                if (!isNearBottom) {
-                  setShowNewMessageButton(true);
+            // Only trigger notifications for ACTIVE conversations
+            // Archived (closed) conversations don't notify
+            if (conversation?.status === "open") {
+              // Only trigger notifications if admin is NOT inside this conversation
+              // If inside conversation, show visual feedback instead
+              if (!conversation) {
+                playNotificationSound();
+                
+                const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+                toast({
+                  title: `New message from ${user.firstName} ${user.lastName}`,
+                  description: preview,
+                });
+              } else {
+                // Inside conversation: show button to scroll to new message if not near bottom
+                const container = messagesContainerRef.current;
+                if (container) {
+                  const isNearBottom = 
+                    container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+                  if (!isNearBottom) {
+                    setShowNewMessageButton(true);
+                  }
                 }
               }
             }
@@ -381,8 +385,8 @@ Sending request...
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-bold text-foreground">{conversation.title}</h2>
-            <span className={`text-xs px-2 py-1 rounded ${conversation.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
-              {conversation.status === "closed" ? "Closed" : "Open"}
+            <span className={`text-xs px-2 py-1 rounded ${conversation.status === "closed" ? "bg-amber-100 text-amber-700" : "bg-green-100 text-green-700"}`}>
+              {conversation.status === "closed" ? "Archived" : "Active"}
             </span>
           </div>
           <p className="text-xs text-muted-foreground">{conversation.questionCount} questions</p>
@@ -487,34 +491,41 @@ Sending request...
         )}
       </div>
 
-      {/* Reply Input */}
+      {/* Reply Input - Disabled for archived conversations */}
       <div className="bg-white rounded-xl border border-border/60 p-4">
-        <div className="flex gap-3">
-          <textarea
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey && !sending) {
-                e.preventDefault();
-                handleSendReply();
-              }
-            }}
-            placeholder="Reply as mentor... (Enter to send, Shift+Enter for new line)"
-            rows={2}
-            className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
-          />
-          <Button
-            onClick={handleSendReply}
-            disabled={!replyText.trim() || sending}
-            className="bg-primary hover:bg-primary/90 text-white self-end"
-          >
-            {sending ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Send className="w-4 h-4" />
-            )}
-          </Button>
-        </div>
+        {conversation.status === "open" ? (
+          <div className="flex gap-3">
+            <textarea
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && !sending) {
+                  e.preventDefault();
+                  handleSendReply();
+                }
+              }}
+              placeholder="Reply as mentor... (Enter to send, Shift+Enter for new line)"
+              rows={2}
+              className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
+              disabled={sending}
+            />
+            <Button
+              onClick={handleSendReply}
+              disabled={!replyText.trim() || sending}
+              className="bg-primary hover:bg-primary/90 text-white self-end"
+            >
+              {sending ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
+            </Button>
+          </div>
+        ) : (
+          <div className="text-xs text-muted-foreground text-center py-2">
+            This archived conversation is read-only.
+          </div>
+        )}
       </div>
     </div>
   );

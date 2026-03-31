@@ -375,24 +375,31 @@ function AskiMateDashboardContent() {
                   // Track the last new message for highlighting
                   setLastNewMessageId(msg.id);
                   
-                  // Only trigger notifications if user is NOT inside the active chat
-                  // If inside chat, show visual feedback instead
-                  if (activeTab !== 'chat' || !selectedConversation) {
-                    playNotificationSound();
-                    
-                    const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
-                    toast({
-                      title: "New message from your mentor",
-                      description: preview,
-                    });
-                  } else if (activeTab === 'chat') {
-                    // Inside chat: show button to scroll to new message if not near bottom
-                    const container = messagesContainerRef.current;
-                    if (container) {
-                      const isNearBottom = 
-                        container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-                      if (!isNearBottom) {
-                        setShowNewMessageButton(true);
+                  // Get the conversation status
+                  const conversation = conversations.find(c => c.id === selectedConversation);
+                  
+                  // Only trigger notifications for ACTIVE conversations
+                  // Archived (closed) conversations don't notify
+                  if (conversation?.status === "open") {
+                    // Only trigger notifications if user is NOT inside the active chat
+                    // If inside chat, show visual feedback instead
+                    if (activeTab !== 'chat' || !selectedConversation) {
+                      playNotificationSound();
+                      
+                      const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+                      toast({
+                        title: "New message from your mentor",
+                        description: preview,
+                      });
+                    } else if (activeTab === 'chat') {
+                      // Inside chat: show button to scroll to new message if not near bottom
+                      const container = messagesContainerRef.current;
+                      if (container) {
+                        const isNearBottom = 
+                          container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+                        if (!isNearBottom) {
+                          setShowNewMessageButton(true);
+                        }
                       }
                     }
                   }
@@ -801,49 +808,48 @@ function AskiMateDashboardContent() {
                     </button>
                     
                     <div>
-                      <p className="text-xs font-semibold text-muted-foreground mb-2">Conversations</p>
-                      {conversations.length === 0 ? (
-                        <p className="text-xs text-muted-foreground">No conversations yet</p>
-                      ) : (
-                        conversations.map((conv) => (
-                          <div
-                            key={conv.id}
-                            className={`group w-full text-left p-2.5 rounded text-sm transition-colors cursor-pointer ${
-                              selectedConversation === conv.id
-                                ? "bg-primary/10 text-primary font-medium"
-                                : "text-foreground hover:bg-muted/30"
-                            }`}
-                            onClick={() => {
-                              setSelectedConversation(conv.id);
-                              setEditingConvId(null);
-                            }}
-                          >
-                            {editingConvId === conv.id ? (
-                              <input
-                                autoFocus
-                                type="text"
-                                value={editingTitle}
-                                onChange={(e) => setEditingTitle(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter") {
-                                    renameConversation(conv.id, editingTitle);
-                                  } else if (e.key === "Escape") {
-                                    setEditingConvId(null);
-                                    setEditingTitle("");
-                                  }
-                                }}
-                                onBlur={() => {
-                                  if (editingTitle.trim()) {
-                                    renameConversation(conv.id, editingTitle);
-                                  } else {
-                                    setEditingConvId(null);
-                                  }
-                                }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="w-full px-2 py-1 rounded text-xs bg-white border border-primary text-foreground"
-                              />
-                            ) : (
-                              <>
+                      {/* Active Chats */}
+                      {conversations.filter(c => c.status === "open").length > 0 && (
+                        <div>
+                          <p className="text-xs font-semibold text-muted-foreground mb-2">Active Chats</p>
+                          {conversations.filter(c => c.status === "open").map((conv) => (
+                            <div
+                              key={conv.id}
+                              className={`group w-full text-left p-2.5 rounded text-sm transition-colors cursor-pointer ${
+                                selectedConversation === conv.id
+                                  ? "bg-primary/10 text-primary font-medium"
+                                  : "text-foreground hover:bg-muted/30"
+                              }`}
+                              onClick={() => {
+                                setSelectedConversation(conv.id);
+                                setEditingConvId(null);
+                              }}
+                            >
+                              {editingConvId === conv.id ? (
+                                <input
+                                  autoFocus
+                                  type="text"
+                                  value={editingTitle}
+                                  onChange={(e) => setEditingTitle(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                      renameConversation(conv.id, editingTitle);
+                                    } else if (e.key === "Escape") {
+                                      setEditingConvId(null);
+                                      setEditingTitle("");
+                                    }
+                                  }}
+                                  onBlur={() => {
+                                    if (editingTitle.trim()) {
+                                      renameConversation(conv.id, editingTitle);
+                                    } else {
+                                      setEditingConvId(null);
+                                    }
+                                  }}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="w-full px-2 py-1 rounded text-xs bg-white border border-primary text-foreground"
+                                />
+                              ) : (
                                 <div className="flex items-center justify-between gap-2">
                                   <div className="truncate flex-1">{conv.title}</div>
                                   <button
@@ -857,13 +863,40 @@ function AskiMateDashboardContent() {
                                     Rename
                                   </button>
                                 </div>
-                                <div className={`text-xs px-1.5 py-0.5 rounded mt-1 inline-block ${conv.status === "closed" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
-                                  {conv.status === "closed" ? "Closed" : "Open"}
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        ))
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Archived Chats */}
+                      {conversations.filter(c => c.status === "closed").length > 0 && (
+                        <div className="mt-4">
+                          <p className="text-xs font-semibold text-muted-foreground mb-2">Archived Chats</p>
+                          {conversations.filter(c => c.status === "closed").map((conv) => (
+                            <div
+                              key={conv.id}
+                              className={`group w-full text-left p-2.5 rounded text-sm transition-colors cursor-pointer opacity-60 ${
+                                selectedConversation === conv.id
+                                  ? "bg-primary/10 text-primary font-medium"
+                                  : "text-foreground hover:bg-muted/30"
+                              }`}
+                              onClick={() => {
+                                setSelectedConversation(conv.id);
+                                setEditingConvId(null);
+                              }}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="truncate flex-1">{conv.title}</div>
+                                <span className="text-xs bg-muted/50 text-muted-foreground px-1.5 py-0.5 rounded">Archived</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {conversations.length === 0 && (
+                        <p className="text-xs text-muted-foreground">No conversations yet</p>
                       )}
                     </div>
                   </div>
@@ -879,7 +912,7 @@ function AskiMateDashboardContent() {
                               {conversations.find(c => c.id === selectedConversation)?.title}
                             </h3>
                             <p className="text-xs text-muted-foreground mt-0.5">
-                              {conversations.find(c => c.id === selectedConversation)?.status === "closed" ? "Closed" : "Open"}
+                              {conversations.find(c => c.id === selectedConversation)?.status === "closed" ? "Archived" : "Active"}
                             </p>
                           </div>
                           {conversations.find(c => c.id === selectedConversation)?.status === "open" && (
@@ -898,24 +931,25 @@ function AskiMateDashboardContent() {
                                   if (res.ok) {
                                     const data = await res.json();
                                     setConversations(data.conversations || []);
+                                    setSelectedConversation(null);
                                   }
                                 } catch (err) {
-                                  console.error("Failed to close conversation:", err);
+                                  console.error("Failed to end conversation:", err);
                                 }
                               }}
-                              className="text-xs text-red-600 hover:text-red-700 font-medium"
+                              className="text-xs text-amber-600 hover:text-amber-700 font-medium"
                             >
-                              Close
+                              End Chat
                             </button>
                           )}
                         </div>
                       </div>
                     )}
 
-                    {/* Closed Conversation Banner */}
+                    {/* Archived Conversation Banner */}
                     {selectedConversation && conversations.find(c => c.id === selectedConversation)?.status === "closed" && (
-                      <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-xs text-red-700 font-medium">This conversation has been closed</p>
+                      <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <p className="text-xs text-amber-900 font-medium">This chat is archived. Create a new chat to continue the conversation.</p>
                       </div>
                     )}
 
@@ -999,34 +1033,40 @@ function AskiMateDashboardContent() {
                       )}
                     </div>
 
-                    {/* Input Area */}
-                    <div className="flex gap-3 pt-4 border-t border-border/40">
-                      <input
-                        type="text"
-                        value={messageInput}
-                        onChange={(e) => setMessageInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey && !sending) {
-                            e.preventDefault();
-                            handleSendMessage();
-                          }
-                        }}
-                        placeholder="Type your question... (Enter to send)"
-                        className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
-                        disabled={sending}
-                      />
-                      <Button
-                        onClick={handleSendMessage}
-                        disabled={!messageInput.trim() || sending}
-                        className="bg-primary hover:bg-primary/90 text-white"
-                      >
-                        {sending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Send className="w-4 h-4" />
-                        )}
-                      </Button>
-                    </div>
+                    {/* Input Area - Disabled for archived chats */}
+                    {conversations.find(c => c.id === selectedConversation)?.status === "open" ? (
+                      <div className="flex gap-3 pt-4 border-t border-border/40">
+                        <input
+                          type="text"
+                          value={messageInput}
+                          onChange={(e) => setMessageInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey && !sending) {
+                              e.preventDefault();
+                              handleSendMessage();
+                            }
+                          }}
+                          placeholder="Type your question... (Enter to send)"
+                          className="flex-1 border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+                          disabled={sending}
+                        />
+                        <Button
+                          onClick={handleSendMessage}
+                          disabled={!messageInput.trim() || sending}
+                          className="bg-primary hover:bg-primary/90 text-white"
+                        >
+                          {sending ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Send className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="pt-4 text-xs text-muted-foreground text-center">
+                        This archived chat is read-only. Create a new chat to continue.
+                      </div>
+                    )}
                   </>
                 )}
                   </div>
