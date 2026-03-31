@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send } from "lucide-react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMessages, isIncomingMessage } from "@/utils/askimate-realtime";
 
 function AskiMateDashboardContent() {
   const { user, logout } = useAskiMateAuth();
+  const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<"profile" | "chat" | "subscription">("chat");
   const [profileData, setProfileData] = useState({
@@ -27,6 +29,7 @@ function AskiMateDashboardContent() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
 
   // Chat state
   const [conversations, setConversations] = useState<any[]>([]);
@@ -340,10 +343,22 @@ function AskiMateDashboardContent() {
               const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
               if (incomingNew.length === 0) return prev;
               
-              // Play notification sound for incoming mentor messages
+              // Play notification sound and show toast for incoming mentor messages
               incomingNew.forEach((msg: any) => {
-                if (isIncomingMessage(msg, 'user')) {
+                if (isIncomingMessage(msg, 'user') && !notifiedMessageIds.has(msg.id)) {
                   playNotificationSound();
+                  
+                  // Show toast notification with message preview (only show if not in chat tab)
+                  if (activeTab !== 'chat') {
+                    const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+                    toast({
+                      title: "New message from your mentor",
+                      description: preview,
+                    });
+                  }
+                  
+                  // Mark as notified
+                  setNotifiedMessageIds((prev) => new Set([...prev, msg.id]));
                 }
               });
               

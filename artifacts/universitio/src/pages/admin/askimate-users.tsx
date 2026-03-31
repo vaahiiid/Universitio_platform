@@ -4,6 +4,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Search, Download, MessageSquare, ChevronRight, Loader2, Zap, ArrowLeft, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 import { playNotificationSound, getLastMessageId, fetchNewMessages, mergeNewMessages, isIncomingMessage } from "@/utils/askimate-realtime";
 
 interface AskiMateUserData {
@@ -140,7 +141,7 @@ function UserListRow({ user, onSelect }: { user: AskiMateUserData; onSelect: (us
           </div>
           <div className="text-right hidden md:block min-w-20">
             {hasUnread && (
-              <p className="text-sm font-bold text-blue-600">{user.unreadCount} unread</p>
+              <p className="text-sm font-bold text-blue-600 animate-pulse">{user.unreadCount} unread</p>
             )}
             <p className="text-sm font-medium text-foreground">{user.conversationCount}</p>
             <p className="text-xs text-muted-foreground">conversations</p>
@@ -161,6 +162,7 @@ function ChatView({
   conversation: Conversation;
   onBack: () => void;
 }) {
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState("");
@@ -168,6 +170,7 @@ function ChatView({
   const [error, setError] = useState("");
   const [lastMessageId, setLastMessageId] = useState<number | null>(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom only on new messages (not on every poll)
@@ -207,10 +210,20 @@ function ChatView({
         const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
         if (incomingNew.length === 0) return prev;
         
-        // Play notification sound for incoming user messages
+        // Play notification sound and show toast for incoming user messages
         incomingNew.forEach((msg: any) => {
-          if (isIncomingMessage(msg, 'admin')) {
+          if (isIncomingMessage(msg, 'admin') && !notifiedMessageIds.has(msg.id)) {
             playNotificationSound();
+            
+            // Show toast notification with message preview
+            const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
+            toast({
+              title: `New message from ${user.firstName} ${user.lastName}`,
+              description: preview,
+            });
+            
+            // Mark as notified
+            setNotifiedMessageIds((prev) => new Set([...prev, msg.id]));
           }
         });
         
@@ -228,7 +241,7 @@ function ChatView({
     } finally {
       if (!isDelta) setLoading(false);
     }
-  }, [conversation.id, lastMessageId]);
+  }, [conversation.id, lastMessageId, notifiedMessageIds, user.firstName, user.lastName, toast]);
 
   useEffect(() => {
     fetchMessages();
@@ -612,7 +625,7 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
                           {conv.status === "closed" ? "Closed" : "Open"}
                         </span>
                         {hasUnread && (
-                          <span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">
+                          <span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold animate-pulse">
                             {conv.unreadCount} unread
                           </span>
                         )}
@@ -739,7 +752,7 @@ export default function AskiMateUsersAdmin() {
             <div className="flex items-center gap-3">
               <h1 className="text-3xl font-bold text-foreground">AskiMate AI Users</h1>
               {unreadCount > 0 && (
-                <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-bold text-white bg-red-600 rounded-full">
+                <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-bold text-white bg-red-600 rounded-full animate-pulse">
                   {unreadCount > 99 ? "99+" : unreadCount} unread
                 </span>
               )}

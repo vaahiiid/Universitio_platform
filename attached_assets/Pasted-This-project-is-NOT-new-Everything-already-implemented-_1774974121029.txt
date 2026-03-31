@@ -1,0 +1,84 @@
+This project is NOT new. Everything already implemented must be preserved.
+
+We are continuing the existing Universitio + AskiMate system.
+Do NOT redesign the system.
+Do NOT rebuild from scratch.
+Do NOT remove existing logic.
+
+This phase improves REAL-TIME FEEL and ADMIN ATTENTION UX without introducing heavy infrastructure.
+
+==================================================
+GOAL
+==================================================
+
+Make the system feel alive and responsive by improving notification visibility and immediacy for BOTH user and admin.
+
+This is NOT about WebSockets.
+This is about UX-level real-time perception.
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. Admin Live Attention Feedback
+- When a new user message arrives:
+  - show a subtle toast notification
+  - include user name and short message preview
+- Only trigger when admin is not currently inside that exact conversation
+
+2. Admin Visual Alert Enhancements
+- Add subtle pulse or animation to:
+  - users with unread messages
+  - global unread badge
+- Must not be distracting or aggressive
+
+3. User Notification Improvements
+- When mentor sends a message:
+  - show toast notification (not just sound)
+  - include short preview
+- Must work even if user is in Profile or Subscription tab
+
+4. Prevent Notification Spam
+- Do NOT show duplicate toasts for same message
+- Do NOT trigger on initial load
+- Do NOT trigger on historical messages
+
+5. Improve Perceived Real-Time
+- When delta polling fetches new messages:
+  - trigger UI feedback immediately
+  - no delay between detection and visual response
+
+6. Lightweight Implementation Only
+- Use existing polling system
+- Do NOT introduce WebSocket or SSE
+- Do NOT add heavy backend logic
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT change backend structure
+- Do NOT modify conversation logic
+- Do NOT break unread system
+- Do NOT break admin panel structure
+- Only enhance UX feedback layer
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+- Admin instantly notices new messages (toast + highlight)
+- User sees clear notification when mentor replies
+- System feels alive, not passive
+- No spam, no duplicate alerts
+- Works within existing architecture
+
+==================================================
+DELIVERABLE
+==================================================
+
+Explain:
+1. how toast notifications are triggered
+2. how duplicates are prevented
+3. how message previews are generated
+4. how UI animations were implemented
