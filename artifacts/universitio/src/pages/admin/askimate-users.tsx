@@ -168,6 +168,7 @@ function ChatView({
   const [replyText, setReplyText] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   // Message detection: single source of truth for message identity
@@ -180,19 +181,23 @@ function ChatView({
     knownMessageIds.current.clear();
   }, [conversation.id]);
 
-  // Auto-scroll to bottom only on new messages (not on every poll)
+  // Auto-scroll to bottom only if user is already near bottom
   useEffect(() => {
-    const messagesContainer = document.querySelector('[class*="overflow-y-auto"]');
-    if (messagesContainer) {
-      const isNearBottom = 
-        messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 100;
-      if (isNearBottom || messages.length === 1) { // Scroll if new message or first message
-        setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      }
+    if (!messagesContainerRef.current) return;
+    
+    const container = messagesContainerRef.current;
+    // Check if user is already near bottom (within 100px of bottom)
+    const isNearBottom = 
+      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+    
+    // Only scroll if near bottom OR it's the first message (user needs initial context)
+    if (isNearBottom || messages.length === 1) {
+      // Use requestAnimationFrame to ensure DOM is fully updated before scrolling
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      });
     }
-  }, [messages.length]); // Only trigger on length change, not full array change
+  }, [messages.length]);
 
   const fetchMessages = useCallback(async (isInitial: boolean = true) => {
     if (isInitial) setLoading(true);
@@ -397,7 +402,7 @@ Sending request...
       </div>
 
       {/* Messages Container */}
-      <div className="bg-white rounded-xl border border-border/60 flex-1 overflow-y-auto p-6 space-y-4">
+      <div ref={messagesContainerRef} className="bg-white rounded-xl border border-border/60 flex-1 overflow-y-auto p-6 space-y-4">
         {error && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
             <p className="text-sm font-medium text-red-700">{error}</p>

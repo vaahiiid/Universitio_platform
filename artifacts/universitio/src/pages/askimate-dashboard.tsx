@@ -43,6 +43,7 @@ function AskiMateDashboardContent() {
   
   // Message detection: single source of truth for message identity
   const knownMessageIds = useRef<Set<number>>(new Set());
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
@@ -418,20 +419,23 @@ function AskiMateDashboardContent() {
     }
   }, [selectedConversation, activeTab, toast]);
 
-  // Auto-scroll to bottom only on new messages (not on every poll)
+  // Auto-scroll to bottom only if user is already near bottom
   useEffect(() => {
-    // Check if user is already near bottom
-    const messagesContainer = document.querySelector('[class*="overflow-y-auto"]');
-    if (messagesContainer) {
-      const isNearBottom = 
-        messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 100;
-      if (isNearBottom || messages.length === 1) { // Scroll if new message or first message
-        setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      }
+    if (!messagesContainerRef.current) return;
+    
+    const container = messagesContainerRef.current;
+    // Check if user is already near bottom (within 100px of bottom)
+    const isNearBottom = 
+      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+    
+    // Only scroll if near bottom OR it's the first message (user needs initial context)
+    if (isNearBottom || messages.length === 1) {
+      // Use requestAnimationFrame to ensure DOM is fully updated before scrolling
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      });
     }
-  }, [messages.length]); // Only trigger on length change, not full array change
+  }, [messages.length]);
 
   // Fetch unread count - single source of truth for unread state
   // Called on mount, every 3 seconds as fallback, and immediately after mark-read
@@ -914,7 +918,7 @@ function AskiMateDashboardContent() {
                 ) : (
                   <>
                     {/* Messages List */}
-                    <div className="flex-1 overflow-y-auto mb-6 space-y-4 pr-2">
+                    <div ref={messagesContainerRef} className="flex-1 overflow-y-auto mb-6 space-y-4 pr-2">
                       {messages.length === 0 && !chatLoading && (
                         <div className="flex items-center justify-center h-full text-center">
                           <div>
