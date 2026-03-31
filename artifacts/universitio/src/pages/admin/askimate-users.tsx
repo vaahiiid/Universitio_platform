@@ -221,6 +221,9 @@ function ChatView({
         await apiFetch(`/admin/askimate-conversations/${conversation.id}/mark-read`, {
           method: "POST",
         });
+        // Immediately refresh unread count so badge clears right away
+        // (instead of waiting up to 3 seconds for fallback polling)
+        setTimeout(() => fetchUnreadCount(), 100);
       } catch (err) {
         console.error("Failed to mark messages as read:", err);
       }
@@ -634,17 +637,19 @@ export default function AskiMateUsersAdmin() {
     fetchUsers(1);
   }, [search, fetchUsers]);
 
-  // Poll unread count every 3 seconds
-  useEffect(() => {
-    const fetchUnreadCount = async () => {
-      try {
-        const response = await apiFetch<{ unreadCount: number }>("/admin/unread-count");
-        setUnreadCount(response.unreadCount || 0);
-      } catch (err) {
-        console.error("Failed to fetch unread count:", err);
-      }
-    };
+  // Fetch unread count - single source of truth for admin unread state
+  // Called on mount, every 3 seconds as fallback, and immediately after mark-read
+  const fetchUnreadCount = async () => {
+    try {
+      const response = await apiFetch<{ unreadCount: number }>("/admin/unread-count");
+      setUnreadCount(response.unreadCount || 0);
+    } catch (err) {
+      console.error("Failed to fetch unread count:", err);
+    }
+  };
 
+  // Poll unread count every 3 seconds as fallback
+  useEffect(() => {
     const interval = setInterval(fetchUnreadCount, 3000);
     fetchUnreadCount(); // Fetch immediately on mount
     return () => clearInterval(interval);

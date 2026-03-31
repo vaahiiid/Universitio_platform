@@ -251,11 +251,9 @@ function AskiMateDashboardContent() {
                 }
               });
               
-              // Update unread count for incoming messages
-              const unreadIncoming = incomingNew.filter((msg: any) => msg.sender === 'mentor' && !msg.isRead);
-              if (unreadIncoming.length > 0) {
-                setUnreadCount((prev) => prev + unreadIncoming.length);
-              }
+              // Note: Do NOT update unread count here. The server-based polling (3s interval)
+              // is the single source of truth to prevent double counting. Sound plays here, but
+              // unread count is fetched from server to ensure consistency.
               
               // Update last message ID
               const newLastId = getLastMessageId(incomingNew);
@@ -280,6 +278,9 @@ function AskiMateDashboardContent() {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
           });
+          // Immediately refresh unread count so badge clears right away
+          // (instead of waiting up to 3 seconds for fallback polling)
+          setTimeout(() => fetchUnreadCount(), 100);
         } catch (error) {
           console.error("Failed to mark as read:", error);
         }
@@ -313,27 +314,29 @@ function AskiMateDashboardContent() {
     }
   }, [messages.length]); // Only trigger on length change, not full array change
 
-  // Poll unread count every 3 seconds
-  useEffect(() => {
-    const fetchUnreadCount = async () => {
-      try {
-        const token = localStorage.getItem("askimate_token");
-        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/unread-count`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUnreadCount(data.unreadCount || 0);
-        }
-      } catch (error) {
-        console.error("Failed to fetch unread count:", error);
+  // Fetch unread count - single source of truth for unread state
+  // Called on mount, every 3 seconds as fallback, and immediately after mark-read
+  const fetchUnreadCount = async () => {
+    try {
+      const token = localStorage.getItem("askimate_token");
+      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/unread-count`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUnreadCount(data.unreadCount || 0);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch unread count:", error);
+    }
+  };
 
+  // Poll unread count every 3 seconds as fallback
+  useEffect(() => {
     const interval = setInterval(fetchUnreadCount, 3000);
     fetchUnreadCount(); // Fetch immediately on mount
     return () => clearInterval(interval);
-  }, [activeTab]);
+  }, []);
 
   const handleSendMessage = async () => {
     if (!messageInput.trim() || !user) return;
