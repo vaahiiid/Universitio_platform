@@ -44,10 +44,18 @@ function AskiMateDashboardContent() {
   const [initialLoadDone, setInitialLoadDone] = useState(false);
   const [editingConvId, setEditingConvId] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState("");
+  const [lastPlayedSoundId, setLastPlayedSoundId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleProfileChange = (field: string, value: unknown) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Format message timestamp
+  const formatMessageTime = (date: string | Date | null) => {
+    if (!date) return "";
+    const d = typeof date === "string" ? new Date(date) : date;
+    return d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false });
   };
 
   // Track notifications safely without unbounded growth
@@ -303,7 +311,7 @@ function AskiMateDashboardContent() {
     return { plan: "Free", status: "Basic Mentoring" };
   };
 
-  // Load conversations when chat tab opens
+  // Load conversations when chat tab opens and poll for new ones
   useEffect(() => {
     if (activeTab === "chat" && user) {
       const loadConversations = async () => {
@@ -327,8 +335,24 @@ function AskiMateDashboardContent() {
         }
       };
       loadConversations();
+      
+      // Poll for new conversations every 5 seconds
+      const interval = setInterval(loadConversations, 5000);
+      return () => clearInterval(interval);
     }
-  }, [activeTab, user]);
+  }, [activeTab, user, selectedConversation]);
+
+  // Reset state when conversation changes (prevent state leaking between conversations)
+  useEffect(() => {
+    if (selectedConversation) {
+      setMessages([]);
+      setLastMessageId(null);
+      setInitialLoadDone(false);
+      setMessageInput("");
+      setNotifiedMessageIds(new Set());
+      setLastPlayedSoundId(null);
+    }
+  }, [selectedConversation]);
 
   // Load messages when conversation is selected
   useEffect(() => {
@@ -357,10 +381,14 @@ function AskiMateDashboardContent() {
               const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
               if (incomingNew.length === 0) return prev;
               
-              // Play notification sound and show toast for incoming mentor messages
+              // Play notification sound and show toast for incoming mentor messages (ONCE per message)
               incomingNew.forEach((msg: any) => {
                 if (isIncomingMessage(msg, 'user') && !notifiedMessageIds.has(msg.id)) {
-                  playNotificationSound();
+                  // CRITICAL: Only play sound if we haven't played it for this message yet
+                  if (lastPlayedSoundId !== msg.id) {
+                    playNotificationSound();
+                    setLastPlayedSoundId(msg.id);
+                  }
                   
                   // Show toast notification with message preview (only show if not in chat tab)
                   if (activeTab !== 'chat') {
@@ -951,6 +979,13 @@ function AskiMateDashboardContent() {
                             >
                               {msg.content}
                             </div>
+                            <p className={`text-xs mt-1 ${
+                              msg.sender === "user"
+                                ? "text-muted-foreground text-right"
+                                : "text-muted-foreground"
+                            }`}>
+                              {formatMessageTime(msg.createdAt)}
+                            </p>
                           </div>
                         </div>
                       ))}

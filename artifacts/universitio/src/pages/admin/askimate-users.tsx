@@ -171,12 +171,18 @@ function ChatView({
   const [lastMessageId, setLastMessageId] = useState<number | null>(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
   const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
+  const [lastPlayedSoundId, setLastPlayedSoundId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const MAX_NOTIFIED_IDS = 150; // Prevent unbounded Set growth
 
-  // Reset notification tracking when conversation changes
+  // Reset notification tracking when conversation changes (prevent state leaking)
   useEffect(() => {
+    setMessages([]);
     setNotifiedMessageIds(new Set());
+    setLastPlayedSoundId(null);
+    setLastMessageId(null);
+    setInitialLoadDone(false);
+    setReplyText("");
   }, [conversation.id]);
 
   // Track notifications safely without unbounded growth
@@ -229,10 +235,14 @@ function ChatView({
         const incomingNew = allMessages.filter((msg: any) => msg.id > (lastMessageId || 0));
         if (incomingNew.length === 0) return prev;
         
-        // Play notification sound and show toast for incoming user messages
+        // Play notification sound and show toast for incoming user messages (ONCE per message)
         incomingNew.forEach((msg: any) => {
           if (isIncomingMessage(msg, 'admin') && !notifiedMessageIds.has(msg.id)) {
-            playNotificationSound();
+            // CRITICAL: Only play sound if we haven't played it for this message yet
+            if (lastPlayedSoundId !== msg.id) {
+              playNotificationSound();
+              setLastPlayedSoundId(msg.id);
+            }
             
             // Show toast notification with message preview
             const preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content;
@@ -260,7 +270,7 @@ function ChatView({
     } finally {
       if (!isDelta) setLoading(false);
     }
-  }, [conversation.id, lastMessageId, notifiedMessageIds, user.firstName, user.lastName, toast]);
+  }, [conversation.id, lastMessageId, notifiedMessageIds, user.firstName, user.lastName, toast, lastPlayedSoundId]);
 
   useEffect(() => {
     fetchMessages();
@@ -518,6 +528,10 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
     };
 
     fetchConversations();
+    
+    // Poll for new conversations every 5 seconds (real-time visibility)
+    const interval = setInterval(fetchConversations, 5000);
+    return () => clearInterval(interval);
   }, [user.id]);
 
   if (selectedConversation) {
