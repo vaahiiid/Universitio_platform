@@ -159,14 +159,26 @@ function ChatView({
   const fetchMessages = useCallback(async () => {
     setLoading(true);
     try {
-      console.log(`[ADMIN] Fetching messages for conversation ${conversation.id}`);
+      console.log(`
+==== [ADMIN] CONVERSATION DEBUG ====
+conversationId: ${conversation.id}
+conversationTitle: ${conversation.title}
+conversationQuestionCount: ${conversation.questionCount}
+Fetching messages...
+`);
       const response = await apiFetch<{ data: Message[] }>(
         `/admin/askimate-conversations/${conversation.id}/messages`
       );
-      console.log(`[ADMIN] Fetched ${response.data.length} messages`, response.data);
+      
+      console.log(`[ADMIN] FETCH RESULT: ${response.data.length} messages returned`);
+      response.data.forEach((msg, idx) => {
+        console.log(`  [${idx + 1}] id=${msg.id} | conversationId=${msg.conversationId} | sender=${msg.sender} | isUserMessage=${msg.isUserMessage} | createdAt=${msg.createdAt} | content=${msg.content.substring(0, 50)}`);
+      });
+      console.log(`==== END DEBUG ====`);
+      
       setMessages(response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) })));
     } catch (err) {
-      console.error("[ADMIN] Failed to fetch messages:", err);
+      console.error("[ADMIN] FETCH FAILED:", err);
     } finally {
       setLoading(false);
     }
@@ -180,22 +192,34 @@ function ChatView({
     if (!replyText.trim()) return;
 
     setSending(true);
+    const msgText = replyText;
     try {
+      console.log(`
+==== [ADMIN SEND] MENTOR REPLY ====
+conversationId: ${conversation.id}
+messageContent: ${msgText.substring(0, 100)}
+Sending request...
+`);
+      
       const response = await apiFetch<{ data: Message }>(
         `/admin/askimate-conversations/${conversation.id}/mentor-reply`,
         {
           method: "POST",
-          body: JSON.stringify({ message: replyText }),
+          body: JSON.stringify({ message: msgText }),
         }
       );
 
+      console.log(`[ADMIN SEND] SUCCESS - Response:`, response.data);
+      console.log(`[ADMIN SEND] Inserted: id=${response.data.id} | sender=${response.data.sender} | conversationId=${response.data.conversationId}`);
+      
       setMessages([
         ...messages,
         { ...response.data, createdAt: new Date(response.data.createdAt) },
       ]);
       setReplyText("");
+      console.log(`==== END SEND ====`);
     } catch (err) {
-      console.error("Failed to send mentor reply:", err);
+      console.error(`[ADMIN SEND] FAILED:`, err);
     } finally {
       setSending(false);
     }
@@ -238,7 +262,13 @@ function ChatView({
           <h2 className="text-lg font-bold text-foreground">{conversation.title}</h2>
           <p className="text-xs text-muted-foreground">{conversation.questionCount} questions</p>
         </div>
-        <div className="w-20" />
+        <button 
+          onClick={fetchMessages}
+          disabled={loading}
+          className="text-primary hover:underline font-medium text-sm disabled:text-muted-foreground"
+        >
+          {loading ? "Refetching..." : "Refetch"}
+        </button>
       </div>
 
       {/* Messages Container */}

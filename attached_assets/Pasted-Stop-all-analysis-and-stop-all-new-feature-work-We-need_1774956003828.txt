@@ -1,0 +1,111 @@
+Stop all analysis and stop all new feature work.
+
+We need an EMERGENCY FIX for AskiMate chat.
+
+The core problem is simple:
+- user and admin chat are not actually connected
+- admin cannot send
+- admin sees conversation count but not messages
+
+I do NOT want more guessing.
+I want the fastest reliable fix with the minimum number of changes.
+
+==================================================
+EMERGENCY GOAL
+==================================================
+
+Make this exact loop work:
+
+1. user sends a message
+2. message is saved in DB
+3. admin opens that same conversation and sees all messages
+4. admin sends a reply
+5. reply is saved in DB
+6. user sees the mentor reply
+
+Do whatever is necessary to make this work first.
+Ignore elegance. Ignore future architecture. Fix the loop.
+
+==================================================
+STRICT IMPLEMENTATION REQUIREMENTS
+==================================================
+
+1. For the selected conversation in admin:
+- fetch ALL rows from askimate_messages for that exact conversationId
+- ordered by createdAt ascending
+- do NOT filter by sender type
+- do NOT hide user messages
+- do NOT hide mentor messages
+
+2. In admin detail view:
+- when opening a conversation, use the exact conversationId from the selected conversation row
+- display the raw fetched messages for that conversation
+- if there are 7 questions / 1 conversation, I must see the actual messages
+
+3. Admin send:
+- clicking Send must call the backend immediately
+- pressing Enter must call the same send function
+- backend must insert a new row into askimate_messages using the SAME conversationId
+- mark mentor/admin reply correctly
+- after insert, refetch the messages list for that same conversation
+
+4. User chat:
+- use the same conversationId
+- after refresh/refetch, the user must see mentor replies too
+- do NOT filter out mentor/admin messages
+
+5. Free-plan limit:
+- keep backend blocking after 5 questions
+- but when blocked, frontend must show the error message clearly
+- blocked messages must NOT be inserted
+- question count must NOT continue increasing for blocked messages
+
+==================================================
+TEMPORARY DEBUG OUTPUT (MANDATORY)
+==================================================
+
+For the specific conversation being opened in admin, print:
+
+1. selected conversationId
+2. number of rows returned from askimate_messages
+3. each row’s:
+   - id
+   - conversationId
+   - content
+   - sender/isUserMessage flag
+   - createdAt
+
+For admin send, print:
+4. whether the request fired
+5. which conversationId it used
+6. whether DB insert succeeded
+7. the inserted message row
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT tell me “likely cause”.
+Do NOT tell me “admin auth” unless you prove it is failing on the actual request.
+
+I am already inside admin and I can already see:
+- the user
+- the plan
+- the usage
+- the conversation count
+
+So now I need the real messages and real reply loop to work.
+
+==================================================
+AFTER FIXING
+==================================================
+
+Report ONLY:
+
+1. exact conversationId tested
+2. how many rows existed before fix
+3. what was wrong
+4. which file(s) were changed
+5. whether admin now sees user messages
+6. whether admin can now send
+7. whether user now sees mentor replies
