@@ -336,6 +336,48 @@ router.post("/askimate/chat/migrate", async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/askimate/conversations - Create new conversation
+router.post("/askimate/conversations", async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Create new conversation with default title
+    const [newConversation] = await db
+      .insert(askimateConversations)
+      .values({
+        userId,
+        guestSessionId: null,
+        isGuest: false,
+        questionCount: 0,
+        title: "New Chat",
+        status: "open",
+      })
+      .returning();
+
+    res.json({ success: true, conversation: newConversation });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Create conversation error:", error);
+    res.status(500).json({ error: "Failed to create conversation" });
+  }
+});
+
 // GET /api/askimate/conversations - Get all conversations for authenticated user
 router.get("/askimate/conversations", async (req: Request, res: Response) => {
   try {

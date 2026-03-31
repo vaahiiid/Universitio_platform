@@ -48,26 +48,26 @@ function AskiMateDashboardContent() {
 
   const createNewConversation = async () => {
     try {
-      // Send first message to create new conversation
       const token = localStorage.getItem("askimate_token");
-      const response = await fetch("/api/askimate/chat", {
+      const response = await fetch("/api/askimate/conversations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          message: "Hi, I'd like to start a new conversation.",
-        }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setSelectedConversation(data.conversationId);
-        // Refresh conversations list
-        await fetchConversations();
+        const newConversation = data.conversation;
+        
+        // Add to conversations immediately (avoid race condition)
+        setConversations((prev) => [newConversation, ...prev]);
+        setSelectedConversation(newConversation.id);
         setMessages([]);
         setLastMessageId(null);
+      } else {
+        console.error("Failed to create conversation:", response.status);
       }
     } catch (error) {
       console.error("Failed to create new conversation:", error);
@@ -75,6 +75,16 @@ function AskiMateDashboardContent() {
   };
 
   const renameConversation = async (conversationId: number, newTitle: string) => {
+    if (!newTitle.trim()) {
+      // Don't rename to empty title, just exit edit mode
+      setEditingConvId(null);
+      setEditingTitle("");
+      return;
+    }
+
+    // Get the old title for reverting on failure
+    const oldTitle = conversations.find(c => c.id === conversationId)?.title || "New Chat";
+    
     try {
       const token = localStorage.getItem("askimate_token");
       const response = await fetch(`/api/askimate/conversations/${conversationId}`, {
@@ -83,13 +93,25 @@ function AskiMateDashboardContent() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: newTitle }),
+        body: JSON.stringify({ title: newTitle.trim() }),
       });
 
       if (response.ok) {
+        const data = await response.json();
+        // Update with server-confirmed data
         setConversations((prev) =>
           prev.map((conv) =>
-            conv.id === conversationId ? { ...conv, title: newTitle } : conv
+            conv.id === conversationId ? { ...conv, title: data.conversation.title } : conv
+          )
+        );
+        setEditingConvId(null);
+        setEditingTitle("");
+      } else {
+        // API error: revert optimistic update
+        console.error("Failed to rename conversation:", response.status);
+        setConversations((prev) =>
+          prev.map((conv) =>
+            conv.id === conversationId ? { ...conv, title: oldTitle } : conv
           )
         );
         setEditingConvId(null);
@@ -97,6 +119,14 @@ function AskiMateDashboardContent() {
       }
     } catch (error) {
       console.error("Failed to rename conversation:", error);
+      // Network error: revert optimistic update
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === conversationId ? { ...conv, title: oldTitle } : conv
+        )
+      );
+      setEditingConvId(null);
+      setEditingTitle("");
     }
   };
 
