@@ -583,6 +583,10 @@ function AskiMateDashboardContent() {
           content: content,
           createdAt: new Date().toISOString(),
         }]);
+        // Scroll to latest sent message
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+        }, 0);
       } else {
         const error = await res.json();
         console.warn(`[USER] Message blocked - Status ${res.status}:`, error);

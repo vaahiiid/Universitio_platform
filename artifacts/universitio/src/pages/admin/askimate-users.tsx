@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { Search, Download, MessageSquare, ChevronRight, Loader2, Zap, ArrowLeft, Send } from "lucide-react";
+import { Search, Download, MessageSquare, ChevronRight, Loader2, Zap, ArrowLeft, Send, Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
@@ -104,52 +104,88 @@ function UsageBadge({ weeklyUsage, plan }: { weeklyUsage: number; plan: "free" |
   );
 }
 
-function UserListRow({ user, onSelect }: { user: AskiMateUserData; onSelect: (user: AskiMateUserData) => void }) {
+function UserListRow({ 
+  user, 
+  onSelect, 
+  onEdit, 
+  onDelete 
+}: { 
+  user: AskiMateUserData; 
+  onSelect: (user: AskiMateUserData) => void;
+  onEdit: (user: AskiMateUserData) => void;
+  onDelete: (user: AskiMateUserData) => void;
+}) {
   const hasUnread = (user.unreadCount || 0) > 0;
   
   return (
-    <button
-      onClick={() => onSelect(user)}
-      className={`w-full border-b border-border/40 transition-colors p-4 text-left ${
+    <div
+      className={`border-b border-border/40 transition-colors p-4 text-left flex items-center justify-between ${
         hasUnread
           ? "bg-blue-50/50 hover:bg-blue-50 border-b-blue-100"
           : "hover:bg-muted/30"
       }`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
-              hasUnread
-                ? "bg-blue-100 text-blue-700"
-                : "bg-primary/10 text-primary"
-            }`}>
-              {user.firstName[0]}{user.lastName[0]}
+      <button
+        onClick={() => onSelect(user)}
+        className="flex-1 text-left"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
+                hasUnread
+                  ? "bg-blue-100 text-blue-700"
+                  : "bg-primary/10 text-primary"
+              }`}>
+                {user.firstName[0]}{user.lastName[0]}
+              </div>
+              <div>
+                <p className={`font-medium ${hasUnread ? "text-foreground font-semibold" : "text-foreground"}`}>
+                  {user.firstName} {user.lastName}
+                </p>
+                <p className="text-xs text-muted-foreground">{user.email}</p>
+              </div>
             </div>
-            <div>
-              <p className={`font-medium ${hasUnread ? "text-foreground font-semibold" : "text-foreground"}`}>
-                {user.firstName} {user.lastName}
-              </p>
-              <p className="text-xs text-muted-foreground">{user.email}</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex gap-2 flex-wrap justify-end max-w-xs">
+              <PlanBadge plan={user.plan} isTrialActive={user.isTrialActive} />
+              <UsageBadge weeklyUsage={user.weeklyUsage} plan={user.plan} />
             </div>
+            <div className="text-right hidden md:block min-w-20">
+              {hasUnread && (
+                <p className="text-sm font-bold text-blue-600 animate-pulse">{user.unreadCount} unread</p>
+              )}
+              <p className="text-sm font-medium text-foreground">{user.conversationCount}</p>
+              <p className="text-xs text-muted-foreground">conversations</p>
+            </div>
+            <ChevronRight className={`w-5 h-5 flex-shrink-0 ${hasUnread ? "text-blue-600" : "text-muted-foreground"}`} />
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex gap-2 flex-wrap justify-end max-w-xs">
-            <PlanBadge plan={user.plan} isTrialActive={user.isTrialActive} />
-            <UsageBadge weeklyUsage={user.weeklyUsage} plan={user.plan} />
-          </div>
-          <div className="text-right hidden md:block min-w-20">
-            {hasUnread && (
-              <p className="text-sm font-bold text-blue-600 animate-pulse">{user.unreadCount} unread</p>
-            )}
-            <p className="text-sm font-medium text-foreground">{user.conversationCount}</p>
-            <p className="text-xs text-muted-foreground">conversations</p>
-          </div>
-          <ChevronRight className={`w-5 h-5 flex-shrink-0 ${hasUnread ? "text-blue-600" : "text-muted-foreground"}`} />
-        </div>
+      </button>
+      <div className="flex gap-2 ml-2">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(user);
+          }}
+          className="p-2 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+          title="Edit user"
+        >
+          <Edit2 className="w-4 h-4" />
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(user);
+          }}
+          className="p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+          title="Delete user"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
       </div>
-    </button>
+    </div>
   );
 }
 
@@ -339,6 +375,12 @@ Sending request...
         response.data,
       ]);
       setReplyText("");
+      
+      // Scroll to latest sent message
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 0);
+      
       console.log(`==== END SEND ====`);
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Failed to send reply";
@@ -711,6 +753,7 @@ function UserDetailView({ user, onBack }: { user: AskiMateUserData; onBack: () =
 }
 
 export default function AskiMateUsersAdmin() {
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState<AskiMateUserData[]>([]);
   const [pagination, setPagination] = useState<PaginationData | null>(null);
@@ -718,6 +761,8 @@ export default function AskiMateUsersAdmin() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [editingUser, setEditingUser] = useState<AskiMateUserData | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<AskiMateUserData | null>(null);
 
   const fetchUsers = useCallback(
     async (pageNum = 1) => {
@@ -801,6 +846,33 @@ export default function AskiMateUsersAdmin() {
     }
   }, [users.length, selectedUser, fetchPerUserUnreadCounts]);
 
+  const handleDeleteUser = async (user: AskiMateUserData) => {
+    try {
+      await apiFetch(`/admin/askimate-users/${user.id}`, { method: "DELETE" });
+      toast({ title: "Success", description: `User ${user.firstName} ${user.lastName} deleted.` });
+      fetchUsers(page);
+      setDeleteConfirm(null);
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Failed to delete user";
+      toast({ title: "Error", description: errMsg, variant: "destructive" });
+    }
+  };
+
+  const handleEditUser = async (user: AskiMateUserData, updates: Partial<AskiMateUserData>) => {
+    try {
+      await apiFetch(`/admin/askimate-users/${user.id}`, {
+        method: "PUT",
+        body: JSON.stringify(updates),
+      });
+      toast({ title: "Success", description: "User updated." });
+      fetchUsers(page);
+      setEditingUser(null);
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Failed to edit user";
+      toast({ title: "Error", description: errMsg, variant: "destructive" });
+    }
+  };
+
   const totalUsers = pagination?.total || 0;
 
   return (
@@ -881,7 +953,13 @@ export default function AskiMateUsersAdmin() {
                 <>
                   <div>
                     {users.map((user) => (
-                      <UserListRow key={user.id} user={user} onSelect={setSelectedUser} />
+                      <UserListRow 
+                        key={user.id} 
+                        user={user} 
+                        onSelect={setSelectedUser}
+                        onEdit={setEditingUser}
+                        onDelete={setDeleteConfirm}
+                      />
                     ))}
                   </div>
                   {pagination && pagination.totalPages > 1 && (
@@ -919,6 +997,117 @@ export default function AskiMateUsersAdmin() {
           </>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4">
+            <h3 className="text-lg font-bold text-foreground mb-2">Delete User?</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Are you sure you want to delete <strong>{deleteConfirm.firstName} {deleteConfirm.lastName}</strong>? 
+              This will also delete all their conversations and messages. This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteConfirm(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => handleDeleteUser(deleteConfirm)}
+              >
+                Delete User
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {editingUser && (
+        <EditUserModal
+          user={editingUser}
+          onSave={handleEditUser}
+          onClose={() => setEditingUser(null)}
+        />
+      )}
     </AdminLayout>
+  );
+}
+
+interface EditUserModalProps {
+  user: AskiMateUserData;
+  onSave: (user: AskiMateUserData, updates: Partial<AskiMateUserData>) => Promise<void>;
+  onClose: () => void;
+}
+
+function EditUserModal({ user, onSave, onClose }: EditUserModalProps) {
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [mobile, setMobile] = useState(user.mobile || "");
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await onSave(user, { firstName, lastName, mobile: mobile || undefined });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl p-6 max-w-md mx-4">
+        <h3 className="text-lg font-bold text-foreground mb-6">Edit User</h3>
+        <div className="space-y-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">First Name</label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Last Name</label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Mobile (optional)</label>
+            <input
+              type="text"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+          </div>
+        </div>
+        <div className="flex gap-3 justify-end">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            disabled={saving}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="bg-primary hover:bg-primary/90 text-white"
+            onClick={handleSave}
+            disabled={saving}
+          >
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

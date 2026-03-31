@@ -1068,4 +1068,81 @@ router.post("/admin/askimate-conversations/:conversationId/reopen", async (req: 
   }
 });
 
+// PUT /admin/askimate-users/:userId - Edit AskiMate user
+router.put("/admin/askimate-users/:userId", async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(String(req.params.userId), 10);
+    if (!Number.isFinite(userId) || userId <= 0) {
+      res.status(400).json({ error: "Invalid user ID" });
+      return;
+    }
+
+    const { firstName, lastName, mobile, dateOfBirth, marketingConsent } = req.body;
+
+    // Build update object with only provided fields
+    const updateData: any = { updatedAt: new Date() };
+    if (firstName !== undefined) updateData.firstName = firstName;
+    if (lastName !== undefined) updateData.lastName = lastName;
+    if (mobile !== undefined) updateData.mobile = mobile;
+    if (dateOfBirth !== undefined) updateData.dateOfBirth = dateOfBirth;
+    if (marketingConsent !== undefined) updateData.marketingConsent = marketingConsent;
+
+    const [updated] = await db
+      .update(askimateUsers)
+      .set(updateData)
+      .where(eq(askimateUsers.id, userId))
+      .returning();
+
+    if (!updated) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    res.json({ success: true, user: updated });
+  } catch (err) {
+    console.error("Edit user error:", err);
+    res.status(500).json({ error: "Failed to edit user" });
+  }
+});
+
+// DELETE /admin/askimate-users/:userId - Delete AskiMate user
+router.delete("/admin/askimate-users/:userId", async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(String(req.params.userId), 10);
+    if (!Number.isFinite(userId) || userId <= 0) {
+      res.status(400).json({ error: "Invalid user ID" });
+      return;
+    }
+
+    // Delete associated messages, conversations, and usage records
+    // Delete all conversations for this user (messages cascade)
+    const userConversations = await db
+      .select({ id: askimateConversations.id })
+      .from(askimateConversations)
+      .where(eq(askimateConversations.userId, userId));
+    
+    for (const conv of userConversations) {
+      await db.delete(askimateMessages).where(eq(askimateMessages.conversationId, conv.id));
+    }
+    
+    await db.delete(askimateConversations).where(eq(askimateConversations.userId, userId));
+    await db.delete(askimateWeeklyUsage).where(eq(askimateWeeklyUsage.userId, userId));
+    
+    const [deleted] = await db
+      .delete(askimateUsers)
+      .where(eq(askimateUsers.id, userId))
+      .returning();
+
+    if (!deleted) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    res.json({ success: true, message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Delete user error:", err);
+    res.status(500).json({ error: "Failed to delete user" });
+  }
+});
+
 export default router;

@@ -1,0 +1,104 @@
+Do NOT switch modes.
+Do NOT redesign the system.
+Do NOT touch anything that is already working unless it is directly required for the 4 issues below.
+
+We want a LIMITED, COST-CONTROLLED implementation.
+Only fix these 4 remaining issues.
+If any one of them cannot be fixed within the current architecture, say clearly and specifically WHY it cannot be fixed instead of pretending it is done.
+
+==================================================
+FIX ONLY THESE 4 ISSUES
+==================================================
+
+1. USER UNREAD NOTIFICATION OUTSIDE CHAT
+Current problem:
+When the user is outside the Chat view, there is still no clear red unread notification/badge that visibly tells them a new mentor message has arrived.
+
+Required:
+- Show a clear red unread badge next to "Chat" in the user sidebar/menu
+- It must be visible when user is on Profile / Subscription / other non-chat dashboard states
+- It must update from the existing unread source of truth
+- It must disappear/reduce correctly after the user reads the chat
+- Do NOT create a second unread system
+
+If this still cannot be made visible, explain exactly why:
+- CSS/layout conflict
+- wrong state source
+- render path issue
+- anything else specific
+
+--------------------------------------------------
+
+2. ADMIN REPLY UI WRONG UNTIL LEAVING AND RE-ENTERING
+Current problem:
+When admin sends a reply, the immediate UI rendering is wrong/inconsistent.
+If the admin leaves the chat and comes back, the same message displays correctly.
+
+Required:
+- Make the admin reply render correctly immediately after send
+- Ensure the same message shape is used for:
+  - immediate append
+  - fetched/polled render
+- Check:
+  - sender
+  - id
+  - createdAt
+  - alignment conditions
+  - optimistic local object shape
+
+If this cannot be fixed cleanly in current flow, explain exactly why.
+
+--------------------------------------------------
+
+3. AUTO-SCROLL TO LATEST SENT MESSAGE
+Current problem:
+After sending a message, the chat does not reliably scroll to the latest sent message.
+
+Required:
+- After the current user/admin sends a message successfully, the chat should scroll to the latest sent message
+- This must be smooth and reliable
+- Do NOT break the existing “do not jump if user is reading older messages” behavior for incoming messages
+- This requirement is specifically for successful self-send action
+
+If this cannot be fixed cleanly, explain exactly why.
+
+--------------------------------------------------
+
+4. ADMIN EDIT / DELETE ASKIMATE USERS
+Current problem:
+Admin still cannot edit or delete AskiMate users, and this is important.
+
+Required:
+- Add admin ability to:
+  - edit user basic information
+  - delete user
+- Keep it minimal and safe
+- Include confirmation before delete
+- Do NOT break related chat data unintentionally
+- If delete has data implications, handle them explicitly or explain constraints clearly
+
+If delete or edit cannot be done safely in current structure, explain exactly why.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT refactor unrelated code
+- Do NOT change the working Active / Archived chat model
+- Do NOT break End Chat / archive behavior
+- Do NOT break scroll improvements that already work
+- Do NOT break current message sending
+- Do NOT change backend architecture unless minimally required for these 4 items only
+- Keep changes surgical and limited
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end, report exactly:
+
+1. Which of the 4 issues were actually fixed
+2. Which files were changed
+3. For each issue, what the real root cause was
+4. If any issue was NOT fixed, explain specifically why it could not be fixed in the current architecture
+5. Confirm that unrelated working behavior was not changed
