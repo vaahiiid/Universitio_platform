@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send } from "lucide-react";
+import { FileUp, MessageSquare, Settings, LogOut, Loader2, Send, Trash2 } from "lucide-react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -45,6 +45,7 @@ function AskiMateDashboardContent() {
   const [visibleNotification, setVisibleNotification] = useState(false);
   const [notificationMessageId, setNotificationMessageId] = useState<number | null>(null);
   const [notificationPreview, setNotificationPreview] = useState("");
+  const [deletingConvId, setDeletingConvId] = useState<number | null>(null);
   
   // Message detection: single source of truth for message identity
   const knownMessageIds = useRef<Set<number>>(new Set());
@@ -143,6 +144,52 @@ function AskiMateDashboardContent() {
       );
       setEditingConvId(null);
       setEditingTitle("");
+    }
+  };
+
+  const deleteConversation = async (conversationId: number) => {
+    try {
+      const token = localStorage.getItem("askimate_token");
+      const response = await fetch(`${import.meta.env.BASE_URL}api/askimate/conversations/${conversationId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // Remove from conversations list
+        setConversations((prev) => prev.filter((conv) => conv.id !== conversationId));
+        
+        // If this was the selected conversation, clear selection
+        if (selectedConversation === conversationId) {
+          setSelectedConversation(null);
+          setMessages([]);
+          knownMessageIds.current.clear();
+        }
+        
+        setDeletingConvId(null);
+        toast({
+          title: "Chat deleted",
+          description: "The conversation has been removed.",
+        });
+      } else {
+        console.error("Failed to delete conversation:", response.status);
+        toast({
+          title: "Error",
+          description: "Failed to delete the conversation.",
+          variant: "destructive",
+        });
+        setDeletingConvId(null);
+      }
+    } catch (error) {
+      console.error("Failed to delete conversation:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while deleting the conversation.",
+        variant: "destructive",
+      });
+      setDeletingConvId(null);
     }
   };
 
@@ -862,16 +909,28 @@ function AskiMateDashboardContent() {
                               ) : (
                                 <div className="flex items-center justify-between gap-2">
                                   <div className="truncate flex-1">{conv.title}</div>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setEditingConvId(conv.id);
-                                      setEditingTitle(conv.title);
-                                    }}
-                                    className="opacity-0 group-hover:opacity-100 text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:bg-muted/70 transition-all"
-                                  >
-                                    Rename
-                                  </button>
+                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setEditingConvId(conv.id);
+                                        setEditingTitle(conv.title);
+                                      }}
+                                      className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:bg-muted/70 transition-all"
+                                    >
+                                      Rename
+                                    </button>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setDeletingConvId(conv.id);
+                                      }}
+                                      className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:bg-red-100 hover:text-red-600 transition-all"
+                                      title="Delete chat"
+                                    >
+                                      <Trash2 className="w-3 h-3" />
+                                    </button>
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -898,7 +957,19 @@ function AskiMateDashboardContent() {
                             >
                               <div className="flex items-center justify-between gap-2">
                                 <div className="truncate flex-1">{conv.title}</div>
-                                <span className="text-xs bg-muted/50 text-muted-foreground px-1.5 py-0.5 rounded">Archived</span>
+                                <div className="flex items-center gap-1">
+                                  <span className="text-xs bg-muted/50 text-muted-foreground px-1.5 py-0.5 rounded">Archived</span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDeletingConvId(conv.id);
+                                    }}
+                                    className="opacity-0 group-hover:opacity-100 text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:bg-red-100 hover:text-red-600 transition-all"
+                                    title="Delete chat"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           ))}
@@ -1202,6 +1273,32 @@ function AskiMateDashboardContent() {
             >
               ×
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Delete chat confirmation modal */}
+      {deletingConvId !== null && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+            <h2 className="text-lg font-semibold mb-2">Delete chat?</h2>
+            <p className="text-sm text-muted-foreground mb-6">
+              Are you sure you want to delete this conversation? This will remove the message history for you. This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeletingConvId(null)}
+                className="px-4 py-2 text-sm rounded border border-border hover:bg-muted transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteConversation(deletingConvId)}
+                className="px-4 py-2 text-sm rounded bg-red-600 text-white hover:bg-red-700 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

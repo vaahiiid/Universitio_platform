@@ -662,4 +662,55 @@ router.put("/askimate/conversations/:conversationId", async (req: Request, res: 
   }
 });
 
+// DELETE /api/askimate/conversations/:conversationId - Delete a conversation
+router.delete("/askimate/conversations/:conversationId", async (req: Request, res: Response) => {
+  try {
+    const { conversationId } = req.params;
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).json({ error: "Unauthorised" });
+      return;
+    }
+
+    const token = authHeader.slice(7);
+    const jwt = require("jsonwebtoken");
+    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+    let userId: number;
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
+      userId = decoded.id;
+    } catch {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Verify user owns this conversation
+    const conversation = await db.query.askimateConversations.findFirst({
+      where: eq(askimateConversations.id, parseInt(conversationId)),
+    });
+
+    if (!conversation || conversation.userId !== userId) {
+      res.status(403).json({ error: "Unauthorised" });
+      return;
+    }
+
+    // Delete all messages in this conversation first
+    await db
+      .delete(askimateMessages)
+      .where(eq(askimateMessages.conversationId, parseInt(conversationId)));
+
+    // Delete the conversation
+    await db
+      .delete(askimateConversations)
+      .where(eq(askimateConversations.id, parseInt(conversationId)));
+
+    res.json({ success: true, message: "Conversation deleted" });
+  } catch (error) {
+    console.error("[ASKIMATE-CHAT] Delete conversation error:", error);
+    res.status(500).json({ error: "Failed to delete conversation" });
+  }
+});
+
 export default router;

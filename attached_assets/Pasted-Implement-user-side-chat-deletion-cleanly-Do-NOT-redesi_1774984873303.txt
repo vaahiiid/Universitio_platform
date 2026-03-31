@@ -1,0 +1,83 @@
+Implement user-side chat deletion cleanly.
+
+Do NOT redesign anything.
+Do NOT break the current Active / Archived chat model.
+Do NOT break rename functionality.
+Do NOT break message sending, notifications, unread count, or chat navigation.
+
+==================================================
+GOAL
+==================================================
+
+Allow the USER to delete chats from the chat list.
+
+This must work for:
+1. Archived chats
+2. The current active chat
+
+The delete action should be available near the rename/title actions in the chat list UI.
+
+==================================================
+REQUIRED BEHAVIOR
+==================================================
+
+1. DELETE ACTION IN CHAT LIST
+- Add a clear delete action/button/icon next to the rename/title controls
+- It must be available for:
+  - archived chats
+  - active/current chat
+
+2. CONFIRMATION BEFORE DELETE
+- Before deleting, show a confirmation dialog/modal
+- Make it clear that deleting the chat will remove its message history for the user
+- Must prevent accidental deletion
+
+3. DELETE ARCHIVED CHAT
+- If user deletes an archived chat:
+  - remove it from Archived Chats list
+  - remove its local UI state cleanly
+  - no broken selection state
+
+4. DELETE ACTIVE CHAT
+- If user deletes the current active chat:
+  - delete that conversation
+  - remove it from Active Chats
+  - clear selected conversation state safely
+  - if no active chat remains, show the normal empty/new-chat state
+  - New Chat button should become available again according to the existing lifecycle rules
+
+5. STATE CLEANUP
+After delete:
+- no ghost chat remains selected
+- no old messages remain visible
+- no stale unread state
+- no broken route/view state
+
+6. BACKEND / DATA HANDLING
+- Implement minimal safe delete behavior
+- Delete the selected conversation and its related messages safely
+- Respect ownership/security validation
+- User must only be able to delete their own chats
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break End Chat / archive behavior
+- Do NOT break rename/edit name behavior
+- Do NOT break current notification fixes
+- Do NOT break the current one-active-chat UX
+- Do NOT redesign the whole chat list
+- Keep it minimal and safe
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end explain:
+1. what delete UI was added
+2. how archived chat deletion works
+3. how active chat deletion works
+4. what backend endpoint or logic was added/changed
+5. how state cleanup after delete is handled
+6. confirm no unrelated behavior was changed
