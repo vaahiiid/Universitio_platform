@@ -30,6 +30,7 @@ function AskiMateDashboardContent() {
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
+  const MAX_NOTIFIED_IDS = 150; // Prevent unbounded Set growth
 
   // Chat state
   const [conversations, setConversations] = useState<any[]>([]);
@@ -47,6 +48,19 @@ function AskiMateDashboardContent() {
 
   const handleProfileChange = (field: string, value: unknown) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Track notifications safely without unbounded growth
+  const addNotifiedMessageId = (id: number) => {
+    setNotifiedMessageIds((prev) => {
+      const newSet = new Set([...prev, id]);
+      // Keep only the most recent 150 IDs to prevent memory bloat
+      if (newSet.size > MAX_NOTIFIED_IDS) {
+        const arr = Array.from(newSet).sort((a, b) => a - b);
+        return new Set(arr.slice(-MAX_NOTIFIED_IDS));
+      }
+      return newSet;
+    });
   };
 
   const createNewConversation = async () => {
@@ -357,8 +371,8 @@ function AskiMateDashboardContent() {
                     });
                   }
                   
-                  // Mark as notified
-                  setNotifiedMessageIds((prev) => new Set([...prev, msg.id]));
+                  // Mark as notified (with bounded Set growth)
+                  addNotifiedMessageId(msg.id);
                 }
               });
               

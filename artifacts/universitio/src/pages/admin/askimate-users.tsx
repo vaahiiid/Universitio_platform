@@ -172,6 +172,25 @@ function ChatView({
   const [initialLoadDone, setInitialLoadDone] = useState(false);
   const [notifiedMessageIds, setNotifiedMessageIds] = useState<Set<number>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const MAX_NOTIFIED_IDS = 150; // Prevent unbounded Set growth
+
+  // Reset notification tracking when conversation changes
+  useEffect(() => {
+    setNotifiedMessageIds(new Set());
+  }, [conversation.id]);
+
+  // Track notifications safely without unbounded growth
+  const addNotifiedMessageId = (id: number) => {
+    setNotifiedMessageIds((prev) => {
+      const newSet = new Set([...prev, id]);
+      // Keep only the most recent 150 IDs to prevent memory bloat
+      if (newSet.size > MAX_NOTIFIED_IDS) {
+        const arr = Array.from(newSet).sort((a, b) => a - b);
+        return new Set(arr.slice(-MAX_NOTIFIED_IDS));
+      }
+      return newSet;
+    });
+  };
 
   // Auto-scroll to bottom only on new messages (not on every poll)
   useEffect(() => {
@@ -222,8 +241,8 @@ function ChatView({
               description: preview,
             });
             
-            // Mark as notified
-            setNotifiedMessageIds((prev) => new Set([...prev, msg.id]));
+            // Mark as notified (with bounded Set growth)
+            addNotifiedMessageId(msg.id);
           }
         });
         
