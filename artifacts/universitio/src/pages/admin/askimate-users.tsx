@@ -149,13 +149,19 @@ function ChatView({
   const [error, setError] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // Auto-scroll to bottom only on new messages (not on every poll)
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    const messagesContainer = document.querySelector('[class*="overflow-y-auto"]');
+    if (messagesContainer) {
+      const isNearBottom = 
+        messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 100;
+      if (isNearBottom || messages.length === 1) { // Scroll if new message or first message
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [messages.length]); // Only trigger on length change, not full array change
 
   const fetchMessages = useCallback(async () => {
     setLoading(true);
@@ -178,7 +184,16 @@ Fetching messages...
       });
       console.log(`==== END DEBUG ====`);
       
-      setMessages(response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) })));
+      const newMessages = response.data.map((m) => ({ ...m, createdAt: new Date(m.createdAt) }));
+      // Smart merge: only update if messages actually changed
+      setMessages((prev) => {
+        const prevIds = new Set(prev.map((m) => m.id));
+        const newIds = new Set(newMessages.map((m) => m.id));
+        if (prevIds.size === newIds.size && [...prevIds].every((id) => newIds.has(id))) {
+          return prev; // No change, don't re-render
+        }
+        return newMessages; // New messages, update
+      });
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Failed to fetch messages";
       console.error("[ADMIN] FETCH FAILED:", errMsg);

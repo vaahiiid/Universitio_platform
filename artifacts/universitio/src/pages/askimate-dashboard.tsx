@@ -226,7 +226,16 @@ function AskiMateDashboardContent() {
           });
           if (res.ok) {
             const data = await res.json();
-            setMessages(data.messages || []);
+            const newMessages = data.messages || [];
+            // Smart merge: only update if messages actually changed
+            setMessages((prev) => {
+              const prevIds = new Set(prev.map((m: any) => m.id));
+              const newIds = new Set(newMessages.map((m: any) => m.id));
+              if (prevIds.size === newIds.size && [...prevIds].every((id) => newIds.has(id))) {
+                return prev; // No change, don't re-render
+              }
+              return newMessages; // New messages, update
+            });
           }
         } catch (error) {
           console.error("Failed to load messages:", error);
@@ -260,10 +269,20 @@ function AskiMateDashboardContent() {
     }
   }, [selectedConversation]);
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom only on new messages (not on every poll)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    // Check if user is already near bottom
+    const messagesContainer = document.querySelector('[class*="overflow-y-auto"]');
+    if (messagesContainer) {
+      const isNearBottom = 
+        messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 100;
+      if (isNearBottom || messages.length === 1) { // Scroll if new message or first message
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [messages.length]); // Only trigger on length change, not full array change
 
   // Poll unread count every 3 seconds
   useEffect(() => {

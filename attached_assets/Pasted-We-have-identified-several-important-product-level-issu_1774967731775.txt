@@ -1,0 +1,145 @@
+We have identified several important product-level issues in AskiMate AI.
+
+These are not minor polish items.
+They affect the core chat experience and must be fixed carefully.
+
+Do NOT work on unrelated features.
+Focus only on the issues below.
+
+==================================================
+ISSUE 1 — CHAT PAGE HAS SMALL REPEATED JUMPING / FLICKER
+==================================================
+
+Problem:
+While using chat (both admin and user side), the chat page slightly jumps/flickers every few moments.
+
+This likely comes from polling / re-render / scroll behavior.
+
+Required fix:
+- stop the chat UI from visually jumping
+- keep the page stable while polling/refetching
+- do not reset the whole message area every few seconds
+- do not force scroll/jump unless there is a real new message and the user is already near the bottom
+- preserve input focus while polling
+- avoid unnecessary full component re-renders
+
+Please check:
+- polling interval behavior
+- state replacement vs state merge
+- auto-scroll logic
+- key usage in lists
+- full component remounting
+- focus loss / restore behavior
+
+Expected result:
+- chat stays visually stable
+- no small repeated jumping
+- no annoying flicker on either admin or user side
+
+==================================================
+ISSUE 2 — REAL NOTIFICATIONS / UNREAD BADGES ARE STILL NOT WORKING PROPERLY
+==================================================
+
+Problem:
+Chats now arrive, but there is still no proper notification:
+- no sound
+- no reliable unread number badge next to Messages
+- not for admin
+- not for user
+
+We need proper in-app notification behavior while the user/admin is inside their dashboard/admin area but not necessarily inside the active chat thread.
+
+Required behavior:
+1. If the user receives a mentor reply while on another page/tab inside their account:
+   - show unread badge count next to Messages
+   - optionally play a subtle notification sound
+
+2. If admin receives a user message while inside admin but not inside that conversation:
+   - show unread badge count in the relevant admin navigation/section
+   - optionally play a subtle notification sound
+
+3. Unread count must update automatically without full page refresh
+
+4. Opening the conversation should reset the unread count correctly
+
+Important:
+- unread count must reflect unread messages only
+- not total conversation count
+- the notification state should be visible outside the chat view too
+- badge placement must be obvious and useful
+
+==================================================
+ISSUE 3 — CONVERSATIONS NEED LIFECYCLE: OPEN / CLOSED / LISTED
+==================================================
+
+Current chat is too raw.
+We need proper conversation lifecycle.
+
+Required behavior:
+1. Conversations should be created as separate threads
+2. They should be listed clearly
+3. Users and admins should be able to reopen previous conversations
+4. Conversations should be closable / endable
+5. Both admin and user should understand when a topic is closed
+6. Closed conversations should still be viewable in history
+7. There should be a clear status such as:
+   - Open
+   - Closed
+
+Requirements:
+- conversation list should be easy to scan
+- active/open thread should be obvious
+- closing a thread should not delete it
+- closed threads should be read-only unless intentionally reopened (if you choose to support reopen)
+
+Important:
+- implement this for both user and admin
+- keep it clean and practical
+- do not overcomplicate the UI
+
+==================================================
+ISSUE 4 — USER PAGE SHOULD BECOME CHAT-FIRST
+==================================================
+
+The user dashboard should be restructured so that chat is the main experience.
+
+Required direction:
+- the main area should focus on the chat page
+- profile/documents/subscription should move to a secondary/sidebar role
+- the homepage chat experience should feel consistent with the logged-in user chat experience
+- user should not feel that chat is buried behind unrelated account sections
+
+Important:
+- do not redesign the whole product randomly
+- keep the current branding
+- but shift the user dashboard toward a chat-first layout
+
+The user should feel:
+- chat is the main product
+- other account features are secondary/supporting tools
+
+==================================================
+IMPLEMENTATION PRIORITY
+==================================================
+
+Please handle in this order:
+
+1. Fix chat flicker/jumping
+2. Make unread notifications/badges truly work
+3. Add conversation open/closed/listed lifecycle
+4. Restructure user page to be chat-first
+
+==================================================
+AFTER IMPLEMENTATION
+==================================================
+
+Report clearly:
+
+1. What caused the repeated chat jumping/flicker
+2. How it was fixed
+3. Where unread badges now appear for admin and user
+4. Whether notification sound was added
+5. How conversation status (open/closed) now works
+6. How conversation list/history works
+7. How the user dashboard was restructured to make chat primary
+8. Which files were modified
