@@ -1,0 +1,104 @@
+The current Active Chat + Archive model improved part of the UX, but the USER-side conversation lifecycle and notification behavior are still not correct.
+
+Do NOT redesign the whole system.
+Do NOT refactor unrelated code.
+Do NOT break message sending, polling, archived read-only behavior, security, or the currently working scroll improvements.
+
+Implement ONLY the following USER-SIDE improvements cleanly:
+
+==================================================
+GOAL
+==================================================
+
+Make the user dashboard behave like a clear, predictable chat product with:
+- only one active chat at a time
+- archived chats for ended conversations
+- correct visibility of New Chat
+- strong unread visibility outside chat
+- clear new-message visibility inside chat
+
+==================================================
+REQUIRED CHANGES
+==================================================
+
+1. ONLY ONE ACTIVE CHAT
+- User can have only one active/open chat at a time
+- If there is already an active/open chat:
+  - hide the "New Chat" button
+  - user must continue in that active chat
+- Only after the user ends that active chat:
+  - it moves to Archived Chats
+  - then the "New Chat" button becomes visible
+
+2. NEW CHAT VISIBILITY RULE
+- "New Chat" must NOT be shown while an active/open chat exists
+- "New Chat" must appear only when there is no active/open chat
+- This rule must be based on actual conversation status, not local UI guesswork
+
+3. ARCHIVED CHAT BEHAVIOR
+- Keep archived chats in Archived Chats
+- Archived chats stay read-only
+- Archived chats must not accept new messages
+- Archived chats remain visible for history/reference
+
+4. GLOBAL USER UNREAD VISIBILITY
+When a new mentor message arrives for the active chat and the user is NOT currently inside that chat view:
+- show a clear red unread badge next to "Chat" in the user menu/sidebar
+- badge must be visible from Profile / Subscription / any non-chat view
+- badge must disappear or reduce correctly when user reads the chat
+- use the existing unread count source of truth
+- do NOT create a second unread system
+
+5. INSIDE-CHAT NEW MESSAGE VISIBILITY
+When the user IS inside the active chat and a new mentor message arrives:
+- do NOT rely only on silent append
+- show a clear in-chat “New message” indicator
+- this indicator should be visually obvious but not ugly
+- if the user is scrolled up, keep the existing “↓ New message” behavior or improve it
+- if the user is already near the bottom, the new message should still be visually highlighted so they notice it
+
+6. IN-CHAT NEW MESSAGE LABEL
+- Add a visible “New message” separator or label in the message area when a new mentor message arrives while user is in the active chat
+- It should help the user notice where the new message starts
+- Do NOT add sound/toast inside active chat if that conflicts with current UX model
+- But the user must clearly notice the new incoming message
+
+7. KEEP CURRENT ACTIVE/ARCHIVE MODEL
+- Do NOT remove archive behavior
+- Do NOT undo End Chat
+- Just make the lifecycle correct and intuitive:
+  Active Chat → End Chat → Archived → then New Chat available
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT change backend architecture unless minimally necessary
+- Do NOT break admin-side logic
+- Do NOT break current message detection logic unless directly needed
+- Do NOT break current read-only archived behavior
+- Do NOT break existing security/ownership validation
+- Do NOT redesign the whole page
+- Only improve the user-side chat lifecycle and visibility
+
+==================================================
+EXPECTED RESULT
+==================================================
+
+- User sees only one active chat at a time
+- New Chat button appears only after End Chat
+- Archived chats are clearly separate and read-only
+- User always sees a clear unread badge next to Chat when outside chat
+- User clearly sees “New message” inside chat when a mentor reply arrives
+- Chat lifecycle feels clean and understandable
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end, explain:
+1. how New Chat visibility is controlled
+2. how the unread badge next to Chat is wired
+3. how the in-chat “New message” indicator works
+4. confirm that archived chats remain read-only
+5. confirm that no unrelated behavior was changed

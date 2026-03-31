@@ -800,12 +800,15 @@ function AskiMateDashboardContent() {
                 <div className="flex gap-6 flex-1 overflow-hidden">
                   {/* Conversation List Sidebar */}
                   <div className="w-56 border-r border-border/40 pr-4 overflow-y-auto space-y-3">
-                    <button
-                      onClick={createNewConversation}
-                      className="w-full px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
-                    >
-                      + New Chat
-                    </button>
+                    {/* New Chat button - only visible when no active chat exists */}
+                    {conversations.filter(c => c.status === "open").length === 0 && (
+                      <button
+                        onClick={createNewConversation}
+                        className="w-full px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
+                      >
+                        + New Chat
+                      </button>
+                    )}
                     
                     <div>
                       {/* Active Chats */}
@@ -983,37 +986,47 @@ function AskiMateDashboardContent() {
                           </div>
                         </div>
                       )}
-                      {messages.map((msg) => (
-                        <div
-                          key={msg.id}
-                          className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} ${
-                            msg.id === lastNewMessageId ? "animate-pulse" : ""
-                          }`}
-                        >
-                          <div>
-                            {msg.sender === "mentor" && (
-                              <p className="text-xs font-semibold text-green-600 mb-1 ml-1">Mentor</p>
-                            )}
-                            <div
-                              className={`max-w-xs px-4 py-2.5 rounded-lg text-sm transition-all ${
-                                msg.sender === "user"
-                                  ? "bg-primary text-white rounded-br-none"
-                                  : msg.sender === "mentor"
-                                    ? `bg-green-100 text-green-900 rounded-bl-none border border-green-200 ${
-                                        msg.id === lastNewMessageId ? "ring-2 ring-green-400" : ""
-                                      }`
-                                    : "bg-muted/50 text-foreground rounded-bl-none"
-                              }`}
-                            >
-                              {msg.content}
+                      {messages.map((msg, idx) => (
+                        <div key={msg.id}>
+                          {/* "New message" separator when a new message arrives */}
+                          {msg.id === lastNewMessageId && lastNewMessageId !== null && (
+                            <div className="flex items-center gap-2 my-3">
+                              <div className="flex-1 h-px bg-green-300"></div>
+                              <span className="text-xs font-semibold text-green-700 whitespace-nowrap">New message</span>
+                              <div className="flex-1 h-px bg-green-300"></div>
                             </div>
-                            <p className={`text-xs mt-1 ${
-                              msg.sender === "user"
-                                ? "text-muted-foreground text-right"
-                                : "text-muted-foreground"
-                            }`}>
-                              {formatMessageTime(msg.createdAt)}
-                            </p>
+                          )}
+                          
+                          <div
+                            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} ${
+                              msg.id === lastNewMessageId ? "animate-pulse" : ""
+                            }`}
+                          >
+                            <div>
+                              {msg.sender === "mentor" && (
+                                <p className="text-xs font-semibold text-green-600 mb-1 ml-1">Mentor</p>
+                              )}
+                              <div
+                                className={`max-w-xs px-4 py-2.5 rounded-lg text-sm transition-all ${
+                                  msg.sender === "user"
+                                    ? "bg-primary text-white rounded-br-none"
+                                    : msg.sender === "mentor"
+                                      ? `bg-green-100 text-green-900 rounded-bl-none border border-green-200 ${
+                                          msg.id === lastNewMessageId ? "ring-2 ring-green-400" : ""
+                                        }`
+                                      : "bg-muted/50 text-foreground rounded-bl-none"
+                                }`}
+                              >
+                                {msg.content}
+                              </div>
+                              <p className={`text-xs mt-1 ${
+                                msg.sender === "user"
+                                  ? "text-muted-foreground text-right"
+                                  : "text-muted-foreground"
+                              }`}>
+                                {formatMessageTime(msg.createdAt)}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       ))}
