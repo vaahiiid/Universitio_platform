@@ -522,6 +522,8 @@ function AskiMateDashboardContent() {
         convId = data.conversation.id;
         setSelectedConversation(convId);
         
+        // Add message ID to knownMessageIds to prevent duplicate on next poll
+        knownMessageIds.current.add(data.message.id);
         // Add user message to UI
         setMessages([{
           id: data.message.id,
@@ -571,6 +573,8 @@ function AskiMateDashboardContent() {
       if (res.ok) {
         const data = await res.json();
         console.log(`[USER] Message sent to conversation ${convId}:`, data.message);
+        // Add message ID to knownMessageIds to prevent duplicate on next poll
+        knownMessageIds.current.add(data.message.id);
         // Add user message to UI
         setMessages((prev) => [...prev, {
           id: data.message.id,
@@ -647,8 +651,8 @@ function AskiMateDashboardContent() {
                   >
                     <item.icon className="w-4 h-4 flex-shrink-0" />
                     {activeTab !== "chat" && <span className="flex-1 text-left">{item.label}</span>}
-                    {item.id === "chat" && unreadCount > 0 && (
-                      <span className={`inline-flex items-center justify-center text-xs font-bold text-white bg-red-600 rounded-full ${activeTab === "chat" ? "w-5 h-5 absolute -top-2 -right-2" : "w-6 h-6"}`}>
+                    {item.id === "chat" && unreadCount > 0 && activeTab !== "chat" && (
+                      <span className="inline-flex items-center justify-center text-xs font-bold text-white bg-red-600 rounded-full w-5 h-5 ml-1">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}

@@ -1,0 +1,119 @@
+The new chat model is good overall and most of the recent UX changes are working well.
+
+Do NOT redesign anything.
+Do NOT touch the working Active Chat / Archived Chats model.
+Do NOT break End Chat, archived read-only behavior, scroll behavior, current layout, or the new in-chat “New message” UX.
+
+Only fix these 3 remaining issues cleanly and minimally.
+
+==================================================
+ISSUE 1 — ADMIN REPLY UI LOOKS WRONG IMMEDIATELY AFTER SEND
+==================================================
+
+Current issue:
+When admin sends a reply, the message does not render with the correct final UI immediately.
+If the admin leaves the chat and comes back, the same message displays correctly.
+
+This means:
+- persisted server data is likely correct
+- but the immediate local render/update path is using a different or incomplete shape
+
+Fix:
+1. Make admin-sent messages render correctly immediately after send
+2. Ensure the exact same message object shape is used for:
+   - immediate local append after admin send
+   - later fetched/polled messages
+3. Check carefully:
+   - sender
+   - id
+   - createdAt
+   - content
+   - alignment/render conditions
+   - any temporary optimistic object
+4. If optimistic local append is causing mismatch:
+   - either remove it and use server-confirmed append only
+   - or make the local object exactly match the fetched server object
+5. Admin should NOT need to leave and re-enter the chat for the message UI to normalize
+
+==================================================
+ISSUE 2 — USER MESSAGE DUPLICATES
+==================================================
+
+Current issue:
+When the user sends one message, it appears/sends twice.
+The screenshot clearly shows duplicated user messages.
+
+Fix:
+1. One user submit must create exactly one message
+2. Prevent duplicate user send from:
+   - Enter key + form submit both firing
+   - button click + form submit both firing
+   - optimistic append + polling append both rendering
+   - polling re-adding the newly sent user message
+3. Use message.id as identity
+4. Make user send flow deterministic:
+   - send request once
+   - receive server-confirmed message once
+   - append once
+   - mark as known once
+5. If local append is kept, ensure polling cannot append the same message again
+6. Inspect both:
+   - the submit handler path
+   - the post-send polling/merge path
+7. Apply the same clean single-path rule used for a stable chat app:
+   - one submit action
+   - one server write
+   - one final UI message
+
+==================================================
+ISSUE 3 — NO CLEAR RED UNREAD INDICATOR OUTSIDE CHAT
+==================================================
+
+Current issue:
+When the user is NOT inside the Chat view, there is still no clearly visible red bold notification indicator anywhere meaningful.
+
+Required behavior:
+1. When a new mentor message arrives for the active chat and the user is outside Chat:
+   - show a clear red unread badge next to "Chat" in the user sidebar/menu
+2. The badge must be:
+   - visually obvious
+   - red
+   - readable
+   - positioned correctly in the actual UI
+3. It must use the existing unread count source of truth
+4. It must disappear or reduce correctly after the user opens/reads the chat
+5. Do NOT create a second unread system
+6. Do NOT rely only on toast
+7. Inspect real rendered positioning:
+   - parent relative positioning
+   - absolute positioning if used
+   - z-index
+   - active menu styling conflicts
+   - hidden/overflow issues
+8. Make sure the badge is visible in all non-chat dashboard states:
+   - Profile
+   - Subscription
+   - other user dashboard states
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT change the overall UX model that is now working well
+- Do NOT break Active / Archived chat behavior
+- Do NOT break End Chat
+- Do NOT break archived read-only state
+- Do NOT break current scroll fixes
+- Do NOT refactor unrelated code
+- Only fix these 3 issues
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end explain:
+1. why admin reply UI was wrong immediately after send
+2. why user messages were duplicating
+3. how the red unread badge next to Chat is now rendered and wired
+4. exactly what files were changed
+5. confirm that no unrelated behavior was modified

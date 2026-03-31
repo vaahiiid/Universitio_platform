@@ -336,7 +336,7 @@ Sending request...
       
       setMessages([
         ...messages,
-        { ...response.data, createdAt: new Date(response.data.createdAt) },
+        response.data,
       ]);
       setReplyText("");
       console.log(`==== END SEND ====`);
