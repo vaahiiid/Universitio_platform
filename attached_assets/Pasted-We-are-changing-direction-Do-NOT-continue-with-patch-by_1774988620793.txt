@@ -1,0 +1,293 @@
+We are changing direction.
+
+Do NOT continue with patch-by-patch fixes on top of the old page layout.
+
+Instead, redesign the USER and ADMIN environments from the ground up as proper web-app interfaces.
+
+This is now a full web-app UX redesign task.
+
+==================================================
+CORE PRODUCT DECISION
+==================================================
+
+Universitio public website and AskiMate app/dashboard are NOT the same experience.
+
+From now on:
+
+- Public website = marketing site
+- AskiMate user/admin areas = product web app
+
+The app environment must feel like a standalone application:
+- responsive
+- mobile-first
+- stable
+- modern
+- task-focused
+- not like website pages squeezed into smaller screens
+
+==================================================
+GLOBAL GOAL
+==================================================
+
+Redesign BOTH:
+
+1. USER dashboard
+2. ADMIN dashboard
+
+as complete web-app experiences.
+
+Do this properly.
+Do not keep layering fixes on the old page-based layout.
+
+==================================================
+GENERAL WEB-APP REQUIREMENTS
+==================================================
+
+For BOTH user and admin:
+
+1. App-shell layout
+- stable application shell
+- dedicated app header/top bar
+- dedicated app navigation
+- dedicated content area
+- no marketing-site page structure inside the app
+
+2. Responsive by design
+- mobile-first
+- tablet-safe
+- desktop-polished
+
+3. App behavior, not website behavior
+- no long-page scrolling through unrelated space
+- no footer inside core app workflows
+- no public-site navigation inside app
+- no page-like layout clashes
+
+4. Chat must feel like a real app
+- stable message area
+- stable input area
+- controlled scroll area
+- no jumpy fetch behavior
+- no layout fighting the keyboard on mobile
+
+==================================================
+PART 1 — USER WEB APP REDESIGN
+==================================================
+
+Treat the USER side as a focused chat-first app.
+
+REQUIRED USER UX:
+
+1. APP SHELL
+- remove public website navigation/header/footer from the user dashboard
+- keep branding/logo in a lightweight app header if needed
+- build a dedicated dashboard shell
+
+2. USER NAVIGATION
+Only app navigation should exist:
+- Chat
+- Profile
+- Subscription
+- Logout
+Optional:
+- Help/Support only if cleanly integrated
+
+3. DESKTOP USER UX
+- clean left sidebar
+- icon + text labels visible
+- chat is the primary main area
+- profile/subscription are secondary tool screens
+- layout feels like SaaS/product, not page-within-site
+
+4. MOBILE USER UX
+- hamburger navigation
+- chat-first layout
+- no squeezed desktop layout
+- no full page scrolling through dead space
+- only the correct chat area should scroll
+- input should be visible and usable
+- mobile should feel like a messaging web app
+
+5. USER CHAT MODEL
+Keep and improve the working model:
+- one active chat
+- archived chats
+- End Chat
+- New Chat when allowed
+- rename/delete chat
+- notifications
+
+6. USER NOTIFICATIONS
+Keep the reliable notification behavior and integrate it into the redesigned app shell:
+- visible notification when outside chat
+- sound once
+- in-chat new-message visibility
+- no noisy duplication
+
+==================================================
+PART 2 — ADMIN WEB APP REDESIGN
+==================================================
+
+Treat ADMIN as a proper messaging operations app, not a nested details page.
+
+REQUIRED ADMIN UX:
+
+1. APP SHELL
+- dedicated admin app shell
+- stable sidebar/topbar
+- no awkward nested navigation inside chat flow
+
+2. CHAT-FIRST ADMIN DESIGN
+Redesign admin AskiMate area like a messaging dashboard:
+- chat list of students/users
+- active chat panel
+- clear current selection
+- fast switching between chats
+
+3. ADMIN CHAT LIST
+Show list of user chats with:
+- user name
+- unread state
+- latest message preview
+- latest activity timestamp
+- active selection highlight
+- ended/archived state indication
+
+4. ADMIN CHAT PANEL
+Inside selected chat:
+- message history
+- stable input
+- reopen ended chat if needed
+- clear state if chat is ended
+- no duplicate sends
+- no broken immediate rendering
+
+5. NEW CHAT LIFECYCLE
+If student ends a chat and opens a new one later:
+- admin should naturally see that in the same chat-list workflow
+- no hunting through nested pages
+
+6. ADMIN USER MANAGEMENT
+Admin must be able to:
+- edit user
+- delete user
+Safely:
+- confirmation before delete
+- explicit handling of related chat data
+
+==================================================
+DESIGN LANGUAGE
+==================================================
+
+Keep the current brand feel/colors where appropriate,
+but redesign the UI as a true modern SaaS/web-app product.
+
+Desired qualities:
+- clean
+- modern
+- high-trust
+- compact but readable
+- calm
+- mobile-optimized
+- polished
+- app-like
+
+Avoid:
+- website clutter
+- repeated headings
+- unnecessary chrome
+- duplicated navigation
+- dead empty space
+- unstable layouts
+
+==================================================
+MOBILE-FIRST REQUIREMENTS (VERY IMPORTANT)
+==================================================
+
+This redesign must start from mobile reality, not desktop shrinking.
+
+For mobile:
+
+USER:
+- app header
+- hamburger nav
+- chat-first interface
+- stable viewport behavior
+- no browser-fighting layout
+- no giant empty space before input
+- input usable without weird jumps
+- only correct panel scrolls
+
+ADMIN:
+- mobile-safe app shell
+- usable chat list
+- usable active chat view
+- not a squeezed desktop admin page
+
+==================================================
+TECHNICAL CONSTRAINTS
+==================================================
+
+You are allowed to deeply restructure layout/components for app UX.
+
+You are NOT allowed to recklessly break working product behavior.
+
+Preserve and carry forward working logic where possible:
+- message sending
+- security / ownership validation
+- active/archived logic
+- unread count source of truth
+- notifications
+- chat deletion/rename
+- end chat
+- reopen chat
+- edit/delete user (admin)
+
+If a component structure is currently fighting the redesign,
+replace the component structure cleanly rather than layering hacks on top.
+
+==================================================
+IMPORTANT IMPLEMENTATION PHILOSOPHY
+==================================================
+
+Do NOT do shallow cosmetic edits.
+Do NOT just move buttons around.
+Do NOT just patch CSS on old broken layout.
+
+Instead:
+- identify the current layout structure causing problems
+- replace it with a real web-app layout structure
+- make both USER and ADMIN environments coherent
+
+==================================================
+DELIVERABLE EXPECTATION
+==================================================
+
+At the end, report clearly:
+
+1. What new app-shell/layout was created for USER
+2. What new app-shell/layout was created for ADMIN
+3. How mobile behavior now works for USER
+4. How mobile behavior now works for ADMIN
+5. How desktop behavior now works for USER
+6. How desktop behavior now works for ADMIN
+7. Which major components/files were reworked
+8. What working logic was preserved
+9. Any limitation still remaining
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+After this redesign:
+
+USER SIDE should feel like:
+- a messaging/customer portal web app
+
+ADMIN SIDE should feel like:
+- a support/operations messaging web app
+
+Neither should feel like:
+- a public website page
+- a squeezed desktop layout
+- a collection of patches
