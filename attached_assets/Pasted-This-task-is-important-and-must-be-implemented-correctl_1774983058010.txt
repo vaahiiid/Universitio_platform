@@ -1,0 +1,150 @@
+This task is important and must be implemented correctly, even if it requires deeper investigation.
+
+Do NOT do another shallow patch.
+Do NOT pretend it is done without validating the actual runtime behavior in the UI.
+You may go deep if necessary, but keep the implementation focused on the requirements below.
+
+The system already has a good user-side foundation.
+Do NOT break what is already working on the user side except for the two remaining user issues described below.
+
+==================================================
+MAIN GOAL
+==================================================
+
+Implement the admin side as a proper chat-style interface (WhatsApp-like / Intercom-like) and fix the final remaining user-side notification + admin-message-rendering issues.
+
+==================================================
+PART 1 — ADMIN PANEL REDESIGN (REQUIRED)
+==================================================
+
+The admin panel must no longer feel like a details page with nested navigation.
+It should behave like a real messaging dashboard.
+
+Required admin UX:
+
+1. CHAT-LIST LAYOUT
+- Show the list of AskiMate users as a chat list on the RIGHT side
+- Clicking a user opens the chat with that student
+- The open chat appears in the main chat area
+- The list of users is effectively the list of chats
+
+2. CHAT LIST CONTENT
+For each user/chat row in the admin list, show:
+- student name
+- clear unread indicator if there are unread messages
+- preview of the latest message
+- timestamp of the latest message if available
+- visual highlight for the currently active/opened chat
+- visual highlight for the row with the latest activity
+
+3. CHAT STATUS
+Inside the opened chat:
+- if the conversation is active/open, admin can reply
+- if the conversation was ended by the student, clearly show:
+  "Chat ended"
+- admin must be able to reopen that chat directly from the same chat view
+
+4. NEW CHAT CREATED BY STUDENT
+If the student ended the previous chat and later creates a new chat:
+- admin must see that a new chat was created
+- that user row must reflect the latest/new active conversation
+- the admin should continue from the same user row/chat context
+- do NOT make the admin hunt through nested pages to find the new chat
+
+5. ADMIN ACTIONS
+Admin must be able to:
+- edit AskiMate user information
+- delete AskiMate user
+Keep it safe:
+- confirmation before delete
+- clear handling of related chat data
+- if delete affects conversations/messages, handle it explicitly and safely
+
+==================================================
+PART 2 — USER SIDE (ONLY FIX THE REMAINING ISSUES)
+==================================================
+
+The user side is mostly good now.
+Do NOT redesign it.
+Only fix these remaining 2 issues:
+
+1. USER NOTIFICATION
+When the user is online and a new admin/mentor message arrives:
+- show a clear visible notification
+- play a sound
+This can be implemented in any clean UX form, for example:
+- a red popup/toast at bottom-left or bottom-right
+- a red badge/number next to the relevant chat
+- both, if appropriate
+The exact presentation is your choice, as long as:
+- the user clearly notices a new message
+- it works reliably in real runtime
+- it does not duplicate excessively
+
+2. ADMIN MESSAGE APPEARANCE IN USER CHAT
+Current issue:
+- when admin sends a message, the immediate visual appearance/rendering on the user side looks wrong
+- if the user leaves and comes back, it looks correct
+Fix:
+- make the admin message render correctly immediately
+- do not rely on leaving and re-entering to normalize the UI
+- ensure the local render shape matches the fetched message shape exactly
+
+==================================================
+STRICT REQUIREMENTS
+==================================================
+
+- Do NOT break the current Active / Archived chat model on the user side
+- Do NOT break End Chat
+- Do NOT break archived read-only behavior
+- Do NOT break currently working scroll improvements
+- Do NOT break current message sending flow
+- Do NOT redesign unrelated pages
+- Do NOT add random features not requested
+- Do NOT claim success without checking the running UI behavior
+
+==================================================
+IMPLEMENTATION APPROACH
+==================================================
+
+You are allowed to go deep if needed.
+That means:
+- investigate the real runtime behavior
+- restructure the admin chat page if necessary
+- simplify conflicting state/update logic if necessary
+- make the admin chat list + active chat flow coherent
+But stay focused only on the requested outcomes.
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+ADMIN:
+- admin sees a WhatsApp-like chat list of users on the right
+- clicking a user opens chat immediately
+- latest message preview is visible in the list
+- unread states are visible
+- ended chats are clearly marked
+- admin can reopen ended chats
+- if student opens a new chat later, admin sees it naturally in the same list flow
+- admin can edit/delete users safely
+
+USER:
+- user clearly notices new admin messages while online
+- notification is visible and reliable
+- admin messages render correctly immediately in the user chat
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end, report exactly:
+
+1. What was changed on the admin side
+2. How the admin chat list works
+3. How ended/reopened/new chats are handled
+4. How edit/delete user was implemented
+5. What was changed on the user side
+6. Exactly how the new user notification works
+7. Why the admin message rendering issue happened and how it was fixed
+8. Any limitation that still remains, if any

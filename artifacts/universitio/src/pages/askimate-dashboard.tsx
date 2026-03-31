@@ -42,6 +42,7 @@ function AskiMateDashboardContent() {
   const [editingTitle, setEditingTitle] = useState("");
   const [showNewMessageButton, setShowNewMessageButton] = useState(false);
   const [lastNewMessageId, setLastNewMessageId] = useState<number | null>(null);
+  const [notificationPopup, setNotificationPopup] = useState<{ id: number; content: string } | null>(null);
   
   // Message detection: single source of truth for message identity
   const knownMessageIds = useRef<Set<number>>(new Set());
@@ -391,6 +392,10 @@ function AskiMateDashboardContent() {
                         title: "New message from your mentor",
                         description: preview,
                       });
+                      
+                      // Show floating notification popup
+                      setNotificationPopup({ id: msg.id, content: preview });
+                      setTimeout(() => setNotificationPopup(null), 5000);
                     } else if (activeTab === 'chat') {
                       // Inside chat: show button to scroll to new message if not near bottom
                       const container = messagesContainerRef.current;
@@ -1187,6 +1192,24 @@ function AskiMateDashboardContent() {
           </div>
         </div>
       </div>
+
+      {/* Floating Notification Popup */}
+      {notificationPopup && (
+        <div className="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg max-w-sm z-50 animate-in slide-in-from-bottom-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-1">
+              <p className="font-semibold text-sm mb-1">New message from Mentor</p>
+              <p className="text-sm opacity-90">{notificationPopup.content}</p>
+            </div>
+            <button
+              onClick={() => setNotificationPopup(null)}
+              className="text-white opacity-75 hover:opacity-100 text-xl leading-none"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
