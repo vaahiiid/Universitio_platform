@@ -24,6 +24,7 @@ interface AskiMateAuthContextType {
   logout: () => Promise<void>;
   updateProfile: (updates: Partial<AskiMateUser>) => Promise<void>;
   googleLogin: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AskiMateAuthContext = createContext<AskiMateAuthContextType | undefined>(undefined);
@@ -172,6 +173,22 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const token = localStorage.getItem("askimate_token");
+      if (!token) return;
+      const response = await fetch(`${API_BASE}/askimate/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error("refreshUser failed:", error);
+    }
+  };
+
   return (
     <AskiMateAuthContext.Provider
       value={{
@@ -183,6 +200,7 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
         logout,
         updateProfile,
         googleLogin,
+        refreshUser,
       }}
     >
       {children}

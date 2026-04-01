@@ -12,8 +12,10 @@ export const askimateUsers = pgTable("askimate_users", {
   termsAccepted: boolean("terms_accepted").notNull().default(true),
   privacyAccepted: boolean("privacy_accepted").notNull().default(true),
   plan: text("plan").notNull().default("free"), // "free" or "premium"
-  trialEndsAt: timestamp("trial_ends_at"), // null until premium upgrade
-  trialStartedAt: timestamp("trial_started_at"), // when premium trial started (if applicable)
+  planKey: text("plan_key"), // "monthly" | "quarterly" | "semi-annual" | null
+  trialEndsAt: timestamp("trial_ends_at"), // plan expiry date (null until premium upgrade)
+  trialStartedAt: timestamp("trial_started_at"), // when premium was activated
+  stripeSessionId: text("stripe_session_id"), // last processed Stripe session (idempotency)
   googleId: text("google_id").unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

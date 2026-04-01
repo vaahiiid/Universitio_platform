@@ -115,47 +115,66 @@ router.post("/askimate/stripe-webhook", async (req: Request, res: Response) => {
   }
 });
 
+// Plan duration in days (kept in sync with askimate-auth.ts)
+const PLAN_DURATION_DAYS: Record<string, number> = {
+  monthly: 30,
+  quarterly: 90,
+  "semi-annual": 180,
+};
+
 // Handler: checkout.session.completed
-// When payment is completed (but subscription not yet created)
+// Primary fulfillment path: Stripe webhook fires reliably even if user closes tab
 async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEvent) {
   const session = event.data.object;
   console.log(`[STRIPE-WEBHOOK] Checkout session completed: ${session.id}`);
 
-  // Payment is complete; activate premium
-  if (session.payment_status === "paid") {
-    const userId = extractUserIdFromMetadata(session.metadata);
-
-    if (userId) {
-      // CRITICAL: Check if already premium to prevent resetting trial dates on webhook retries
-      const user = await db.query.askimateUsers.findFirst({
-        where: eq(askimateUsers.id, userId),
-      });
-
-      if (user && user.plan === "premium") {
-        // Already premium - skip to prevent resetting trial dates
-        console.log(`[STRIPE-WEBHOOK] User ${userId} already premium, skipping (idempotent)`);
-        return;
-      }
-
-      // First activation: set trial dates
-      const now = new Date();
-      const trialEnds = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // +3 days
-
-      await db
-        .update(askimateUsers)
-        .set({
-          plan: "premium",
-          trialStartedAt: now,
-          trialEndsAt: trialEnds,
-          updatedAt: new Date(),
-        })
-        .where(eq(askimateUsers.id, userId));
-
-      console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook (first time)`);
-    } else {
-      console.warn(`[STRIPE-WEBHOOK] Could not extract userId from session ${session.id}`);
-    }
+  if (session.payment_status !== "paid") {
+    console.log(`[STRIPE-WEBHOOK] Session ${session.id} payment_status=${session.payment_status}, skipping`);
+    return;
   }
+
+  const userId = extractUserIdFromMetadata(session.metadata);
+  if (!userId) {
+    console.warn(`[STRIPE-WEBHOOK] Could not extract userId from session ${session.id}`);
+    return;
+  }
+
+  // Retrieve user
+  const user = await db.query.askimateUsers.findFirst({
+    where: eq(askimateUsers.id, userId),
+  });
+
+  if (!user) {
+    console.warn(`[STRIPE-WEBHOOK] User ${userId} not found for session ${session.id}`);
+    return;
+  }
+
+  // ── Session-based idempotency: skip if this session was already processed ──
+  if (user.stripeSessionId === session.id) {
+    console.log(`[STRIPE-WEBHOOK] Session ${session.id} already processed for user ${userId}, skipping`);
+    return;
+  }
+
+  // Extract planKey from metadata; fall back to "monthly" for legacy sessions
+  const planKey = session.metadata?.planKey || "monthly";
+  const durationDays = PLAN_DURATION_DAYS[planKey] ?? 30;
+
+  const now = new Date();
+  const planExpiresAt = new Date(now.getTime() + durationDays * 24 * 60 * 60 * 1000);
+
+  await db
+    .update(askimateUsers)
+    .set({
+      plan: "premium",
+      planKey: planKey,
+      trialStartedAt: now,
+      trialEndsAt: planExpiresAt,
+      stripeSessionId: session.id,
+      updatedAt: new Date(),
+    })
+    .where(eq(askimateUsers.id, userId));
+
+  console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook: planKey=${planKey}, expires=${planExpiresAt.toISOString()}`);
 }
 
 // Handler: customer.subscription.updated

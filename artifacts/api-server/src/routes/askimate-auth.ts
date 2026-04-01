@@ -316,8 +316,18 @@ router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res:
     const questionsUsed = usage?.questionsUsed || 0;
     const questionsRemaining = Math.max(0, 5 - questionsUsed);
 
+    const planLabels: Record<string, string> = {
+      monthly: "Monthly (30 days)",
+      quarterly: "3 Months (90 days)",
+      "semi-annual": "6 Months (180 days)",
+    };
+
     res.json({
       plan: user.plan,
+      planKey: user.planKey || null,
+      planLabel: user.planKey ? (planLabels[user.planKey] ?? user.planKey) : null,
+      planActivatedAt: user.trialStartedAt ? user.trialStartedAt.toISOString() : null,
+      planExpiresAt: user.trialEndsAt ? user.trialEndsAt.toISOString() : null,
       trialStatus,
       questionsUsed: user.plan === "free" ? questionsUsed : null,
       questionsRemaining: user.plan === "free" ? questionsRemaining : null,
@@ -387,8 +397,8 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
             product_data: {
               name: "AskiMate AI Premium Mentoring",
               description: plan === "monthly" ? "Monthly — 30 days of unlimited access" :
-                          plan === "quarterly" ? "3 months of unlimited access" :
-                          "6 months of unlimited access",
+                          plan === "quarterly" ? "3 months (90 days) of unlimited access" :
+                          "6 months (180 days) of unlimited access",
             },
             unit_amount: priceMap[plan],
           },
@@ -399,8 +409,10 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       cancel_url: `${baseRedirectUrl}?cancelled=true`,
       client_reference_id: userIdString,
       customer_email: user.email,
+      // planKey in metadata so webhook + confirm-premium know exactly what was purchased
       metadata: {
         userId: userIdString,
+        planKey: plan,
       },
     });
 
@@ -411,7 +423,21 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
   }
 });
 
-// CONFIRM PREMIUM (called after successful payment)
+// Plan duration in days
+const PLAN_DURATION_DAYS: Record<string, number> = {
+  monthly: 30,
+  quarterly: 90,
+  "semi-annual": 180,
+};
+
+// Human-readable plan names
+const PLAN_LABELS: Record<string, string> = {
+  monthly: "Monthly (30 days)",
+  quarterly: "3 Months (90 days)",
+  "semi-annual": "6 Months (180 days)",
+};
+
+// CONFIRM PREMIUM (called after successful Stripe payment redirect)
 router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Request, res: Response) => {
   if (!stripe) {
     res.status(500).json({ error: "Stripe not configured" });
@@ -427,7 +453,7 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
       return;
     }
 
-    // Retrieve user
+    // Retrieve user from DB
     const user = await db.query.askimateUsers.findFirst({
       where: eq(askimateUsers.id, userPayload.id),
     });
@@ -437,7 +463,22 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
       return;
     }
 
-    // Retrieve Stripe session
+    // ── Idempotency: if this exact session was already processed, return current state ──
+    if (user.stripeSessionId === sessionId) {
+      console.log(`[ASKIMATE-AUTH] Session ${sessionId} already processed for user ${user.id}, returning current state`);
+      res.json({
+        success: true,
+        alreadyProcessed: true,
+        plan: user.plan,
+        planKey: user.planKey,
+        planLabel: user.planKey ? PLAN_LABELS[user.planKey] : null,
+        planActivatedAt: user.trialStartedAt,
+        planExpiresAt: user.trialEndsAt,
+      });
+      return;
+    }
+
+    // ── Retrieve and validate Stripe session ──
     let stripeSession;
     try {
       stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
@@ -447,41 +488,52 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
       return;
     }
 
-    // Validate payment
     if (stripeSession.payment_status !== "paid") {
-      res.status(400).json({ error: "Invalid payment session: payment not completed" });
+      res.status(400).json({ error: "Payment not completed" });
       return;
     }
 
     if (stripeSession.status !== "complete") {
-      res.status(400).json({ error: "Invalid payment session: incomplete checkout" });
+      res.status(400).json({ error: "Checkout session not complete" });
       return;
     }
 
-    if (stripeSession.customer_email !== user.email) {
-      res.status(400).json({ error: "Invalid payment session: email mismatch" });
+    // Case-insensitive email check
+    if (stripeSession.customer_email?.toLowerCase() !== user.email.toLowerCase()) {
+      console.error(`[ASKIMATE-AUTH] Email mismatch for session ${sessionId}: ${stripeSession.customer_email} vs ${user.email}`);
+      res.status(400).json({ error: "Payment session email mismatch" });
       return;
     }
 
-    // All validations passed - activate premium
+    // ── Extract planKey from Stripe metadata ──
+    const planKey = stripeSession.metadata?.planKey || "monthly";
+    const durationDays = PLAN_DURATION_DAYS[planKey] ?? 30;
+
+    // ── Activate premium with correct plan duration ──
     const now = new Date();
-    const trialEnds = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // +3 days
+    const planExpiresAt = new Date(now.getTime() + durationDays * 24 * 60 * 60 * 1000);
 
     await db
       .update(askimateUsers)
       .set({
         plan: "premium",
+        planKey: planKey,
         trialStartedAt: now,
-        trialEndsAt: trialEnds,
+        trialEndsAt: planExpiresAt,
+        stripeSessionId: sessionId,
         updatedAt: new Date(),
       })
       .where(eq(askimateUsers.id, userPayload.id));
 
+    console.log(`[ASKIMATE-AUTH] User ${user.id} activated premium: planKey=${planKey}, expires=${planExpiresAt.toISOString()}`);
+
     res.json({
       success: true,
       plan: "premium",
-      trialStartsAt: now,
-      trialEndsAt: trialEnds,
+      planKey,
+      planLabel: PLAN_LABELS[planKey],
+      planActivatedAt: now,
+      planExpiresAt,
     });
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Confirm premium error:", error);

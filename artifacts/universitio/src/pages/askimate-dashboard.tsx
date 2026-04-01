@@ -22,7 +22,7 @@ function fmtTime(date: string | Date | null) {
 }
 
 function AskiMateDashboardContent() {
-  const { user, logout } = useAskiMateAuth();
+  const { user, logout, refreshUser } = useAskiMateAuth();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
@@ -42,6 +42,7 @@ function AskiMateDashboardContent() {
   });
   const [updateError, setUpdateError] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // ─ Plan / subscription ─────────────────────────────────────────────────
@@ -120,45 +121,103 @@ function AskiMateDashboardContent() {
     const handle = async () => {
       const params = new URLSearchParams(window.location.search);
       const sessionId = params.get("session_id");
+      const cancelled = params.get("cancelled");
+
+      // Always clean up the URL immediately
+      if (sessionId || cancelled) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      if (cancelled) {
+        setUpdateError("Payment was cancelled. You can try again from the Subscription tab.");
+        setActiveTab("subscription");
+        return;
+      }
+
       if (!sessionId) return;
+
       try {
         const token = localStorage.getItem("askimate_token");
+
+        // Call backend to verify Stripe payment and activate the purchased plan
         const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/confirm-premium`, {
           method: "POST",
           headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
           body: JSON.stringify({ sessionId }),
         });
+
         if (res.ok) {
-          const planRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/plan-info`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const confirmData = await res.json();
+
+          // Refresh both planInfo and the auth context user (so user.plan updates immediately)
+          const [planRes] = await Promise.all([
+            fetch(`${import.meta.env.BASE_URL}api/askimate/plan-info`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            refreshUser(),
+          ]);
           if (planRes.ok) setPlanInfo(await planRes.json());
-          window.history.replaceState({}, document.title, window.location.pathname);
-          setUpdateSuccess(true);
-          setTimeout(() => setUpdateSuccess(false), 5000);
+
+          // Navigate to subscription tab so user sees their new plan immediately
+          setActiveTab("subscription");
+          setPaymentSuccess(true);
+          setTimeout(() => setPaymentSuccess(false), 12000);
+
+          toast({
+            title: "🎉 Payment successful!",
+            description: confirmData.planLabel
+              ? `Your ${confirmData.planLabel} plan is now active.`
+              : "Your Premium plan is now active.",
+          });
         } else {
           const err = await res.json();
-          setUpdateError(err.error || "Payment verification failed");
+          setUpdateError(err.error || "Payment verification failed. Please contact support.");
+          setActiveTab("subscription");
         }
       } catch {
-        setUpdateError("Failed to confirm premium subscription");
+        setUpdateError("Failed to confirm payment. Please contact support if you were charged.");
+        setActiveTab("subscription");
       }
     };
     handle();
   }, []);
 
   const getPlanStatus = () => {
-    if (!user) return { plan: "Free", status: "No plan" };
+    if (!user) return { plan: "Free", status: "No plan", isPremium: false };
     if (user.plan === "free") {
       const remaining = planInfo?.questionsRemaining ?? 5;
-      return { plan: "Basic Mentoring (Free)", status: `${remaining} questions remaining this week` };
+      return {
+        plan: "Basic Mentoring",
+        status: `${remaining} of 5 questions remaining this week`,
+        isPremium: false,
+      };
     }
-    if (user.plan === "premium" && planInfo?.trialStatus?.isTrialing) {
-      const days = planInfo.trialStatus.daysLeft;
-      return { plan: "Premium Mentoring (Free Trial)", status: `${days} day${days !== 1 ? "s" : ""} remaining` };
+    if (user.plan === "premium") {
+      const tierLabel = planInfo?.planLabel || "Premium";
+      const expiresAt = planInfo?.planExpiresAt ? new Date(planInfo.planExpiresAt) : null;
+      const now = new Date();
+      const isActive = expiresAt ? expiresAt > now : true;
+
+      let status = "Active";
+      if (expiresAt) {
+        const daysLeft = Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        if (!isActive) {
+          status = "Expired — please renew";
+        } else if (daysLeft <= 7) {
+          status = `Expires soon — ${daysLeft} day${daysLeft !== 1 ? "s" : ""} left`;
+        } else {
+          status = `Active until ${expiresAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`;
+        }
+      }
+      return {
+        plan: `Premium Mentoring — ${tierLabel}`,
+        status,
+        isPremium: true,
+        isActive,
+        expiresAt,
+      };
     }
-    if (user.plan === "premium") return { plan: "Premium Mentoring", status: "Paid subscription" };
-    return { plan: "Free", status: "Basic Mentoring" };
+    return { plan: "Free", status: "Basic Mentoring", isPremium: false };
   };
 
   // ─ Save profile ────────────────────────────────────────────────────────
@@ -1086,88 +1145,237 @@ function AskiMateDashboardContent() {
                 <div className="max-w-xl mx-auto px-5 py-8">
                   <h2 className="text-xl font-bold text-foreground mb-6">Your Subscription</h2>
 
-                  <div className={`p-5 rounded-xl mb-6 border ${
-                    getPlanStatus().plan.includes("Premium")
-                      ? "bg-primary/5 border-primary/20"
-                      : "bg-muted/30 border-border/40"
-                  }`}>
-                    <p className="text-xs text-muted-foreground mb-1">Current Plan</p>
-                    <p className="text-xl font-bold text-foreground mb-1">{getPlanStatus().plan}</p>
-                    <p className="text-sm text-muted-foreground">{getPlanStatus().status}</p>
+                  {/* ── Success banner ── */}
+                  {paymentSuccess && (
+                    <div className="mb-5 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-green-800">Payment confirmed!</p>
+                        <p className="text-xs text-green-700 mt-0.5">
+                          Your plan has been activated. Details are shown below.
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
-                    {getPlanStatus().plan.includes("Basic Mentoring") && (
-                      <div className="mt-4 space-y-2">
-                        <p className="text-sm text-muted-foreground">Upgrade to premium:</p>
-                        <div className="flex gap-2 flex-wrap">
-                          {[
-                            { label: "Monthly — £12", plan: "monthly" },
-                            { label: "3 Months — £30", plan: "quarterly" },
-                            { label: "6 Months — £65", plan: "semi-annual" },
-                          ].map((option) => (
-                            <Button
-                              key={option.plan}
-                              size="sm"
-                              className="bg-primary hover:bg-primary/90 text-white"
-                              onClick={async () => {
-                                try {
-                                  const token = localStorage.getItem("askimate_token");
-                                  const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/checkout-session`, {
+                  {/* ── Error banner ── */}
+                  {updateError && (
+                    <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl">
+                      <p className="text-sm text-red-800">{updateError}</p>
+                      <button
+                        onClick={() => setUpdateError("")}
+                        className="text-xs text-red-600 underline mt-1"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  )}
+
+                  {/* ── Plan card ── */}
+                  {(() => {
+                    const ps = getPlanStatus();
+                    return (
+                      <div className={`p-6 rounded-2xl border-2 mb-6 ${
+                        ps.isPremium
+                          ? "bg-gradient-to-br from-primary/6 to-white border-primary/40"
+                          : "bg-muted/20 border-border/50"
+                      }`}>
+                        <div className="flex items-start justify-between gap-3 mb-4">
+                          <div>
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
+                              Current Plan
+                            </p>
+                            <p className="text-xl font-bold text-foreground leading-tight">{ps.plan}</p>
+                          </div>
+                          <span className={`text-xs font-semibold px-3 py-1 rounded-full flex-shrink-0 ${
+                            ps.isPremium
+                              ? "bg-primary text-white"
+                              : "bg-muted text-muted-foreground"
+                          }`}>
+                            {ps.isPremium ? "Premium" : "Free"}
+                          </span>
+                        </div>
+
+                        <p className={`text-sm font-medium ${
+                          ps.isPremium
+                            ? (ps as any).isActive === false ? "text-red-600" : "text-primary"
+                            : "text-muted-foreground"
+                        }`}>
+                          {ps.status}
+                        </p>
+
+                        {/* Free: usage bar */}
+                        {!ps.isPremium && (
+                          <div className="mt-4">
+                            <div className="flex justify-between items-center mb-1.5 text-xs text-muted-foreground">
+                              <span>Weekly questions used</span>
+                              <span className="font-semibold text-foreground">
+                                {planInfo?.questionsUsed ?? 0} / 5
+                              </span>
+                            </div>
+                            <div className="w-full bg-muted/60 rounded-full h-2">
+                              <div
+                                className="bg-primary h-2 rounded-full transition-all"
+                                style={{ width: `${Math.min(100, ((planInfo?.questionsUsed ?? 0) / 5) * 100)}%` }}
+                              />
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1.5">
+                              {planInfo?.questionsRemaining ?? 5} questions remaining this week. Resets every Monday.
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Premium: plan details */}
+                        {ps.isPremium && planInfo?.planActivatedAt && (
+                          <div className="mt-4 pt-4 border-t border-primary/20 space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Activated</span>
+                              <span className="font-medium text-foreground">
+                                {new Date(planInfo.planActivatedAt).toLocaleDateString("en-GB", {
+                                  day: "numeric", month: "long", year: "numeric",
+                                })}
+                              </span>
+                            </div>
+                            {planInfo?.planExpiresAt && (
+                              <div className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">Expires</span>
+                                <span className="font-medium text-foreground">
+                                  {new Date(planInfo.planExpiresAt).toLocaleDateString("en-GB", {
+                                    day: "numeric", month: "long", year: "numeric",
+                                  })}
+                                </span>
+                              </div>
+                            )}
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Messages</span>
+                              <span className="font-medium text-primary">Unlimited</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
+                  {/* ── Upgrade section (free users) ── */}
+                  {!getPlanStatus().isPremium && (
+                    <div className="space-y-4">
+                      <h3 className="font-semibold text-foreground text-sm">Upgrade to Premium</h3>
+
+                      {[
+                        { label: "Monthly", price: "£12", duration: "30 days", plan: "monthly", note: "" },
+                        { label: "3 Months", price: "£30", duration: "90 days", plan: "quarterly", note: "Save £6" },
+                        { label: "6 Months", price: "£65", duration: "180 days", plan: "semi-annual", note: "Save £7" },
+                      ].map((option) => (
+                        <div
+                          key={option.plan}
+                          className="flex items-center justify-between p-4 border border-border/60 rounded-xl hover:border-primary/40 hover:bg-primary/3 transition-all"
+                        >
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-foreground text-sm">{option.label}</span>
+                              {option.note && (
+                                <span className="text-xs bg-green-100 text-green-700 font-medium px-2 py-0.5 rounded-full">
+                                  {option.note}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              Unlimited questions · {option.duration}
+                            </p>
+                          </div>
+                          <Button
+                            size="sm"
+                            className="bg-primary hover:bg-primary/90 text-white flex-shrink-0"
+                            onClick={async () => {
+                              try {
+                                setUpdateError("");
+                                const token = localStorage.getItem("askimate_token");
+                                const res = await fetch(
+                                  `${import.meta.env.BASE_URL}api/askimate/checkout-session`,
+                                  {
                                     method: "POST",
-                                    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+                                    headers: {
+                                      Authorization: `Bearer ${token}`,
+                                      "Content-Type": "application/json",
+                                    },
                                     body: JSON.stringify({ plan: option.plan }),
-                                  });
-                                  if (res.ok) {
-                                    const data = await res.json();
-                                    if (data.url) window.location.href = data.url;
-                                  } else {
-                                    setUpdateError("Failed to start checkout");
                                   }
-                                } catch {
-                                  setUpdateError("Checkout failed. Please try again.");
+                                );
+                                if (res.ok) {
+                                  const data = await res.json();
+                                  if (data.url) window.location.href = data.url;
+                                } else {
+                                  setUpdateError("Failed to start checkout. Please try again.");
                                 }
-                              }}
-                            >
-                              {option.label}
-                            </Button>
-                          ))}
+                              } catch {
+                                setUpdateError("Checkout failed. Please try again.");
+                              }
+                            }}
+                          >
+                            {option.price}
+                          </Button>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      ))}
 
-                  {getPlanStatus().plan.includes("Basic Mentoring") && (
-                    <>
-                      <div className="mb-6">
-                        <h3 className="font-semibold text-foreground text-sm mb-3">Usage This Week</h3>
-                        <div className="flex justify-between items-center mb-2">
-                          <p className="text-sm text-muted-foreground">Questions Remaining</p>
-                          <p className="text-sm font-medium">{planInfo?.questionsRemaining ?? 5} / 5</p>
-                        </div>
-                        <div className="w-full bg-muted rounded-full h-2">
-                          <div
-                            className="bg-primary h-2 rounded-full transition-all"
-                            style={{ width: `${((5 - (planInfo?.questionsRemaining ?? 5)) / 5) * 100}%` }}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="p-5 bg-primary/5 border border-primary/20 rounded-xl">
-                        <h3 className="font-semibold text-foreground text-sm mb-3">Why upgrade to Premium?</h3>
-                        <ul className="text-sm text-muted-foreground space-y-2">
+                      <div className="p-4 bg-primary/5 border border-primary/15 rounded-xl mt-2">
+                        <p className="text-xs font-semibold text-foreground mb-2">What you get with Premium:</p>
+                        <ul className="text-xs text-muted-foreground space-y-1.5">
                           {[
-                            "Unlimited questions anytime",
-                            "Priority live chat with real-time responses",
-                            "Full document review support",
-                            "3-day free trial included",
+                            "Unlimited questions — no weekly cap",
+                            "Priority replies — typically within 1 hour",
+                            "Personal Statement & CV review",
+                            "Application form guidance",
                           ].map((item) => (
                             <li key={item} className="flex items-center gap-2">
-                              <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                              <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
                               {item}
                             </li>
                           ))}
                         </ul>
                       </div>
-                    </>
+                    </div>
+                  )}
+
+                  {/* ── Renew / extend section (premium users) ── */}
+                  {getPlanStatus().isPremium && (
+                    <div className="p-5 bg-muted/20 border border-border/40 rounded-xl">
+                      <p className="text-sm font-semibold text-foreground mb-1">Need to extend your plan?</p>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        You can purchase an additional period at any time. Your current access won't be affected.
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-primary/30 text-primary hover:bg-primary/5"
+                        onClick={async () => {
+                          try {
+                            setUpdateError("");
+                            const token = localStorage.getItem("askimate_token");
+                            const res = await fetch(
+                              `${import.meta.env.BASE_URL}api/askimate/checkout-session`,
+                              {
+                                method: "POST",
+                                headers: {
+                                  Authorization: `Bearer ${token}`,
+                                  "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ plan: planInfo?.planKey || "monthly" }),
+                              }
+                            );
+                            if (res.ok) {
+                              const data = await res.json();
+                              if (data.url) window.location.href = data.url;
+                            } else {
+                              setUpdateError("Failed to start checkout. Please try again.");
+                            }
+                          } catch {
+                            setUpdateError("Checkout failed. Please try again.");
+                          }
+                        }}
+                      >
+                        Renew / Extend Plan
+                      </Button>
+                    </div>
                   )}
                 </div>
               </div>
