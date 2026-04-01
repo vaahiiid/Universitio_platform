@@ -182,43 +182,6 @@ function AskiMateDashboardContent() {
     handle();
   }, []);
 
-  const getPlanStatus = () => {
-    if (!user) return { plan: "Free", status: "No plan", isPremium: false };
-    if (user.plan === "free") {
-      const remaining = planInfo?.questionsRemaining ?? 5;
-      return {
-        plan: "Basic Mentoring",
-        status: `${remaining} of 5 questions remaining this week`,
-        isPremium: false,
-      };
-    }
-    if (user.plan === "premium") {
-      const tierLabel = planInfo?.planLabel || "Premium";
-      const expiresAt = planInfo?.planExpiresAt ? new Date(planInfo.planExpiresAt) : null;
-      const now = new Date();
-      const isActive = expiresAt ? expiresAt > now : true;
-
-      let status = "Active";
-      if (expiresAt) {
-        const daysLeft = Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-        if (!isActive) {
-          status = "Expired — please renew";
-        } else if (daysLeft <= 7) {
-          status = `Expires soon — ${daysLeft} day${daysLeft !== 1 ? "s" : ""} left`;
-        } else {
-          status = `Active until ${expiresAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`;
-        }
-      }
-      return {
-        plan: `Premium Mentoring — ${tierLabel}`,
-        status,
-        isPremium: true,
-        isActive,
-        expiresAt,
-      };
-    }
-    return { plan: "Free", status: "Basic Mentoring", isPremium: false };
-  };
 
   // ─ Save profile ────────────────────────────────────────────────────────
   const handleSaveProfile = async () => {
@@ -1140,246 +1103,308 @@ function AskiMateDashboardContent() {
             )}
 
             {/* ══ SUBSCRIPTION TAB ══════════════════════════════════════ */}
-            {activeTab === "subscription" && (
-              <div className="flex-1 overflow-y-auto bg-white">
-                <div className="max-w-xl mx-auto px-5 py-8">
-                  <h2 className="text-xl font-bold text-foreground mb-6">Your Subscription</h2>
+            {activeTab === "subscription" && (() => {
+              // Derive plan state from planInfo (backend is authoritative after expiry check)
+              const isPremiumActive = planInfo?.isPremiumActive ?? false;
+              const isExpired = planInfo?.isExpired ?? false;
+              const currentPlanKey = planInfo?.planKey ?? null;
+              const daysRemaining = planInfo?.daysRemaining ?? null;
+              const planExpiresAt = planInfo?.planExpiresAt ? new Date(planInfo.planExpiresAt) : null;
+              const planActivatedAt = planInfo?.planActivatedAt ? new Date(planInfo.planActivatedAt) : null;
 
-                  {/* ── Success banner ── */}
-                  {paymentSuccess && (
-                    <div className="mb-5 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-3">
-                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-sm font-semibold text-green-800">Payment confirmed!</p>
-                        <p className="text-xs text-green-700 mt-0.5">
-                          Your plan has been activated. Details are shown below.
-                        </p>
-                      </div>
-                    </div>
-                  )}
+              // Tier order for Upgrade / Downgrade labels
+              const tierOrder: Record<string, number> = { monthly: 1, quarterly: 2, "semi-annual": 3 };
+              const currentTier = currentPlanKey ? (tierOrder[currentPlanKey] ?? 0) : 0;
 
-                  {/* ── Error banner ── */}
-                  {updateError && (
-                    <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl">
-                      <p className="text-sm text-red-800">{updateError}</p>
-                      <button
-                        onClick={() => setUpdateError("")}
-                        className="text-xs text-red-600 underline mt-1"
-                      >
-                        Dismiss
-                      </button>
-                    </div>
-                  )}
+              // Determine label for a plan's action button
+              const getButtonLabel = (planKey: string): string => {
+                if (!isPremiumActive && !isExpired) return "Get Started";  // free user
+                if (isExpired) {
+                  return planKey === currentPlanKey ? "Renew Plan" : "Buy Plan";
+                }
+                // Active premium
+                if (planKey === currentPlanKey) return "Renew Plan";
+                const thisTier = tierOrder[planKey] ?? 0;
+                if (thisTier > currentTier) return "Upgrade";
+                return "Downgrade";
+              };
 
-                  {/* ── Plan card ── */}
-                  {(() => {
-                    const ps = getPlanStatus();
-                    return (
-                      <div className={`p-6 rounded-2xl border-2 mb-6 ${
-                        ps.isPremium
-                          ? "bg-gradient-to-br from-primary/6 to-white border-primary/40"
-                          : "bg-muted/20 border-border/50"
-                      }`}>
-                        <div className="flex items-start justify-between gap-3 mb-4">
-                          <div>
-                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
-                              Current Plan
-                            </p>
-                            <p className="text-xl font-bold text-foreground leading-tight">{ps.plan}</p>
-                          </div>
-                          <span className={`text-xs font-semibold px-3 py-1 rounded-full flex-shrink-0 ${
-                            ps.isPremium
-                              ? "bg-primary text-white"
-                              : "bg-muted text-muted-foreground"
-                          }`}>
-                            {ps.isPremium ? "Premium" : "Free"}
-                          </span>
+              const startCheckout = async (plan: string) => {
+                try {
+                  setUpdateError("");
+                  const token = localStorage.getItem("askimate_token");
+                  const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/checkout-session`, {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ plan }),
+                  });
+                  if (res.ok) {
+                    const data = await res.json();
+                    if (data.url) window.location.href = data.url;
+                  } else {
+                    setUpdateError("Failed to start checkout. Please try again.");
+                  }
+                } catch {
+                  setUpdateError("Checkout failed. Please try again.");
+                }
+              };
+
+              const PLANS = [
+                {
+                  key: "monthly",
+                  label: "Monthly",
+                  price: "£12",
+                  priceNote: "per month",
+                  days: 30,
+                  savingsBadge: "",
+                },
+                {
+                  key: "quarterly",
+                  label: "3 Months",
+                  price: "£30",
+                  priceNote: "for 90 days",
+                  days: 90,
+                  savingsBadge: "Save £6",
+                },
+                {
+                  key: "semi-annual",
+                  label: "6 Months",
+                  price: "£65",
+                  priceNote: "for 180 days",
+                  days: 180,
+                  savingsBadge: "Best value",
+                },
+              ];
+
+              return (
+                <div className="flex-1 overflow-y-auto bg-white">
+                  <div className="max-w-xl mx-auto px-5 py-8">
+                    <h2 className="text-xl font-bold text-foreground mb-6">Your Subscription</h2>
+
+                    {/* ── Payment success banner ── */}
+                    {paymentSuccess && (
+                      <div className="mb-5 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-3">
+                        <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-semibold text-green-800">Payment confirmed!</p>
+                          <p className="text-xs text-green-700 mt-0.5">
+                            Your plan has been activated. Details are shown below.
+                          </p>
                         </div>
+                      </div>
+                    )}
 
-                        <p className={`text-sm font-medium ${
-                          ps.isPremium
-                            ? (ps as any).isActive === false ? "text-red-600" : "text-primary"
-                            : "text-muted-foreground"
+                    {/* ── Error banner ── */}
+                    {updateError && (
+                      <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <p className="text-sm text-red-800">{updateError}</p>
+                        <button
+                          onClick={() => setUpdateError("")}
+                          className="text-xs text-red-600 underline mt-1"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    )}
+
+                    {/* ── Expired banner ── */}
+                    {isExpired && (
+                      <div className="mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
+                        <CreditCard className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm font-semibold text-amber-800">Your plan has expired</p>
+                          <p className="text-xs text-amber-700 mt-0.5">
+                            You're now on the free tier (5 questions per week). Renew or purchase a new plan below to restore full access.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ── Plan status card ── */}
+                    <div className={`p-5 rounded-2xl border-2 mb-7 ${
+                      isPremiumActive
+                        ? "bg-gradient-to-br from-primary/5 to-white border-primary/35"
+                        : isExpired
+                          ? "bg-amber-50/50 border-amber-200"
+                          : "bg-muted/15 border-border/50"
+                    }`}>
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest mb-1">
+                            Current Plan
+                          </p>
+                          <p className="text-lg font-bold text-foreground leading-tight">
+                            {isPremiumActive
+                              ? `Premium — ${planInfo?.planLabel ?? "Monthly"}`
+                              : isExpired
+                                ? `${planInfo?.planLabel ?? "Premium"} (Expired)`
+                                : "Basic Mentoring"}
+                          </p>
+                        </div>
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full flex-shrink-0 border ${
+                          isPremiumActive
+                            ? "bg-primary text-white border-primary"
+                            : isExpired
+                              ? "bg-amber-100 text-amber-700 border-amber-300"
+                              : "bg-muted text-muted-foreground border-border"
                         }`}>
-                          {ps.status}
-                        </p>
+                          {isPremiumActive ? "Active" : isExpired ? "Expired" : "Free"}
+                        </span>
+                      </div>
 
-                        {/* Free: usage bar */}
-                        {!ps.isPremium && (
-                          <div className="mt-4">
-                            <div className="flex justify-between items-center mb-1.5 text-xs text-muted-foreground">
-                              <span>Weekly questions used</span>
-                              <span className="font-semibold text-foreground">
-                                {planInfo?.questionsUsed ?? 0} / 5
-                              </span>
-                            </div>
-                            <div className="w-full bg-muted/60 rounded-full h-2">
-                              <div
-                                className="bg-primary h-2 rounded-full transition-all"
-                                style={{ width: `${Math.min(100, ((planInfo?.questionsUsed ?? 0) / 5) * 100)}%` }}
-                              />
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-1.5">
-                              {planInfo?.questionsRemaining ?? 5} questions remaining this week. Resets every Monday.
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Premium: plan details */}
-                        {ps.isPremium && planInfo?.planActivatedAt && (
-                          <div className="mt-4 pt-4 border-t border-primary/20 space-y-2">
+                      {/* Active premium details */}
+                      {isPremiumActive && (
+                        <div className="space-y-2 pt-3 border-t border-primary/15">
+                          {planActivatedAt && (
                             <div className="flex justify-between text-sm">
                               <span className="text-muted-foreground">Activated</span>
                               <span className="font-medium text-foreground">
-                                {new Date(planInfo.planActivatedAt).toLocaleDateString("en-GB", {
-                                  day: "numeric", month: "long", year: "numeric",
-                                })}
+                                {planActivatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                               </span>
                             </div>
-                            {planInfo?.planExpiresAt && (
-                              <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Expires</span>
-                                <span className="font-medium text-foreground">
-                                  {new Date(planInfo.planExpiresAt).toLocaleDateString("en-GB", {
-                                    day: "numeric", month: "long", year: "numeric",
-                                  })}
-                                </span>
-                              </div>
-                            )}
+                          )}
+                          {planExpiresAt && (
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Messages</span>
-                              <span className="font-medium text-primary">Unlimited</span>
+                              <span className="text-muted-foreground">Active until</span>
+                              <span className="font-semibold text-primary">
+                                {planExpiresAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                              </span>
                             </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-
-                  {/* ── Upgrade section (free users) ── */}
-                  {!getPlanStatus().isPremium && (
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-foreground text-sm">Upgrade to Premium</h3>
-
-                      {[
-                        { label: "Monthly", price: "£12", duration: "30 days", plan: "monthly", note: "" },
-                        { label: "3 Months", price: "£30", duration: "90 days", plan: "quarterly", note: "Save £6" },
-                        { label: "6 Months", price: "£65", duration: "180 days", plan: "semi-annual", note: "Save £7" },
-                      ].map((option) => (
-                        <div
-                          key={option.plan}
-                          className="flex items-center justify-between p-4 border border-border/60 rounded-xl hover:border-primary/40 hover:bg-primary/3 transition-all"
-                        >
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-foreground text-sm">{option.label}</span>
-                              {option.note && (
-                                <span className="text-xs bg-green-100 text-green-700 font-medium px-2 py-0.5 rounded-full">
-                                  {option.note}
-                                </span>
-                              )}
+                          )}
+                          {daysRemaining !== null && (
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">Days remaining</span>
+                              <span className={`font-semibold ${daysRemaining <= 7 ? "text-amber-600" : "text-foreground"}`}>
+                                {daysRemaining} day{daysRemaining !== 1 ? "s" : ""}
+                                {daysRemaining <= 7 ? " — expiring soon" : ""}
+                              </span>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              Unlimited questions · {option.duration}
-                            </p>
+                          )}
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Questions</span>
+                            <span className="font-semibold text-primary">Unlimited</span>
                           </div>
-                          <Button
-                            size="sm"
-                            className="bg-primary hover:bg-primary/90 text-white flex-shrink-0"
-                            onClick={async () => {
-                              try {
-                                setUpdateError("");
-                                const token = localStorage.getItem("askimate_token");
-                                const res = await fetch(
-                                  `${import.meta.env.BASE_URL}api/askimate/checkout-session`,
-                                  {
-                                    method: "POST",
-                                    headers: {
-                                      Authorization: `Bearer ${token}`,
-                                      "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify({ plan: option.plan }),
-                                  }
-                                );
-                                if (res.ok) {
-                                  const data = await res.json();
-                                  if (data.url) window.location.href = data.url;
-                                } else {
-                                  setUpdateError("Failed to start checkout. Please try again.");
-                                }
-                              } catch {
-                                setUpdateError("Checkout failed. Please try again.");
-                              }
-                            }}
-                          >
-                            {option.price}
-                          </Button>
                         </div>
-                      ))}
+                      )}
 
-                      <div className="p-4 bg-primary/5 border border-primary/15 rounded-xl mt-2">
-                        <p className="text-xs font-semibold text-foreground mb-2">What you get with Premium:</p>
-                        <ul className="text-xs text-muted-foreground space-y-1.5">
-                          {[
-                            "Unlimited questions — no weekly cap",
-                            "Priority replies — typically within 1 hour",
-                            "Personal Statement & CV review",
-                            "Application form guidance",
-                          ].map((item) => (
-                            <li key={item} className="flex items-center gap-2">
-                              <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
+                      {/* Free / Expired usage bar */}
+                      {!isPremiumActive && (
+                        <div className="pt-3 border-t border-border/30">
+                          <div className="flex justify-between items-center mb-1.5 text-xs text-muted-foreground">
+                            <span>Weekly questions</span>
+                            <span className="font-semibold text-foreground">
+                              {planInfo?.questionsUsed ?? 0} / 5 used
+                            </span>
+                          </div>
+                          <div className="w-full bg-muted/50 rounded-full h-1.5">
+                            <div
+                              className="bg-primary h-1.5 rounded-full transition-all"
+                              style={{ width: `${Math.min(100, ((planInfo?.questionsUsed ?? 0) / 5) * 100)}%` }}
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1.5">
+                            {planInfo?.questionsRemaining ?? 5} remaining this week · Resets every Monday
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ── All Plans — always shown ── */}
+                    <div className="mb-2">
+                      <p className="text-sm font-semibold text-foreground mb-4">
+                        {isPremiumActive ? "Your plan options" : "Choose a plan"}
+                      </p>
+                      <div className="space-y-3">
+                        {PLANS.map((plan) => {
+                          const isCurrent = isPremiumActive && plan.key === currentPlanKey;
+                          const btnLabel = getButtonLabel(plan.key);
+                          const isUpgrade = btnLabel === "Upgrade";
+                          const isDowngrade = btnLabel === "Downgrade";
+
+                          return (
+                            <div
+                              key={plan.key}
+                              className={`rounded-xl border-2 p-4 transition-all ${
+                                isCurrent
+                                  ? "border-primary/50 bg-primary/4"
+                                  : "border-border/50 hover:border-primary/30 hover:bg-muted/10"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                                    <span className="font-semibold text-foreground text-sm">{plan.label}</span>
+                                    {isCurrent && (
+                                      <span className="text-[11px] font-bold bg-primary text-white px-2 py-0.5 rounded-full">
+                                        Current Plan
+                                      </span>
+                                    )}
+                                    {plan.savingsBadge && !isCurrent && (
+                                      <span className="text-[11px] font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                                        {plan.savingsBadge}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-muted-foreground">
+                                    <span className="font-semibold text-foreground">{plan.price}</span>
+                                    {" · "}
+                                    {plan.priceNote}
+                                    {" · "}
+                                    Unlimited questions
+                                  </p>
+                                  {isCurrent && isPremiumActive && planExpiresAt && (
+                                    <p className="text-xs text-primary mt-1">
+                                      Renewing adds {plan.days} days on top of your current expiry
+                                    </p>
+                                  )}
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant={isDowngrade ? "outline" : "default"}
+                                  className={`flex-shrink-0 min-w-[90px] ${
+                                    isDowngrade
+                                      ? "border-border/60 text-muted-foreground hover:bg-muted/20"
+                                      : isUpgrade
+                                        ? "bg-primary hover:bg-primary/90 text-white"
+                                        : isCurrent
+                                          ? "bg-primary/10 text-primary hover:bg-primary/15 border border-primary/30"
+                                          : "bg-primary hover:bg-primary/90 text-white"
+                                  }`}
+                                  onClick={() => startCheckout(plan.key)}
+                                >
+                                  {btnLabel}
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  )}
 
-                  {/* ── Renew / extend section (premium users) ── */}
-                  {getPlanStatus().isPremium && (
-                    <div className="p-5 bg-muted/20 border border-border/40 rounded-xl">
-                      <p className="text-sm font-semibold text-foreground mb-1">Need to extend your plan?</p>
-                      <p className="text-xs text-muted-foreground mb-3">
-                        You can purchase an additional period at any time. Your current access won't be affected.
+                    {/* ── Premium benefits (always show) ── */}
+                    <div className="mt-6 p-4 bg-primary/5 border border-primary/15 rounded-xl">
+                      <p className="text-xs font-semibold text-foreground mb-2.5">
+                        What's included with any Premium plan:
                       </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-primary/30 text-primary hover:bg-primary/5"
-                        onClick={async () => {
-                          try {
-                            setUpdateError("");
-                            const token = localStorage.getItem("askimate_token");
-                            const res = await fetch(
-                              `${import.meta.env.BASE_URL}api/askimate/checkout-session`,
-                              {
-                                method: "POST",
-                                headers: {
-                                  Authorization: `Bearer ${token}`,
-                                  "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({ plan: planInfo?.planKey || "monthly" }),
-                              }
-                            );
-                            if (res.ok) {
-                              const data = await res.json();
-                              if (data.url) window.location.href = data.url;
-                            } else {
-                              setUpdateError("Failed to start checkout. Please try again.");
-                            }
-                          } catch {
-                            setUpdateError("Checkout failed. Please try again.");
-                          }
-                        }}
-                      >
-                        Renew / Extend Plan
-                      </Button>
+                      <ul className="text-xs text-muted-foreground space-y-1.5">
+                        {[
+                          "Unlimited questions — no weekly cap",
+                          "Priority replies from UK education specialists",
+                          "Personal Statement & application review",
+                          "UCAS, clearing & visa guidance",
+                          "Time stacks — renew without losing existing access",
+                        ].map((item) => (
+                          <li key={item} className="flex items-start gap-2">
+                            <Check className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </main>
         </div>
 

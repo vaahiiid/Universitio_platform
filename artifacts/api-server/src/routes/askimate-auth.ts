@@ -284,6 +284,13 @@ router.post("/askimate/upgrade-to-premium", requireAskimateAuth, async (req: Req
   }
 });
 
+// Helper: determine if a user currently has active premium access
+function isActivePremium(user: { plan: string; trialEndsAt?: Date | null }): boolean {
+  if (user.plan !== "premium") return false;
+  if (!user.trialEndsAt) return false; // premium with no expiry date — treat as expired
+  return new Date(user.trialEndsAt) > new Date();
+}
+
 // GET CURRENT USER PLAN & QUOTA INFO
 router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res: Response) => {
   try {
@@ -298,15 +305,17 @@ router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res:
     }
 
     const now = new Date();
-    const trialEnd = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
-    let trialStatus = null;
+    const planExpiresAt = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+    const activePremium = isActivePremium(user);
+    const isExpired = user.plan === "premium" && !!planExpiresAt && planExpiresAt <= now;
 
-    if (user.plan === "premium" && trialEnd && now < trialEnd) {
-      const daysLeft = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-      trialStatus = { isTrialing: true, daysLeft };
+    // Days remaining for active premium
+    let daysRemaining: number | null = null;
+    if (activePremium && planExpiresAt) {
+      daysRemaining = Math.ceil((planExpiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     }
 
-    // Get weekly usage for free users
+    // Weekly usage — always fetch (needed even for expired premium treated as free)
     const currentWeek = getCurrentWeek();
     const usage = await db.query.askimateWeeklyUsage.findFirst({
       where: (table, { and, eq }) =>
@@ -316,22 +325,26 @@ router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res:
     const questionsUsed = usage?.questionsUsed || 0;
     const questionsRemaining = Math.max(0, 5 - questionsUsed);
 
-    const planLabels: Record<string, string> = {
-      monthly: "Monthly (30 days)",
-      quarterly: "3 Months (90 days)",
-      "semi-annual": "6 Months (180 days)",
-    };
+    // Effective plan: if premium but expired, the user is effectively on free
+    const effectivePlan = activePremium ? "premium" : "free";
 
     res.json({
+      // Raw plan stored in DB
       plan: user.plan,
+      // Effective plan after expiry check
+      effectivePlan,
+      isPremiumActive: activePremium,
+      isExpired,
+      // Plan metadata
       planKey: user.planKey || null,
-      planLabel: user.planKey ? (planLabels[user.planKey] ?? user.planKey) : null,
+      planLabel: user.planKey ? (PLAN_LABELS[user.planKey] ?? user.planKey) : null,
       planActivatedAt: user.trialStartedAt ? user.trialStartedAt.toISOString() : null,
-      planExpiresAt: user.trialEndsAt ? user.trialEndsAt.toISOString() : null,
-      trialStatus,
-      questionsUsed: user.plan === "free" ? questionsUsed : null,
-      questionsRemaining: user.plan === "free" ? questionsRemaining : null,
-      canAskQuestion: user.plan === "premium" || questionsRemaining > 0,
+      planExpiresAt: planExpiresAt ? planExpiresAt.toISOString() : null,
+      daysRemaining,
+      // Usage (returned for all users; null for active premium)
+      questionsUsed: effectivePlan === "free" ? questionsUsed : null,
+      questionsRemaining: effectivePlan === "free" ? questionsRemaining : null,
+      canAskQuestion: activePremium || questionsRemaining > 0,
     });
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Plan info error:", error);
@@ -509,23 +522,28 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
     const planKey = stripeSession.metadata?.planKey || "monthly";
     const durationDays = PLAN_DURATION_DAYS[planKey] ?? 30;
 
-    // ── Activate premium with correct plan duration ──
+    // ── Time-stacking: if current plan is still active, stack from its expiry ──
     const now = new Date();
-    const planExpiresAt = new Date(now.getTime() + durationDays * 24 * 60 * 60 * 1000);
+    const currentExpiry = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+    const baseTime = currentExpiry && currentExpiry > now ? currentExpiry : now;
+    const planExpiresAt = new Date(baseTime.getTime() + durationDays * 24 * 60 * 60 * 1000);
 
     await db
       .update(askimateUsers)
       .set({
         plan: "premium",
         planKey: planKey,
-        trialStartedAt: now,
+        trialStartedAt: user.trialStartedAt ?? now, // preserve original activation if renewing
         trialEndsAt: planExpiresAt,
         stripeSessionId: sessionId,
         updatedAt: new Date(),
       })
       .where(eq(askimateUsers.id, userPayload.id));
 
-    console.log(`[ASKIMATE-AUTH] User ${user.id} activated premium: planKey=${planKey}, expires=${planExpiresAt.toISOString()}`);
+    const stackedMessage = currentExpiry && currentExpiry > now
+      ? ` (stacked from ${currentExpiry.toISOString()})`
+      : "";
+    console.log(`[ASKIMATE-AUTH] User ${user.id} activated premium: planKey=${planKey}, expires=${planExpiresAt.toISOString()}${stackedMessage}`);
 
     res.json({
       success: true,

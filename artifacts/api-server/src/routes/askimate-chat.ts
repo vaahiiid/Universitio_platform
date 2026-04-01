@@ -125,12 +125,17 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         return;
       }
     } else if (userId) {
-      // Free user limit: 5 questions per week
+      // Fetch user to determine effective plan (premium only counts if not expired)
       const user = await db.query.askimateUsers.findFirst({
         where: eq(askimateUsers.id, userId),
       });
 
-      if (user && user.plan === "free") {
+      const now = new Date();
+      const planExpiresAt = user?.trialEndsAt ? new Date(user.trialEndsAt) : null;
+      const isActivePremium = user?.plan === "premium" && planExpiresAt && planExpiresAt > now;
+
+      // Treat as free if: explicitly free, or premium with an expired plan
+      if (user && !isActivePremium) {
         const currentWeek = getCurrentWeek();
         const usage = await db.query.askimateWeeklyUsage.findFirst({
           where: and(
@@ -145,9 +150,10 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           res.status(429).json({
             error: "FREE_LIMIT_REACHED",
             message:
-              "You've used all 5 free questions for this week. Upgrade to Premium Mentoring to continue. Start your 3-day free trial — cancel anytime.",
+              "You've used all 5 free questions for this week. Upgrade to Premium Mentoring for unlimited access.",
             conversationId: conversation.id,
             questionsUsed,
+            planExpired: user.plan === "premium" && !!planExpiresAt,
           });
           return;
         }
@@ -174,13 +180,17 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       })
       .where(eq(askimateConversations.id, conversation.id));
 
-    // Track usage for free users
+    // Track usage for non-premium users (free, or premium with expired plan)
     if (userId) {
       const user = await db.query.askimateUsers.findFirst({
         where: eq(askimateUsers.id, userId),
       });
 
-      if (user && user.plan === "free") {
+      const now2 = new Date();
+      const planExp = user?.trialEndsAt ? new Date(user.trialEndsAt) : null;
+      const isActivePremium2 = user?.plan === "premium" && planExp && planExp > now2;
+
+      if (user && !isActivePremium2) {
         const currentWeek = getCurrentWeek();
         const existingUsage = await db.query.askimateWeeklyUsage.findFirst({
           where: and(

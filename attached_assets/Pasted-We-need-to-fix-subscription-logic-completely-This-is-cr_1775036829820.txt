@@ -1,0 +1,136 @@
+We need to fix subscription logic completely. This is critical.
+
+DO NOT break payment flow.
+Focus on backend enforcement + frontend flexibility.
+
+========================================
+1. ENFORCE PLAN EXPIRY (CRITICAL)
+========================================
+
+Make sure that:
+
+- If planExpiresAt < now:
+  → user is treated as FREE immediately
+  → premium access must NOT work
+
+This must be enforced in backend (not UI only)
+
+Apply this check in:
+- message sending
+- usage limits
+- any premium feature
+
+========================================
+2. REMOVE PURCHASE BLOCKING
+========================================
+
+Currently user cannot buy again when premium.
+
+REMOVE any logic like:
+
+if (user.plan === "premium") block purchase
+
+Users MUST always be able to:
+- upgrade
+- downgrade
+- renew
+
+========================================
+3. FLEXIBLE PLAN PURCHASE LOGIC
+========================================
+
+When a new plan is purchased:
+
+Implement this logic:
+
+const baseTime = user.planExpiresAt > now ? user.planExpiresAt : now
+newExpiry = baseTime + newPlanDuration
+
+This allows:
+- upgrade
+- renew
+- stacking time
+
+========================================
+4. ADD planKey SUPPORT IN UI + BACKEND
+========================================
+
+We already store:
+- planKey (monthly, quarterly, semi-annual)
+
+Use it to:
+- display current plan
+- pre-select current plan on renew
+- allow switching plans
+
+========================================
+5. SUBSCRIPTION UI FIX (VERY IMPORTANT)
+========================================
+
+In subscription page:
+
+- ALWAYS show all plans (even if user is premium)
+- Show current plan clearly
+- Add label:
+
+"Current Plan"
+
+- For other plans:
+show buttons:
+- Upgrade
+- Downgrade
+- Switch plan
+
+- For same plan:
+show:
+"Renew plan"
+
+========================================
+6. CLEAR PLAN STATE DISPLAY
+========================================
+
+Show:
+
+- Current Plan Name
+- Plan Type (Monthly / Quarterly / Semi)
+- Active Until (date)
+- Remaining time
+- Usage / limits
+
+========================================
+7. HANDLE EXPIRED USERS
+========================================
+
+If expired:
+
+- Show:
+"Your plan has expired"
+
+- Show upgrade buttons again
+- Do NOT show as active
+
+========================================
+8. DO NOT BREAK EXISTING PAYMENT FLOW
+========================================
+
+Stripe checkout is working.
+
+Just fix:
+- post-payment logic
+- expiry enforcement
+- UI flexibility
+
+========================================
+SUCCESS RESULT
+========================================
+
+User can:
+- buy any plan anytime
+- upgrade anytime
+- downgrade anytime
+- renew anytime
+
+System:
+- enforces expiry strictly
+- applies correct duration stacking
+- reflects correct plan in UI

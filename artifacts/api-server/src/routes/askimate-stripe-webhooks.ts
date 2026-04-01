@@ -159,22 +159,28 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
   const planKey = session.metadata?.planKey || "monthly";
   const durationDays = PLAN_DURATION_DAYS[planKey] ?? 30;
 
+  // ── Time-stacking: if current plan is still active, stack from its expiry ──
   const now = new Date();
-  const planExpiresAt = new Date(now.getTime() + durationDays * 24 * 60 * 60 * 1000);
+  const currentExpiry = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+  const baseTime = currentExpiry && currentExpiry > now ? currentExpiry : now;
+  const planExpiresAt = new Date(baseTime.getTime() + durationDays * 24 * 60 * 60 * 1000);
 
   await db
     .update(askimateUsers)
     .set({
       plan: "premium",
       planKey: planKey,
-      trialStartedAt: now,
+      trialStartedAt: user.trialStartedAt ?? now, // preserve original activation if renewing
       trialEndsAt: planExpiresAt,
       stripeSessionId: session.id,
       updatedAt: new Date(),
     })
     .where(eq(askimateUsers.id, userId));
 
-  console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook: planKey=${planKey}, expires=${planExpiresAt.toISOString()}`);
+  const stackedMsg = currentExpiry && currentExpiry > now
+    ? ` (stacked from ${currentExpiry.toISOString()})`
+    : "";
+  console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook: planKey=${planKey}, expires=${planExpiresAt.toISOString()}${stackedMsg}`);
 }
 
 // Handler: customer.subscription.updated
