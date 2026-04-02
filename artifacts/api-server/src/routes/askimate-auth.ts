@@ -251,39 +251,6 @@ router.patch("/askimate/profile", requireAskimateAuth, async (req: Request, res:
   }
 });
 
-// UPGRADE TO PREMIUM (starts 3-day trial)
-router.post("/askimate/upgrade-to-premium", requireAskimateAuth, async (req: Request, res: Response) => {
-  try {
-    const userPayload = (req as any).askimateUser as AskimateUserPayload;
-
-    // Calculate trial end date (3 days from now)
-    const trialStartedAt = new Date();
-    const trialEndsAt = new Date(trialStartedAt);
-    trialEndsAt.setDate(trialEndsAt.getDate() + 3);
-
-    const [upgradedUser] = await db
-      .update(askimateUsers)
-      .set({
-        plan: "premium",
-        trialEndsAt,
-        trialStartedAt,
-        updatedAt: new Date(),
-      })
-      .where(eq(askimateUsers.id, userPayload.id))
-      .returning();
-
-    res.json({
-      plan: upgradedUser.plan,
-      trialEndsAt: upgradedUser.trialEndsAt,
-      trialStartedAt: upgradedUser.trialStartedAt,
-      message: "Upgraded to Premium. 3-day trial started.",
-    });
-  } catch (error) {
-    console.error("[ASKIMATE-AUTH] Premium upgrade error:", error);
-    res.status(500).json({ error: "Failed to upgrade to premium" });
-  }
-});
-
 // Helper: determine if a user currently has active premium access
 function isActivePremium(user: { plan: string; trialEndsAt?: Date | null }): boolean {
   if (user.plan !== "premium") return false;
