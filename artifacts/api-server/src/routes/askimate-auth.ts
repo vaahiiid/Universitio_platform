@@ -13,6 +13,10 @@ const JWT_EXPIRES_IN = "7d";
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
 const STRIPE_REDIRECT_URL = process.env.STRIPE_REDIRECT_URL || "http://localhost:5173/askimate-dashboard";
 
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || "";
+
 let stripe: Stripe | null = null;
 if (STRIPE_SECRET_KEY) {
   stripe = new Stripe(STRIPE_SECRET_KEY);
@@ -142,6 +146,12 @@ router.post("/askimate/login", async (req: Request, res: Response) => {
       return;
     }
 
+    // Detect Google-only accounts (no password set)
+    if (user.passwordHash === "GOOGLE_NO_PASSWORD") {
+      res.status(401).json({ error: "This account uses Google Sign-In. Please click 'Continue with Google' to log in." });
+      return;
+    }
+
     // Verify password
     const passwordValid = await bcrypt.compare(password, user.passwordHash);
     if (!passwordValid) {
@@ -248,6 +258,161 @@ router.patch("/askimate/profile", requireAskimateAuth, async (req: Request, res:
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Profile update error:", error);
     res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GOOGLE OAUTH — INITIATE
+// ─────────────────────────────────────────────────────────────────────────────
+router.get("/askimate/auth/google", (req: Request, res: Response) => {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_REDIRECT_URI) {
+    res.status(503).json({ error: "Google authentication is not configured on this server." });
+    return;
+  }
+
+  // Generate a signed state token (CSRF protection — 10-minute TTL)
+  const state = jwt.sign({ purpose: "google-oauth-state" }, JWT_SECRET, { expiresIn: "10m" });
+
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: GOOGLE_REDIRECT_URI,
+    response_type: "code",
+    scope: "openid email profile",
+    state,
+    access_type: "offline",
+    prompt: "select_account",
+  });
+
+  res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GOOGLE OAUTH — CALLBACK
+// ─────────────────────────────────────────────────────────────────────────────
+router.get("/askimate/auth/google/callback", async (req: Request, res: Response) => {
+  const { code, state, error: oauthError } = req.query as Record<string, string | undefined>;
+
+  // User denied or Google returned an error
+  if (oauthError) {
+    console.warn("[ASKIMATE-AUTH] Google OAuth error returned:", oauthError);
+    res.redirect(`/askimate-login?google_error=${encodeURIComponent("Google sign-in was cancelled or denied.")}`);
+    return;
+  }
+
+  if (!code || !state) {
+    res.redirect(`/askimate-login?google_error=${encodeURIComponent("Invalid Google callback — missing parameters.")}`);
+    return;
+  }
+
+  // Verify the state token (CSRF check)
+  try {
+    jwt.verify(state, JWT_SECRET);
+  } catch {
+    res.redirect(`/askimate-login?google_error=${encodeURIComponent("Security check failed. Please try again.")}`);
+    return;
+  }
+
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_REDIRECT_URI) {
+    res.redirect(`/askimate-login?google_error=${encodeURIComponent("Google authentication is not configured on this server.")}`);
+    return;
+  }
+
+  try {
+    // ── Step 1: Exchange authorisation code for access token ──────────────────
+    const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        code,
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        redirect_uri: GOOGLE_REDIRECT_URI,
+        grant_type: "authorization_code",
+      }).toString(),
+    });
+
+    const tokenData = (await tokenRes.json()) as Record<string, unknown>;
+
+    if (!tokenData.access_token) {
+      console.error("[ASKIMATE-AUTH] Google token exchange failed:", tokenData);
+      res.redirect(`/askimate-login?google_error=${encodeURIComponent("Failed to authenticate with Google. Please try again.")}`);
+      return;
+    }
+
+    // ── Step 2: Fetch Google user profile ─────────────────────────────────────
+    const profileRes = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` },
+    });
+
+    const googleUser = (await profileRes.json()) as {
+      id?: string;
+      email?: string;
+      verified_email?: boolean;
+      given_name?: string;
+      family_name?: string;
+      name?: string;
+    };
+
+    if (!googleUser.email) {
+      res.redirect(`/askimate-login?google_error=${encodeURIComponent("Google did not provide an email address.")}`);
+      return;
+    }
+
+    if (!googleUser.verified_email) {
+      res.redirect(`/askimate-login?google_error=${encodeURIComponent("Your Google account email is not verified. Please verify it first.")}`);
+      return;
+    }
+
+    const emailLower = googleUser.email.toLowerCase();
+
+    // ── Step 3: Find or create user (safe email-based matching) ───────────────
+    let dbUser = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.email, emailLower),
+    });
+
+    if (dbUser) {
+      // Existing user — link Google ID if not already linked
+      if (!dbUser.googleId && googleUser.id) {
+        const [updated] = await db
+          .update(askimateUsers)
+          .set({ googleId: googleUser.id, updatedAt: new Date() })
+          .where(eq(askimateUsers.id, dbUser.id))
+          .returning();
+        dbUser = updated;
+      }
+      // (If googleId already set or user had email/password, we just log them in — no overwrite)
+    } else {
+      // New user — create account with Google data
+      const firstName = googleUser.given_name || (googleUser.name ? googleUser.name.split(" ")[0] : "User");
+      const lastName = googleUser.family_name || (googleUser.name ? googleUser.name.split(" ").slice(1).join(" ") : "");
+
+      const [newUser] = await db
+        .insert(askimateUsers)
+        .values({
+          email: emailLower,
+          passwordHash: "GOOGLE_NO_PASSWORD",
+          firstName,
+          lastName,
+          googleId: googleUser.id || null,
+          plan: "free",
+          marketingConsent: false,
+          termsAccepted: true,
+          privacyAccepted: true,
+        })
+        .returning();
+
+      dbUser = newUser;
+    }
+
+    // ── Step 4: Generate JWT and redirect to dashboard ─────────────────────────
+    const token = generateToken({ id: dbUser.id, email: dbUser.email });
+
+    console.log(`[ASKIMATE-AUTH] Google OAuth success — user ${dbUser.id} (${dbUser.email})`);
+
+    res.redirect(`/askimate-dashboard?google_token=${encodeURIComponent(token)}`);
+  } catch (err) {
+    console.error("[ASKIMATE-AUTH] Google callback error:", err);
+    res.redirect(`/askimate-login?google_error=${encodeURIComponent("An unexpected error occurred. Please try again.")}`);
   }
 });
 

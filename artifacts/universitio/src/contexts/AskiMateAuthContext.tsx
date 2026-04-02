@@ -35,10 +35,24 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AskiMateUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Check if user is logged in on mount
+  // Check if user is logged in on mount — also handles Google OAuth callback token
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // ── Google OAuth callback: pick up token from URL ──────────────────────
+        const urlParams = new URLSearchParams(window.location.search);
+        const googleToken = urlParams.get("google_token");
+
+        if (googleToken) {
+          // Store the JWT from the OAuth redirect and clean up the URL
+          localStorage.setItem("askimate_token", googleToken);
+          urlParams.delete("google_token");
+          const newSearch = urlParams.toString();
+          const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : "");
+          window.history.replaceState({}, "", newUrl);
+        }
+
+        // ── Standard token restore ─────────────────────────────────────────────
         const token = localStorage.getItem("askimate_token");
         if (token) {
           const response = await fetch(`${API_BASE}/askimate/me`, {
@@ -163,14 +177,10 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
   };
 
   const googleLogin = async () => {
-    try {
-      // Google OAuth flow placeholder — ready for next phase
-      console.log("Google login initiated (placeholder for Phase 2 OAuth implementation)");
-      throw new Error("Google login not yet implemented");
-    } catch (error) {
-      console.error("Google login failed:", error);
-      throw error;
-    }
+    // Redirect the browser to the backend Google OAuth initiation route.
+    // The backend will redirect to Google, then back to /api/askimate/auth/google/callback,
+    // which finally redirects here with ?google_token= handled in the useEffect above.
+    window.location.href = "/api/askimate/auth/google";
   };
 
   const refreshUser = async () => {

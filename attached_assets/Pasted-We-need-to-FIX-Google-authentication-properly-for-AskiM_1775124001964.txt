@@ -1,0 +1,180 @@
+We need to FIX Google authentication properly for AskiMate.
+
+This must support BOTH:
+
+1. Sign up with Google
+2. Log in with Google
+
+Do NOT implement only one of them.
+
+Do NOT redesign the app.
+Do NOT change unrelated auth flows.
+Do NOT break the existing email login/signup flow.
+Do NOT touch working dashboard/chat/payment/subscription logic unless directly required for Google auth.
+
+==================================================
+MAIN GOAL
+==================================================
+
+Make Google authentication work correctly end-to-end for BOTH:
+- new users who want to sign up with Google
+- existing users who want to log in with Google
+
+Users must be able to:
+1. Sign up with Google
+2. Log in with Google
+3. Return to the correct app/dashboard state after Google auth
+4. Have their account linked/created correctly in the backend
+5. Not create duplicate accounts accidentally
+6. Stay logged in correctly after refresh/reload
+
+==================================================
+REQUIRED BEHAVIOR
+==================================================
+
+1. GOOGLE SIGN-IN / SIGN-UP BUTTONS MUST ACTUALLY WORK
+- On relevant auth screens and landing page, the Google button must start the real Google OAuth flow
+- No dead buttons
+- No fake UI-only integration
+- No placeholder behavior
+
+2. GOOGLE AUTH MUST SUPPORT BOTH FLOWS
+A. NEW USER:
+- If the user does NOT already have an account, Google auth should create a new account automatically
+- This is Google Sign Up
+
+B. EXISTING USER:
+- If the user ALREADY has an account with that email, Google auth should log them in safely
+- This is Google Login
+
+3. NO DUPLICATE ACCOUNT CREATION
+- Do NOT create duplicate users for the same email
+- If email already exists, match/link safely instead of creating a second user
+- This must work whether the original account came from:
+  - email signup
+  - Google auth
+  - existing user record in database
+
+4. CORRECT USER DATA MAPPING
+Use Google profile data appropriately, such as:
+- email
+- first name
+- last name
+- avatar/photo if relevant and safe
+
+But:
+- do NOT overwrite important existing user data carelessly
+- do NOT wipe profile fields unnecessarily
+
+5. AFTER GOOGLE AUTH, USER MUST BE LOGGED IN PROPERLY
+After successful Google auth:
+- session/token must be established correctly
+- frontend auth state must update correctly
+- user must appear as logged-in in the UI
+- user must be redirected to the correct app/dashboard page
+- no broken redirect loop
+- no partial logged-in state
+
+6. SESSION MUST PERSIST
+- Refresh/reload should not immediately log the user out
+- Google-authenticated user should still be recognized correctly after reload
+- session restore / auth restore must work
+
+7. ERROR HANDLING
+If Google auth fails:
+- show a clear error message
+- do not leave the user in a broken half-authenticated state
+- do not silently fail
+- do not create partial/broken user records
+
+==================================================
+INVESTIGATE THE REAL ROOT CAUSE
+==================================================
+
+Before changing things blindly, identify the actual reason Google auth is not working now.
+
+Check specifically:
+
+1. Is the Google button actually wired to a working auth flow?
+2. Is Google OAuth config missing or incorrect?
+3. Are redirect URIs wrong?
+4. Is the backend callback handler broken or incomplete?
+5. Is session creation after Google callback broken?
+6. Is frontend auth state not updating after callback?
+7. Is duplicate account prevention missing?
+8. Is login working but signup not working?
+9. Is signup working but login/account matching broken?
+10. Is there an env/config issue still required?
+
+==================================================
+IMPLEMENTATION REQUIREMENTS
+==================================================
+
+1. FRONTEND
+- Google button must initiate Google auth correctly
+- After callback, frontend must update the authenticated user state correctly
+- Redirect user to the correct place
+- Keep existing email auth flow intact
+
+2. BACKEND
+- Handle Google callback safely
+- Create or match user correctly
+- Establish session/token correctly
+- Prevent duplicate accounts
+- Keep ownership/security rules intact
+
+3. ACCOUNT MATCHING RULE
+Implement safe email-based matching.
+
+Recommended behavior:
+- if Google email matches an existing user email → log in / link safely
+- if no existing user email → create new user
+- never create duplicate accounts for the same email
+
+4. KEEP EXISTING EMAIL AUTH WORKING
+- Email login must still work
+- Email signup must still work
+- Do NOT break current auth provider/context/state unless required
+- Extend safely, do not replace unnecessarily
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign auth pages visually unless necessary
+- Do NOT break payment
+- Do NOT break dashboards
+- Do NOT break user/admin app flows
+- Do NOT refactor unrelated systems
+- Fix ONLY Google authentication properly
+
+==================================================
+SUCCESS CRITERIA
+==================================================
+
+After the fix:
+
+1. User can click Continue with Google
+2. Google OAuth opens and completes successfully
+3. New user can sign up with Google
+4. Existing user can log in with Google
+5. No duplicate account is created
+6. User returns to the app authenticated
+7. Dashboard access works
+8. Refresh/reload still shows logged-in state
+9. Email auth still works normally
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+
+1. what the real root cause was
+2. what files were changed
+3. how Google auth now works end-to-end
+4. how BOTH signup and login are handled
+5. how duplicate account prevention works
+6. how session/auth state is restored after reload
+7. confirm that email auth was not broken
+8. if any env/config value is still required, specify it clearly

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,18 @@ export default function AskiMateLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Read google_error from URL (set by backend when Google OAuth fails) and clear it
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const googleError = params.get("google_error");
+    if (googleError) {
+      setError(decodeURIComponent(googleError));
+      params.delete("google_error");
+      const newSearch = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (newSearch ? `?${newSearch}` : ""));
+    }
+  }, []);
 
   const handleBack = () => {
     if (document.referrer && document.referrer.includes(location.split("/")[2])) {
