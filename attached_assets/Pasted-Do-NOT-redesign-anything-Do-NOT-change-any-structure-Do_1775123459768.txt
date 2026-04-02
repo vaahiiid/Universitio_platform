@@ -1,0 +1,91 @@
+Do NOT redesign anything.
+Do NOT change any structure.
+Do NOT change any architecture.
+Do NOT change any infrastructure.
+Do NOT change any working business logic except for this one exact removal.
+
+This is a VERY LIMITED change.
+
+We only want to remove the “3-day premium trial” from everywhere it appears.
+
+==================================================
+VERY IMPORTANT
+==================================================
+
+Do NOT touch:
+- layout
+- flows
+- payment structure
+- subscription structure
+- database structure unless absolutely unavoidable
+- chat logic
+- usage logic
+- user/admin dashboard structure
+- Stripe flow
+- existing premium plan logic
+
+Do NOT refactor.
+Do NOT optimize.
+Do NOT improve unrelated things.
+Do NOT “clean up” extra code unless it is directly about the 3-day trial text/logic.
+
+==================================================
+ONLY REQUIRED CHANGE
+==================================================
+
+Remove the 3-day premium trial everywhere it appears.
+
+That means:
+
+1. Remove any text/UI mention of:
+- 3-day trial
+- premium trial
+- trial access
+- free trial
+
+2. Remove any logic that gives premium because of a 3-day trial
+
+3. Keep the rest exactly as it is:
+- free users still have their normal free usage
+- paid premium stays premium
+- premium should only mean actual premium
+- no trial-based premium state
+
+==================================================
+IMPORTANT BEHAVIOR RULE
+==================================================
+
+After this change:
+
+- Free = Free only
+- Premium = Premium only
+- No temporary 3-day premium trial anywhere
+
+But:
+DO NOT change any other plan logic.
+DO NOT change usage limits.
+DO NOT change purchase flow.
+DO NOT change renewal/upgrade/downgrade logic.
+DO NOT change page structure.
+
+==================================================
+IMPLEMENTATION STYLE
+==================================================
+
+This is NOT a redesign.
+This is NOT a refactor.
+This is NOT a logic rewrite.
+
+This is only:
+- removing trial references
+- removing trial-triggered premium behavior
+- making premium mean premium only
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report ONLY:
+1. where the 3-day premium trial was removed from
+2. what exact lines/files were changed
+3. confirm that no other structure, logic, or flow was changed

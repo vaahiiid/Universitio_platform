@@ -1,0 +1,108 @@
+We need to REMOVE the 3-day trial completely from the system.
+
+This is a full removal — backend + frontend + logic.
+
+========================================
+GOAL
+========================================
+
+- No trial system at all
+- Only 2 states:
+  1. Free (5 questions per week)
+  2. Premium (paid plans)
+
+========================================
+1. REMOVE TRIAL FROM DATABASE USAGE
+========================================
+
+- Stop using trialEndsAt completely
+- Do NOT rely on trial anywhere
+- Premium must ONLY come from successful payment
+
+If trialEndsAt exists in DB:
+- ignore it OR remove it safely
+- it must not affect logic anymore
+
+========================================
+2. REMOVE TRIAL LOGIC FROM BACKEND
+========================================
+
+In all backend files:
+
+- Remove any condition like:
+  user.trialEndsAt > now
+
+- Remove any logic that gives premium access due to trial
+
+Premium must ONLY be:
+
+user.plan === "premium" AND planExpiresAt > now
+
+========================================
+3. UPDATE PLAN CHECK LOGIC (CRITICAL)
+========================================
+
+Replace any premium detection with:
+
+const isPremiumActive =
+  user.plan === "premium" &&
+  user.planExpiresAt &&
+  user.planExpiresAt > now
+
+Everything else = FREE user
+
+========================================
+4. ENFORCE FREE LIMIT ONLY
+========================================
+
+For non-premium users:
+
+- enforce weekly limit (5 questions)
+- no trial bypass
+- no temporary unlimited access
+
+========================================
+5. CLEAN SUBSCRIPTION / UI
+========================================
+
+- Remove ANY mention of:
+  - "trial"
+  - "free trial"
+  - "3 days free"
+  - "trial active"
+
+UI must clearly show:
+
+- Free plan (5 questions/week)
+- Paid plans
+
+========================================
+6. CHECK PAYMENT FLOW
+========================================
+
+- Payment must directly activate premium
+- No trial phase before or after payment
+
+========================================
+7. SUCCESS CRITERIA
+========================================
+
+After changes:
+
+- New users → only FREE plan (5 questions/week)
+- No user ever gets trial
+- Premium ONLY comes from payment
+- No trial logic exists anywhere in code
+- UI is clean and consistent
+
+========================================
+IMPORTANT
+========================================
+
+Do NOT break:
+- existing payment flow
+- subscription logic
+- usage tracking
+- expiry enforcement
+
+Only remove trial logic cleanly.
