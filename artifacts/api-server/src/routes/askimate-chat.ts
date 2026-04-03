@@ -235,6 +235,12 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           }).catch((err) => console.error("[EMAIL] Usage limit email failed:", err));
         }
       }
+
+      // Record authenticated activity for re-engagement tracking (fire-and-forget)
+      db.update(askimateUsers)
+        .set({ lastActiveAt: new Date(), updatedAt: new Date() })
+        .where(eq(askimateUsers.id, userId))
+        .catch((err) => console.error("[ACTIVITY] Failed to update lastActiveAt on chat:", err));
     }
 
     // Auto-acknowledgement: if no mentor/ai reply within the last 5 minutes, send one now

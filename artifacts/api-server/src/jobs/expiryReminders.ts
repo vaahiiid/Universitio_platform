@@ -19,7 +19,7 @@
 
 import { db } from "@workspace/db";
 import { askimateUsers } from "@workspace/db/schema";
-import { and, eq, isNotNull, lte } from "drizzle-orm";
+import { and, eq, isNotNull, isNull, lte, or } from "drizzle-orm";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 
 const CHECK_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
@@ -194,12 +194,70 @@ async function runRenewalPush(now: Date): Promise<void> {
   }
 }
 
+// ─── JOB 3: Inactive user re-engagement ──────────────────────────────────────
+//
+// Target: users who have genuinely used the product (lastActiveAt IS NOT NULL)
+// but have not logged in or sent a chat message in the last 7 days.
+//
+// Anti-spam guard: only sends if:
+//   - reEngagementSentAt IS NULL  (never received one before), OR
+//   - reEngagementSentAt < 30 days ago (last one sent over 30 days ago)
+//
+// This ensures:
+//   - Brand-new users who never interacted are excluded (lastActiveAt = NULL)
+//   - Currently active users are excluded (lastActiveAt > 7 days ago)
+//   - The email is never spammed — maximum once per 30 days per user
+
+async function runReEngagement(now: Date): Promise<void> {
+  const sevenDaysAgo  = new Date(now.getTime() - 7  * 24 * 60 * 60 * 1000);
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+  let candidates;
+  try {
+    candidates = await db
+      .select()
+      .from(askimateUsers)
+      .where(
+        and(
+          isNotNull(askimateUsers.lastActiveAt),            // has real activity history
+          lte(askimateUsers.lastActiveAt, sevenDaysAgo),   // inactive for 7+ days
+          or(
+            isNull(askimateUsers.reEngagementSentAt),                     // never sent
+            lte(askimateUsers.reEngagementSentAt, thirtyDaysAgo),         // or sent 30+ days ago
+          ),
+        ),
+      );
+  } catch (err) {
+    console.error("[EXPIRY-JOB] DB query failed (re-engagement):", err);
+    return;
+  }
+
+  if (candidates.length === 0) return;
+  console.log(`[EXPIRY-JOB] Sending re-engagement email to ${candidates.length} inactive user(s)`);
+
+  for (const user of candidates) {
+    try {
+      await sendTransactionalEmail(EmailType.RE_ENGAGEMENT, user.email, {
+        firstName: user.firstName,
+      });
+      await db
+        .update(askimateUsers)
+        .set({ reEngagementSentAt: now, updatedAt: now })
+        .where(eq(askimateUsers.id, user.id));
+      console.log(`[EXPIRY-JOB] Re-engagement email sent → user ${user.id} (${user.email})`);
+    } catch (err) {
+      console.error(`[EXPIRY-JOB] Re-engagement error for user ${user.id}:`, err);
+    }
+  }
+}
+
 // ─── Combined runner ──────────────────────────────────────────────────────────
 
 async function runExpiryCheck(): Promise<void> {
   const now = new Date();
   await runExpiryReminders(now);
   await runRenewalPush(now);
+  await runReEngagement(now);
 }
 
 /**

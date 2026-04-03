@@ -13,6 +13,7 @@ export const EmailType = {
   PLAN_EXPIRED:         "PLAN_EXPIRED",
   USAGE_LIMIT_REACHED:  "USAGE_LIMIT_REACHED",
   RENEWAL_PUSH:         "RENEWAL_PUSH",
+  RE_ENGAGEMENT:        "RE_ENGAGEMENT",
 } as const;
 
 export type EmailType = (typeof EmailType)[keyof typeof EmailType];
@@ -67,6 +68,10 @@ export interface RenewalPushPayload {
   expiresAt: string;
 }
 
+export interface ReEngagementPayload {
+  firstName: string;
+}
+
 // ─── Payload Map — ties each EmailType to its payload interface ───────────────
 
 export type EmailPayloadMap = {
@@ -80,6 +85,7 @@ export type EmailPayloadMap = {
   [EmailType.PLAN_EXPIRED]:        PlanExpiredPayload;
   [EmailType.USAGE_LIMIT_REACHED]: UsageLimitReachedPayload;
   [EmailType.RENEWAL_PUSH]:        RenewalPushPayload;
+  [EmailType.RE_ENGAGEMENT]:       ReEngagementPayload;
 };
 
 // ─── Compiled Template — what every builder must return ──────────────────────

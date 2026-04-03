@@ -1,0 +1,80 @@
+Good. Payment failed email is approved.
+
+Now implement INACTIVE USER RE-ENGAGEMENT email properly.
+
+IMPORTANT:
+- Do NOT fake inactivity
+- Do NOT use a weak proxy like createdAt
+- Do NOT send spam
+- Implement the real activity tracking foundation first, then wire the email
+
+==================================================
+GOAL
+==================================================
+
+Make the inactive-user re-engagement email fully live and reliable.
+
+==================================================
+REQUIREMENTS
+==================================================
+
+1. ADD REAL ACTIVITY TRACKING
+Implement a reliable user activity signal.
+
+Add a field such as:
+- lastActiveAt
+
+Track meaningful user activity, for example:
+- successful login
+- sending a chat message
+- other meaningful product interaction if appropriate
+
+Do NOT use trivial/noisy activity.
+Do NOT use account creation time as a fake inactivity measure.
+
+2. DEFINE INACTIVITY RULE
+Choose a sensible inactivity threshold for the re-engagement email.
+Example:
+- no meaningful activity for 7 days
+or another clean threshold if you justify it
+
+3. SEND ONLY WHEN TRULY INACTIVE
+The email should go only to users who were previously active enough to matter and then became inactive.
+
+Avoid false positives such as:
+- brand new users who never engaged
+- users who are still active
+- users who already received the same re-engagement recently
+
+4. DUPLICATE / SPAM PROTECTION
+Add safe logic so users do not receive this email repeatedly in a spammy way.
+Use minimal, clean state tracking if needed.
+
+5. USE EXISTING EMAIL ARCHITECTURE
+Wire it into the current Resend + email type/template system cleanly.
+
+6. KEEP CORE FLOWS SAFE
+If email sending fails, product behavior must remain unaffected.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign anything
+- Do NOT break auth
+- Do NOT break chat
+- Do NOT break subscription logic
+- Do NOT touch unrelated UI
+- Only add real inactivity tracking and the re-engagement email flow
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. what activity signal is now tracked
+2. what counts as user activity
+3. what inactivity threshold is used
+4. how duplicate/spam prevention works
+5. what files were changed
+6. confirm inactive-user re-engagement email is now fully live

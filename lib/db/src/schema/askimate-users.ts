@@ -34,6 +34,15 @@ export const askimateUsers = pgTable("askimate_users", {
   // Sent 3 days after expiry — a softer renewal nudge, distinct from the pre-expiry reminders
   renewalPushSent: boolean("renewal_push_sent").notNull().default(false),
   // ─────────────────────────────────────────────────────────────────────────
+  // ── Real activity tracking ────────────────────────────────────────────────
+  // Updated on every successful login and every authenticated chat message send.
+  // NULL means the user signed up but has never meaningfully engaged with the product.
+  // Used by the re-engagement scheduler to identify genuinely inactive users.
+  lastActiveAt: timestamp("last_active_at"),
+  // Set to the timestamp when the re-engagement email was last sent.
+  // Allows periodic resend (every 30 days) without being a boolean that allows only one send.
+  reEngagementSentAt: timestamp("re_engagement_sent_at"),
+  // ─────────────────────────────────────────────────────────────────────────
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

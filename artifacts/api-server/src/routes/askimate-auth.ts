@@ -199,6 +199,12 @@ router.post("/askimate/login", async (req: Request, res: Response) => {
     // Generate token
     const token = generateToken({ id: user.id, email: user.email });
 
+    // Record login as meaningful activity for re-engagement tracking (fire-and-forget)
+    db.update(askimateUsers)
+      .set({ lastActiveAt: new Date(), updatedAt: new Date() })
+      .where(eq(askimateUsers.id, user.id))
+      .catch((err) => console.error("[ACTIVITY] Failed to update lastActiveAt on login:", err));
+
     res.json({
       token,
       user: {
