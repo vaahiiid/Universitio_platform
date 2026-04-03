@@ -9,10 +9,10 @@ const router: IRouter = Router();
  * Usage: POST /api/email/test  { "to": "you@example.com" }
  */
 router.post("/email/test", async (req: Request, res: Response) => {
-  const adminToken = process.env.ADMIN_TOKEN || process.env.JWT_SECRET || "";
+  const adminPassword = process.env.ADMIN_PASSWORD || "";
   const authHeader = req.headers.authorization || "";
 
-  if (!authHeader.startsWith("Bearer ") || authHeader.slice(7) !== adminToken) {
+  if (!adminPassword || !authHeader.startsWith("Bearer ") || authHeader.slice(7) !== adminPassword) {
     res.status(401).json({ error: "Unauthorised" });
     return;
   }

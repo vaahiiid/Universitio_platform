@@ -19,7 +19,7 @@ router.use(askimateAuthRouter);
 router.use(askimateChatRouter);
 router.use(leadsRouter);
 router.use(publicRouter);
-router.use(adminRouter);
 router.use(emailRouter);
+router.use(adminRouter);
 
 export default router;
