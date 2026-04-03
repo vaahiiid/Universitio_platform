@@ -17,6 +17,13 @@ export const askimateUsers = pgTable("askimate_users", {
   trialStartedAt: timestamp("trial_started_at"), // when premium was activated
   stripeSessionId: text("stripe_session_id"), // last processed Stripe session (idempotency)
   googleId: text("google_id").unique(),
+  // ── Email verification ────────────────────────────────────────────────────
+  // emailVerified starts false on password signup; set true when the user clicks the link.
+  // Google OAuth users are marked verified immediately (Google already verified the address).
+  emailVerified: boolean("email_verified").notNull().default(false),
+  emailVerificationToken: text("email_verification_token"),          // null once verified or never set
+  emailVerificationExpiresAt: timestamp("email_verification_expires_at"), // null once verified
+  // ─────────────────────────────────────────────────────────────────────────
   // ── Expiry reminder tracking ──────────────────────────────────────────────
   // Each flag is set true once the corresponding reminder is sent.
   // All four reset to false on every successful payment so renewals get fresh reminders.

@@ -1,6 +1,7 @@
 import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import Stripe from "stripe";
 import { db, pool } from "@workspace/db";
 import { askimateUsers, askimateWeeklyUsage } from "@workspace/db/schema";
@@ -53,7 +54,19 @@ function generateToken(payload: AskimateUserPayload): string {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
-// SIGN UP
+/**
+ * Generates a secure, single-use email verification token with a 24-hour expiry.
+ * Uses 32 bytes of cryptographically random data → 64-char hex string.
+ */
+function generateVerificationToken(): { token: string; expiresAt: Date } {
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+  return { token, expiresAt };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SIGN UP (password)
+// ─────────────────────────────────────────────────────────────────────────────
 router.post("/askimate/signup", async (req: Request, res: Response) => {
   try {
     const { email, password, firstName, lastName } = req.body as {
@@ -87,6 +100,9 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
     // Hash password
     const passwordHash = await bcrypt.hash(password, 12);
 
+    // Generate email verification token
+    const { token: verificationToken, expiresAt: verificationExpiresAt } = generateVerificationToken();
+
     // Create user on FREE plan (no premium trial until explicit upgrade)
     const [newUser] = await db
       .insert(askimateUsers)
@@ -95,22 +111,34 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
         passwordHash,
         firstName,
         lastName,
-        plan: "free", // Start on free plan
-        trialEndsAt: null, // No trial until upgrade
+        plan: "free",
+        trialEndsAt: null,
         trialStartedAt: null,
         termsAccepted: true,
         privacyAccepted: true,
         marketingConsent: false,
+        // Email verification — starts unverified; token cleared once user clicks link
+        emailVerified: false,
+        emailVerificationToken: verificationToken,
+        emailVerificationExpiresAt: verificationExpiresAt,
       })
       .returning();
 
-    // Generate token
+    // Generate JWT
     const token = generateToken({ id: newUser.id, email: newUser.email });
 
-    // Send welcome email (fire-and-forget — email failure must not break signup)
+    // Send welcome email (fire-and-forget)
     sendTransactionalEmail(EmailType.SIGNUP_WELCOME, newUser.email, {
       firstName: newUser.firstName,
     }).catch((err) => console.error("[EMAIL] Signup welcome failed:", err));
+
+    // Send verification email (fire-and-forget — email failure must not break signup)
+    const verificationLink = `https://universitio.com/api/askimate/auth/verify-email?token=${verificationToken}`;
+    sendTransactionalEmail(EmailType.EMAIL_VERIFICATION, newUser.email, {
+      firstName: newUser.firstName,
+      verificationLink,
+      expiryHours: 24,
+    }).catch((err) => console.error("[EMAIL] Verification email failed:", err));
 
     res.status(201).json({
       token,
@@ -121,6 +149,7 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
         lastName: newUser.lastName,
         plan: newUser.plan,
         trialEndsAt: newUser.trialEndsAt,
+        emailVerified: newUser.emailVerified,
       },
     });
   } catch (error) {
@@ -129,7 +158,9 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
   }
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
 // LOGIN
+// ─────────────────────────────────────────────────────────────────────────────
 router.post("/askimate/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body as {
@@ -177,6 +208,7 @@ router.post("/askimate/login", async (req: Request, res: Response) => {
         lastName: user.lastName,
         plan: user.plan,
         trialEndsAt: user.trialEndsAt,
+        emailVerified: user.emailVerified,
       },
     });
   } catch (error) {
@@ -185,13 +217,17 @@ router.post("/askimate/login", async (req: Request, res: Response) => {
   }
 });
 
-// LOGOUT (client-side token removal is sufficient, but provide endpoint for clarity)
+// ─────────────────────────────────────────────────────────────────────────────
+// LOGOUT
+// ─────────────────────────────────────────────────────────────────────────────
 router.post("/askimate/logout", requireAskimateAuth, (req: Request, res: Response) => {
   // Token management is handled client-side
   res.json({ message: "Logged out successfully" });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
 // GET CURRENT USER
+// ─────────────────────────────────────────────────────────────────────────────
 router.get("/askimate/me", requireAskimateAuth, async (req: Request, res: Response) => {
   try {
     const userPayload = (req as any).askimateUser as AskimateUserPayload;
@@ -216,6 +252,7 @@ router.get("/askimate/me", requireAskimateAuth, async (req: Request, res: Respon
       privacyAccepted: user.privacyAccepted,
       plan: user.plan,
       trialEndsAt: user.trialEndsAt,
+      emailVerified: user.emailVerified,
       createdAt: user.createdAt,
     });
   } catch (error) {
@@ -224,7 +261,9 @@ router.get("/askimate/me", requireAskimateAuth, async (req: Request, res: Respon
   }
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
 // UPDATE PROFILE
+// ─────────────────────────────────────────────────────────────────────────────
 router.patch("/askimate/profile", requireAskimateAuth, async (req: Request, res: Response) => {
   try {
     const userPayload = (req as any).askimateUser as AskimateUserPayload;
@@ -260,10 +299,120 @@ router.patch("/askimate/profile", requireAskimateAuth, async (req: Request, res:
       marketingConsent: updatedUser.marketingConsent,
       plan: updatedUser.plan,
       trialEndsAt: updatedUser.trialEndsAt,
+      emailVerified: updatedUser.emailVerified,
     });
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Profile update error:", error);
     res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// VERIFY EMAIL — clicked from the email link
+// GET /api/askimate/auth/verify-email?token=...
+// ─────────────────────────────────────────────────────────────────────────────
+router.get("/askimate/auth/verify-email", async (req: Request, res: Response) => {
+  const { token } = req.query as { token?: string };
+
+  if (!token || typeof token !== "string" || token.trim() === "") {
+    res.redirect("/askimate-login?verify_error=invalid");
+    return;
+  }
+
+  try {
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.emailVerificationToken, token.trim()),
+    });
+
+    if (!user) {
+      // Token not found — already used or never issued
+      console.warn(`[ASKIMATE-AUTH] Verification attempt with unknown/used token (prefix: ${token.slice(0, 8)}...)`);
+      res.redirect("/askimate-login?verify_error=invalid");
+      return;
+    }
+
+    // Check expiry
+    if (!user.emailVerificationExpiresAt || new Date(user.emailVerificationExpiresAt) < new Date()) {
+      console.warn(`[ASKIMATE-AUTH] Expired verification token for user ${user.id}`);
+      res.redirect("/askimate-login?verify_error=expired");
+      return;
+    }
+
+    // Mark verified — clear the token so it becomes single-use
+    await db
+      .update(askimateUsers)
+      .set({
+        emailVerified: true,
+        emailVerificationToken: null,
+        emailVerificationExpiresAt: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(askimateUsers.id, user.id));
+
+    console.log(`[ASKIMATE-AUTH] Email verified for user ${user.id} (${user.email})`);
+
+    // Redirect to dashboard with success param so the frontend can show a banner
+    res.redirect("/askimate-dashboard?verified=true");
+  } catch (err) {
+    console.error("[ASKIMATE-AUTH] Email verification error:", err);
+    res.redirect("/askimate-login?verify_error=server");
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESEND VERIFICATION EMAIL
+// POST /api/askimate/auth/resend-verification
+// ─────────────────────────────────────────────────────────────────────────────
+router.post("/askimate/auth/resend-verification", requireAskimateAuth, async (req: Request, res: Response) => {
+  try {
+    const userPayload = (req as any).askimateUser as AskimateUserPayload;
+
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.id, userPayload.id),
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    // Already verified — nothing to do
+    if (user.emailVerified) {
+      res.json({ message: "Your email address is already verified." });
+      return;
+    }
+
+    // Google users are always verified — this shouldn't be reachable, but guard it
+    if (user.googleId && !user.emailVerificationToken) {
+      res.json({ message: "Your email address is already verified via Google." });
+      return;
+    }
+
+    // Generate a fresh token + expiry
+    const { token: newToken, expiresAt: newExpiresAt } = generateVerificationToken();
+
+    await db
+      .update(askimateUsers)
+      .set({
+        emailVerificationToken: newToken,
+        emailVerificationExpiresAt: newExpiresAt,
+        updatedAt: new Date(),
+      })
+      .where(eq(askimateUsers.id, user.id));
+
+    const verificationLink = `https://universitio.com/api/askimate/auth/verify-email?token=${newToken}`;
+
+    sendTransactionalEmail(EmailType.EMAIL_VERIFICATION, user.email, {
+      firstName: user.firstName,
+      verificationLink,
+      expiryHours: 24,
+    }).catch((err) => console.error("[EMAIL] Resend verification failed:", err));
+
+    console.log(`[ASKIMATE-AUTH] Verification email re-sent for user ${user.id} (${user.email})`);
+    res.json({ message: "Verification email sent. Please check your inbox." });
+  } catch (err) {
+    console.error("[ASKIMATE-AUTH] Resend verification error:", err);
+    res.status(500).json({ error: "Failed to resend verification email" });
   }
 });
 
@@ -371,24 +520,32 @@ router.get("/askimate/auth/google/callback", async (req: Request, res: Response)
 
     const emailLower = googleUser.email.toLowerCase();
 
-    // ── Step 3: Find or create user (safe email-based matching) ───────────────
+    // ── Step 3: Find or create user ───────────────────────────────────────────
     let dbUser = await db.query.askimateUsers.findFirst({
       where: eq(askimateUsers.email, emailLower),
     });
 
     if (dbUser) {
-      // Existing user — link Google ID if not already linked
-      if (!dbUser.googleId && googleUser.id) {
+      // Existing user — link Google ID if not set; also mark email as verified
+      // (Google verified_email = true is trusted; this benefits existing password users who sign in with Google)
+      const needsUpdate = (!dbUser.googleId && googleUser.id) || !dbUser.emailVerified;
+      if (needsUpdate) {
+        const updateValues: any = { updatedAt: new Date() };
+        if (!dbUser.googleId && googleUser.id) updateValues.googleId = googleUser.id;
+        if (!dbUser.emailVerified) {
+          updateValues.emailVerified = true;
+          updateValues.emailVerificationToken = null;
+          updateValues.emailVerificationExpiresAt = null;
+        }
         const [updated] = await db
           .update(askimateUsers)
-          .set({ googleId: googleUser.id, updatedAt: new Date() })
+          .set(updateValues)
           .where(eq(askimateUsers.id, dbUser.id))
           .returning();
         dbUser = updated;
       }
-      // (If googleId already set or user had email/password, we just log them in — no overwrite)
     } else {
-      // New user — create account with Google data
+      // New user — create account with Google data; mark email verified immediately
       const firstName = googleUser.given_name || (googleUser.name ? googleUser.name.split(" ")[0] : "User");
       const lastName = googleUser.family_name || (googleUser.name ? googleUser.name.split(" ").slice(1).join(" ") : "");
 
@@ -404,12 +561,17 @@ router.get("/askimate/auth/google/callback", async (req: Request, res: Response)
           marketingConsent: false,
           termsAccepted: true,
           privacyAccepted: true,
+          // Google already verified this email address — mark trusted immediately
+          emailVerified: true,
+          emailVerificationToken: null,
+          emailVerificationExpiresAt: null,
         })
         .returning();
 
       dbUser = newUser;
 
       // Send welcome email for new Google OAuth users (fire-and-forget)
+      // No verification email needed — they're already verified
       sendTransactionalEmail(EmailType.SIGNUP_WELCOME, newUser.email, {
         firstName: newUser.firstName,
       }).catch((err) => console.error("[EMAIL] Signup welcome (Google) failed:", err));
@@ -427,14 +589,44 @@ router.get("/askimate/auth/google/callback", async (req: Request, res: Response)
   }
 });
 
-// Helper: determine if a user currently has active premium access
+// ─────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Returns true if the user currently has active paid premium access. */
 function isActivePremium(user: { plan: string; trialEndsAt?: Date | null }): boolean {
   if (user.plan !== "premium") return false;
-  if (!user.trialEndsAt) return false; // premium with no expiry date — treat as expired
+  if (!user.trialEndsAt) return false;
   return new Date(user.trialEndsAt) > new Date();
 }
 
+const PLAN_DURATION_DAYS: Record<string, number> = {
+  monthly: 30,
+  quarterly: 90,
+  "semi-annual": 180,
+};
+
+const PLAN_LABELS: Record<string, string> = {
+  monthly: "Monthly (30 days)",
+  quarterly: "3 Months (90 days)",
+  "semi-annual": "6 Months (180 days)",
+};
+
+function getCurrentWeek(): string {
+  const now = new Date();
+  const start = new Date(now);
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  start.setDate(diff);
+
+  const year = start.getFullYear();
+  const week = Math.ceil(((now.getTime() - start.getTime()) / 86400000 + 1) / 7);
+  return `${year}-W${String(week).padStart(2, "0")}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // GET CURRENT USER PLAN & QUOTA INFO
+// ─────────────────────────────────────────────────────────────────────────────
 router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res: Response) => {
   try {
     const userPayload = (req as any).askimateUser as AskimateUserPayload;
@@ -452,13 +644,11 @@ router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res:
     const activePremium = isActivePremium(user);
     const isExpired = user.plan === "premium" && !!planExpiresAt && planExpiresAt <= now;
 
-    // Days remaining for active premium
     let daysRemaining: number | null = null;
     if (activePremium && planExpiresAt) {
       daysRemaining = Math.ceil((planExpiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     }
 
-    // Weekly usage — always fetch (needed even for expired premium treated as free)
     const currentWeek = getCurrentWeek();
     const usage = await db.query.askimateWeeklyUsage.findFirst({
       where: (table, { and, eq }) =>
@@ -467,27 +657,22 @@ router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res:
 
     const questionsUsed = usage?.questionsUsed || 0;
     const questionsRemaining = Math.max(0, 5 - questionsUsed);
-
-    // Effective plan: if premium but expired, the user is effectively on free
     const effectivePlan = activePremium ? "premium" : "free";
 
     res.json({
-      // Raw plan stored in DB
       plan: user.plan,
-      // Effective plan after expiry check
       effectivePlan,
       isPremiumActive: activePremium,
       isExpired,
-      // Plan metadata
       planKey: user.planKey || null,
       planLabel: user.planKey ? (PLAN_LABELS[user.planKey] ?? user.planKey) : null,
       planActivatedAt: user.trialStartedAt ? user.trialStartedAt.toISOString() : null,
       planExpiresAt: planExpiresAt ? planExpiresAt.toISOString() : null,
       daysRemaining,
-      // Usage (returned for all users; null for active premium)
       questionsUsed: effectivePlan === "free" ? questionsUsed : null,
       questionsRemaining: effectivePlan === "free" ? questionsRemaining : null,
       canAskQuestion: activePremium || questionsRemaining > 0,
+      emailVerified: user.emailVerified,
     });
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Plan info error:", error);
@@ -495,19 +680,9 @@ router.get("/askimate/plan-info", requireAskimateAuth, async (req: Request, res:
   }
 });
 
-function getCurrentWeek(): string {
-  const now = new Date();
-  const start = new Date(now);
-  const day = now.getDay();
-  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-  start.setDate(diff);
-
-  const year = start.getFullYear();
-  const week = Math.ceil(((now.getTime() - start.getTime()) / 86400000 + 1) / 7);
-  return `${year}-W${String(week).padStart(2, "0")}`;
-}
-
+// ─────────────────────────────────────────────────────────────────────────────
 // STRIPE CHECKOUT SESSION
+// ─────────────────────────────────────────────────────────────────────────────
 router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Request, res: Response) => {
   if (!stripe) {
     res.status(500).json({ error: "Stripe not configured" });
@@ -523,7 +698,6 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       return;
     }
 
-    // Plan pricing in pence (£12 = 1200 pence, etc.)
     const priceMap: { [key: string]: number } = {
       monthly: 1200,
       quarterly: 3000,
@@ -539,9 +713,7 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       return;
     }
 
-    // Create ephemeral Stripe session
     const userIdString = String(userPayload.id);
-    // Strip any existing query string from the redirect URL to build clean success/cancel URLs
     const baseRedirectUrl = STRIPE_REDIRECT_URL.split("?")[0];
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -565,7 +737,6 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       cancel_url: `${baseRedirectUrl}?cancelled=true`,
       client_reference_id: userIdString,
       customer_email: user.email,
-      // planKey in metadata so webhook + confirm-premium know exactly what was purchased
       metadata: {
         userId: userIdString,
         planKey: plan,
@@ -579,21 +750,9 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
   }
 });
 
-// Plan duration in days
-const PLAN_DURATION_DAYS: Record<string, number> = {
-  monthly: 30,
-  quarterly: 90,
-  "semi-annual": 180,
-};
-
-// Human-readable plan names
-const PLAN_LABELS: Record<string, string> = {
-  monthly: "Monthly (30 days)",
-  quarterly: "3 Months (90 days)",
-  "semi-annual": "6 Months (180 days)",
-};
-
+// ─────────────────────────────────────────────────────────────────────────────
 // CONFIRM PREMIUM (called after successful Stripe payment redirect)
+// ─────────────────────────────────────────────────────────────────────────────
 router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Request, res: Response) => {
   if (!stripe) {
     res.status(500).json({ error: "Stripe not configured" });
@@ -609,7 +768,6 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
       return;
     }
 
-    // Retrieve user from DB
     const user = await db.query.askimateUsers.findFirst({
       where: eq(askimateUsers.id, userPayload.id),
     });
@@ -619,7 +777,7 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
       return;
     }
 
-    // ── Idempotency: if this exact session was already processed, return current state ──
+    // Idempotency: if this exact session was already processed, return current state
     if (user.stripeSessionId === sessionId) {
       console.log(`[ASKIMATE-AUTH] Session ${sessionId} already processed for user ${user.id}, returning current state`);
       res.json({
@@ -627,78 +785,56 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
         alreadyProcessed: true,
         plan: user.plan,
         planKey: user.planKey,
-        planLabel: user.planKey ? PLAN_LABELS[user.planKey] : null,
-        planActivatedAt: user.trialStartedAt,
-        planExpiresAt: user.trialEndsAt,
+        trialEndsAt: user.trialEndsAt,
       });
       return;
     }
 
-    // ── Retrieve and validate Stripe session ──
-    let stripeSession;
-    try {
-      stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
-    } catch (error) {
-      console.error("[ASKIMATE-AUTH] Stripe session retrieval failed:", error);
-      res.status(400).json({ error: "Invalid payment session" });
+    // Retrieve and validate the Stripe session
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (session.payment_status !== "paid") {
+      res.status(402).json({ error: "Payment not completed" });
       return;
     }
 
-    if (stripeSession.payment_status !== "paid") {
-      res.status(400).json({ error: "Payment not completed" });
+    // Determine plan from metadata
+    const planKey = (session.metadata?.planKey as string) || "monthly";
+    if (!PLAN_DURATION_DAYS[planKey]) {
+      res.status(400).json({ error: "Unknown plan in session metadata" });
       return;
     }
 
-    if (stripeSession.status !== "complete") {
-      res.status(400).json({ error: "Checkout session not complete" });
-      return;
-    }
-
-    // Case-insensitive email check
-    if (stripeSession.customer_email?.toLowerCase() !== user.email.toLowerCase()) {
-      console.error(`[ASKIMATE-AUTH] Email mismatch for session ${sessionId}: ${stripeSession.customer_email} vs ${user.email}`);
-      res.status(400).json({ error: "Payment session email mismatch" });
-      return;
-    }
-
-    // ── Extract planKey from Stripe metadata ──
-    const planKey = stripeSession.metadata?.planKey || "monthly";
-    const durationDays = PLAN_DURATION_DAYS[planKey] ?? 30;
-
-    // ── Time-stacking: if current plan is still active, stack from its expiry ──
+    // Calculate expiry — stack on top of existing expiry if still active
     const now = new Date();
     const currentExpiry = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
-    const baseTime = currentExpiry && currentExpiry > now ? currentExpiry : now;
-    const planExpiresAt = new Date(baseTime.getTime() + durationDays * 24 * 60 * 60 * 1000);
+    const baseDate = currentExpiry && currentExpiry > now ? currentExpiry : now;
+    const planExpiresAt = new Date(baseDate.getTime() + PLAN_DURATION_DAYS[planKey] * 24 * 60 * 60 * 1000);
 
-    await db
+    const [updatedUser] = await db
       .update(askimateUsers)
       .set({
         plan: "premium",
-        planKey: planKey,
-        trialStartedAt: user.trialStartedAt ?? now, // preserve original activation if renewing
+        planKey,
+        trialStartedAt: user.trialStartedAt ?? now,
         trialEndsAt: planExpiresAt,
         stripeSessionId: sessionId,
-        updatedAt: new Date(),
+        updatedAt: now,
       })
-      .where(eq(askimateUsers.id, userPayload.id));
+      .where(eq(askimateUsers.id, user.id))
+      .returning();
 
-    const stackedMessage = currentExpiry && currentExpiry > now
-      ? ` (stacked from ${currentExpiry.toISOString()})`
-      : "";
-    console.log(`[ASKIMATE-AUTH] User ${user.id} activated premium: planKey=${planKey}, expires=${planExpiresAt.toISOString()}${stackedMessage}`);
+    console.log(`[ASKIMATE-AUTH] Premium confirmed — user ${user.id}, plan ${planKey}, expires ${planExpiresAt.toISOString()}`);
 
     res.json({
       success: true,
-      plan: "premium",
-      planKey,
-      planLabel: PLAN_LABELS[planKey],
-      planActivatedAt: now,
-      planExpiresAt,
+      plan: updatedUser.plan,
+      planKey: updatedUser.planKey,
+      trialEndsAt: updatedUser.trialEndsAt,
     });
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Confirm premium error:", error);
-    res.status(500).json({ error: "Failed to activate premium" });
+    res.status(500).json({ error: "Failed to confirm premium" });
   }
 });
 
