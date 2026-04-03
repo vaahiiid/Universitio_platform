@@ -7,6 +7,7 @@ import askimateStripeWebhookRouter from "./askimate-stripe-webhooks";
 import leadsRouter from "./leads";
 import publicRouter from "./public";
 import adminRouter from "./admin";
+import emailRouter from "./email";
 
 const router: IRouter = Router();
 
@@ -19,5 +20,6 @@ router.use(askimateChatRouter);
 router.use(leadsRouter);
 router.use(publicRouter);
 router.use(adminRouter);
+router.use(emailRouter);
 
 export default router;

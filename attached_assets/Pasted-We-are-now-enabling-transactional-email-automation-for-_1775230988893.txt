@@ -1,0 +1,69 @@
+We are now enabling transactional email automation for AskiMate using Resend on the free plan.
+
+IMPORTANT:
+Do NOT implement all emails yet.
+Do NOT redesign anything.
+Do NOT touch unrelated app logic.
+This phase is ONLY for safe email infrastructure setup.
+
+==================================================
+GOAL OF THIS PHASE
+==================================================
+
+Set up the base email infrastructure so the app can send emails through Resend safely and cleanly.
+
+This phase should only do:
+
+1. Install/configure Resend properly
+2. Create a central email service/module
+3. Add environment variable support
+4. Set a default sender configuration
+5. Add one safe test send function/route or internal utility
+6. Verify a test email can be sent successfully
+
+==================================================
+REQUIREMENTS
+==================================================
+
+1. Use Resend as the email provider
+2. Build a central reusable email layer/service
+   Example idea:
+   - emailService.ts
+   - sendEmail(...)
+   - sendTemplateEmail(...)
+3. Read secrets/config from environment variables
+4. Make it easy to reuse for later automation events
+5. Keep implementation clean and minimal
+6. Do NOT yet wire all business events
+
+==================================================
+CONFIG EXPECTATIONS
+==================================================
+
+Use env variables for things like:
+- RESEND_API_KEY
+- EMAIL_FROM
+- EMAIL_REPLY_TO (if useful)
+
+If domain verification is needed, explain clearly what value should be used.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT wire signup/payment/expiry emails yet
+- Do NOT create cron logic yet
+- Do NOT change auth/payment/chat/subscription logic
+- Do NOT redesign frontend
+- Only create the safe email sending foundation
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. what files were added/changed
+2. what env variables are needed
+3. what sender/from address should be used
+4. how a test email was sent
+5. confirm no unrelated logic was changed
