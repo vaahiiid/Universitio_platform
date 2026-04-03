@@ -1,0 +1,90 @@
+Good. Phase 3 is approved.
+
+Now move to PHASE 4.
+
+IMPORTANT:
+This phase is ONLY for timed expiry-related emails.
+
+Do NOT redesign anything.
+Do NOT touch unrelated business logic.
+Do NOT change payment flow.
+Do NOT change signup/auth logic.
+Do NOT break the current subscription enforcement logic.
+
+==================================================
+EMAILS TO IMPLEMENT IN THIS PHASE
+==================================================
+
+1. 5 days before expiry
+2. 3 days before expiry
+3. 1 day before expiry
+4. plan expired
+
+==================================================
+REQUIREMENTS
+==================================================
+
+Implement a safe scheduled mechanism for checking expiring accounts and sending these emails.
+
+Required behavior:
+- send reminder at 5 days remaining
+- send reminder at 3 days remaining
+- send reminder at 1 day remaining
+- send expired email when the account has actually expired
+
+==================================================
+IMPORTANT IMPLEMENTATION RULES
+==================================================
+
+1. PREVENT DUPLICATES
+Each reminder must be sent once only.
+Do NOT resend the same 5-day / 3-day / 1-day / expired email repeatedly.
+
+2. USE A SAFE SCHEDULER / PERIODIC CHECK
+A lightweight cron-like scheduled process / periodic backend job is acceptable.
+Keep it simple and reliable.
+
+3. USE CURRENT SUBSCRIPTION SOURCE OF TRUTH
+Use the real current plan expiry data.
+Do NOT create a fake parallel expiry system.
+
+4. EXPIRED EMAIL MUST BE REAL
+Only send the expired email when the plan is truly expired.
+
+5. DO NOT SPAM USERS
+The reminder system must be idempotent and stateful enough to avoid repeat sends.
+
+==================================================
+STATE / TRACKING REQUIREMENT
+==================================================
+
+If necessary, add minimal tracking for which reminder emails were already sent.
+Do it cleanly and safely.
+
+Examples:
+- dedicated fields
+- lightweight reminder log
+- other safe idempotent mechanism
+
+But keep it minimal and reliable.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break subscription logic
+- Do NOT break purchase/renew/upgrade/downgrade logic
+- Do NOT redesign UI
+- Do NOT touch unrelated email flows
+- Only implement timed expiry-related emails
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. how the scheduler/check works
+2. how duplicate reminder prevention works
+3. what data/state is used to remember which reminders were sent
+4. what files were changed
+5. confirm 5d / 3d / 1d / expired emails are now live

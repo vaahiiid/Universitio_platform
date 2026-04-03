@@ -17,6 +17,14 @@ export const askimateUsers = pgTable("askimate_users", {
   trialStartedAt: timestamp("trial_started_at"), // when premium was activated
   stripeSessionId: text("stripe_session_id"), // last processed Stripe session (idempotency)
   googleId: text("google_id").unique(),
+  // ── Expiry reminder tracking ──────────────────────────────────────────────
+  // Each flag is set true once the corresponding reminder is sent.
+  // All four reset to false on every successful payment so renewals get fresh reminders.
+  reminderSent5d: boolean("reminder_sent_5d").notNull().default(false),
+  reminderSent3d: boolean("reminder_sent_3d").notNull().default(false),
+  reminderSent1d: boolean("reminder_sent_1d").notNull().default(false),
+  expiredEmailSent: boolean("expired_email_sent").notNull().default(false),
+  // ─────────────────────────────────────────────────────────────────────────
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
