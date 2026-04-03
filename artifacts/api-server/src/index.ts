@@ -2,6 +2,7 @@ console.log("[BOOT] server boot start");
 
 import app from "./app";
 import { pool } from "@workspace/db";
+import { startExpiryReminderScheduler } from "./jobs/expiryReminders";
 
 console.log("[BOOT] root health route registered");
 
@@ -39,6 +40,9 @@ if (Number.isNaN(port) || port <= 0) {
 const server = app.listen(port, "0.0.0.0", () => {
   console.log(`[BOOT] listening on port ${port}`);
   console.log("[BOOT] startup complete");
+
+  // Start expiry reminder scheduler (first check in 2 min, then every hour)
+  startExpiryReminderScheduler();
 
   // DB ping deferred — runs after server is already accepting requests
   pool.connect()

@@ -181,6 +181,11 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
       trialStartedAt: user.trialStartedAt ?? now, // preserve original activation if renewing
       trialEndsAt: planExpiresAt,
       stripeSessionId: session.id,
+      // Reset reminder flags so the new plan period gets a fresh set of reminders
+      reminderSent5d: false,
+      reminderSent3d: false,
+      reminderSent1d: false,
+      expiredEmailSent: false,
       updatedAt: new Date(),
     })
     .where(eq(askimateUsers.id, userId));
