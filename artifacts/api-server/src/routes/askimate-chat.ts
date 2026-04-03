@@ -8,6 +8,7 @@ import {
   askimateUsers,
 } from "@workspace/db/schema";
 import { eq, and, ne, desc } from "drizzle-orm";
+import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 
 const router: IRouter = Router();
 
@@ -199,11 +200,15 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           ),
         });
 
+        const newCount = existingUsage
+          ? (existingUsage.questionsUsed || 0) + 1
+          : 1;
+
         if (existingUsage) {
           await db
             .update(askimateWeeklyUsage)
             .set({
-              questionsUsed: (existingUsage.questionsUsed || 0) + 1,
+              questionsUsed: newCount,
               updatedAt: new Date(),
             })
             .where(
@@ -216,8 +221,18 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           await db.insert(askimateWeeklyUsage).values({
             userId,
             week: currentWeek,
-            questionsUsed: 1,
+            questionsUsed: newCount,
           });
+        }
+
+        // Send usage limit email only at the exact moment the 5th question is consumed
+        // (newCount === 5 means this was the last allowed question — naturally idempotent)
+        if (newCount === 5) {
+          sendTransactionalEmail(EmailType.USAGE_LIMIT_REACHED, user.email, {
+            firstName: user.firstName,
+            planName: "Free",
+            limitDescription: "5 free questions this week",
+          }).catch((err) => console.error("[EMAIL] Usage limit email failed:", err));
         }
       }
     }

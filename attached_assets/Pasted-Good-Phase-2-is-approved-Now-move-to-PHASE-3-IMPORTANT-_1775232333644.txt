@@ -1,0 +1,93 @@
+Good. Phase 2 is approved.
+
+Now move to PHASE 3.
+
+IMPORTANT:
+This phase is ONLY for immediate event-based transactional emails.
+
+Do NOT redesign anything.
+Do NOT refactor unrelated logic.
+Do NOT touch timed/scheduled reminder emails yet.
+Do NOT create cron logic yet.
+Do NOT break signup, payment, subscription, auth, or chat flows.
+
+==================================================
+EMAILS TO IMPLEMENT IN THIS PHASE
+==================================================
+
+1. Signup welcome / confirmation email
+2. Email verification email
+3. Payment success email
+4. Payment failed email
+5. Usage limit reached email
+
+==================================================
+REQUIREMENTS
+==================================================
+
+Wire these emails into the real business events safely.
+
+1. SIGNUP WELCOME
+- Send after successful account creation
+- Keep it clean and non-spammy
+- Use the correct email type/template from phase 2
+
+2. EMAIL VERIFICATION
+- If email verification flow exists, wire the email properly
+- If verification flow does NOT exist yet, do NOT fake it
+- In that case, report clearly that the verification email template exists but the verification flow itself still needs implementation
+- Only implement the minimal correct verification flow if it already fits safely into current auth architecture
+
+3. PAYMENT SUCCESS
+- Send only after verified successful payment / fulfillment
+- Include package/plan details clearly
+- Must not trigger on incomplete or fake payment states
+
+4. PAYMENT FAILED
+- Send only when payment failure is a real confirmed event in the current architecture
+- Do NOT send for mere abandonment unless such logic already exists and is reliable
+- If true confirmed payment-failed event does not exist in the current flow, report that clearly instead of faking it
+
+5. USAGE LIMIT REACHED
+- Send when the user truly hits the weekly free limit
+- Include clear upgrade CTA
+- Avoid repeated spam if the user keeps trying after hitting the same limit
+
+==================================================
+IDEMPOTENCY / DUPLICATE PROTECTION
+==================================================
+
+You must avoid duplicate emails.
+
+Required:
+- signup welcome should not send multiple times for the same signup
+- payment success should not send multiple times for the same successful purchase
+- usage limit reached should not spam repeatedly on every blocked request
+- payment failed should not duplicate if retried or re-fired
+
+Use the existing architecture safely.
+If additional minimal tracking is needed, add it carefully.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break signup flow
+- Do NOT break payment flow
+- Do NOT break subscription fulfillment
+- Do NOT break auth
+- Do NOT change unrelated UI
+- Do NOT implement scheduled expiry emails yet
+- Only wire these immediate event-based emails
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. which real events now trigger emails
+2. which of the 5 emails are fully live
+3. which of the 5 could not be fully wired and why
+4. what duplicate-protection/idempotency logic was added
+5. what files were changed
+6. confirm no unrelated behavior was changed

@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import { db, pool } from "@workspace/db";
 import { askimateUsers, askimateWeeklyUsage } from "@workspace/db/schema";
 import { eq, and } from "drizzle-orm";
+import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 
 const router: IRouter = Router();
 
@@ -105,6 +106,11 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
 
     // Generate token
     const token = generateToken({ id: newUser.id, email: newUser.email });
+
+    // Send welcome email (fire-and-forget — email failure must not break signup)
+    sendTransactionalEmail(EmailType.SIGNUP_WELCOME, newUser.email, {
+      firstName: newUser.firstName,
+    }).catch((err) => console.error("[EMAIL] Signup welcome failed:", err));
 
     res.status(201).json({
       token,
@@ -402,6 +408,11 @@ router.get("/askimate/auth/google/callback", async (req: Request, res: Response)
         .returning();
 
       dbUser = newUser;
+
+      // Send welcome email for new Google OAuth users (fire-and-forget)
+      sendTransactionalEmail(EmailType.SIGNUP_WELCOME, newUser.email, {
+        firstName: newUser.firstName,
+      }).catch((err) => console.error("[EMAIL] Signup welcome (Google) failed:", err));
     }
 
     // ── Step 4: Generate JWT and redirect to dashboard ─────────────────────────

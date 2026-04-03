@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { db } from "@workspace/db";
 import { askimateUsers } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
+import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 
 const router: IRouter = Router();
 
@@ -122,6 +123,13 @@ const PLAN_DURATION_DAYS: Record<string, number> = {
   "semi-annual": 180,
 };
 
+// Human-readable plan labels (kept in sync with askimate-auth.ts)
+const PLAN_LABELS: Record<string, string> = {
+  monthly: "Monthly (30 days)",
+  quarterly: "3 Months (90 days)",
+  "semi-annual": "6 Months (180 days)",
+};
+
 // Handler: checkout.session.completed
 // Primary fulfillment path: Stripe webhook fires reliably even if user closes tab
 async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEvent) {
@@ -181,6 +189,23 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
     ? ` (stacked from ${currentExpiry.toISOString()})`
     : "";
   console.log(`[STRIPE-WEBHOOK] User ${userId} activated premium via webhook: planKey=${planKey}, expires=${planExpiresAt.toISOString()}${stackedMsg}`);
+
+  // Send payment success email (fire-and-forget — email failure must not break fulfillment)
+  const planLabel = PLAN_LABELS[planKey] ?? planKey;
+  const amountStr = session.amount_total != null
+    ? `£${(session.amount_total / 100).toFixed(2)}`
+    : "";
+  const expiresAtStr = planExpiresAt.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+  sendTransactionalEmail(EmailType.PAYMENT_SUCCESS, user.email, {
+    firstName: user.firstName,
+    planName: planLabel,
+    amount: amountStr,
+    expiresAt: expiresAtStr,
+  }).catch((err) => console.error("[EMAIL] Payment success email failed:", err));
 }
 
 // Handler: customer.subscription.updated
