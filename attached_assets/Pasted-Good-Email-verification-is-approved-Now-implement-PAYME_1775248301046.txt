@@ -1,0 +1,66 @@
+Good. Email verification is approved.
+
+Now implement PAYMENT FAILED email properly for the current one-time Stripe payment model.
+
+IMPORTANT:
+- Do NOT break the working payment flow
+- Do NOT redesign anything
+- Do NOT send false payment-failed emails for abandoned checkouts
+- Only trigger the email when payment failure is real and confirmed
+
+==================================================
+GOAL
+==================================================
+
+Make the PAYMENT FAILED email fully live and correct.
+
+==================================================
+REQUIREMENTS
+==================================================
+
+1. IDENTIFY THE CORRECT FAILURE EVENT
+Use the correct Stripe event(s) for a one-time payment failure flow.
+
+This is NOT a recurring subscription system.
+So do NOT rely on subscription-specific failure logic.
+
+You must identify the correct reliable event for a confirmed failed one-time payment.
+
+2. DO NOT TREAT ABANDONMENT AS FAILURE
+If the user simply opens checkout and leaves, that is NOT a payment failure email case.
+Do NOT send the payment failed email for mere abandonment.
+
+3. WIRE THE EXISTING PAYMENT_FAILED EMAIL TEMPLATE
+Use the existing template and architecture already created.
+Keep it consistent with the current email system.
+
+4. DUPLICATE PROTECTION
+Make sure the same failed payment does not trigger duplicate emails.
+Add safe idempotency protection if needed.
+
+5. FAILURE MUST BE CONFIRMED
+Only send the email when there is a real confirmed failure state in the Stripe one-time payment flow.
+
+6. KEEP BUSINESS FLOW SAFE
+If email sending fails, payment logic and app behavior must not break.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break successful payment flow
+- Do NOT break payment fulfillment
+- Do NOT touch unrelated auth/chat/dashboard logic
+- Do NOT redesign the payment system
+- Only add the correct failure-email handling
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. which Stripe event is now used for one-time payment failure
+2. why it is reliable and does not treat abandonment as failure
+3. how duplicate failed-payment emails are prevented
+4. what files were changed
+5. confirm payment failed email is now fully live

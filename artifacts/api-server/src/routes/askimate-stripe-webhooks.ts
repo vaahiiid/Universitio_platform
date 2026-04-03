@@ -50,12 +50,23 @@ interface InvoicePaymentFailedEvent extends Stripe.Event {
   };
 }
 
+// payment_intent.payment_failed — fires when a user submitted their card details
+// and the bank/processor declined the charge. This is the correct event for
+// one-time payment failure notification. It does NOT fire for mere abandonment.
+interface PaymentIntentPaymentFailedEvent extends Stripe.Event {
+  type: "payment_intent.payment_failed";
+  data: {
+    object: Stripe.PaymentIntent;
+  };
+}
+
 type WebhookEvent =
   | CheckoutSessionCompletedEvent
   | SubscriptionUpdatedEvent
   | SubscriptionDeletedEvent
   | InvoicePaidEvent
   | InvoicePaymentFailedEvent
+  | PaymentIntentPaymentFailedEvent
   | Stripe.Event;
 
 // Webhook endpoint - receives events from Stripe
@@ -103,6 +114,10 @@ router.post("/askimate/stripe-webhook", async (req: Request, res: Response) => {
 
       case "invoice.payment_failed":
         await handleInvoicePaymentFailed(event as InvoicePaymentFailedEvent);
+        break;
+
+      case "payment_intent.payment_failed":
+        await handlePaymentIntentPaymentFailed(event as PaymentIntentPaymentFailedEvent);
         break;
 
       default:
@@ -349,6 +364,74 @@ async function handleInvoicePaymentFailed(event: InvoicePaymentFailedEvent) {
       console.error(`[STRIPE-WEBHOOK] Failed to retrieve subscription ${subscriptionId}:`, error);
     }
   }
+}
+
+// Handler: payment_intent.payment_failed
+//
+// Fires when a user actually submitted their card and the charge was declined by
+// the bank or processor. This is the only reliable confirmed-failure event for
+// one-time (mode: "payment") Stripe Checkout.
+//
+// Why NOT checkout.session.expired: that fires 24 hours after abandonment —
+// the user may never have entered card details at all.
+//
+// Why NOT invoice.payment_failed: that is subscription-only and irrelevant here.
+//
+// Idempotency: Stripe delivers each event ID once. We respond 200 immediately,
+// so Stripe will not retry the same event. If the same PaymentIntent has multiple
+// declined attempts (user retried with a different bad card), Stripe fires a
+// separate event each time — one failure email per real declined attempt is correct.
+// As an extra guard, we skip the email if the PaymentIntent has somehow already
+// succeeded by the time the event is processed (e.g. race condition).
+//
+// Metadata requirement: the userId and planKey must be present in the PaymentIntent's
+// own metadata. This is set at session creation via payment_intent_data.metadata.
+// Sessions created before this change will lack the metadata and will be skipped
+// gracefully (logged, no crash, no email).
+async function handlePaymentIntentPaymentFailed(event: PaymentIntentPaymentFailedEvent) {
+  const pi = event.data.object;
+  console.log(`[STRIPE-WEBHOOK] payment_intent.payment_failed: ${pi.id}, status: ${pi.status}`);
+
+  // ── Guard: skip if somehow succeeded (should not happen but be defensive) ──
+  if (pi.status === "succeeded") {
+    console.log(`[STRIPE-WEBHOOK] PaymentIntent ${pi.id} is succeeded — skipping failure email`);
+    return;
+  }
+
+  // ── Extract userId from PaymentIntent metadata (set via payment_intent_data) ──
+  const userId = extractUserIdFromMetadata(pi.metadata as Record<string, string> | null);
+  if (!userId) {
+    // Sessions created before payment_intent_data.metadata was added will not have userId.
+    // Log and return — no crash, no spurious email.
+    console.warn(`[STRIPE-WEBHOOK] No userId in PaymentIntent ${pi.id} metadata — cannot send failure email (session predates metadata wiring)`);
+    return;
+  }
+
+  // ── Look up user ──────────────────────────────────────────────────────────
+  const user = await db.query.askimateUsers.findFirst({
+    where: eq(askimateUsers.id, userId),
+  });
+
+  if (!user) {
+    console.warn(`[STRIPE-WEBHOOK] User ${userId} not found for failed PaymentIntent ${pi.id}`);
+    return;
+  }
+
+  // ── Build email payload ───────────────────────────────────────────────────
+  const planKey = (pi.metadata as Record<string, string> | null)?.planKey || "monthly";
+  const planLabel = PLAN_LABELS[planKey] ?? planKey;
+  // pi.amount is the attempted charge in pence (not received — that is 0 for failed payments)
+  const amountStr = pi.amount != null ? `£${(pi.amount / 100).toFixed(2)}` : "";
+  const failureCode = pi.last_payment_error?.code || "unknown";
+
+  console.log(`[STRIPE-WEBHOOK] Sending payment failed email to user ${userId} (${user.email}), plan: ${planLabel}, failure: ${failureCode}`);
+
+  // Fire-and-forget — email failure must not affect any business logic
+  sendTransactionalEmail(EmailType.PAYMENT_FAILED, user.email, {
+    firstName: user.firstName,
+    planName: planLabel,
+    amount: amountStr,
+  }).catch((err) => console.error("[EMAIL] Payment failed email error:", err));
 }
 
 // Helper: Extract userId from Stripe metadata

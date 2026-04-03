@@ -737,9 +737,17 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
       cancel_url: `${baseRedirectUrl}?cancelled=true`,
       client_reference_id: userIdString,
       customer_email: user.email,
+      // Metadata on the Checkout Session (used by checkout.session.completed handler)
       metadata: {
         userId: userIdString,
         planKey: plan,
+      },
+      // Metadata also on the PaymentIntent so payment_intent.payment_failed can find the user
+      payment_intent_data: {
+        metadata: {
+          userId: userIdString,
+          planKey: plan,
+        },
       },
     });
 
