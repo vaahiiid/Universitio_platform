@@ -1,0 +1,91 @@
+Good. Phase 1 is approved.
+
+Now move to PHASE 2.
+
+IMPORTANT:
+Do NOT start wiring all business events in a messy way.
+This phase is ONLY about creating a clean reusable email architecture for AskiMate.
+
+Do NOT redesign anything.
+Do NOT touch unrelated auth/chat/payment/dashboard logic.
+Do NOT break the email infrastructure already created.
+
+==================================================
+GOAL OF PHASE 2
+==================================================
+
+Create a clean, scalable email architecture so all future transactional emails can be managed properly.
+
+We will need email types for:
+- signup welcome / confirmation
+- email verification
+- payment success
+- payment failed
+- expiry reminders (5d / 3d / 1d)
+- expired
+- usage limit reached
+- renewal / upgrade push
+- invoice / receipt style email
+
+==================================================
+REQUIREMENTS
+==================================================
+
+Create a clean structure for:
+
+1. EMAIL TYPES / IDENTIFIERS
+- define clear email event/type names
+- keep them centralized
+- easy to reference later
+
+2. TEMPLATE BUILDERS
+- create reusable subject/html/text builder structure
+- each email type should have a clear template definition
+- keep templates organized, not mixed randomly into routes/controllers
+
+3. PAYLOAD TYPING
+- define typed payload structures where appropriate
+- avoid loose unstructured objects everywhere
+
+4. CENTRAL SEND HELPERS
+- keep using the central email service
+- add a clear layer for sending by email type/event
+
+Example direction:
+- emailTypes.ts
+- emailTemplates/
+- transactionalEmailService.ts or equivalent
+- sendTransactionalEmail(type, payload)
+
+==================================================
+IMPORTANT
+==================================================
+
+This phase is architecture only.
+
+Do NOT fully wire all business events yet.
+Do NOT add cron jobs yet.
+Do NOT start sending all the actual emails yet.
+Do NOT mix business logic into random routes.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign frontend
+- Do NOT change payment logic
+- Do NOT change subscription logic
+- Do NOT change auth flows
+- Do NOT start event wiring yet
+- Keep all email logic centralized and reusable
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. what email types were defined
+2. what template structure was created
+3. what payload typing/helpers were created
+4. what files were changed
+5. confirm business logic was NOT yet wired
