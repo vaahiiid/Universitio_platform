@@ -357,6 +357,11 @@ router.get("/askimate/auth/verify-email", async (req: Request, res: Response) =>
 
     console.log(`[ASKIMATE-AUTH] Email verified for user ${user.id} (${user.email})`);
 
+    // Send confirmation email (fire-and-forget — must not block the redirect)
+    sendTransactionalEmail(EmailType.EMAIL_VERIFIED, user.email, {
+      firstName: user.firstName,
+    }).catch((err) => console.error("[EMAIL] Email verified confirmation failed:", err));
+
     // Redirect to dashboard with success param so the frontend can show a banner
     res.redirect("/askimate-dashboard?verified=true");
   } catch (err) {

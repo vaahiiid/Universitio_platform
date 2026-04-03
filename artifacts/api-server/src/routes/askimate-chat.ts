@@ -131,6 +131,18 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         where: eq(askimateUsers.id, userId),
       });
 
+      // ── Email verification gate ───────────────────────────────────────────
+      // Login is not blocked, but chat is gated behind a verified email address.
+      // The frontend detects EMAIL_NOT_VERIFIED and prompts the user to check their inbox.
+      if (user && !user.emailVerified) {
+        res.status(403).json({
+          error: "EMAIL_NOT_VERIFIED",
+          message: "Please verify your email address before using the chat. Check your inbox for the verification link.",
+        });
+        return;
+      }
+      // ─────────────────────────────────────────────────────────────────────
+
       const now = new Date();
       const planExpiresAt = user?.trialEndsAt ? new Date(user.trialEndsAt) : null;
       const isActivePremium = user?.plan === "premium" && planExpiresAt && planExpiresAt > now;

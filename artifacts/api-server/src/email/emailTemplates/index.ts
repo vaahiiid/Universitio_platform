@@ -7,7 +7,8 @@ import { buildExpiryReminder }     from "./expiryReminder";
 import { buildPlanExpired }        from "./planExpired";
 import { buildUsageLimitReached }  from "./usageLimitReached";
 import { buildRenewalPush }        from "./renewalPush";
-import { buildReEngagement }      from "./reEngagement";
+import { buildReEngagement }        from "./reEngagement";
+import { buildEmailVerifiedConfirm } from "./emailVerifiedConfirm";
 
 /**
  * Central template registry.
@@ -28,4 +29,5 @@ export const templateRegistry: {
   [EmailType.USAGE_LIMIT_REACHED]: buildUsageLimitReached,
   [EmailType.RENEWAL_PUSH]:        buildRenewalPush,
   [EmailType.RE_ENGAGEMENT]:       buildReEngagement,
+  [EmailType.EMAIL_VERIFIED]:      buildEmailVerifiedConfirm,
 };
