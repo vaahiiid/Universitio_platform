@@ -2,29 +2,33 @@ import type { EmailTemplate, EmailTemplateBuilder, UsageLimitReachedPayload } fr
 import { buildEmailHtml, buildEmailText } from "./_base";
 
 export const buildUsageLimitReached: EmailTemplateBuilder<UsageLimitReachedPayload> = (payload) => {
-  const heading = `You've reached your ${payload.planName} limit`;
+  const heading = `You've reached your weekly question limit`;
 
   const bodyHtml = `
     <p>Hi ${payload.firstName},</p>
-    <p>You've used up your ${payload.limitDescription} on the <strong>${payload.planName}</strong> plan. 
-       You won't be able to send more until your limit resets or you upgrade your plan.</p>
-    <p>Upgrading gives you more access to mentors and removes or increases these limits.</p>
-    <p style="margin-top:24px">
-      <a href="https://universitio.com/askimate"
-         style="background:#42147d;color:#fff;padding:12px 24px;border-radius:6px;
-                text-decoration:none;font-weight:600;display:inline-block">
-        Upgrade My Plan
+    <p>You've used your ${payload.limitDescription} on the <strong>${payload.planName}</strong> plan
+       for this week. Your limit will reset next week, but if you'd like to keep the conversation
+       going now, upgrading to Premium gives you unlimited access.</p>
+    <p style="color:#555;font-size:14px;line-height:1.7">
+      With a Premium plan, you can ask as many questions as you need — and AskiMate will be there
+      to guide you through every part of your journey, without interruption.
+    </p>
+    <p style="margin-top:28px">
+      <a href="https://universitio.com/askimate-dashboard"
+         style="background:#42147d;color:#ffffff;padding:13px 28px;border-radius:7px;
+                text-decoration:none;font-weight:700;font-size:15px;display:inline-block">
+        Upgrade to Premium
       </a>
     </p>
-    <p style="color:#888;font-size:13px;margin-top:24px">
-      If you have any questions about your plan, reply to this email and we'll be happy to help.
+    <p style="color:#888;font-size:13px;margin-top:28px;line-height:1.6">
+      Questions about your plan? Reply to this email — Universitio and AskiMate are here to help.
     </p>
   `.trim();
 
-  const bodyText = `Hi ${payload.firstName},\n\nYou've used up your ${payload.limitDescription} on the ${payload.planName} plan.\n\nUpgrade at https://universitio.com/askimate to get more access.\n\nIf you have questions, reply to this email.`;
+  const bodyText = `Hi ${payload.firstName},\n\nYou've used your ${payload.limitDescription} on the ${payload.planName} plan for this week. Your limit resets next week, or you can upgrade to Premium for unlimited access.\n\nUpgrade at https://universitio.com/askimate-dashboard\n\nQuestions? Reply to this email — we're here to help.`;
 
   return {
-    subject: `You've reached your AskiMate ${payload.planName} limit`,
+    subject: `You've reached your AskiMate question limit this week`,
     html: buildEmailHtml(heading, bodyHtml),
     text: buildEmailText(heading, bodyText),
     sender: "info",

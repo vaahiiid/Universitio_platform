@@ -2,31 +2,37 @@ import type { EmailTemplate, EmailTemplateBuilder, ReEngagementPayload } from ".
 import { buildEmailHtml, buildEmailText } from "./_base";
 
 export const buildReEngagement: EmailTemplateBuilder<ReEngagementPayload> = (payload) => {
-  const heading = `We've missed you, ${payload.firstName}`;
+  const heading = `${payload.firstName}, your AskiMate mentor is still here`;
 
   const bodyHtml = `
     <p>Hi ${payload.firstName},</p>
-    <p>It's been a while since we've seen you on AskiMate. We just wanted to check in and let you know
-       your mentor is still here whenever you're ready.</p>
-    <p>Whether you have a question about your university application, need guidance on personal statements,
-       or simply want to talk through your options — we're here to help.</p>
-    <p style="margin-top:24px">
-      <a href="https://universitio.com/askimate"
-         style="background:#42147d;color:#fff;padding:12px 24px;border-radius:6px;
-                text-decoration:none;font-weight:600;display:inline-block">
+    <p>We noticed you haven't visited AskiMate in a little while, and we just wanted to check in.</p>
+    <p style="color:#555;font-size:14px;line-height:1.7">
+      Your mentor is still here, ready to help — whether you have questions about your university
+      application, need guidance on personal statements, want to talk through your study options,
+      or anything in between.
+    </p>
+    <p style="color:#555;font-size:14px;line-height:1.7">
+      AskiMate by Universitio is built to support you through every stage of your journey.
+      Whenever you're ready to continue, we'll be right here.
+    </p>
+    <p style="margin-top:28px">
+      <a href="https://universitio.com/askimate-dashboard"
+         style="background:#42147d;color:#ffffff;padding:13px 28px;border-radius:7px;
+                text-decoration:none;font-weight:700;font-size:15px;display:inline-block">
         Continue Your Journey
       </a>
     </p>
-    <p style="color:#888;font-size:13px;margin-top:24px;line-height:1.5">
-      If you have any questions or need support, simply reply to this email and we'll
-      be happy to help.
+    <p style="color:#aaa;font-size:13px;margin-top:28px;line-height:1.6">
+      Need help or have a question? Simply reply to this email —
+      Universitio and AskiMate are always here to support you.
     </p>
   `.trim();
 
-  const bodyText = `Hi ${payload.firstName},\n\nIt's been a while since we've seen you on AskiMate. We just wanted to check in — your mentor is still here whenever you're ready.\n\nContinue your journey: https://universitio.com/askimate\n\nIf you need support, reply to this email.`;
+  const bodyText = `Hi ${payload.firstName},\n\nWe noticed you haven't visited AskiMate in a little while — we just wanted to check in.\n\nYour mentor is still here, ready to help whenever you need guidance on your university journey.\n\nContinue your journey: https://universitio.com/askimate-dashboard\n\nNeed help? Reply to this email — we're here.`;
 
   return {
-    subject: `We've missed you — your AskiMate mentor is here when you're ready`,
+    subject: `${payload.firstName}, your AskiMate mentor is here whenever you're ready`,
     html: buildEmailHtml(heading, bodyHtml),
     text: buildEmailText(heading, bodyText),
     sender: "info",

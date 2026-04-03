@@ -2,28 +2,30 @@ import type { EmailTemplate, EmailTemplateBuilder, SignupWelcomePayload } from "
 import { buildEmailHtml, buildEmailText } from "./_base";
 
 export const buildSignupWelcome: EmailTemplateBuilder<SignupWelcomePayload> = (payload) => {
-  const heading = `Welcome to AskiMate, ${payload.firstName}!`;
+  const heading = `Welcome to AskiMate, ${payload.firstName}.`;
 
   const bodyHtml = `
-    <p>You've successfully created your AskiMate account. We're glad to have you.</p>
-    <p>AskiMate connects you with expert mentors who can help guide your journey — whether you're planning to study abroad, 
-       choosing the right university, or navigating the application process.</p>
-    <p style="margin-top:24px">
-      <a href="https://universitio.com/askimate"
-         style="background:#42147d;color:#fff;padding:12px 24px;border-radius:6px;
-                text-decoration:none;font-weight:600;display:inline-block">
+    <p>Hi ${payload.firstName},</p>
+    <p>You've joined AskiMate — Universitio's smart study companion, built to guide you through
+       every step of your educational journey.</p>
+    <p>Whether you're exploring universities, preparing your application, or figuring out next steps,
+       AskiMate is here to give you the guidance you need — clearly and on your terms.</p>
+    <p style="margin-top:28px">
+      <a href="https://universitio.com/askimate-dashboard"
+         style="background:#42147d;color:#ffffff;padding:13px 28px;border-radius:7px;
+                text-decoration:none;font-weight:700;font-size:15px;display:inline-block">
         Open AskiMate
       </a>
     </p>
-    <p style="color:#888;font-size:13px;margin-top:24px">
-      If you have any questions, reply to this email and we'll be happy to help.
+    <p style="color:#888;font-size:13px;margin-top:28px;line-height:1.6">
+      If you have any questions, simply reply to this email — we're happy to help.
     </p>
   `.trim();
 
-  const bodyText = `You've successfully created your AskiMate account. We're glad to have you.\n\nOpen AskiMate at https://universitio.com/askimate\n\nIf you have any questions, reply to this email and we'll be happy to help.`;
+  const bodyText = `Hi ${payload.firstName},\n\nWelcome to AskiMate — Universitio's smart study companion, built to guide you through every step of your educational journey.\n\nOpen AskiMate: https://universitio.com/askimate-dashboard\n\nIf you have questions, reply to this email — we're happy to help.`;
 
   return {
-    subject: `Welcome to AskiMate, ${payload.firstName}!`,
+    subject: `Welcome to AskiMate, ${payload.firstName} — let's get started`,
     html: buildEmailHtml(heading, bodyHtml),
     text: buildEmailText(heading, bodyText),
     sender: "info",

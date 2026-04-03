@@ -1,0 +1,109 @@
+We need to update the branding and tone across ALL email templates.
+
+IMPORTANT:
+Do NOT change the email automation logic.
+Do NOT change the sending triggers.
+Do NOT redesign unrelated product UI.
+Only update the email template branding, visual identity, and messaging tone.
+
+==================================================
+BRAND DIRECTION
+==================================================
+
+All emails should carry the Universitio brand as the main trusted identity.
+
+However, they should also clearly communicate that:
+- AskiMate is the smart companion helping the user
+- AskiMate is a technology product by Universitio
+
+The relationship should feel like:
+
+Universitio = trusted parent brand
+AskiMate = smart technology companion/product inside that ecosystem
+
+==================================================
+REQUIRED BRANDING CHANGES
+==================================================
+
+1. EMAIL HEADER
+- All email templates should use Universitio branding prominently
+- Include the Universitio logo in the email header
+- Keep the design clean and professional
+
+2. ASKIMATE POSITIONING
+Inside the email branding/copy, clearly position AskiMate as:
+- a smart companion
+- a technology product by Universitio
+- something that supports the user through their journey
+
+3. TONE
+The emails should feel:
+- trusted
+- supportive
+- modern
+- human
+- calm
+- technologically capable
+
+Not too robotic.
+Not too corporate.
+Not too casual.
+
+4. CONSISTENT BRAND LINE
+Use a consistent brand phrase across email templates such as one of these patterns:
+- AskiMate by Universitio
+- AskiMate — your smart study companion
+- AskiMate, a technology product by Universitio
+
+Use one clear, consistent approach across all templates.
+
+5. FOOTER / SUPPORTING MESSAGE
+In the footer or supporting copy, make it clear that AskiMate is a technology product of Universitio.
+
+Example direction:
+- AskiMate is a technology product by Universitio.
+- You now have AskiMate by your side throughout your journey.
+- Universitio and AskiMate are here to support you.
+
+6. APPLY TO ALL EMAILS
+Update all live email templates consistently:
+- signup welcome
+- email verification
+- email verified
+- payment receipt / payment success
+- payment failed
+- usage limit reached
+- expiry reminders
+- plan expired
+- renewal push
+- re-engagement
+
+==================================================
+VISUAL DIRECTION
+==================================================
+
+- Universitio logo at the top
+- clean branded layout
+- clear heading hierarchy
+- polished CTA buttons
+- consistent footer
+- product-grade email appearance
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT change business logic.
+Do NOT change email triggers.
+Do NOT change sender rules unless necessary for display consistency.
+Only improve branding, visual identity, and copy tone across the templates.
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report:
+1. what branding changes were applied across the templates
+2. what consistent AskiMate-by-Universitio positioning was chosen
+3. which template files were updated
+4. confirm no email logic/triggers were changed
