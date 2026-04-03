@@ -19,7 +19,7 @@
 
 import { db } from "@workspace/db";
 import { askimateUsers } from "@workspace/db/schema";
-import { and, eq, isNotNull, lte, gt } from "drizzle-orm";
+import { and, eq, isNotNull, lte } from "drizzle-orm";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 
 const CHECK_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
@@ -211,10 +211,14 @@ export function startExpiryReminderScheduler(): void {
 
   setTimeout(() => {
     console.log("[EXPIRY-JOB] Scheduler started — first check running now");
-    runExpiryCheck();
+    runExpiryCheck().catch((err) =>
+      console.error("[EXPIRY-JOB] Unexpected uncaught error in initial check:", err),
+    );
     setInterval(() => {
       console.log("[EXPIRY-JOB] Hourly check running");
-      runExpiryCheck();
+      runExpiryCheck().catch((err) =>
+        console.error("[EXPIRY-JOB] Unexpected uncaught error in hourly check:", err),
+      );
     }, CHECK_INTERVAL_MS);
   }, INITIAL_DELAY_MS);
 

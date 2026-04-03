@@ -1,0 +1,91 @@
+Good. Phase 5 is approved.
+
+Now move to FINAL PHASE — PHASE 6.
+
+IMPORTANT:
+This phase is only for validation, fail-safe hardening, and final robustness of the Resend-based email automation system.
+
+Do NOT redesign anything.
+Do NOT add new email types unless absolutely required for robustness.
+Do NOT touch unrelated auth/chat/payment/subscription logic.
+
+==================================================
+GOAL
+==================================================
+
+Verify and harden the full email automation system so it is safe, reliable, and non-breaking.
+
+==================================================
+REQUIREMENTS
+==================================================
+
+1. VERIFY ALL LIVE EMAIL AUTOMATIONS
+Check and validate the currently live emails:
+- signup welcome
+- payment receipt / payment success
+- usage limit reached
+- expiry reminder 5d
+- expiry reminder 3d
+- expiry reminder 1d
+- plan expired
+- renewal push
+
+2. DUPLICATE PROTECTION REVIEW
+Verify that duplicate prevention is correct for all live email flows.
+Report clearly how each one avoids duplicate sends.
+
+3. RESEND FAILURE HANDLING
+Ensure that if Resend fails:
+- the core business action still succeeds
+- signup still succeeds
+- payment fulfillment still succeeds
+- chat still works
+- scheduled jobs do not crash the server
+
+4. ENV / CONFIG FAILURE HANDLING
+If RESEND_API_KEY or related config is missing:
+- system should fail safely
+- core product flows must not crash
+- errors should be logged clearly
+
+5. SAFE LOGGING
+Add/verify useful logging for:
+- email send attempt
+- email send success
+- email send failure
+- skipped duplicate/idempotent cases where useful
+
+Keep logging practical, not noisy.
+
+6. SCHEDULER ROBUSTNESS
+Make sure the expiry reminder scheduler:
+- does not crash the process
+- handles per-user email failure safely
+- continues processing others even if one send fails
+
+7. NO EMAIL SHOULD BLOCK CORE PRODUCT ACTIONS
+This is critical:
+Emails support business flows, but must not break them.
+All email sending should be fail-safe.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT redesign UI
+- Do NOT refactor unrelated systems
+- Do NOT change working business logic unless required for fail-safe behavior
+- Only validate and harden the email automation layer
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. all live email automations
+2. how duplicate protection works for each
+3. how Resend/API failure is handled
+4. how missing env/config is handled
+5. what logging/fail-safe protections were added
+6. what files were changed
+7. any remaining limitation in the free Resend setup
