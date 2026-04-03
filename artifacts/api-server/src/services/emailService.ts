@@ -1,8 +1,6 @@
 import { Resend } from "resend";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
-const EMAIL_FROM = process.env.EMAIL_FROM || "AskiMate <noreply@universitio.com>";
-const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || "support@universitio.com";
 
 if (!RESEND_API_KEY) {
   console.warn("[EMAIL] WARNING: RESEND_API_KEY not set — email sending will fail.");
@@ -10,12 +8,30 @@ if (!RESEND_API_KEY) {
 
 const resend = new Resend(RESEND_API_KEY);
 
+/**
+ * The two authorised sender addresses for Universitio / AskiMate.
+ *
+ * "noreply" — system emails that should not invite replies
+ *   e.g. email verification, payment confirmations, expiry reminders, limit warnings
+ *
+ * "info"    — reply-friendly emails where a response makes sense
+ *   e.g. welcome messages, support-style communication
+ */
+const SENDERS = {
+  noreply: "AskiMate <noreply@universitio.com>",
+  info:    "AskiMate <info@universitio.com>",
+} as const;
+
+export type EmailSender = keyof typeof SENDERS;
+
+const REPLY_TO = "info@universitio.com";
+
 export interface SendEmailOptions {
   to: string | string[];
   subject: string;
   html: string;
   text?: string;
-  replyTo?: string;
+  sender?: EmailSender;
 }
 
 export interface SendEmailResult {
@@ -26,6 +42,9 @@ export interface SendEmailResult {
 
 /**
  * Central email sender. All transactional emails in the app should go through this function.
+ *
+ * @param options.sender - "noreply" for system emails, "info" for reply-friendly emails.
+ *                         Defaults to "noreply".
  */
 export async function sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
   if (!RESEND_API_KEY) {
@@ -33,14 +52,16 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
     return { success: false, error: "Email service not configured" };
   }
 
+  const from = SENDERS[options.sender ?? "noreply"];
+
   try {
     const { data, error } = await resend.emails.send({
-      from: EMAIL_FROM,
+      from,
       to: Array.isArray(options.to) ? options.to : [options.to],
       subject: options.subject,
       html: options.html,
       ...(options.text ? { text: options.text } : {}),
-      reply_to: options.replyTo || EMAIL_REPLY_TO,
+      reply_to: REPLY_TO,
     });
 
     if (error) {
@@ -48,7 +69,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
       return { success: false, error: error.message };
     }
 
-    console.log(`[EMAIL] Sent "${options.subject}" to ${Array.isArray(options.to) ? options.to.join(", ") : options.to} — id: ${data?.id}`);
+    console.log(`[EMAIL] Sent "${options.subject}" to ${Array.isArray(options.to) ? options.to.join(", ") : options.to} via ${from} — id: ${data?.id}`);
     return { success: true, id: data?.id };
   } catch (err: any) {
     console.error("[EMAIL] Unexpected error:", err?.message || err);
@@ -57,14 +78,16 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
 }
 
 /**
- * Convenience wrapper for simple text+HTML emails.
+ * Convenience wrapper for branded AskiMate template emails.
+ *
+ * @param opts.sender - "noreply" (default) or "info". See EmailSender type.
  */
 export async function sendTemplateEmail(opts: {
   to: string;
   subject: string;
   heading: string;
   body: string;
-  replyTo?: string;
+  sender?: EmailSender;
 }): Promise<SendEmailResult> {
   const html = `
 <!DOCTYPE html>
@@ -103,5 +126,5 @@ export async function sendTemplateEmail(opts: {
 
   const text = `${opts.heading}\n\n${opts.body.replace(/<[^>]+>/g, "")}\n\n— AskiMate by Universitio\nhttps://universitio.com`;
 
-  return sendEmail({ to: opts.to, subject: opts.subject, html, text, replyTo: opts.replyTo });
+  return sendEmail({ to: opts.to, subject: opts.subject, html, text, sender: opts.sender });
 }
