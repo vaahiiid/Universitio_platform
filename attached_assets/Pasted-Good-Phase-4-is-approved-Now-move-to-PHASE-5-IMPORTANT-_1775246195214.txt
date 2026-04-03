@@ -1,0 +1,90 @@
+Good. Phase 4 is approved.
+
+Now move to PHASE 5.
+
+IMPORTANT:
+This phase is for the remaining lifecycle / conversion emails only.
+
+Do NOT redesign anything.
+Do NOT touch unrelated business logic.
+Do NOT break the already working email automations.
+Do NOT change the scheduler logic from phase 4 except if directly needed for these email triggers.
+
+==================================================
+EMAILS TO IMPLEMENT IN THIS PHASE
+==================================================
+
+1. Renewal / upgrade push email
+2. Invoice / receipt style purchase email
+3. Optional: inactive user re-engagement email (only if clean and safe)
+
+==================================================
+REQUIREMENTS
+==================================================
+
+1. RENEWAL / UPGRADE PUSH
+Implement a conversion-oriented email encouraging the user to renew or upgrade when appropriate.
+
+This email should:
+- be aligned with the user’s real account state
+- have a clear CTA
+- not be spammy
+- not duplicate the exact same role as expiry reminders
+- complement the existing 5d / 3d / 1d reminder flow
+
+2. INVOICE / RECEIPT STYLE EMAIL
+After a successful purchase, the user should receive a clean receipt-style confirmation email.
+
+This may:
+- either improve the existing payment success email
+- or create a separate cleaner purchase receipt email
+
+But keep it clean and useful.
+
+It should clearly show:
+- purchased package/plan
+- payment confirmation
+- key plan details
+- current access/coverage summary
+
+3. OPTIONAL RE-ENGAGEMENT
+Only implement if it can be done safely and cleanly without adding messy logic.
+
+Examples:
+- user inactive for a certain period
+- reminder to continue journey / explore options
+
+If it is not ready for clean implementation, say so clearly instead of forcing it.
+
+==================================================
+IMPORTANT
+==================================================
+
+These emails should support:
+- clarity
+- trust
+- conversion
+
+They must NOT become spam.
+
+==================================================
+STRICT RULES
+==================================================
+
+- Do NOT break earlier email flows
+- Do NOT duplicate payment success in a confusing way
+- Do NOT redesign unrelated UI
+- Do NOT add messy logic just to force the optional re-engagement email
+- Keep everything event-driven and clean
+
+==================================================
+DELIVERABLE
+==================================================
+
+At the end report exactly:
+1. which lifecycle/conversion emails were added
+2. what triggers them
+3. how they avoid spam/duplication
+4. what files were changed
+5. what email automations now exist overall
+6. which optional items were intentionally not implemented and why

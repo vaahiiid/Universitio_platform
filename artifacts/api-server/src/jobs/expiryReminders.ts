@@ -1,25 +1,32 @@
 /**
- * Expiry Reminder Scheduler
+ * Expiry Reminder & Renewal Push Scheduler
  *
  * Runs every hour on server startup.
- * Finds premium users whose plans are expiring within 5 days (or have already expired)
- * and sends the correct reminder email if it hasn't been sent yet.
+ * Handles two distinct jobs:
  *
- * Idempotency: each of the four reminder flags (reminderSent5d, reminderSent3d,
- * reminderSent1d, expiredEmailSent) is set true once the email is sent and only
- * reset when the user makes a new purchase.
+ * JOB 1 — PRE/POST-EXPIRY REMINDERS
+ *   Finds premium users whose plans are expiring within 5 days (or have just expired)
+ *   and sends the correct reminder email if it hasn't been sent yet.
+ *   Emails: 5d reminder → 3d reminder → 1d reminder → expired notification
+ *
+ * JOB 2 — RENEWAL PUSH (post-expiry conversion)
+ *   Finds users whose plan expired at least 3 days ago and haven't yet received
+ *   a renewal push. Sends one soft conversion nudge, separate from the expired email.
+ *   This is intentionally delayed so it doesn't feel like spam immediately after expiry.
+ *
+ * Idempotency: dedicated boolean flags on the user record, reset on every new payment.
  */
 
 import { db } from "@workspace/db";
 import { askimateUsers } from "@workspace/db/schema";
-import { and, eq, isNotNull, lte } from "drizzle-orm";
+import { and, eq, isNotNull, lte, gt } from "drizzle-orm";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 
 const CHECK_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 
 const PLAN_LABELS: Record<string, string> = {
-  monthly:      "Monthly (30 days)",
-  quarterly:    "3 Months (90 days)",
+  monthly:       "Monthly (30 days)",
+  quarterly:     "3 Months (90 days)",
   "semi-annual": "6 Months (180 days)",
 };
 
@@ -31,18 +38,16 @@ function formatDate(date: Date): string {
   });
 }
 
-/**
- * Computes exact days remaining until expiry.
- * Negative or zero means the plan has already expired.
- */
+/** Returns fractional days remaining (negative means expired). */
 function daysUntil(expiry: Date, now: Date): number {
   return (expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
 }
 
-async function runExpiryCheck(): Promise<void> {
-  const now = new Date();
-  // Widen the query window slightly (6 days) to catch anyone who slips through
-  // an hourly tick at a boundary. The reminder flags prevent duplicate sends.
+// ─── JOB 1: Pre/post-expiry reminders ────────────────────────────────────────
+
+async function runExpiryReminders(now: Date): Promise<void> {
+  // Window: plans expiring within the next 6 days OR already expired.
+  // Lower bound is omitted intentionally — expired users with unsent flags must still be caught.
   const sixDaysFromNow = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
 
   let candidates;
@@ -58,20 +63,20 @@ async function runExpiryCheck(): Promise<void> {
         ),
       );
   } catch (err) {
-    console.error("[EXPIRY-JOB] DB query failed:", err);
+    console.error("[EXPIRY-JOB] DB query failed (expiry reminders):", err);
     return;
   }
 
   if (candidates.length === 0) return;
-
   console.log(`[EXPIRY-JOB] Checking ${candidates.length} expiring premium account(s)`);
 
   for (const user of candidates) {
     if (!user.trialEndsAt) continue;
 
-    const days = daysUntil(new Date(user.trialEndsAt), now);
+    const expiry = new Date(user.trialEndsAt);
+    const days = daysUntil(expiry, now);
     const planLabel = user.planKey ? (PLAN_LABELS[user.planKey] ?? user.planKey) : "Premium";
-    const expiresAtStr = formatDate(new Date(user.trialEndsAt));
+    const expiresAtStr = formatDate(expiry);
 
     try {
       // ── 5-day reminder ─────────────────────────────────────────────────────
@@ -86,7 +91,7 @@ async function runExpiryCheck(): Promise<void> {
           .update(askimateUsers)
           .set({ reminderSent5d: true, updatedAt: new Date() })
           .where(eq(askimateUsers.id, user.id));
-        console.log(`[EXPIRY-JOB] Sent 5d reminder to user ${user.id}`);
+        console.log(`[EXPIRY-JOB] Sent 5d reminder → user ${user.id}`);
       }
 
       // ── 3-day reminder ─────────────────────────────────────────────────────
@@ -101,7 +106,7 @@ async function runExpiryCheck(): Promise<void> {
           .update(askimateUsers)
           .set({ reminderSent3d: true, updatedAt: new Date() })
           .where(eq(askimateUsers.id, user.id));
-        console.log(`[EXPIRY-JOB] Sent 3d reminder to user ${user.id}`);
+        console.log(`[EXPIRY-JOB] Sent 3d reminder → user ${user.id}`);
       }
 
       // ── 1-day reminder ─────────────────────────────────────────────────────
@@ -116,10 +121,10 @@ async function runExpiryCheck(): Promise<void> {
           .update(askimateUsers)
           .set({ reminderSent1d: true, updatedAt: new Date() })
           .where(eq(askimateUsers.id, user.id));
-        console.log(`[EXPIRY-JOB] Sent 1d reminder to user ${user.id}`);
+        console.log(`[EXPIRY-JOB] Sent 1d reminder → user ${user.id}`);
       }
 
-      // ── Expired email ──────────────────────────────────────────────────────
+      // ── Expired notification ───────────────────────────────────────────────
       if (!user.expiredEmailSent && days <= 0) {
         await sendTransactionalEmail(EmailType.PLAN_EXPIRED, user.email, {
           firstName: user.firstName,
@@ -129,21 +134,79 @@ async function runExpiryCheck(): Promise<void> {
           .update(askimateUsers)
           .set({ expiredEmailSent: true, updatedAt: new Date() })
           .where(eq(askimateUsers.id, user.id));
-        console.log(`[EXPIRY-JOB] Sent expired email to user ${user.id}`);
+        console.log(`[EXPIRY-JOB] Sent expired notification → user ${user.id}`);
       }
     } catch (err) {
-      // Per-user errors must not abort the entire batch
       console.error(`[EXPIRY-JOB] Error processing user ${user.id}:`, err);
     }
   }
 }
 
+// ─── JOB 2: Renewal push (3 days after expiry) ───────────────────────────────
+
+async function runRenewalPush(now: Date): Promise<void> {
+  // Target: users whose plan expired at least 3 days ago, still on premium in DB
+  // (plan column is not downgraded — expiry is enforced at query time throughout the app),
+  // and who have not yet received the renewal push.
+  const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+
+  let candidates;
+  try {
+    candidates = await db
+      .select()
+      .from(askimateUsers)
+      .where(
+        and(
+          eq(askimateUsers.plan, "premium"),
+          isNotNull(askimateUsers.trialEndsAt),
+          lte(askimateUsers.trialEndsAt, threeDaysAgo),  // expired >= 3 days ago
+          eq(askimateUsers.renewalPushSent, false),
+        ),
+      );
+  } catch (err) {
+    console.error("[EXPIRY-JOB] DB query failed (renewal push):", err);
+    return;
+  }
+
+  if (candidates.length === 0) return;
+  console.log(`[EXPIRY-JOB] Sending renewal push to ${candidates.length} user(s)`);
+
+  for (const user of candidates) {
+    if (!user.trialEndsAt) continue;
+
+    const planLabel = user.planKey ? (PLAN_LABELS[user.planKey] ?? user.planKey) : "Premium";
+    const expiredOnStr = formatDate(new Date(user.trialEndsAt));
+
+    try {
+      await sendTransactionalEmail(EmailType.RENEWAL_PUSH, user.email, {
+        firstName: user.firstName,
+        planName: planLabel,
+        expiresAt: expiredOnStr,
+      });
+      await db
+        .update(askimateUsers)
+        .set({ renewalPushSent: true, updatedAt: new Date() })
+        .where(eq(askimateUsers.id, user.id));
+      console.log(`[EXPIRY-JOB] Sent renewal push → user ${user.id}`);
+    } catch (err) {
+      console.error(`[EXPIRY-JOB] Renewal push error for user ${user.id}:`, err);
+    }
+  }
+}
+
+// ─── Combined runner ──────────────────────────────────────────────────────────
+
+async function runExpiryCheck(): Promise<void> {
+  const now = new Date();
+  await runExpiryReminders(now);
+  await runRenewalPush(now);
+}
+
 /**
- * Starts the expiry reminder scheduler.
- * First check runs after a short delay so the server can fully initialise.
+ * Starts the expiry reminder and renewal push scheduler.
+ * First check runs 2 minutes after startup, then every hour.
  */
 export function startExpiryReminderScheduler(): void {
-  // Initial check: 2 minutes after startup (lets DB connection settle)
   const INITIAL_DELAY_MS = 2 * 60 * 1000;
 
   setTimeout(() => {
@@ -155,5 +218,8 @@ export function startExpiryReminderScheduler(): void {
     }, CHECK_INTERVAL_MS);
   }, INITIAL_DELAY_MS);
 
-  console.log(`[EXPIRY-JOB] Scheduler registered — first check in ${INITIAL_DELAY_MS / 60000} min, then every ${CHECK_INTERVAL_MS / 60000 / 60} hour`);
+  console.log(
+    `[EXPIRY-JOB] Scheduler registered — first check in ${INITIAL_DELAY_MS / 60000} min, ` +
+    `then every ${CHECK_INTERVAL_MS / 3600000} hour`,
+  );
 }

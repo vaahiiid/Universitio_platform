@@ -24,6 +24,8 @@ export const askimateUsers = pgTable("askimate_users", {
   reminderSent3d: boolean("reminder_sent_3d").notNull().default(false),
   reminderSent1d: boolean("reminder_sent_1d").notNull().default(false),
   expiredEmailSent: boolean("expired_email_sent").notNull().default(false),
+  // Sent 3 days after expiry — a softer renewal nudge, distinct from the pre-expiry reminders
+  renewalPushSent: boolean("renewal_push_sent").notNull().default(false),
   // ─────────────────────────────────────────────────────────────────────────
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

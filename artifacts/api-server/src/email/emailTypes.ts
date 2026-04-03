@@ -34,6 +34,7 @@ export interface PaymentSuccessPayload {
   planName: string;
   amount: string;
   expiresAt: string;
+  reference?: string; // Short Stripe session reference shown on receipt
 }
 
 export interface PaymentFailedPayload {

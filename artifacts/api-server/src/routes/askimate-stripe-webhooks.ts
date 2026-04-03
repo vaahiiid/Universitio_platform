@@ -181,11 +181,12 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
       trialStartedAt: user.trialStartedAt ?? now, // preserve original activation if renewing
       trialEndsAt: planExpiresAt,
       stripeSessionId: session.id,
-      // Reset reminder flags so the new plan period gets a fresh set of reminders
+      // Reset all reminder flags so the new plan period gets a fresh set of reminders
       reminderSent5d: false,
       reminderSent3d: false,
       reminderSent1d: false,
       expiredEmailSent: false,
+      renewalPushSent: false,
       updatedAt: new Date(),
     })
     .where(eq(askimateUsers.id, userId));
@@ -205,11 +206,14 @@ async function handleCheckoutSessionCompleted(event: CheckoutSessionCompletedEve
     month: "short",
     year: "numeric",
   });
+  // Use the last 12 chars of the Stripe session ID as a human-readable receipt reference
+  const reference = session.id ? session.id.slice(-12).toUpperCase() : undefined;
   sendTransactionalEmail(EmailType.PAYMENT_SUCCESS, user.email, {
     firstName: user.firstName,
     planName: planLabel,
     amount: amountStr,
     expiresAt: expiresAtStr,
+    reference,
   }).catch((err) => console.error("[EMAIL] Payment success email failed:", err));
 }
 

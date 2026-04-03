@@ -2,41 +2,80 @@ import type { EmailTemplate, EmailTemplateBuilder, PaymentSuccessPayload } from 
 import { buildEmailHtml, buildEmailText } from "./_base";
 
 export const buildPaymentSuccess: EmailTemplateBuilder<PaymentSuccessPayload> = (payload) => {
-  const heading = `Payment confirmed — ${payload.planName} is active`;
+  const heading = `Purchase confirmed — thank you, ${payload.firstName}`;
+
+  const referenceRow = payload.reference
+    ? `
+      <tr>
+        <td style="color:#555;font-size:13px;padding-top:8px;padding-bottom:8px;
+                   border-top:1px solid #e5daf7">Reference</td>
+        <td style="color:#888;font-size:13px;text-align:right;padding-top:8px;
+                   padding-bottom:8px;border-top:1px solid #e5daf7;font-family:monospace">
+          ${payload.reference}
+        </td>
+      </tr>`
+    : "";
 
   const bodyHtml = `
     <p>Hi ${payload.firstName},</p>
-    <p>Your payment of <strong>${payload.amount}</strong> was successful. 
-       Your <strong>${payload.planName}</strong> plan is now active.</p>
+    <p>Your payment has been successfully processed. Your <strong>${payload.planName}</strong>
+       plan is now active and ready to use.</p>
+
     <table cellpadding="0" cellspacing="0"
-           style="width:100%;background:#f9f6ff;border-radius:6px;
-                  padding:16px;margin:20px 0;border:1px solid #e5daf7">
+           style="width:100%;background:#f9f6ff;border-radius:8px;
+                  padding:20px;margin:24px 0;border:1px solid #e5daf7">
       <tr>
-        <td style="color:#555;font-size:14px">Plan</td>
-        <td style="color:#1a1a1a;font-size:14px;font-weight:600;text-align:right">${payload.planName}</td>
+        <td colspan="2"
+            style="color:#42147d;font-size:11px;font-weight:700;letter-spacing:0.8px;
+                   text-transform:uppercase;padding-bottom:12px">
+          Purchase summary
+        </td>
       </tr>
       <tr>
-        <td style="color:#555;font-size:14px;padding-top:8px">Amount paid</td>
-        <td style="color:#1a1a1a;font-size:14px;font-weight:600;text-align:right;padding-top:8px">${payload.amount}</td>
+        <td style="color:#555;font-size:14px;padding:6px 0">Plan</td>
+        <td style="color:#1a1a1a;font-size:14px;font-weight:600;text-align:right;padding:6px 0">
+          ${payload.planName}
+        </td>
       </tr>
       <tr>
-        <td style="color:#555;font-size:14px;padding-top:8px">Access until</td>
-        <td style="color:#1a1a1a;font-size:14px;font-weight:600;text-align:right;padding-top:8px">${payload.expiresAt}</td>
+        <td style="color:#555;font-size:14px;padding:6px 0">Amount charged</td>
+        <td style="color:#1a1a1a;font-size:14px;font-weight:600;text-align:right;padding:6px 0">
+          ${payload.amount}
+        </td>
       </tr>
+      <tr>
+        <td style="color:#555;font-size:14px;padding:6px 0">Access until</td>
+        <td style="color:#1a1a1a;font-size:14px;font-weight:600;text-align:right;padding:6px 0">
+          ${payload.expiresAt}
+        </td>
+      </tr>
+      ${referenceRow}
     </table>
+
+    <p style="color:#555;font-size:14px;line-height:1.6">
+      You now have full premium access to AskiMate. Start a conversation with your mentor
+      or continue from where you left off.
+    </p>
+
     <p style="margin-top:24px">
       <a href="https://universitio.com/askimate"
          style="background:#42147d;color:#fff;padding:12px 24px;border-radius:6px;
                 text-decoration:none;font-weight:600;display:inline-block">
-        Go to AskiMate
+        Open AskiMate
       </a>
+    </p>
+
+    <p style="color:#aaa;font-size:12px;margin-top:24px;line-height:1.5">
+      Keep this email as your receipt. If you have any questions about your purchase,
+      reply to this email and we'll be happy to help.
     </p>
   `.trim();
 
-  const bodyText = `Hi ${payload.firstName},\n\nYour payment of ${payload.amount} was successful. Your ${payload.planName} plan is now active until ${payload.expiresAt}.\n\nGo to AskiMate: https://universitio.com/askimate`;
+  const refLine = payload.reference ? `\nReference: ${payload.reference}` : "";
+  const bodyText = `Hi ${payload.firstName},\n\nYour payment has been successfully processed. Your ${payload.planName} plan is now active.\n\nPurchase summary:\n  Plan: ${payload.planName}\n  Amount: ${payload.amount}\n  Access until: ${payload.expiresAt}${refLine}\n\nOpen AskiMate: https://universitio.com/askimate\n\nKeep this email as your receipt. For questions, reply to this email.`;
 
   return {
-    subject: `Payment confirmed — ${payload.planName} activated`,
+    subject: `Your AskiMate purchase is confirmed — ${payload.planName}`,
     html: buildEmailHtml(heading, bodyHtml),
     text: buildEmailText(heading, bodyText),
     sender: "noreply",
