@@ -76,6 +76,7 @@ router.post("/askimate/ai", async (req: Request, res: Response) => {
       answer: result.answer,
       sources: result.sources,
       needsHumanReview: result.needsHumanReview,
+      mode: result.mode,
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
