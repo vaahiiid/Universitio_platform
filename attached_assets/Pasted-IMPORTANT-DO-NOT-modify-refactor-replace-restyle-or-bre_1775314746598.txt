@@ -1,0 +1,206 @@
+IMPORTANT: DO NOT modify, refactor, replace, restyle, or break any existing part of the current application.
+
+You must preserve ALL existing functionality exactly as it is, including but not limited to:
+- authentication
+- signup/login
+- Google auth
+- email verification
+- Stripe/payment/subscription logic
+- Resend email flows
+- reminders / expiry flows
+- lifecycle logic
+- existing UI/UX
+- design/styling
+- routing
+- database schema unless absolutely required for the new feature
+- existing APIs and business logic
+
+You are ONLY allowed to ADD the new AI knowledge-base retrieval/chat functionality in an isolated and safe way.
+
+Do not clean up unrelated code.
+Do not reorganize the whole codebase.
+Do not rename existing files unless absolutely necessary.
+Do not remove anything.
+Do not “improve” unrelated parts.
+Do not touch subscription or onboarding flows.
+Do not touch any working production logic.
+
+If a new feature needs integration, do it with minimal changes and in clearly separated files/modules.
+
+Your task:
+
+I already have a JSON knowledge base file called:
+askimate_knowledge_base_study_only_v3.json
+
+I want you to add a new isolated AI chat backend layer using OpenAI, without affecting the current system.
+
+Build this in a modular way.
+
+GOAL:
+Create a minimal retrieval-based AI chat system for MVP.
+
+REQUIREMENTS:
+
+STEP 1 — Read and parse the JSON file
+Use:
+askimate_knowledge_base_study_only_v3.json
+
+Each item contains fields like:
+- id
+- title
+- domain
+- risk_level
+- needs_human_review
+- sample_questions
+- answer_variants
+
+Convert each item into a retrieval document.
+
+Use only the FIRST answer_variants entry as the main answer text.
+
+Create a clean internal document structure like:
+
+{
+  id,
+  title,
+  domain,
+  risk_level,
+  needs_human_review,
+  content
+}
+
+Where content is a merged text like:
+
+Title: ...
+Domain: ...
+Risk Level: ...
+Needs Human Review: ...
+
+Sample Questions:
+- ...
+- ...
+
+Answer:
+...
+
+STEP 2 — Create embeddings
+Use OpenAI model:
+text-embedding-3-small
+
+Generate embeddings for each document.
+
+STEP 3 — Store locally for now
+Do NOT introduce any external vector database yet.
+Do NOT change the app database unless necessary.
+
+Store the processed documents and embeddings in a local JSON file such as:
+vector_store.json
+
+Format:
+[
+  {
+    "id": "...",
+    "title": "...",
+    "domain": "...",
+    "risk_level": "...",
+    "needs_human_review": true,
+    "content": "...",
+    "embedding": [...]
+  }
+]
+
+STEP 4 — Create retrieval logic
+Create a retrieval module with a function like:
+
+searchKnowledgeBase(userQuery)
+
+Flow:
+1. embed the user query
+2. compare against all stored embeddings using cosine similarity
+3. return top 3 most relevant documents
+
+STEP 5 — Create AI answer generation logic
+Create a function like:
+
+askAskiMate(question)
+
+Flow:
+1. retrieve top 3 documents
+2. send them to OpenAI chat model
+3. generate answer ONLY from retrieved context
+
+Use model:
+gpt-4o-mini
+
+System instruction must be strict:
+
+"You are AskiMate AI.
+Answer only using the provided knowledge base context.
+Do not invent facts.
+If the answer is not clearly supported by the context, say:
+'I’m not fully sure about this. Please speak with a human advisor.'
+If the topic is high-risk, be extra careful and avoid overconfident wording."
+
+Also:
+- if top results are weak or similarity is too low, return safe fallback
+- if retrieved item has risk_level=high, include a cautious tone
+- if needs_human_review=true and answer is sensitive, prefer a safer answer
+
+STEP 6 — Add a new isolated API endpoint
+Create ONLY a new API endpoint, without breaking existing endpoints.
+
+Example:
+POST /api/askimate/chat
+
+Request body:
+{
+  "message": "..."
+}
+
+Response body:
+{
+  "answer": "...",
+  "sources": [
+    { "id": "...", "title": "...", "domain": "..." }
+  ]
+}
+
+Do not modify existing auth/payment/email endpoints.
+
+STEP 7 — File structure
+Keep all AI-related code isolated in new files/modules only.
+
+Suggested files:
+- ai/ingestKnowledgeBase.js
+- ai/vectorStore.json
+- ai/retrieval.js
+- ai/chatService.js
+- ai/openaiClient.js
+
+If there is an existing backend structure, adapt safely but keep AI files separated.
+
+STEP 8 — Safety requirements
+- Never affect current working features
+- Never break production flows
+- Never change visual design unless a tiny new endpoint wiring requires it
+- No full refactor
+- No dependency bloat
+- Keep code simple and readable
+- Add comments explaining each step
+
+STEP 9 — Deliverables
+After implementation, show me:
+1. what files you created
+2. what existing files you changed
+3. exact endpoint path
+4. how to test it
+5. any required env variables
+
+ENV:
+Use OPENAI_API_KEY from environment variables.
+
+FINAL RULE:
+Preserve the current app exactly as it is.
+Add the new AI capability only.
+Minimize risk.
+Do not touch unrelated systems.
