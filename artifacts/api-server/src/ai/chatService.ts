@@ -29,11 +29,52 @@ export interface AiChatMessage {
   content: string;
 }
 
+export type ReviewLevel = "safe_auto" | "cautious_auto" | "escalate_human";
+
 export interface AiChatResult {
   answer: string;
   sources: { id: string; title: string; score: number }[];
   needsHumanReview: boolean;
+  reviewLevel: ReviewLevel;
   mode: "openai_semantic" | "bm25_fallback";
+}
+
+const ESCALATE_KEYWORDS = [
+  /\bvisa\b/i,
+  /\bimmigration\b/i,
+  /bank\s+statement/i,
+  /proof\s+of\s+funds/i,
+  /\bdepend(a|e)nt(s)?\b/i,
+  /\bcas\b/i,
+  /\batas\b/i,
+];
+
+const SEMANTIC_LOW_CONFIDENCE = 0.20;
+const BM25_LOW_CONFIDENCE = 0.15;
+
+function computeReviewLevel(
+  query: string,
+  entries: RetrievedEntry[],
+  retrievalMode: "openai_semantic" | "bm25_fallback"
+): ReviewLevel {
+  if (ESCALATE_KEYWORDS.some((re) => re.test(query))) return "escalate_human";
+
+  const topScore = entries[0]?.score ?? 0;
+  const confidenceThreshold =
+    retrievalMode === "openai_semantic" ? SEMANTIC_LOW_CONFIDENCE : BM25_LOW_CONFIDENCE;
+  if (topScore < confidenceThreshold) return "escalate_human";
+
+  const maxRisk = entries.reduce<"low" | "medium" | "high">((worst, e) => {
+    if (e.risk_level === "high") return "high";
+    if (e.risk_level === "medium" && worst !== "high") return "medium";
+    return worst;
+  }, "low");
+
+  const anyNeedsReview = entries.some((e) => e.needs_human_review);
+
+  if (maxRisk === "high") return "escalate_human";
+  if (maxRisk === "medium" || anyNeedsReview) return "cautious_auto";
+  return "safe_auto";
 }
 
 interface RetrievedEntry {
@@ -91,10 +132,21 @@ async function trySemanticRetrieval(query: string, topK: number): Promise<Retrie
   }
 }
 
+const REVIEW_LEVEL_INSTRUCTIONS: Record<ReviewLevel, string> = {
+  safe_auto: "",
+  cautious_auto:
+    "Note: Requirements and details may vary between institutions and change over time. " +
+    "Always encourage the user to verify specifics with the relevant university or college.",
+  escalate_human:
+    "This is a high-stakes topic. After your answer, always include this exact sentence on its own line: " +
+    '"For your specific situation, we strongly recommend speaking with one of our expert mentors."',
+};
+
 async function tryOpenAiChat(
   userMessage: string,
   entries: RetrievedEntry[],
-  history: AiChatMessage[]
+  history: AiChatMessage[],
+  reviewLevel: ReviewLevel
 ): Promise<string | null> {
   try {
     const { default: OpenAI } = await import("openai");
@@ -106,8 +158,13 @@ async function tryOpenAiChat(
           entries.map((e, i) => `[${i + 1}] Topic: ${e.title}\n${e.answer}`).join("\n\n---\n\n")
         : "";
 
+    const levelInstruction = REVIEW_LEVEL_INSTRUCTIONS[reviewLevel];
+    const systemContent = levelInstruction
+      ? `${SYSTEM_PROMPT}\n\nAdditional instruction: ${levelInstruction}`
+      : SYSTEM_PROMPT;
+
     const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
-      { role: "system", content: SYSTEM_PROMPT },
+      { role: "system", content: systemContent },
     ];
     if (contextBlock) messages.push({ role: "system", content: contextBlock });
     for (const h of history.slice(-6)) messages.push({ role: h.role, content: h.content });
@@ -167,9 +224,8 @@ export async function generateAiAnswer(
     retrievalMode = "bm25_fallback";
   }
 
-  const needsHumanReview = entries.some(
-    (e) => e.needs_human_review || e.risk_level === "high"
-  );
+  const reviewLevel = computeReviewLevel(userMessage, entries, retrievalMode);
+  const needsHumanReview = reviewLevel === "escalate_human";
 
   const sources = entries.map((e) => ({
     id: e.id,
@@ -178,12 +234,12 @@ export async function generateAiAnswer(
   }));
 
   if (retrievalMode === "openai_semantic") {
-    const aiAnswer = await tryOpenAiChat(userMessage, entries, history);
+    const aiAnswer = await tryOpenAiChat(userMessage, entries, history, reviewLevel);
     if (aiAnswer) {
-      return { answer: aiAnswer, sources, needsHumanReview, mode: "openai_semantic" };
+      return { answer: aiAnswer, sources, needsHumanReview, reviewLevel, mode: "openai_semantic" };
     }
   }
 
   const directAnswer = buildDirectAnswer(entries);
-  return { answer: directAnswer, sources, needsHumanReview, mode: "bm25_fallback" };
+  return { answer: directAnswer, sources, needsHumanReview, reviewLevel, mode: "bm25_fallback" };
 }

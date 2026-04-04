@@ -75,6 +75,7 @@ router.post("/askimate/ai", async (req: Request, res: Response) => {
     res.json({
       answer: result.answer,
       sources: result.sources,
+      reviewLevel: result.reviewLevel,
       needsHumanReview: result.needsHumanReview,
       mode: result.mode,
     });
