@@ -1,0 +1,567 @@
+[
+  {
+    "id": "why_uk",
+    "title": "Why Uk",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "Why should I choose the UK to study?",
+      "Is the UK a good place to study?",
+      "Why the UK?",
+      "Why should a student choose the UK for studying?",
+      "What makes the UK a popular destination for international students?",
+      "What are the advantages of studying in the UK?",
+      "Why do so many students choose to study in the UK?",
+      "Is studying in the UK worth it?",
+      "What are the benefits of a UK degree?",
+      "How does studying in the UK compare to other countries?",
+      "What makes UK universities stand out globally?",
+      "Why is the UK a top choice for higher education?"
+    ],
+    "answer_variants": [
+      "The UK is one of the best countries in the world for studying. It offers a wide range of opportunities across schools, colleges, and universities. As an English-speaking country with a strong economy, the UK is consistently ranked among the top three countries with the best education systems globally. It is home to many of the world’s top universities.\nThere are numerous opportunities for international students to work after graduation, and the Graduate Visa allows students to stay for up to 18 Months after completing a bachelor's or master's degree, and up to three years for PhD graduates — a clear sign of the UK’s commitment to supporting international students.\nWith its multicultural and diverse society, welcoming people from all nationalities, the UK provides an ideal environment for students to build their future.\nDespite many global changes, the UK remains one of the most stable countries in the education sector. Yes — education is a major industry in the UK, and the revenue it generates is significant for both the government and universities. As a result, institutions strive to offer the best opportunities for international students to succeed.\nAlthough the UK government has introduced new rules regarding dependent visas, postgraduate research students — including those enrolled in MRes, MPhil, and PhD programs — are still allowed to bring their dependants to the UK."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "about_uk",
+    "title": "About Uk",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "Describe the UK for me.",
+      "Can you describe the UK for me?",
+      "Tell me about the UK?",
+      "I want to study in the UK and I need to know more about there.",
+      "Can you tell me about the UK?",
+      "I want to study in the UK and need to know more about it.",
+      "What is student life like in the UK?",
+      "What are the cultural differences between the UK and other countries?",
+      "What should I know before moving to the UK as an international student?",
+      "What is the education system like in the UK?",
+      "What are the most popular cities for students in the UK?",
+      "Is the UK safe for international students?",
+      "What are the living costs in the UK compared to other countries?",
+      "What weather should I expect in the UK throughout the year?",
+      "What are the pros and cons of studying in the UK?",
+      "What are some tips for adapting to life in the UK?"
+    ],
+    "answer_variants": [
+      "The United Kingdom of Great Britain and Northern Ireland, commonly known as the United Kingdom (UK) or simply Britain, is a country located in Northwestern Europe.\nEnglish is the official language, specifically British English, and the UK is home to many of the world’s top universities, alongside the United States. The UK is incredibly diverse; people from almost every ethnic background live here. The locals are generally welcoming and kind to immigrants and international students.\nThe United Kingdom consists of four nations: England, Scotland, Wales, and Northern Ireland — united under one sovereign state. If you are considering studying abroad, the UK is one of the best destinations, offering extensive future-focused plans and support for international students.\nThe UK provides a wide range of student services, accommodation options, and a well-developed transportation system. For instance, students are exempt from paying council tax, which typically costs around £200 per month — a significant saving.\nThe UK is home to some of the world’s leading schools, colleges, and universities. You can begin with school-level studies, a foundation year (similar to pre-university), then progress to a bachelor's degree (undergraduate), and later pursue a master's or PhD (postgraduate) degree.\nLondon is the capital city, while other major and well-known cities include Birmingham, Edinburgh, Belfast, Liverpool, Cardiff, and Manchester.\nThe UK is also considered one of the safest countries in the world — both internally and externally — thanks to strong government safety and security programmes.\nAlthough the UK is often known for its higher living costs, it also offers competitive salaries and opportunities that make living and studying here manageable. In fact, the shorter course durations (3 years for a bachelor's, 1 year for a master's, and around 3 years for a PhD) make studying in the UK more affordable than in many other countries."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_cost_of_living",
+    "title": "Uk Cost Of Living",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "Tell me about the cost of living in the UK?",
+      "Cost of living in the UK",
+      "cost of living in the UK",
+      "Cost of Grocery in the UK",
+      "Is the UK a cheap or expensive country?",
+      "How much money do I need to live in the UK per month?",
+      "What are the average rent prices in the UK?",
+      "Is London more expensive than other UK cities?",
+      "How much does public transport cost in the UK?",
+      "What is the average student budget in the UK?",
+      "Are utilities expensive in the UK?",
+      "How much does it cost to eat out in the UK?",
+      "What is the minimum wage in the UK?",
+      "Can I live in the UK on a student budget?",
+      "Is living in the UK affordable for international students?"
+    ],
+    "answer_variants": [
+      "The cost of living in the UK includes several essential expenses such as tuition fees, accommodation, groceries, daily shopping, clothing, transportation, and utility bills. These are the main areas that students need to plan for once they arrive in the UK.\nAccording to the UK Home Office, international students must show proof of sufficient funds when applying for a student visa. The financial requirements are as follows:\nFor students studying in London: £1,529 per month for up to 9 months, totalling £13,761. For students studying outside London: £1,171 per month for up to 9 months, totalling £10,539.\nFor students who plan to bring dependants, the financial requirements increase: In London: £845 per month for each dependant (up to 9 months). Outside London: £680 per month for each dependant (up to 9 months).\nThese amounts are primarily for visa and bank statement purposes. However, research and experience show that these figures are generally sufficient for a modest and affordable student lifestyle.\nAccommodation costs vary depending on the type, location, and facilities. On average: Shared rooms with shared kitchen and bathroom start from around £300 per month outside London and £700 inside London. Ensuite rooms (private bathroom, shared kitchen) typically range between £500 to £700 outside London and cost £800 or more inside London. Studios (private kitchen and bathroom) start from £700 per month outside London and often exceed £1,200 inside London.\nMost student accommodations include utility bills. However, private flats, especially one-bedroom or larger properties, usually do not include bills. In those cases, additional monthly costs for electricity, gas, water, and internet may apply.\nGrocery shopping in the UK is flexible and depends on your preferences and where you shop. Supermarkets such as Aldi, Lidl, Tesco, Sainsbury’s, Asda, and Morrisons are commonly used by students. Aldi and Lidl are known for being more affordable. For example, a banana may cost around £0.80, a pack of 6 small apples costs around £0.99, and a large bottle of milk is approximately £2.00.\nIf you rent a one-bedroom or larger property, you may need to pay council tax and utility bills. Full-time students are exempt from council tax, but still responsible for utility bills. Utility costs in a one-bedroom property outside London may be around £60 to £80 per month in summer and over £150 in colder months. Council tax varies by local authority but usually starts from £150 per month and depends on the size of the property and the number of residents.\nTransportation costs vary by city and type of travel, but students should budget approximately £100 per month. Many cities offer student discounts on public transport.\nMobile phone and SIM card plans usually cost between £10 to £30 per month, depending on the provider and data package. Most student accommodations include free Wi-Fi.\nTuition fees for international students in UK universities typically start from £13,000 per year, depending on the course and institution.\nStudying in the UK may seem expensive, but the shorter duration of degree programmes helps reduce overall costs. Bachelor's degrees usually take 3 years, master's degrees 1 year, and PhDs around 3 to 4 years. This makes the UK a more affordable and efficient destination for international education compared to many other countries."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_universities",
+    "title": "Uk Universities",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "List of the UK Universities",
+      "What are the best universities in the UK?",
+      "Best UK Universities",
+      "What are the top 10 universities in the UK?",
+      "Which UK universities are best for international students?",
+      "What are the most affordable universities in the UK?",
+      "How do UK universities rank globally?"
+    ],
+    "answer_variants": [
+      "These are the UK universities listed in the Guardian University Guide Ranking, which is one of the most trusted and widely referenced rankings in the UK. According to the latest data, the top 10 universities in the UK based on the Guardian ranking are: University of Oxford University of St Andrews University of Cambridge London School of Economics and Political Science (LSE) Imperial College London Durham University University of Bath University of Warwick University College London (UCL) Loughborough University\nThese universities are recognised globally for their academic excellence, research, and graduate employability.\nBelow is the complete list of ranked UK universities according to the Guardian University Guide: University of Oxford, University of St Andrews, University of Cambridge, London School of Economics and Political Science, Imperial College London, Durham University, University of Bath, University of Warwick, University College London, Loughborough University, Lancaster University, University of Aberdeen, University of the Arts London, University of Glasgow, University of Edinburgh, University of Bristol, University of Strathclyde, University of Exeter, University of Surrey, University of Sheffield, Aston University, University of Southampton, University of Essex, Ulster University, University of York, University of Chichester, University of Liverpool, King's College London, Swansea University, University of West London, University of Manchester, University of Bolton, University of Sunderland, University of Leicester, University of Reading, University of Birmingham, University of Leeds, Northumbria University, City, University of London, Oxford Brookes University, University of Portsmouth, Coventry University, Queen's University Belfast, Edge Hill University, University of East Anglia, University of Chester, Glasgow Caledonian University, Cardiff University, Nottingham Trent University, University of Lincoln, University of South Wales, Royal Holloway, University of London, University of Dundee, Liverpool John Moores, University of Derby, University of East London, Manchester Metropolitan University, Staffordshire University, London South Bank University, Kingston University, University of Kent, University of Nottingham, Newcastle University, University of the West of England, Buckinghamshire New University, Heriot-Watt University, Aberystwyth University, University of Huddersfield, Teesside University, University of Sussex, Birmingham Newman University, Keele University, Bangor University, Queen Mary University of London, Sheffield Hallam University, University of Hertfordshire, University of Hull, St Mary's University Twickenham, Abertay University, University of Wales Trinity Saint David, University of Bradford, Cardiff Metropolitan University, University of Salford, University of Plymouth, University of Wolverhampton, University of Brighton, Liverpool Hope University, Solent University, University for the Creative Arts, SOAS University of London, Queen Margaret University, Falmouth University, London Metropolitan University, University of Stirling, Robert Gordon University, York St John University, Edinburgh Napier University, Anglia Ruskin University, University of Suffolk, Arts University Bournemouth, University of Gloucestershire, Leeds Beckett University, Birmingham City University, University of Central Lancashire, Bournemouth University, Leeds Trinity University, Canterbury Christ Church University, Bath Spa University, Goldsmiths, University of London, University of Roehampton, Wrexham University, University of Worcester, Middlesex University, University of Northampton, University of Winchester, University of Cumbria, University of Greenwich, De Montfort University, University of Westminster, Brunel University London, University of the West of Scotland, University of Bedfordshire.\nIt’s important to note that while the top 20–25 universities are highly prestigious, many universities ranked after that range tend to be more affordable, both in terms of tuition fees and cost of living. This makes them excellent options for international students seeking quality education at a lower overall cost."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_colleges",
+    "title": "Uk Colleges",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "List of the UK colleges",
+      "What are the best colleges in the UK?",
+      "Best UK colleges",
+      "What are the top 10 colleges in the UK?",
+      "Which UK colleges are best for international students?",
+      "What are the most affordable colleges in the UK?",
+      "How do UK colleges rank globally?"
+    ],
+    "answer_variants": [
+      "Here is a comprehensive list of colleges across the United Kingdom. While not all of them are designated as international institutions, a large number of them do accept international students and have permission to issue a Confirmation of Acceptance for Studies (CAS) letter.\nThese colleges vary in size, focus, and regional presence, offering a wide range of programmes such as A-Levels, foundation courses, vocational training, and further education qualifications. Some of these colleges also provide pathway programmes in partnership with universities.\nIt is important to note that, unlike UK universities, there is currently no widely accepted or official ranking system for UK colleges. Therefore, choosing a college should be based on course availability, international student support, location, tuition fees, and progression opportunities to higher education.\nSome well-known international pathway providers among them include: ARU College, Birmingham City University International College, Brunel University London Pathway College, University of Hertfordshire International College, University of Portsmouth International College (ICP), Robert Gordon University International College, Keele University International College, Manchester Metropolitan University International College, Swansea University – The College, UA92 University Academy 92 Manchester, University of Plymouth International College.\nThe list also includes a wide network of further education and sixth form colleges such as: Abingdon and Witney College, Activate Learning, Ada National College for Digital Skills, Aquinas College, Askham Bryan College, Barking and Dagenham College, Barnet and Southgate College, Barnsley College, Barton Peveril College, Basingstoke College of Technology, Bath College, Bexhill College, Birmingham Metropolitan College, Bishop Auckland College, Bishop Burton College, Blackburn College, Blackpool and The Fylde College, Blackpool Sixth Form College, Bolton College, Bolton Sixth Form College, Boston College, Bournemouth & Poole College, Bradford College, Bridgwater and Taunton College, Brighton Hove and Sussex Sixth Form College, Brockenhurst College, Brooklands College, Buckinghamshire College Group, Burnley College, Burton and South Derbyshire College, Bury College, Calderdale College, Cambridge Regional College, Capel Manor College, Capital City College Group, Cardinal Newman College, Carmel College, Central Bedfordshire College, Chelmsford College, Cheshire College South and West, Chesterfield College, Chichester College Group, Christ the King Sixth Form College, Cirencester College, City College Norwich, City College Plymouth, City of Bristol College, City of Portsmouth College, City of Wolverhampton College, Colchester Institute, Coventry College, Craven College, Croydon College, Darlington College, Derby College Group (DCG), Derwentside College, DN Colleges Group, Dudley College, Ealing Hammersmith and West London College, East Coast College, East Durham College, East Sussex College Group, Eastleigh College, EKC Group, Exeter College, Fareham College, Farnborough College of Technology, Fircroft College of Adult Education, Franklin College, Furness College, Gateshead College, Gloucestershire College, Grantham College, Greenhead College, Halesowen College, Harlow College, Harrow Richmond Uxbridge Colleges (HRUC), Hartlepool College of Further Education, Hartpury College, Havant and South Downs College, Heart of Yorkshire Education Group, Hereford College of Arts, Herefordshire Ludlow and North Shropshire College, Hertford Regional College, Hills Road Sixth Form College, Holy Cross College, Hopwood Hall College, Huddersfield New College, Hugh Baird College, Hull College, Inspire Education Group, Itchen College, John Leggott Sixth Form College, Joseph Chamberlain Sixth Form College, Kendal College, Kingston Maurward College, Kirklees College, Lakes College West Cumbria, Lancaster and Morecambe College, Leeds College of Building, Leicester College, Leyton Sixth Form College, Lincoln College, London South East Colleges, Long Road Sixth Form College, Loreto College, Loughborough College, LTE Group, Luminate Education Group, Luton Sixth Form College, Macclesfield College, Marine Society College of the Sea, Mary Ward Centre, Middlesbrough College, Mid-Kent College, Milton Keynes College, Morley College London, Moulton College, Myerscough College, Newcastle College (NCG), Nelson and Colne College, New City College, New College Durham, New College Swindon, Newbury College, Newcastle and Stafford Colleges Group, Newham College of Further Education, Newham Sixth Form College, North East Surrey College of Technology, North Hertfordshire College, North Kent College, North Warwickshire and South Leicestershire College, Northampton College, Northern College for Residential Adult Education, Notre Dame Catholic Sixth Form College, Nottingham College, Oaklands College, Orbital South Colleges, Peter Symonds’ College, Petroc, Plumpton College, Preston College, Queen Elizabeth Sixth Form College, Reaseheath College, Richmond and Hillcroft Adult and Community College, Riverside College, RNN Group, Runshaw College, Ruskin College, Salford City College, Sandwell College, Scarborough Sixth Form College, Shipley College, Shrewsbury Colleges Group, Sir George Monoux College, SK Group, SMB Group, Solihull College and University Centre, South and City College Birmingham, South Bank Colleges, South Devon College, South Essex College, South Gloucestershire and Stroud College, South Staffordshire College, Southampton City College, Southport College, Sparsholt College Hampshire, St Brendan’s Sixth Form College, St Charles Catholic Sixth Form College, St Dominic’s Sixth Form College, St Francis Xavier Sixth Form College, St John Rigby College, Stanmore College, Stoke-on-Trent College, Strode College, Suffolk New College, Sunderland College Group, Tameside College, TEC Partnership, Telford College, The Bedford College Group, The City of Liverpool College, The College of Richard Collyer, The College of West Anglia, The Cornwall College Group, The Education Training Collective, The Henley College, The Isle of Wight College, The National College for Advanced Transport and Infrastructure, The Northern School of Art, The Oldham College, The Sheffield College, The Sixth Form College Brooke House, The Sixth Form College Colchester, The South Thames College Group, The West Herts College Group, The Windsor Forest Colleges Group, Trafford College Group, Truro and Penwith College, Tyne Coast College, Unified Seevic Palmer’s College, United Colleges Group, Varndean College, Vision West Nottinghamshire College, Walsall College, Waltham Forest College, Warrington and Vale Royal College, Warwickshire College Group, West Suffolk College, West Thames College, Weston College, Weymouth College, Wigan and Leigh College, Wilberforce College, Wiltshire College and University Centre, Winstanley College, Wirral Metropolitan College, Workers’ Educational Association, Working Men’s College, WQE and Regent Colleges Group, Wyke Sixth Form College, Xaverian College, Yeovil College, York College.\nIn Scotland, Wales, and Northern Ireland, there are also a wide range of well-established colleges, including: Argyll College UHI, Ayrshire College, Borders College, City of Glasgow College, Dumfries & Galloway College, Dundee and Angus College, Edinburgh College, Fife College, Forth Valley College, Glasgow Clyde College, Glasgow Kelvin College, Inverness College UHI, Lews Castle College UHI, Moray College UHI, New College Lanarkshire, Newbattle Abbey College, North East Scotland College, North Highland College UHI, Orkney College UHI, Perth College UHI, Sabhal Mòr Ostaig UHI, Shetland College UHI, South Lanarkshire College, West College Scotland, West Highland College UHI, West Lothian College, Bridgend College, Cardiff and Vale College, Coleg Cambria, Coleg Gwent, Coleg Sir Gâr, Coleg y Cymoedd, Gower College Swansea, Grŵp Llandrillo Menai, Merthyr Tydfil College, NPTC Group, Pembrokeshire College, St David’s Catholic Sixth Form College, Adult Learning Wales, Belfast Metropolitan College, North West Regional College, Northern Regional College, Southern Regional College, South West College, South Eastern Regional College."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_schools",
+    "title": "Uk Schools",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "List of the UK scholls",
+      "What are the best schools in the UK?",
+      "Best UK schools",
+      "What are the top 10 schools in the UK?",
+      "Which UK schools are best for international students?",
+      "What are the most affordable schools in the UK?",
+      "How do UK schools rank globally?"
+    ],
+    "answer_variants": [
+      "There is no official or complete list of all UK schools, especially when it comes to rankings. However, The Times publishes a widely referenced ranking of the best schools in the UK based on academic performance, inspection outcomes, and other key factors. You can view their updated school league tables through the following link: https://www.thetimes.com/best-schools-league-table\nThis ranking includes a mix of state schools, independent schools, grammar schools, and boarding schools across the UK.\nPlease note that while this list is helpful, rankings may vary depending on the criteria used by different publications, and it’s always important to consider the specific needs and goals of the student when choosing a school."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "admissions_requirements",
+    "title": "Admissions Requirements",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "What are the requirements to apply for UK universities?",
+      "What are the requirements to apply for UK colleges?",
+      "What are the requirements to apply for UK schools?",
+      "What are the requirements to apply for a foundation year?",
+      "What are the requirements to apply for a bachelor's degree?",
+      "What are the requirements to apply for a master's degree?",
+      "What are the requirements to apply for a PhD or research-based degree?"
+    ],
+    "answer_variants": [
+      "The required documents for studying in the UK vary depending on the level of study (school, college, university) and the specific programme you are applying for. Below is a comprehensive overview of the general entry requirements:\n1. Academic Qualifications For all degrees, you must submit your most recent qualification based on the level you are applying for: Bachelor’s Degree: You must provide your final high school diploma or certificate. Some universities may require you to complete a foundation year depending on your educational background. Master’s Degree: You need to submit your bachelor’s degree certificate. High school or foundation qualifications are not required. PhD or Research-Based Degrees: You must provide both your bachelor's and master’s degree certificates. If your country offers an associate degree followed by a bachelor’s degree (e.g. 2+2), both documents should be submitted. All qualifications and official academic transcripts must be in English or accompanied by a certified English translation. If your final degree is not yet available, you may submit it later as part of a conditional offer. However, official transcripts (even provisional) are mandatory at the time of application.\n2. Applying to UK Colleges Entry requirements for UK colleges follow the same general structure, but vary by programme: For foundation year courses, students must submit their final high school diploma. Some colleges may accept applicants who have completed only Year 11 (one year before high school graduation) for foundation and bachelor’s programmes.\n3. Applying to UK Schools Since students applying to UK schools are typically under 18, they are not expected to provide formal qualifications. However, recent academic transcripts or school reports are usually required.\n4. English Language Proficiency English test scores are essential for international students. Acceptable tests include IELTS, TOEFL, PTE, and others. Required scores vary by level: Schools: IELTS 4.5 or equivalent (varies by school) Foundation (Colleges): IELTS 5.5 Bachelor’s Degrees: IELTS 6.0 (some courses may require IELTS 7.0) Master’s Degrees: IELTS 6.0 or 6.5 (depending on the programme) PhD: Typically IELTS 7.0 or higher\n5. Curriculum Vitae (CV) Applicants aged 16 and above must submit a CV. Even if you have no work experience, your CV should highlight your skills, academic background, and explain any study gaps.\n6. Personal Statement (SOP) All students, regardless of level, must submit a personal statement or statement of purpose (SOP). This should explain: Your academic background Why you want to study in the UK Why you chose that specific institution and programme Your future goals and plans Your motivation and understanding of the course modules\n7. Recommendation Letters Recommendation letters vary by level and institution: Schools and Foundation Programmes: At least one letter from a high school teacher or principal Bachelor’s Degrees: Usually one academic reference Master’s and PhD Degrees: One or two letters, depending on the university. These can be academic, professional, or both. Some universities allow you to provide only referee contact details instead of a written letter.\n8. Passport A valid passport is required for all international students. It is highly recommended that your passport be valid for at least 6–12 months beyond your intended arrival date. 9. Portfolio (for Art, Design, Architecture) If applying to creative courses such as Art, Architecture, or Design, you may need to submit a portfolio showcasing your previous work.\n10. Research Proposal (for Research-Based Degrees) If applying for MRes, MPhil, or PhD programmes, most universities require a research proposal outlining your research interests, objectives, and methodology.\n11. Financial Evidence (Bank Statement) A bank statement is one of the most sensitive and important documents. You must provide a valid bank statement that shows you have sufficient funds to cover tuition fees and living expenses. During the CAS (Confirmation of Acceptance for Studies) process, universities may also request information about the source of your funds in preparation for possible verification by the UK Home Office during your visa application.\n12. Other Supporting Documents Additional requirements may vary depending on your personal situation, your country, and the specific university or college you are applying to."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "english_requirements",
+    "title": "English Requirements",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "What are the English requirements to study in the UK?",
+      "What are the English requirements to study at UK universities?",
+      "What are the English requirements to study at UK colleges?",
+      "What are the English requirements to study at UK schools?",
+      "Do I need IELTS to study in the UK?",
+      "Which English tests are accepted by UK universities?",
+      "What is the minimum IELTS score required for UK universities?",
+      "Can I study in the UK without IELTS?",
+      "What are the TOEFL requirements for studying in the UK?",
+      "Is Duolingo English Test accepted by UK universities?",
+      "Do UK colleges accept medium of instruction (MOI) as proof of English?",
+      "What are the English language requirements for foundation courses in the UK?",
+      "What are the English requirements for postgraduate (master's/PhD) courses in the UK?",
+      "What English test should I take for a student visa to the UK?",
+      "Are there different English requirements for different UK universities?",
+      "Do UK schools require English test scores for international students?",
+      "Can I get a UK student visa without IELTS?",
+      "What level of English is needed for a UK Tier 4 student visa?",
+      "What English tests are accepted for UKVI (UK Visas and Immigration)?",
+      "Can I take the University Language test to get uncodnitonal offer?"
+    ],
+    "answer_variants": [
+      "To study in the UK as an international student, you are generally required to provide a valid and credible English language test result. The most widely accepted test is the IELTS (International English Language Testing System). However, many UK institutions also accept other recognised English language tests such as TOEFL (iBT), PTE (Pearson Test of English), and in some cases, institutional or internal English tests — as long as they are approved by the UK Home Office for visa purposes.\nIt is important to note that not all UK institutions accept every type of English test. While IELTS is the standard, some universities may not accept alternatives like Duolingo, and acceptance of internal or lesser-known tests varies from institution to institution.\nMinimum English language requirements by level of study: Schools: IELTS 4.5 or equivalent (varies by institution) Foundation Programmes (Colleges): IELTS 5.5 Bachelor’s Degrees: IELTS 6.0 (some competitive programmes may require IELTS 7.0) Master’s Degrees: IELTS 6.0 to 6.5, depending on the subject PhD / Research Programmes: Typically IELTS 7.0 or higher\nEquivalent scores in TOEFL and PTE may be accepted, and universities usually provide conversion tables for reference.\nIf you are a national of one of the following countries or territories, you do not need to prove your English language ability to apply for a UK visa or meet institutional English requirements: Antigua and Barbuda, Australia, The Bahamas, Barbados, Belize, British Overseas Territories, Canada, Dominica, Grenada, Guyana, Jamaica, Ireland (citizenship only), Malta, New Zealand, St Kitts and Nevis, St Lucia, St Vincent and the Grenadines, Trinidad and Tobago, United States of America.\nThe English test result is not required at the initial stage of application. You can apply to UK institutions and receive a conditional offer, which allows you to submit your English test result later — before the university’s or visa application deadline. If your previous studies were fully taught in English in an English-speaking country, you may be exempt from submitting an English test result. This is sometimes referred to as a Medium of Instruction (MOI)letter, and some institutions accept this in place of IELTS or TOEFL.\nMost UK institutions do not accept the Duolingo English Test for degree-level programmes, especially if you require a Student visa. Always check the specific requirements of your chosen institution and programme, as conditions and accepted tests may vary."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "bank_statement_requirements",
+    "title": "Bank Statement Requirements",
+    "domain": "uk_education",
+    "risk_level": "high",
+    "needs_human_review": true,
+    "sample_questions": [
+      "How much bank balance is required to study in the UK?",
+      "What are the UK student visa financial requirements?",
+      "How many months of bank statements are needed for a UK student visa?",
+      "Can I use my parents’ bank account as financial proof for the UK visa?",
+      "What documents are accepted as proof of funds for studying in the UK?",
+      "Is a sponsor allowed for UK student visa financial requirements?",
+      "Do UK universities check my bank statement?",
+      "What is the 28-day rule for UK student visa?",
+      "Do I need to show a bank statement for a foundation course in the UK?",
+      "Can I use a fixed deposit as proof of funds for the UK?",
+      "Is an education loan accepted as financial proof for the UK student visa?",
+      "How do I prove I have enough money to live and study in the UK?",
+      "What is the financial requirement for dependants of UK student visa holders?",
+      "How much money do I need to show for studying in London vs other cities in the UK?",
+      "What happens if my bank statement doesn’t meet UKVI standards?"
+    ],
+    "answer_variants": [
+      "To apply to UK universities, colleges, or schools, you must provide a bank statement showing your ability to pay the first year’s full tuition fee and 9 months of living expenses. This financial evidence is a mandatory requirement both for admission and for the visa application process. No other forms of financial proof — such as property ownership, rental income, stocks, or cash in hand — are accepted.\nThe required amount is calculated based on this formula: Main applicant Inside London: £1,529 per month × 9 months = £13,761 Outside London: £1,171 per month × 9 months = £10,539\nEach dependent Inside London: £845 per month × 9 months = £7,605 Outside London: £680 per month × 9 months = £6,120\nFor example, if your tuition fee is £15,000 and you are applying to a London-based university like LSE as a single applicant, the required amount is £15,000 (tuition fee) + £13,761 (living cost) = £28,761\nIf you already paid part or all of your tuition fee, you can deduct that amount from the total shown in your bank statement. For instance, if you have paid £8,000, you need to show only the remaining £7,000 + £13,761 = £20,761 in your bank account.\nBank Statement Rules: statement must be in English. The required amount must be held in the account for at least 28 consecutive days before submission. Currency conversion must be done using the OANDA exchange rate at https://www.oanda.com/currency-converter. The funds may be held in GBP, USD, or other internationally accepted currencies. The account must show immediate access to the funds — meaning the balance must be readily available for withdrawal. If the bank statement does not show account ownership or transaction details clearly, bank transactions or supporting letters must be submitted.\nAcceptable account holders include: The student The student’s legal spouse or partner The student’s parents Statements from other relatives or friends are not accepted.\nNote: Iranian nationals cannot use OANDA for currency verification and must use an alternative acceptable method as advised by the UKVI.\nIn many cases, universities or the UKVI may request proof of the source of funds — especially if large sums have been recently deposited. Acceptable sources include: Sale of property, car, or valuables Long-term salary savings or bonuses Inheritance Business income or other legal sources\nIf you are sponsored by a university, government, or other organisation, an official sponsorship letter must be provided. The letter must clearly state the amount being covered (tuition and/or living costs). If a student receives a fully funded scholarship, no bank statement is needed if the sponsor covers both tuition fees and UKVI-specified living expenses in full. If only part of the cost is covered, the student must show the remaining balance in their bank statement. All bank statements are carefully checked by UKVI to ensure authenticity. Fake or unverifiable financial documents will lead to immediate visa refusal. A valid bank statement is required for all levels of study, from foundation programmes to PhD and higher degrees. The bank statement is considered a critical part of your application. Failure to meet the financial requirement — even by a small margin — will almost certainly result in visa refusal."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "tuition_fees",
+    "title": "Tuition Fees",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "I want to know about the tuition fees for UK universities.",
+      "I want to know about the tuition fees for UK colleges.",
+      "I want to know about the tuition fees for UK schools.",
+      "How much are tuition fees at UK universities for international students?",
+      "What is the average cost of studying in the UK?",
+      "Do UK colleges charge tuition fees?",
+      "Are public schools in the UK free for international students?",
+      "What are the tuition fees for foundation courses in the UK?",
+      "What is the difference in tuition fees between undergraduate and postgraduate courses in the UK?",
+      "Which UK universities have the lowest tuition fees?",
+      "Do tuition fees include accommodation and other costs?",
+      "Are there any hidden costs besides tuition fees in the UK?",
+      "What are the tuition fees for medical programs in the UK?",
+      "How much do private schools in the UK cost per year?",
+      "Can I pay my UK university tuition fees in instalments?"
+    ],
+    "answer_variants": [
+      "There is no difference in tuition fees based on the level or grade of study. Tuition fees in the UK are calculated annually and vary depending on the institution’s rank, reputation, location, and facilities. For international students, tuition fees typically range from £12,000 to over £45,000 per year, depending on the university and course. For UK (home) students, the average tuition fees range from £3,000 to over £10,000 per year. If your course duration is more than one year, you are usually required to pay only the first year’s tuition fee at the time of admission, not the full amount for the entire course. Most UK institutions do not charge an application fee, but a few universities may charge an application fee ranging between £50 to £70. There is no free education in the UK unless you receive a fully funded scholarship, typically available for PhD or higher-level research programmes. In general, universities ranked above 200 are more affordable compared to higher-ranked institutions. Tuition fees cover only the cost of education and do not include accommodation, living expenses, or any additional services. Most UK universities require an initial deposit to confirm your place. The amount varies: Some require full payment of the first year’s tuition fee Others accept 50% upfront A few allow installment payments, depending on their payment policies Always check the specific requirements and payment policies of your chosen university before proceeding."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "conditional_unconditonal_offers",
+    "title": "Conditional Unconditonal Offers",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "I have a conditional offer. What does a conditional offer mean?",
+      "I have an unconditional offer. What does an unconditional offer mean?",
+      "One of my conditions is IELTS or equivalent results. What does that mean?",
+      "Can I get a conditional offer before providing IELTS or an English language result?",
+      "Can I get a conditional offer before submitting my previous transcripts?",
+      "Can I get a conditional offer before submitting my SOP (Personal Statement) and CV?",
+      "Can I get a conditional offer before submitting my previous degree certificate?",
+      "Can I get a conditional offer without a passport?",
+      "Is a conditional offer a final offer from the university?",
+      "Is it possible to get a conditional offer from UK universities?",
+      "Can I get an unconditional offer without IELTS?",
+      "Can I get an unconditional offer without my original degree certificate?",
+      "How can I change my conditional offer to an unconditional one?",
+      "What documents do I need to fulfill a conditional offer?",
+      "Can I apply for a UK student visa with a conditional offer?",
+      "How long do I have to meet the conditions of my offer?",
+      "What happens if I fail to meet the conditions of my offer?",
+      "Do UK universities always give conditional offers first?",
+      "Can I defer my admission if I have a conditional offer?",
+      "Do conditional offers guarantee admission once I meet the conditions?"
+    ],
+    "answer_variants": [
+      "A conditional offer means the university is willing to offer you a place if you meet specific conditions, such as submitting final academic results, English language scores, or other required documents. An unconditional offer means those conditions have already been satisfied. In most cases, you need an unconditional offer before a CAS can be issued. Always read your offer letter carefully because the exact conditions, deadlines, and next steps vary by institution."
+    ],
+    "status": "patched_placeholder",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "confirmation_of_acceptance",
+    "title": "Confirmation Of Acceptance",
+    "domain": "uk_education",
+    "risk_level": "high",
+    "needs_human_review": true,
+    "sample_questions": [
+      "What is Confirmation of acceptance?",
+      "What is CAS?",
+      "What is CAS Shield?",
+      "What is a CAS letter?",
+      "Who is required to obtain a CAS?",
+      "What is the requirements for CAS?",
+      "How do I get a CAS letter from a UK university?",
+      "How do I get a CAS letter from a UK university?",
+      "Can I apply for a UK visa without a CAS?",
+      "What documents are needed to get a CAS?",
+      "How long does it take to receive a CAS letter?",
+      "Is there a deadline for getting a CAS?",
+      "Can my CAS be withdrawn or refused?",
+      "Is the CAS number the same as the CAS letter?",
+      "How does CAS Shield work in the UK visa process?",
+      "What should I do if there’s a mistake on my CAS letter?"
+    ],
+    "answer_variants": [
+      "The Confirmation of Acceptance for Studies, or CAS, is an electronic document issued by UK educational institutions to international students who have been offered a place to study in the UK. It contains a unique reference number that students must use to apply for a UK Student Visa. The CAS confirms to UK Visas and Immigration (UKVI) that the institution is officially sponsoring the student's education. Any international student who requires a Student Visa must obtain a CAS letter. You cannot apply for a UK Student Visa without a CAS, meaning your application process is not complete until your CAS has been issued.\nThere are two main steps to receiving your CAS: First, you must receive an unconditional offer. Then, the university will invite you to complete the CAS Shield form. In some cases, the university may pre-fill it for you and ask for additional documents.\nDuring the CAS issuance process, all your documents will be reviewed again by a dedicated compliance team that specializes in UKVI regulations.\nOnly institutions that are licensed sponsors by the UK Home Office can issue a CAS.\nMost universities will require you to: Complete a credibility interview, and Submit a valid bank statement that proves your financial capability.\nThe CAS letter is usually issued within 2 weeks, though in many cases, it can be prepared in as little as 2–7 days, depending on the university’s procedures. There is a small chance that your CAS may be refused during this stage, especially if the admissions team missed a potential issue earlier. Although rare, it is possible.\nOnce your CAS is issued, carefully check all the details in the letter. Any errors in your CAS (such as name, course title, duration, etc.) can result in visa refusal. If you find any mistakes, contact your university’s CAS team immediately. They can correct the issue and may include a note in your CAS to clarify."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "atas",
+    "title": "Atas",
+    "domain": "uk_education",
+    "risk_level": "high",
+    "needs_human_review": true,
+    "sample_questions": [
+      "What is ATAS?",
+      "What are the requirements to obtain an ATAS?",
+      "Which courses need to obtain an ATAS certificate?",
+      "Who needs to apply for an ATAS certificate?",
+      "How do I apply for an ATAS?",
+      "How long does it take to get an ATAS certificate?",
+      "Can I apply for a student visa without ATAS?",
+      "Do undergraduate students need ATAS?",
+      "What documents are required for an ATAS application?",
+      "Is ATAS required for PhD students?",
+      "What happens if I don’t obtain ATAS in time?",
+      "Is ATAS required for short courses or research visitors?",
+      "Is there a fee for ATAS application?"
+    ],
+    "answer_variants": [
+      "ATAS stands for Academic Technology Approval Scheme. This scheme applies to certain international students and researchers who plan to study or carry out research in sensitive subject areas related to advanced technologies in the UK. The scheme is administered by the Foreign, Commonwealth & Development Office (FCDO), and those who fall under its requirements must obtain an ATAS certificate before applying for a UK Student Visa or commencing research.\nThere is no general requirement for all students to apply for ATAS. Only those who: Have received an offer to study a postgraduate-level course (such as a Master's or PhD) In a subject area classified as sensitive by the UK government Are nationals of specific countries (as listed by the UK government)دwill be asked by their university to apply for an ATAS certificate.\nTo check whether your course and nationality require ATAS, visit: https://www.academic-technology-approval.service.gov.uk/\nAfter answering a few questions, if your course and background meet the criteria, you will receive a message like: Your answers indicate that you will require an ATAS certificate to study or research in the UK.\nYou will then be prompted to create an account and begin your ATAS application.\nYou must apply for ATAS after receiving a conditional or unconditional offer from a UK university and being instructed by the university to do so.\nATAS applications typically take at least 1 month to be processed. In some cases, they may be issued sooner or take longer depending on your background and course.\nDo not apply for a visa without an ATAS certificate if it is required for your course — your visa may be refused.\nIf your ATAS application is refused, the UK government does not provide the reason. You can reapply after 90 days from the date of refusal.\nCommon terms: Higher Education Institution (HEI): University offering a postgraduate programme or research. Research Institution: Organisation employing an individual to conduct research. Student: Someone undertaking a Master’s or PhD course. Contracted researcher: Person employed by an HEI or research institution. Visiting academic researcher: Temporary (up to 12 months) visitor to an HEI or research institution. Common Aggregate Hierarchy code (CAH3): Subject code linked to courses or research areas. Standard Occupational Classification (SOC): Employment code for research positions. Financial sponsor: Individual or organisation funding your studies. Duplicate application: Attempt to submit a second identical application while the first is active.\nApplication status terms: Submitted: Application received for assessment. Requires Changes: Application has errors; can be edited and resubmitted. Part-complete: Application not submitted yet. Withdrawn: Application removed and no longer accessible. Decided: Assessment completed and result sent. Granted: Clearance approved and certificate issued. Refused: Clearance denied.\nYou do not need an ATAS certificate if: You are studying for a postgraduate diploma or PGCE You have Indefinite Leave to Remain (ILR) in the UK You are exempt from UK Immigration Control\nYour visa conditions exempt you from ATAS (e.g. Global Talent Visa for research employment)\nYou are a national or dual national of the following countries: Australia, Austria, Belgium, Bulgaria, Canada, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Japan, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Netherlands, New Zealand, Norway, Poland, Portugal, Republic of Korea, Romania, Singapore, Slovakia, Slovenia, Spain, Sweden, Switzerland, United States of America\nYou must hold a valid passport from an exempt country and a UK visa linked to it. Your HEI or Research Institution may verify this. Students and contracted researchers of all other nationalities not listed above must apply for ATAS if their course or research requires it. Undergraduate students on integrated Master’s courses may also need ATAS. Your HEI or Research Institution will confirm if your subject or employment has a CAH3 or SOC code that requires ATAS.\nFor some visas, you must have ATAS clearance before applying. These include: Student visa Skilled Worker visa Intra Company Transfer (ICT) visa Global Business Mobility visa Scale-up visa Temporary Work - International Agreement visa Temporary Work - Government Authorised Exchange visa For other visas, you do not need ATAS clearance before applying, but you must have it before starting your course or job: Standard Visit visa (for visiting academics) Global Talent visa (if later studying a relevant course) Graduate visa High Potential Individual visa Innovator Founder visa Start-up visa UK Ancestry visa British National Overseas visa (BNO) Dependants of Work or Study visa holders (if studying)"
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_student_visa",
+    "title": "Uk Student Visa",
+    "domain": "uk_education",
+    "risk_level": "high",
+    "needs_human_review": true,
+    "sample_questions": [
+      "What are the UK student visa requirements?",
+      "Which documents do I need to provide to apply for a UK student visa?",
+      "How can I book an appointment for a UK visa?",
+      "How can I apply for a UK student visa?",
+      "How much do I need to pay for a UK student visa?",
+      "Can I apply for a visa before applying for student admission?",
+      "What type of visa do I need to study in the UK?",
+      "How long does it take to get a UK student visa?",
+      "Can I work with a UK student visa?",
+      "Can I bring my family with a student visa to the UK?",
+      "Do I need to show financial proof for a UK student visa?",
+      "Can I extend my student visa in the UK?",
+      "What is the 28-day bank statement rule for UK visas?",
+      "What is the Immigration Health Surcharge (IHS) and how much does it cost?",
+      "What is the difference between a student visa and a short-term study visa?",
+      "Can I switch to a work visa after finishing my studies in the UK?"
+    ],
+    "answer_variants": [
+      "Visa requirements for main applicant: Passport Bank Statement Study Gap Explanation Academic qualifications (if applicable – not mandatory) English Result (not mandatory but recommended) Cover Letter (if needed) CAS Letter Visa Checklist (provided after application submission) Accommodation documents (if needed – not mandatory) Source of Funds (not mandatory but may be requested by the Home Office)\nIf the bank statement is not under the applicant’s name, it must be under a parent’s or spouse’s name. In that case, you must provide: Birth certificate to prove relationship Consent letter from the account holder approving the use of funds\nVisa requirements for dependent visa: Birth Certificates (applicant and dependents) Passport Visa Checklist Marriage Certificate Proof of relationship (e.g., marriage certificate, photos, chat logs, or any supporting evidence)\nVisa application links: Main applicant (student): https://www.gov.uk/student-visa/apply-online Dependent partner (outside UK): https://apply-to-visit-or-stay-in-the-uk.homeoffice.gov.uk/sort/live-in-crown-dependency/pbs_dependant_partner_out_uk Dependent child (outside UK): https://apply-to-visit-or-stay-in-the-uk.homeoffice.gov.uk/sort/live-in-crown-dependency/pbs_dependant_child_out_uk\nApplication Process: Fill out the online visa application form. Pay the Immigration Health Surcharge (IHS) and visa application fee (in USD). After payment, you’ll be redirected to the appropriate booking system (e.g., VFS Global or TLS Contact) to schedule an appointment based on your country.\nVisa Fees: Student visa (main applicant): £524 to apply from outside the UK £524 to extend/switch from inside the UK\nDependent visa: same cost as student visa\nIHS Fees: £776 per year for students, their dependents, and Youth Mobility Scheme applicants Example: £1,552 for a 2-year visa £776 per year for applicants under 18 £1,035 per year for all other categories\nNote: Payments are made in USD on the official visa application website.\nVisa Type: Tier 4 Student Visa (now referred to as a Student Route visa)\nProcessing Time: Typically up to 1 month (based on student feedback)\nWork Rights: Student: 20 hours per week during term-time Dependent (18+): Full-time work permitted\nBringing Dependents: Allowed only for students enrolled in PhD or research-based courses"
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_student_life",
+    "title": "Uk Student Life",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "What are the types of accommodation in the UK for students?",
+      "How much does it cost to live in the UK as a student?",
+      "How can I open a bank account as a student in the UK?",
+      "How can I register with a GP in the UK?",
+      "What is a GP?",
+      "What is the average cost of living in the UK?",
+      "What is the average cost of living in London?",
+      "What is the average cost of living outside London?",
+      "How can I buy a SIM card as a student in the UK?",
+      "How much does it cost to buy a SIM card in the UK?",
+      "How much does transportation cost in the UK?",
+      "What documents do I need to rent a student accommodation in the UK?",
+      "Which is cheaper: university halls or private accommodation?",
+      "Do international students need to pay council tax?",
+      "Can students get a discount on public transport in the UK?",
+      "What is an Oyster card and how does it work?",
+      "How can I find affordable accommodation in London?",
+      "What are the best UK mobile networks for students?",
+      "How do I get a student discount in the UK?",
+      "Can I open a student bank account without a BRP card?",
+      "What apps do students in the UK usually use for transport, food, or accommodation?"
+    ],
+    "answer_variants": [
+      "There are several types of accommodation for students in the UK: Shared House or Flat: You have your own private room, but the kitchen and bathroom are shared with others. The average cost is between £300 to £500 per month outside London, and £500 to £1,000 per month inside London. En-Suite: You have your own private room and bathroom, but share the kitchen with others. The cost is about £500 to £700 outside London, and £700 to £1,200 inside London per month. Studio: A private room that includes both a private kitchen and bathroom. The cost ranges from £700 to £1,000 per month outside London and £1,100 to £1,500 per month inside London. There are also 1-bedroom and multi-bedroom flats or houses available, which cost more depending on the location and size. Students can rent either from university accommodation providers or private landlords. To rent accommodation, landlords may ask for proof of income. If you can't provide this, you might be required to pay the full rent upfront or provide a UK-based guarantor whose annual income is at least 30 times the monthly rent. Full-time students are exempt from paying council tax, which is usually £150 to £200 per month for other residents. After arriving in the UK, students are allowed to open a UK bank account if they can provide proof of address and proof of legal stay (such as a visa or BRP). Because you pay for the Immigration Health Surcharge (IHS) when applying for a visa, you and your dependents can register with the NHS and most healthcare services will be free, except for dental care and prescription medications. A GP (General Practitioner) is your first point of contact in the UK healthcare system. They treat general health issues, provide prescriptions, and can refer you to specialists if needed. According to UKVI, the cost of living is estimated as follows: £1,529 per month for students in London £1,171 per month for students outside London £845 per month for each dependent in London £680 per month for each dependent outside London SIM cards are cheap in the UK — you can buy one for less than £1 and activate it with any mobile network. Monthly packages usually cost £10 to £30 depending on data and minutes. Transportation costs vary but expect to spend between £60 to £100 per month on average. Many cities and networks offer student discounts. An Oyster Card is used for public transport in London. It’s a rechargeable smart card that you tap when entering and exiting buses, trains, and the underground. It applies daily and weekly caps to keep your travel cost-efficient. For student discounts, the two most popular platforms are: UNiDAYS Student Beans"
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "uk_student_jobs",
+    "title": "Uk Student Jobs",
+    "domain": "uk_education",
+    "risk_level": "medium",
+    "needs_human_review": true,
+    "sample_questions": [
+      "Can international students work while studying in the UK?",
+      "How many hours can a student work in the UK?",
+      "Can I work full-time during holidays on a UK student visa?"
+    ],
+    "answer_variants": [
+      "International students on a UK Student visa are generally allowed to work part-time during term time and full-time during official vacation periods, subject to the conditions stated on their visa and course type. A common limit is up to 20 hours per week during term time for degree-level study, but the exact permission should always be checked on the visa decision and university guidance. Students often work in retail, hospitality, customer service, warehouse roles, or on-campus jobs. Because work rules can affect visa compliance, this topic should be reviewed against current UKVI guidance before giving a final answer."
+    ],
+    "status": "patched_placeholder",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "personal_statement",
+    "title": "Personal Statement",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "What is a Personal Statement?",
+      "What is an SOP?",
+      "What is a statement of purpose?",
+      "How can I write an SOP?",
+      "How can I write a Personal Statement?",
+      "Why we need a Personal statement?",
+      "Why we need a statement of purpose?",
+      "What is the difference between a personal statement and an SOP?",
+      "What should I include in a personal statement for UK universities?",
+      "How long should a personal statement be?",
+      "What are common mistakes in writing an SOP?",
+      "Can I use the same SOP for different universities?",
+      "Do undergraduate and postgraduate personal statements differ?",
+      "Should I mention career goals in a personal statement?",
+      "How formal should a statement of purpose be?",
+      "Can I get help writing my SOP or personal statement?",
+      "Do UK universities require both SOP and personal statement?",
+      "What are the parts of an SOP?",
+      "What are the parts of a personal statement?"
+    ],
+    "answer_variants": [
+      "A personal statement — also known as a Statement of Purpose (SOP) — is a document that explains your interest in studying in the UK and your motivation to pursue your chosen program. In your personal statement, you must demonstrate that you are a genuine student who deserves the opportunity to study in the UK.\nA strong SOP should include the following key sections: Your Background You should describe your academic and professional background, highlighting any skills you have gained, relevant experiences, activities, and capabilities that make you a suitable candidate. Why the UK? Explain why you have chosen the UK as your study destination. Mention the education system, opportunities, cultural aspects, or any other relevant reason. Why This University? Provide specific reasons for choosing the particular university. Show that you have researched the university, its rankings, facilities, faculty, or student support. Why This Program? Explain why you want to study the specific course. Show that you are aware of the course structure, modules, and how it aligns with your academic interests and career goals. Knowledge and Research Demonstrate that you have done thorough research about the UK, the university, and the program. Reflect your understanding of how this opportunity will benefit your future. Future Plans Clearly outline your future goals — whether academic, career-oriented, or personal — and how the course will help you achieve them.\nYou should also focus on your relevant skills. If your academic or professional background is directly related to your chosen course, highlight this clearly. If it’s not, you must justify your reason for shifting fields and explain your passion and preparation for the new area of study.\nA well-written personal statement is typically between 500 to 1000 words.\nImportant Notes: You are allowed to use AI tools to help rephrase or correct grammar in your SOP, but using AI to fully write your SOP for you is considered plagiarism and may result in rejection from the university.\nEach school, college, or university may have different expectations, so your SOP must be tailored for each institution. Do not use a generic SOP for multiple applications without customization."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  },
+  {
+    "id": "recommendation_letters",
+    "title": "Recommendation Letters",
+    "domain": "uk_education",
+    "risk_level": "low",
+    "needs_human_review": false,
+    "sample_questions": [
+      "What is a recommendation Letter?",
+      "How can we provide a recommendation letter?",
+      "Who can write a recommendation letter for university applications?",
+      "How many recommendation letters do UK universities usually require?",
+      "What should be included in a good recommendation letter?",
+      "Can I submit a recommendation letter from my employer instead of a teacher?",
+      "Should recommendation letters be on official letterhead?",
+      "Do UK universities accept digital recommendation letters?",
+      "How recent should a recommendation letter be?",
+      "Can family members write recommendation letters?",
+      "Is there a specific format for UK university recommendation letters?",
+      "Should recommendation letters be sent directly by the referee or uploaded by the student?"
+    ],
+    "answer_variants": [
+      "A recommendation letter is an academic or professional document written by someone who knows you well in an educational or professional capacity — such as a university professor, teacher, supervisor, or manager. In this letter, the recommender endorses and supports your application to a new university, confirming that they are satisfied with your past performance and recommend you as a capable candidate. The letter should highlight your strengths, relevant skills, achievements, and the recommender's personal experience working with or teaching you. It is generally addressed as To whom it may concern and does not need to be directed to a specific university unless otherwise requested. For schools and undergraduate (bachelor’s) applications, usually one recommendation letter is required. For postgraduate degrees (Master’s and PhD), two recommendation letters are typically needed — one academic and one professional (if applicable). However, requirements may vary by university. Some universities only request the contact information of your recommenders and may contact them directly. Others require formal recommendation letters on the institution’s official letterhead, signed and dated. All recommendation letters must be written in English."
+    ],
+    "status": "draft_from_rasa_files",
+    "last_converted": "2026-04-04",
+    "source_files": [
+      "domain.yml",
+      "nlu.yml"
+    ]
+  }
+]
