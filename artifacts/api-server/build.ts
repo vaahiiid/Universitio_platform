@@ -1,7 +1,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import { build as esbuild } from "esbuild";
-import { rm, readFile } from "fs/promises";
+import { rm, readFile, copyFile, access } from "fs/promises";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,8 +58,11 @@ async function buildAll() {
     entryPoints: [path.resolve(__dirname, "src/index.ts")],
     platform: "node",
     bundle: true,
-    format: "cjs",
-    outfile: path.resolve(distDir, "index.cjs"),
+    format: "esm",
+    outfile: path.resolve(distDir, "index.js"),
+    banner: {
+      js: `import{createRequire}from"module";import{fileURLToPath}from"url";import{dirname}from"path";const require=createRequire(import.meta.url);const __filename=fileURLToPath(import.meta.url);const __dirname=dirname(__filename);`,
+    },
     define: {
       "process.env.NODE_ENV": '"production"',
     },
@@ -67,6 +70,24 @@ async function buildAll() {
     external: externals,
     logLevel: "info",
   });
+
+  await copyAiDataFiles(distDir);
+}
+
+async function copyAiDataFiles(distDir: string) {
+  const aiSrcDir = path.resolve(__dirname, "src/ai");
+  const files = ["knowledge_base.json", "vector_store.json"];
+  for (const file of files) {
+    const src = path.join(aiSrcDir, file);
+    const dest = path.join(distDir, file);
+    try {
+      await access(src);
+      await copyFile(src, dest);
+      console.log(`copied ${file} → dist/`);
+    } catch {
+      console.log(`skipped ${file} (not found)`);
+    }
+  }
 }
 
 buildAll().catch((err) => {

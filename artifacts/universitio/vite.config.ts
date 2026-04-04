@@ -58,10 +58,11 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom"],
-          "vendor-motion": ["framer-motion"],
-          "vendor-query": ["@tanstack/react-query"],
+        manualChunks(id) {
+          if (id.includes("postsData")) return "blog-posts";
+          if (id.includes("node_modules/react-dom") || id.includes("node_modules/react/")) return "vendor-react";
+          if (id.includes("node_modules/framer-motion")) return "vendor-motion";
+          if (id.includes("node_modules/@tanstack/react-query")) return "vendor-query";
         },
       },
     },
