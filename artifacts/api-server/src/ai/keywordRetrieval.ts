@@ -21,15 +21,32 @@ const STOPWORDS = new Set([
   "take","make","good","well","could","would","there","their","which",
   "these","those","after","before","should","tell","want","need","list",
   "best","top","most","describe","give","show","many","much","any","few",
-  "two","three","five","ten","etc",
+  "two","three","five","ten","etc","to","do","is","it","at","an","on",
+  "my","me","us","we","if","in","of","or","be","by","am","no","so",
 ]);
+
+const TOKEN_NORMALISE: Record<string, string> = {
+  dependants: "dependent", dependant: "dependent", dependents: "dependent",
+  family: "dependent", families: "dependent",
+  universities: "university", colleges: "college", schools: "school",
+  requirements: "requirement", visas: "visa", documents: "document",
+  courses: "course", programmes: "programme", programs: "programme",
+  students: "student", applications: "application", letters: "letter",
+  fees: "fee", costs: "cost", rules: "rule", months: "month",
+  qualifications: "qualification", institutions: "institution",
+};
+
+function normalise(token: string): string {
+  return TOKEN_NORMALISE[token] ?? token;
+}
 
 function tokenize(text: string): string[] {
   return text
     .toLowerCase()
     .replace(/[^\w\s]/g, " ")
     .split(/\s+/)
-    .filter((t) => t.length >= 2 && !STOPWORDS.has(t));
+    .filter((t) => t.length >= 2 && !STOPWORDS.has(t))
+    .map(normalise);
 }
 
 interface IndexedEntry {
