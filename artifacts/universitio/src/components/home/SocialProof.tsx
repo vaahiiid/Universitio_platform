@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { siteData } from "@/data/siteData";
-import { homePostsData } from "@/data/blog/homePostsData";
+import { blogPosts } from "@/data/blog/postsData";
 import { trackEvent } from "@/lib/analytics";
 import { Star, Mail, MapPin, CheckCircle2, ArrowRight, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,10 @@ import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch } from "@/lib/api";
 import { ConsentFields } from "@/components/ui/ConsentFields";
+
+const homePostsData = [...blogPosts]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
 
 function StarRating({ count = 5 }: { count?: number }) {
   return (
