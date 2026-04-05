@@ -1,0 +1,73 @@
+Do NOT change any existing working system.
+
+Do NOT modify:
+- auth
+- signup/login
+- subscriptions
+- Stripe/payment
+- email flows
+- mentor workflow
+- frontend UI
+- unrelated routes
+- current AI workflow
+
+We have confirmed that the retrieval issue is not solved by simple keyword tweaks or sample-question anchors.
+
+Now we need a precise semantic retrieval audit.
+
+GOAL:
+Identify exactly why semantic retrieval is choosing the wrong top source for the known ambiguous evaluation cases.
+
+Do NOT try random fixes first.
+First diagnose with evidence.
+
+TASKS:
+
+STEP 1 — Inspect semantic retrieval pipeline
+Show me exactly:
+- how the query embedding is generated
+- how vector similarity is computed
+- how top sources are ranked
+- whether any reranking happens after semantic retrieval
+- whether metadata/title/sample questions are merged into the embedded content
+
+STEP 2 — Analyze these problematic queries in detail:
+- What makes the UK attractive?
+- Are there affordable UK universities?
+- Can my dependants join me?
+- What is student life like?
+
+For each query, show:
+- query embedding retrieval top 5
+- similarity scores
+- why the wrong source outranks the expected one
+- the embedded content of the wrong source
+- the embedded content of the expected source
+- whether the issue is due to:
+  a) poor document text structure
+  b) overly similar topic wording
+  c) weak title weighting
+  d) missing reranking
+  e) poor chunk/document design
+
+STEP 3 — Recommend the smallest effective fix
+After diagnosis, propose the smallest explainable fix among:
+- better document construction for embeddings
+- title/source weighting
+- hybrid ranking (semantic + lexical)
+- reranking layer
+- separating certain topics more clearly
+
+Do NOT implement yet unless the fix is very small and clearly justified.
+
+STEP 4 — Report clearly
+Tell me:
+1. root cause for each failed/partial case
+2. what the shared pattern is
+3. what the best next fix is
+4. whether that fix is small, medium, or large in scope
+
+IMPORTANT:
+Do not guess.
+Do not apply broad refactors.
+Do a retrieval audit first and return evidence.

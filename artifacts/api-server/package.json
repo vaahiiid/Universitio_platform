@@ -10,7 +10,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "ingest-kb": "tsx scripts/ingestApprovedKb.ts",
     "read-pending-kb": "tsx scripts/readPendingKb.ts",
-    "eval-ai": "tsx scripts/runAskimateEval.ts"
+    "eval-ai": "tsx scripts/runAskimateEval.ts",
+    "retrieval-audit": "tsx scripts/retrievalAudit.ts"
   },
   "dependencies": {
     "@types/compression": "^1.8.1",
