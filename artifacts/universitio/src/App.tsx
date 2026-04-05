@@ -14,11 +14,11 @@ import Contact from "@/pages/Contact";
 import Services from "@/pages/Services";
 import FreeConsultation from "@/pages/free-consultation";
 import AssessmentForm from "@/pages/assessment-form";
-import AskiMateLanding from "@/pages/askimate-landing";
-import AskiMateSignup from "@/pages/askimate-signup";
-import AskiMateLogin from "@/pages/askimate-login";
-import AskiMateDashboard from "@/pages/askimate-dashboard";
 
+const AskiMateLanding = lazy(() => import("@/pages/askimate-landing"));
+const AskiMateSignup = lazy(() => import("@/pages/askimate-signup"));
+const AskiMateLogin = lazy(() => import("@/pages/askimate-login"));
+const AskiMateDashboard = lazy(() => import("@/pages/askimate-dashboard"));
 const AskiMateGuestChat = lazy(() => import("@/pages/askimate-guest-chat"));
 const BlogPage = lazy(() => import("@/pages/blog-page"));
 const BlogPostPage = lazy(() => import("@/pages/blog-post"));

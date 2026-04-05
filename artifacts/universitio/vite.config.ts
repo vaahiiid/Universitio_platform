@@ -63,6 +63,12 @@ export default defineConfig({
           if (id.includes("node_modules/react-dom") || id.includes("node_modules/react/")) return "vendor-react";
           if (id.includes("node_modules/framer-motion")) return "vendor-motion";
           if (id.includes("node_modules/@tanstack/react-query")) return "vendor-query";
+          if (id.includes("node_modules/react-markdown") || id.includes("node_modules/remark") || id.includes("node_modules/rehype") || id.includes("node_modules/unified") || id.includes("node_modules/mdast") || id.includes("node_modules/hast")) return "vendor-markdown";
+          if (id.includes("node_modules/lucide-react")) return "vendor-icons";
+          if (id.includes("node_modules/@radix-ui")) return "vendor-radix";
+          if (id.includes("node_modules/embla-carousel")) return "vendor-carousel";
+          if (id.includes("node_modules/date-fns")) return "vendor-dates";
+          if (id.includes("node_modules/@stripe") || id.includes("node_modules/stripe")) return "vendor-stripe";
         },
       },
     },
