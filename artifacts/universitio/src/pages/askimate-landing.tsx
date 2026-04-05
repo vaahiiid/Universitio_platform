@@ -17,6 +17,9 @@ import {
   ChevronRight,
   Sparkles,
   Bot,
+  FileCheck2,
+  GraduationCap,
+  Send,
 } from "lucide-react";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
@@ -469,23 +472,75 @@ export default function AskiMateLanding() {
                 <p className="text-xs text-muted-foreground mt-1">Billed monthly · cancel anytime</p>
               </div>
 
-              <ul className="space-y-3 mb-8">
-                {[
-                  { text: "Unlimited questions", strong: true },
-                  { text: "Priority replies — typically within 1 hour", strong: false },
-                  { text: "Personal Statement feedback", strong: false },
-                  { text: "CV & cover letter review", strong: false },
-                  { text: "Application form guidance", strong: false },
-                  { text: "Ongoing support throughout your journey", strong: false },
-                ].map((item) => (
-                  <li key={item.text} className="flex items-start gap-3">
-                    <Check className="w-4.5 h-4.5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className={`text-sm ${item.strong ? "font-semibold text-foreground" : "text-foreground"}`}>
-                      {item.text}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {/* ── Feature groups ────────────────────────────────── */}
+              <div className="space-y-4 mb-8">
+
+                {/* Group 1: Documents & Visa */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <FileCheck2 className="w-3 h-3" /> Documents & Visa
+                  </p>
+                  <ul className="space-y-2">
+                    {[
+                      { icon: GraduationCap, text: "Full Academic Document Review" },
+                      { icon: Shield, text: "UK Visa Document Check & Guidance" },
+                      { icon: BookOpen, text: "Personal Statement feedback" },
+                      { icon: Check, text: "CV & cover letter review" },
+                    ].map(({ icon: Icon, text }) => (
+                      <li key={text} className="flex items-center gap-2.5">
+                        <Icon className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                        <span className="text-sm text-foreground">{text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Group 2: Application — "Free Application Submission" highlighted */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <Send className="w-3 h-3" /> Application
+                  </p>
+                  <ul className="space-y-2">
+                    {/* Highlighted item */}
+                    <li className="flex items-center gap-2.5 rounded-lg bg-primary/8 px-2.5 py-1.5 -mx-2.5">
+                      <span className="flex items-center justify-center w-4 h-4 rounded-full bg-primary/15 flex-shrink-0">
+                        <Send className="w-2.5 h-2.5 text-primary" />
+                      </span>
+                      <span className="text-sm font-semibold text-primary leading-snug">
+                        Free Application Submission
+                        <span className="ml-1 text-xs font-normal text-muted-foreground">(University, College &amp; School)</span>
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                      <span className="text-sm text-foreground">Application form guidance</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Group 3: Support */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <MessageSquare className="w-3 h-3" /> Support
+                  </p>
+                  <ul className="space-y-2">
+                    {[
+                      { icon: Zap, text: "Unlimited questions", strong: true },
+                      { icon: Clock, text: "Priority replies — typically within 1 hour", strong: false },
+                      { icon: Sparkles, text: "AI Personalised Guidance", strong: false },
+                      { icon: Users, text: "Ongoing support throughout your journey", strong: false },
+                    ].map(({ icon: Icon, text, strong }) => (
+                      <li key={text} className="flex items-center gap-2.5">
+                        <Icon className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                        <span className={`text-sm ${strong ? "font-semibold text-foreground" : "text-foreground"}`}>
+                          {text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+              </div>
 
               <div className="space-y-2">
                 <Button
