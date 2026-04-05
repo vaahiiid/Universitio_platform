@@ -1,0 +1,784 @@
+{
+  "timestamp": "2026-04-05T11:24:45.343Z",
+  "totalQuestions": 25,
+  "passCount": 21,
+  "partialCount": 2,
+  "failCount": 2,
+  "results": [
+    {
+      "id": "q01",
+      "question": "Why should international students choose to study in the UK?",
+      "expectedPrimarySource": "why_uk",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "why_uk",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "why_uk",
+          "title": "Why Uk",
+          "score": 0.74
+        },
+        {
+          "id": "about_uk",
+          "title": "About Uk",
+          "score": 0.59
+        },
+        {
+          "id": "uk_student_jobs",
+          "title": "Uk Student Jobs",
+          "score": 0.55
+        }
+      ],
+      "answerPreview": "There are many compelling reasons for international students to choose the UK for their studies:\n\n1. **World-Class Education**: \n   - The UK is home to some of the world’s top universities, consistent",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Direct match for why_uk KB entry. Low-risk, no escalation keywords."
+    },
+    {
+      "id": "q02",
+      "question": "What makes the UK an attractive country for international students?",
+      "expectedPrimarySource": "about_uk",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "why_uk",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "why_uk",
+          "title": "Why Uk",
+          "score": 0.7
+        },
+        {
+          "id": "about_uk",
+          "title": "About Uk",
+          "score": 0.6
+        },
+        {
+          "id": "uk_universities",
+          "title": "Uk Universities",
+          "score": 0.56
+        }
+      ],
+      "answerPreview": "The UK is an attractive destination for international students for several reasons:\n\n1. **High-Quality Education**:\n   - The UK is home to many of the world’s top universities, consistently ranked amo",
+      "sourceMatch": false,
+      "reviewLevelMatch": true,
+      "grade": "partial",
+      "notes": "Should pull about_uk. Low-risk general overview."
+    },
+    {
+      "id": "q03",
+      "question": "What are the top universities in the UK for international students?",
+      "expectedPrimarySource": "uk_universities",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "uk_universities",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_universities",
+          "title": "Uk Universities",
+          "score": 0.73
+        },
+        {
+          "id": "uk_colleges",
+          "title": "Uk Colleges",
+          "score": 0.68
+        },
+        {
+          "id": "uk_schools",
+          "title": "Uk Schools",
+          "score": 0.66
+        }
+      ],
+      "answerPreview": "The top universities in the UK, which are also highly regarded by international students for their academic excellence and support services, include:\n\n1. **University of Oxford**\n2. **University of St",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Direct match for uk_universities. Low risk."
+    },
+    {
+      "id": "q04",
+      "question": "What are UK colleges and how are they different from universities?",
+      "expectedPrimarySource": "uk_colleges",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "uk_colleges",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_colleges",
+          "title": "Uk Colleges",
+          "score": 0.59
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.56
+        },
+        {
+          "id": "tuition_fees",
+          "title": "Tuition Fees",
+          "score": 0.54
+        }
+      ],
+      "answerPreview": "UK colleges and universities serve different educational purposes and cater to various levels of study. Here’s a breakdown of their differences:\n\n### UK Colleges:\n- **Types of Programs**: Colleges pri",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Directly targets uk_colleges KB entry. Low risk."
+    },
+    {
+      "id": "q05",
+      "question": "Can international students attend UK secondary schools?",
+      "expectedPrimarySource": "uk_schools",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "uk_schools",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_schools",
+          "title": "Uk Schools",
+          "score": 0.54
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.54
+        },
+        {
+          "id": "uk_student_jobs",
+          "title": "Uk Student Jobs",
+          "score": 0.54
+        }
+      ],
+      "answerPreview": "Yes, international students can attend UK secondary schools. Here are some key points to consider:\n\n- **Types of Schools**: International students can enroll in various types of secondary schools in t",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Targets uk_schools. Low risk, no escalation keywords."
+    },
+    {
+      "id": "q06",
+      "question": "How much does it cost to live as a student in the UK?",
+      "expectedPrimarySource": "uk_cost_of_living",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "uk_cost_of_living",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_cost_of_living",
+          "title": "Uk Cost Of Living",
+          "score": 0.68
+        },
+        {
+          "id": "uk_student_life",
+          "title": "Uk Student Life",
+          "score": 0.67
+        },
+        {
+          "id": "tuition_fees",
+          "title": "Tuition Fees",
+          "score": 0.6
+        }
+      ],
+      "answerPreview": "The cost of living as a student in the UK can vary depending on your location and lifestyle. Here’s a breakdown of the main expenses you should consider:\n\n### Monthly Living Costs:\n- **In London:** Ap",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "uk_cost_of_living is in CAUTIOUS_AUTO_ALLOWLIST so caps at cautious_auto."
+    },
+    {
+      "id": "q07",
+      "question": "What are the typical monthly living expenses for a student in London?",
+      "expectedPrimarySource": "uk_cost_of_living",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "uk_cost_of_living",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_cost_of_living",
+          "title": "Uk Cost Of Living",
+          "score": 0.63
+        },
+        {
+          "id": "uk_student_life",
+          "title": "Uk Student Life",
+          "score": 0.62
+        },
+        {
+          "id": "bank_statement_requirements",
+          "title": "Bank Statement Requirements",
+          "score": 0.51
+        }
+      ],
+      "answerPreview": "Living expenses for a student in London can vary based on lifestyle and accommodation choices, but here’s a breakdown of typical monthly costs:\n\n1. **Accommodation:**\n   - Shared room: £500 to £1,000\n",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "London-specific cost question should still pull uk_cost_of_living."
+    },
+    {
+      "id": "q08",
+      "question": "What IELTS score do I need to get into a UK university?",
+      "expectedPrimarySource": "english_requirements",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "english_requirements",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.62
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.55
+        },
+        {
+          "id": "why_uk",
+          "title": "Why Uk",
+          "score": 0.49
+        }
+      ],
+      "answerPreview": "The IELTS score you need to get into a UK university generally depends on the level of study and the specific program you're applying for. Here’s a breakdown of the typical requirements:\n\n1. **Schools",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "english_requirements is in CAUTIOUS_AUTO_ALLOWLIST. No escalation keywords in query."
+    },
+    {
+      "id": "q09",
+      "question": "Do UK universities accept the Duolingo English Test?",
+      "expectedPrimarySource": "english_requirements",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "english_requirements",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.64
+        },
+        {
+          "id": "conditional_unconditonal_offers",
+          "title": "Conditional Unconditonal Offers",
+          "score": 0.48
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.46
+        }
+      ],
+      "answerPreview": "Most UK universities do not accept the Duolingo English Test for degree-level programmes, especially if you require a Student visa. The standard and widely accepted test is the IELTS, along with other",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Should match english_requirements. In allowlist, so cautious_auto."
+    },
+    {
+      "id": "q10",
+      "question": "How much are tuition fees for international students at UK universities?",
+      "expectedPrimarySource": "tuition_fees",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "tuition_fees",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "tuition_fees",
+          "title": "Tuition Fees",
+          "score": 0.72
+        },
+        {
+          "id": "uk_universities",
+          "title": "Uk Universities",
+          "score": 0.59
+        },
+        {
+          "id": "uk_colleges",
+          "title": "Uk Colleges",
+          "score": 0.55
+        }
+      ],
+      "answerPreview": "Tuition fees for international students at UK universities can vary widely based on several factors, including the institution's rank, reputation, location, and facilities. Here’s a general overview:\n",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "tuition_fees is in CAUTIOUS_AUTO_ALLOWLIST."
+    },
+    {
+      "id": "q11",
+      "question": "Are there affordable UK universities for international students?",
+      "expectedPrimarySource": "tuition_fees",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "uk_universities",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_universities",
+          "title": "Uk Universities",
+          "score": 0.71
+        },
+        {
+          "id": "uk_colleges",
+          "title": "Uk Colleges",
+          "score": 0.66
+        },
+        {
+          "id": "tuition_fees",
+          "title": "Tuition Fees",
+          "score": 0.63
+        }
+      ],
+      "answerPreview": "Yes, there are several affordable UK universities for international students. While tuition fees can vary significantly based on the institution's rank and location, many universities ranked outside t",
+      "sourceMatch": false,
+      "reviewLevelMatch": false,
+      "grade": "fail",
+      "notes": "Affordability angle should still pull tuition_fees."
+    },
+    {
+      "id": "q12",
+      "question": "What qualifications do I need to be accepted into a UK university?",
+      "expectedPrimarySource": "admissions_requirements",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "admissions_requirements",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.7
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.65
+        },
+        {
+          "id": "conditional_unconditonal_offers",
+          "title": "Conditional Unconditonal Offers",
+          "score": 0.54
+        }
+      ],
+      "answerPreview": "To be accepted into a UK university, the qualifications you need depend on the level of study you are applying for. Here's a breakdown:\n\n1. **Bachelor’s Degree:**\n   - Final high school diploma or cer",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "admissions_requirements is in CAUTIOUS_AUTO_ALLOWLIST."
+    },
+    {
+      "id": "q13",
+      "question": "Will my high school diploma be accepted by UK universities?",
+      "expectedPrimarySource": "admissions_requirements",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "admissions_requirements",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.51
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.5
+        },
+        {
+          "id": "why_uk",
+          "title": "Why Uk",
+          "score": 0.47
+        }
+      ],
+      "answerPreview": "Yes, your high school diploma can be accepted by UK universities, but there are a few important points to consider:\n\n1. **Level of Study**: If you are applying for a Bachelor's degree, you will need t",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Diploma recognition question targets admissions_requirements."
+    },
+    {
+      "id": "q14",
+      "question": "How much money do I need to show in my bank statement for a UK student application?",
+      "expectedPrimarySource": "bank_statement_requirements",
+      "expectedReviewLevel": "escalate_human",
+      "actualPrimarySource": "bank_statement_requirements",
+      "actualReviewLevel": "escalate_human",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "bank_statement_requirements",
+          "title": "Bank Statement Requirements",
+          "score": 0.7
+        },
+        {
+          "id": "uk_student_visa",
+          "title": "Uk Student Visa",
+          "score": 0.54
+        },
+        {
+          "id": "uk_student_life",
+          "title": "Uk Student Life",
+          "score": 0.54
+        }
+      ],
+      "answerPreview": "To apply to UK universities, you need to provide a bank statement showing your ability to cover the first year's full tuition fee and 9 months of living expenses. Here’s how the required amounts are c",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "'bank statement' keyword triggers escalate_human. Source also in ALWAYS_ESCALATE_IDS."
+    },
+    {
+      "id": "q15",
+      "question": "What proof of funds is required to study in the UK?",
+      "expectedPrimarySource": "bank_statement_requirements",
+      "expectedReviewLevel": "escalate_human",
+      "actualPrimarySource": "bank_statement_requirements",
+      "actualReviewLevel": "escalate_human",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "bank_statement_requirements",
+          "title": "Bank Statement Requirements",
+          "score": 0.68
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.59
+        },
+        {
+          "id": "uk_student_visa",
+          "title": "Uk Student Visa",
+          "score": 0.56
+        }
+      ],
+      "answerPreview": "To study in the UK, you need to provide a bank statement as proof of funds. Here are the key requirements:\n\n1. **Tuition Fees**: You must show the ability to pay the first year’s full tuition fee.\n\n2.",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "'proof of funds' keyword triggers escalate_human regardless of source."
+    },
+    {
+      "id": "q16",
+      "question": "What is a CAS number and how do I obtain one from my university?",
+      "expectedPrimarySource": "confirmation_of_acceptance",
+      "expectedReviewLevel": "escalate_human",
+      "actualPrimarySource": "confirmation_of_acceptance",
+      "actualReviewLevel": "escalate_human",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "confirmation_of_acceptance",
+          "title": "Confirmation Of Acceptance",
+          "score": 0.56
+        },
+        {
+          "id": "atas",
+          "title": "Atas",
+          "score": 0.34
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.27
+        }
+      ],
+      "answerPreview": "A CAS number, or Confirmation of Acceptance for Studies number, is an electronic document issued by UK educational institutions to international students who have been offered a place to study in the ",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "'CAS' keyword triggers escalate_human. Source is also in ALWAYS_ESCALATE_IDS."
+    },
+    {
+      "id": "q17",
+      "question": "Do I need ATAS clearance before I can start my course in the UK?",
+      "expectedPrimarySource": "atas",
+      "expectedReviewLevel": "escalate_human",
+      "actualPrimarySource": "atas",
+      "actualReviewLevel": "escalate_human",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "atas",
+          "title": "Atas",
+          "score": 0.63
+        },
+        {
+          "id": "confirmation_of_acceptance",
+          "title": "Confirmation Of Acceptance",
+          "score": 0.45
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.45
+        }
+      ],
+      "answerPreview": "Whether you need ATAS (Academic Technology Approval Scheme) clearance before starting your course in the UK depends on a few factors:\n\n- **Course Level**: ATAS applies to certain postgraduate-level co",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "'ATAS' keyword triggers escalate_human. Source is also in ALWAYS_ESCALATE_IDS."
+    },
+    {
+      "id": "q18",
+      "question": "What documents do I need to apply for a UK student visa?",
+      "expectedPrimarySource": "uk_student_visa",
+      "expectedReviewLevel": "escalate_human",
+      "actualPrimarySource": "uk_student_visa",
+      "actualReviewLevel": "escalate_human",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_student_visa",
+          "title": "Uk Student Visa",
+          "score": 0.7
+        },
+        {
+          "id": "bank_statement_requirements",
+          "title": "Bank Statement Requirements",
+          "score": 0.63
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.58
+        }
+      ],
+      "answerPreview": "To apply for a UK student visa, you will need to provide the following documents:\n\n1. **Passport**: A valid passport.\n2. **Bank Statement**: Showing your ability to pay the first year’s full tuition f",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "'visa' keyword triggers escalate_human. Source also in ALWAYS_ESCALATE_IDS."
+    },
+    {
+      "id": "q19",
+      "question": "Can my dependants join me while I study in the UK?",
+      "expectedPrimarySource": "uk_student_visa",
+      "expectedReviewLevel": "escalate_human",
+      "actualPrimarySource": "uk_student_jobs",
+      "actualReviewLevel": "escalate_human",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_student_jobs",
+          "title": "Uk Student Jobs",
+          "score": 0.53
+        },
+        {
+          "id": "bank_statement_requirements",
+          "title": "Bank Statement Requirements",
+          "score": 0.53
+        },
+        {
+          "id": "uk_student_visa",
+          "title": "Uk Student Visa",
+          "score": 0.51
+        }
+      ],
+      "answerPreview": "Yes, your dependants can join you in the UK while you study, but there are specific conditions:\n\n- **Eligibility**: Only students enrolled in PhD or research-based courses are allowed to bring dependa",
+      "sourceMatch": false,
+      "reviewLevelMatch": true,
+      "grade": "partial",
+      "notes": "'dependants' keyword triggers escalate_human."
+    },
+    {
+      "id": "q20",
+      "question": "Can international students work part-time while studying in the UK?",
+      "expectedPrimarySource": "uk_student_jobs",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "uk_student_jobs",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_student_jobs",
+          "title": "Uk Student Jobs",
+          "score": 0.78
+        },
+        {
+          "id": "uk_student_visa",
+          "title": "Uk Student Visa",
+          "score": 0.53
+        },
+        {
+          "id": "uk_student_life",
+          "title": "Uk Student Life",
+          "score": 0.5
+        }
+      ],
+      "answerPreview": "Yes, international students on a UK Student visa are generally allowed to work part-time while studying. Here are the key points:\n\n- **Work Hours**: Most students can work up to 20 hours per week duri",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "uk_student_jobs is in CAUTIOUS_AUTO_ALLOWLIST. No escalation keywords."
+    },
+    {
+      "id": "q21",
+      "question": "How many hours per week can a student work in the UK?",
+      "expectedPrimarySource": "uk_student_jobs",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "uk_student_jobs",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "uk_student_jobs",
+          "title": "Uk Student Jobs",
+          "score": 0.73
+        },
+        {
+          "id": "uk_student_visa",
+          "title": "Uk Student Visa",
+          "score": 0.52
+        },
+        {
+          "id": "uk_student_life",
+          "title": "Uk Student Life",
+          "score": 0.48
+        }
+      ],
+      "answerPreview": "International students on a UK Student visa are generally allowed to work:\n\n- **Part-time during term time**: Up to **20 hours per week** for degree-level study.\n- **Full-time during official vacation",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Targets uk_student_jobs. Allowlisted, so cautious_auto."
+    },
+    {
+      "id": "q22",
+      "question": "How do I write a strong personal statement for a UK university application?",
+      "expectedPrimarySource": "personal_statement",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "personal_statement",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "personal_statement",
+          "title": "Personal Statement",
+          "score": 0.61
+        },
+        {
+          "id": "why_uk",
+          "title": "Why Uk",
+          "score": 0.54
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.52
+        }
+      ],
+      "answerPreview": "Writing a strong personal statement for a UK university application is crucial, as it showcases your motivation and suitability for your chosen program. Here are some key sections to include:\n\n1. **Yo",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Directly targets personal_statement. Low risk."
+    },
+    {
+      "id": "q23",
+      "question": "Do UK universities require letters of recommendation?",
+      "expectedPrimarySource": "recommendation_letters",
+      "expectedReviewLevel": "safe_auto",
+      "actualPrimarySource": "recommendation_letters",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "recommendation_letters",
+          "title": "Recommendation Letters",
+          "score": 0.69
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.52
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.48
+        }
+      ],
+      "answerPreview": "Yes, UK universities typically require letters of recommendation, but the specific requirements can vary based on the level of study and the institution. Here's a general overview:\n\n- **Undergraduate ",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Directly targets recommendation_letters. Low risk."
+    },
+    {
+      "id": "q24",
+      "question": "What is the difference between a conditional and unconditional offer from a UK university?",
+      "expectedPrimarySource": "conditional_unconditonal_offers",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "conditional_unconditonal_offers",
+      "actualReviewLevel": "cautious_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "conditional_unconditonal_offers",
+          "title": "Conditional Unconditonal Offers",
+          "score": 0.79
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.53
+        },
+        {
+          "id": "english_requirements",
+          "title": "English Requirements",
+          "score": 0.53
+        }
+      ],
+      "answerPreview": "The difference between a conditional and unconditional offer from a UK university is primarily based on whether you need to meet specific requirements before securing your place. Here’s a breakdown:\n\n",
+      "sourceMatch": true,
+      "reviewLevelMatch": true,
+      "grade": "pass",
+      "notes": "Source not in allowlist but risk_level=medium and needs_human_review=true → cautious_auto."
+    },
+    {
+      "id": "q25",
+      "question": "What is student life like at a UK university?",
+      "expectedPrimarySource": "uk_student_life",
+      "expectedReviewLevel": "cautious_auto",
+      "actualPrimarySource": "about_uk",
+      "actualReviewLevel": "safe_auto",
+      "mode": "openai_semantic",
+      "top3Sources": [
+        {
+          "id": "about_uk",
+          "title": "About Uk",
+          "score": 0.61
+        },
+        {
+          "id": "uk_student_life",
+          "title": "Uk Student Life",
+          "score": 0.61
+        },
+        {
+          "id": "admissions_requirements",
+          "title": "Admissions Requirements",
+          "score": 0.55
+        }
+      ],
+      "answerPreview": "Student life at a UK university is vibrant and diverse, offering a mix of academic, social, and cultural experiences. Here are some key aspects of what you can expect:\n\n### Academic Environment\n- **Di",
+      "sourceMatch": false,
+      "reviewLevelMatch": false,
+      "grade": "fail",
+      "notes": "uk_student_life: risk_level=medium, needs_human_review=true, not in allowlist → cautious_auto."
+    }
+  ]
+}

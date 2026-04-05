@@ -1,0 +1,123 @@
+Do NOT touch or break any existing working system.
+
+Do NOT modify:
+- auth
+- signup/login
+- subscriptions
+- Stripe/payment
+- email flows
+- mentor workflow
+- frontend UI except if absolutely needed for displaying test results
+- unrelated routes
+- current AI chat logic
+
+We now need an evaluation harness for AskiMate.
+
+GOAL:
+Create a clean way to test the current AI system with a fixed set of real questions and inspect the outputs.
+
+We want to evaluate:
+- top retrieved sources
+- final answer
+- reviewLevel
+- needsHumanReview
+- whether the output looks correct
+
+TASKS:
+
+STEP 1 — Create an evaluation dataset
+Create a file such as:
+src/ai/eval_questions.json
+
+Include 25 realistic questions covering:
+- Why UK
+- universities
+- colleges
+- schools
+- cost of living
+- English requirements
+- tuition fees
+- admissions requirements
+- CAS
+- ATAS
+- bank statement
+- visa
+- dependants
+- student jobs
+- personal statement
+- recommendation letters
+
+For each question include:
+{
+  "id": "...",
+  "question": "...",
+  "expectedPrimarySource": "...",   // if known
+  "expectedReviewLevel": "...",     // safe_auto | cautious_auto | escalate_human
+  "notes": "..."
+}
+
+STEP 2 — Create an evaluation script
+Create a script like:
+scripts/runAskimateEval.ts
+
+It should:
+1. read all eval questions
+2. call the same AI pipeline used by production
+3. capture for each question:
+   - question
+   - mode
+   - top 3 sources
+   - answer
+   - reviewLevel
+   - needsHumanReview
+4. compare:
+   - whether top source matches expectedPrimarySource
+   - whether reviewLevel matches expectedReviewLevel
+5. mark:
+   - pass
+   - partial
+   - fail
+
+STEP 3 — Save evaluation report
+Write results to a file like:
+src/ai/eval_report.json
+
+Include:
+- timestamp
+- total questions
+- pass count
+- partial count
+- fail count
+- per-question detailed output
+
+STEP 4 — Print human-readable summary
+At the end of the script print:
+- total pass / partial / fail
+- which questions failed
+- which questions had wrong top source
+- which questions had wrong reviewLevel
+
+STEP 5 — Keep scoring simple but useful
+Use this rule:
+- PASS:
+  top source correct AND reviewLevel correct
+- PARTIAL:
+  one of them correct
+- FAIL:
+  both wrong
+
+STEP 6 — Add npm shortcut
+Add an npm script so it can be run easily.
+
+STEP 7 — Report
+After implementation, tell me:
+1. files added
+2. files changed
+3. how many evaluation questions were created
+4. how to run the evaluation
+5. where the report is saved
+
+IMPORTANT:
+Make this completely isolated.
+Do not change the production chat behavior.
+Do not refactor unrelated code.

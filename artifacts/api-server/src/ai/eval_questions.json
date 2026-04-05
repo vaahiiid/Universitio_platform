@@ -1,0 +1,177 @@
+[
+  {
+    "id": "q01",
+    "question": "Why should international students choose to study in the UK?",
+    "expectedPrimarySource": "why_uk",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Direct match for why_uk KB entry. Low-risk, no escalation keywords."
+  },
+  {
+    "id": "q02",
+    "question": "What makes the UK an attractive country for international students?",
+    "expectedPrimarySource": "about_uk",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Should pull about_uk. Low-risk general overview."
+  },
+  {
+    "id": "q03",
+    "question": "What are the top universities in the UK for international students?",
+    "expectedPrimarySource": "uk_universities",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Direct match for uk_universities. Low risk."
+  },
+  {
+    "id": "q04",
+    "question": "What are UK colleges and how are they different from universities?",
+    "expectedPrimarySource": "uk_colleges",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Directly targets uk_colleges KB entry. Low risk."
+  },
+  {
+    "id": "q05",
+    "question": "Can international students attend UK secondary schools?",
+    "expectedPrimarySource": "uk_schools",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Targets uk_schools. Low risk, no escalation keywords."
+  },
+  {
+    "id": "q06",
+    "question": "How much does it cost to live as a student in the UK?",
+    "expectedPrimarySource": "uk_cost_of_living",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "uk_cost_of_living is in CAUTIOUS_AUTO_ALLOWLIST so caps at cautious_auto."
+  },
+  {
+    "id": "q07",
+    "question": "What are the typical monthly living expenses for a student in London?",
+    "expectedPrimarySource": "uk_cost_of_living",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "London-specific cost question should still pull uk_cost_of_living."
+  },
+  {
+    "id": "q08",
+    "question": "What IELTS score do I need to get into a UK university?",
+    "expectedPrimarySource": "english_requirements",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "english_requirements is in CAUTIOUS_AUTO_ALLOWLIST. No escalation keywords in query."
+  },
+  {
+    "id": "q09",
+    "question": "Do UK universities accept the Duolingo English Test?",
+    "expectedPrimarySource": "english_requirements",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "Should match english_requirements. In allowlist, so cautious_auto."
+  },
+  {
+    "id": "q10",
+    "question": "How much are tuition fees for international students at UK universities?",
+    "expectedPrimarySource": "tuition_fees",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "tuition_fees is in CAUTIOUS_AUTO_ALLOWLIST."
+  },
+  {
+    "id": "q11",
+    "question": "Are there affordable UK universities for international students?",
+    "expectedPrimarySource": "tuition_fees",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "Affordability angle should still pull tuition_fees."
+  },
+  {
+    "id": "q12",
+    "question": "What qualifications do I need to be accepted into a UK university?",
+    "expectedPrimarySource": "admissions_requirements",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "admissions_requirements is in CAUTIOUS_AUTO_ALLOWLIST."
+  },
+  {
+    "id": "q13",
+    "question": "Will my high school diploma be accepted by UK universities?",
+    "expectedPrimarySource": "admissions_requirements",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "Diploma recognition question targets admissions_requirements."
+  },
+  {
+    "id": "q14",
+    "question": "How much money do I need to show in my bank statement for a UK student application?",
+    "expectedPrimarySource": "bank_statement_requirements",
+    "expectedReviewLevel": "escalate_human",
+    "notes": "'bank statement' keyword triggers escalate_human. Source also in ALWAYS_ESCALATE_IDS."
+  },
+  {
+    "id": "q15",
+    "question": "What proof of funds is required to study in the UK?",
+    "expectedPrimarySource": "bank_statement_requirements",
+    "expectedReviewLevel": "escalate_human",
+    "notes": "'proof of funds' keyword triggers escalate_human regardless of source."
+  },
+  {
+    "id": "q16",
+    "question": "What is a CAS number and how do I obtain one from my university?",
+    "expectedPrimarySource": "confirmation_of_acceptance",
+    "expectedReviewLevel": "escalate_human",
+    "notes": "'CAS' keyword triggers escalate_human. Source is also in ALWAYS_ESCALATE_IDS."
+  },
+  {
+    "id": "q17",
+    "question": "Do I need ATAS clearance before I can start my course in the UK?",
+    "expectedPrimarySource": "atas",
+    "expectedReviewLevel": "escalate_human",
+    "notes": "'ATAS' keyword triggers escalate_human. Source is also in ALWAYS_ESCALATE_IDS."
+  },
+  {
+    "id": "q18",
+    "question": "What documents do I need to apply for a UK student visa?",
+    "expectedPrimarySource": "uk_student_visa",
+    "expectedReviewLevel": "escalate_human",
+    "notes": "'visa' keyword triggers escalate_human. Source also in ALWAYS_ESCALATE_IDS."
+  },
+  {
+    "id": "q19",
+    "question": "Can my dependants join me while I study in the UK?",
+    "expectedPrimarySource": "uk_student_visa",
+    "expectedReviewLevel": "escalate_human",
+    "notes": "'dependants' keyword triggers escalate_human."
+  },
+  {
+    "id": "q20",
+    "question": "Can international students work part-time while studying in the UK?",
+    "expectedPrimarySource": "uk_student_jobs",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "uk_student_jobs is in CAUTIOUS_AUTO_ALLOWLIST. No escalation keywords."
+  },
+  {
+    "id": "q21",
+    "question": "How many hours per week can a student work in the UK?",
+    "expectedPrimarySource": "uk_student_jobs",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "Targets uk_student_jobs. Allowlisted, so cautious_auto."
+  },
+  {
+    "id": "q22",
+    "question": "How do I write a strong personal statement for a UK university application?",
+    "expectedPrimarySource": "personal_statement",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Directly targets personal_statement. Low risk."
+  },
+  {
+    "id": "q23",
+    "question": "Do UK universities require letters of recommendation?",
+    "expectedPrimarySource": "recommendation_letters",
+    "expectedReviewLevel": "safe_auto",
+    "notes": "Directly targets recommendation_letters. Low risk."
+  },
+  {
+    "id": "q24",
+    "question": "What is the difference between a conditional and unconditional offer from a UK university?",
+    "expectedPrimarySource": "conditional_unconditonal_offers",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "Source not in allowlist but risk_level=medium and needs_human_review=true → cautious_auto."
+  },
+  {
+    "id": "q25",
+    "question": "What is student life like at a UK university?",
+    "expectedPrimarySource": "uk_student_life",
+    "expectedReviewLevel": "cautious_auto",
+    "notes": "uk_student_life: risk_level=medium, needs_human_review=true, not in allowlist → cautious_auto."
+  }
+]

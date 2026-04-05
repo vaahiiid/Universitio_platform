@@ -9,7 +9,8 @@
     "start": "node dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "ingest-kb": "tsx scripts/ingestApprovedKb.ts",
-    "read-pending-kb": "tsx scripts/readPendingKb.ts"
+    "read-pending-kb": "tsx scripts/readPendingKb.ts",
+    "eval-ai": "tsx scripts/runAskimateEval.ts"
   },
   "dependencies": {
     "@types/compression": "^1.8.1",
