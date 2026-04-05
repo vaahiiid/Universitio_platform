@@ -1,0 +1,100 @@
+Do NOT touch or break any existing working system.
+
+We found 3 real bugs that must be fixed before user testing.
+
+Do NOT modify:
+- auth
+- payments logic itself
+- subscriptions logic itself
+- KB ingestion
+- mentor approval flow
+- unrelated UI
+- unrelated routes
+
+Only diagnose and fix these 3 issues carefully.
+
+==================================================
+BUG 1 — Admin email notification is not being received for new escalated messages
+==================================================
+
+Problem:
+A user sent a message that should have triggered admin notification, but no email was received.
+
+Tasks:
+1. Trace the full admin notification flow for:
+   - message needs mentor review
+2. Confirm:
+   - whether the event is firing
+   - whether the email function is being called
+   - what recipient email is being used
+   - whether the send succeeds or fails
+3. Add temporary debug logging if needed
+4. Fix the root cause
+5. Report exactly:
+   - why the email was not received
+   - what was changed
+   - how to test it reliably
+
+Important:
+Do not assume email is working just because code exists.
+Actually verify the send path.
+
+==================================================
+BUG 2 — Typing / waiting indicator breaks after the first message
+==================================================
+
+Problem:
+The first message behaves correctly, but on the second/follow-up message the typing indicator area becomes visually wrong/broken instead of behaving like a clean waiting indicator.
+
+Tasks:
+1. Inspect the dashboard chat flow for:
+   - waiting state
+   - temporary AI bubble
+   - polling
+   - immediate fetch after send
+   - duplicate-message race conditions
+   - message keys
+2. Find the exact root cause
+3. Fix it with minimal change
+4. Verify by testing:
+   - one conversation
+   - 4 consecutive user messages
+   - ensure the typing indicator behaves correctly every time
+5. Make sure no duplicate temporary bubbles or broken layout remain
+
+==================================================
+BUG 3 — Premium users appear as Trial in the admin panel
+==================================================
+
+Problem:
+In the admin panel, users who are premium are being shown as trial.
+
+Tasks:
+1. Inspect how subscription/plan status is loaded into the admin panel
+2. Identify the exact source field(s) used
+3. Find why premium users are being mapped/rendered as trial
+4. Fix the mapping/rendering logic
+5. Verify with real test data:
+   - premium user
+   - trial user
+   - non-premium user if applicable
+6. Report:
+   - root cause
+   - what fields are used now
+   - how premium vs trial is determined after the fix
+
+==================================================
+FINAL REPORT
+==================================================
+
+After fixing, tell me:
+1. exact root cause of bug 1
+2. exact root cause of bug 2
+3. exact root cause of bug 3
+4. files changed
+5. how each bug was tested after the fix
+
+IMPORTANT:
+Do not add new features.
+Do not refactor unrelated systems.
+Only fix these 3 bugs cleanly and safely.

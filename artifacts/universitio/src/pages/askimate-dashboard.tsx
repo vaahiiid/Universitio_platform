@@ -434,6 +434,8 @@ function AskiMateDashboardContent() {
             if (incomingNew.length > 0) {
               const lastIncoming = incomingNew[incomingNew.length - 1];
               setLastNewMessageId(lastIncoming.id);
+              // Clear the typing indicator — the reply has arrived via polling
+              setIsWaiting(false);
               const container = messagesContainerRef.current;
               if (container) {
                 const nearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;

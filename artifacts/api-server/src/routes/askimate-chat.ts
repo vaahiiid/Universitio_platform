@@ -328,15 +328,13 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
 
         // Admin notification — only when a message needs human/mentor review (fire-and-forget)
         if (aiResult.needsHumanReview) {
-          const adminEmail = process.env.ADMIN_EMAIL || "info@universitio.com";
-          import("../email/transactionalEmailService").then(({ sendTransactionalEmail, EmailType }) => {
-            sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminEmail, {
-              event: "Message Needs Mentor Review",
-              userName: userId ? `User #${userId}` : "Guest",
-              preview: message.slice(0, 200),
-              adminLink: `https://universitio.com/admin`,
-            }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
-          }).catch(() => {});
+          const adminNotifEmail = process.env.ADMIN_EMAIL || "info@universitio.com";
+          sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminNotifEmail, {
+            event: "Message Needs Mentor Review",
+            userName: userId ? `User #${userId}` : "Guest",
+            preview: message.slice(0, 200),
+            adminLink: "https://universitio.com/admin",
+          }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
         }
       } catch (aiErr) {
         console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);

@@ -88,9 +88,9 @@ function fmtRelative(d: Date | string | null) {
 
 function PlanBadge({ plan, isTrialActive }: { plan: "free" | "premium"; isTrialActive: boolean }) {
   if (plan === "premium" && isTrialActive)
-    return <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Trial</span>;
-  if (plan === "premium")
     return <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Premium</span>;
+  if (plan === "premium")
+    return <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">Expired</span>;
   return <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">Free</span>;
 }
 
