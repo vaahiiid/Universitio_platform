@@ -113,6 +113,20 @@ export default function BlogPostPage() {
     navigator.clipboard.writeText(articleUrl).catch(() => {});
   };
 
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://universitio.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://universitio.com/blog" },
+    ...(post.categories[0]
+      ? [
+          { "@type": "ListItem", position: 3, name: post.categories[0], item: `https://universitio.com/blog/category/${post.categorySlugs[0]}` },
+          { "@type": "ListItem", position: 4, name: post.title },
+        ]
+      : [
+          { "@type": "ListItem", position: 3, name: post.title },
+        ]
+    ),
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
@@ -130,14 +144,30 @@ export default function BlogPostPage() {
         <meta name="twitter:image" content={`https://universitio.com/${post.image}`} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          "headline": post.title,
-          "description": post.excerpt.slice(0, 160),
-          "datePublished": post.date,
-          "image": `https://universitio.com/${post.image}`,
-          "author": { "@type": "Organization", "name": "Universitio", "url": "https://universitio.com" },
-          "publisher": { "@type": "Organization", "name": "Universitio", "logo": { "@type": "ImageObject", "url": "https://universitio.com/logo.png" } },
-          "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` }
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "headline": post.title,
+              "description": post.excerpt.slice(0, 160),
+              "datePublished": post.date,
+              "dateModified": post.date,
+              "image": {
+                "@type": "ImageObject",
+                "url": `https://universitio.com/${post.image}`
+              },
+              "author": { "@type": "Person", "name": post.author },
+              "publisher": {
+                "@type": "Organization",
+                "name": "Universitio",
+                "logo": { "@type": "ImageObject", "url": "https://universitio.com/logo.png" }
+              },
+              "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": breadcrumbItems
+            }
+          ]
         })}</script>
       </Helmet>
       <Navbar />

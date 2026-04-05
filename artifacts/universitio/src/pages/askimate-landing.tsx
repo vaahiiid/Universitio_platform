@@ -74,6 +74,20 @@ export default function AskiMateLanding() {
           content="AskiMate AI connects students with real education mentors for help with UK university applications, visas, accommodation, and study planning."
         />
         <link rel="canonical" href="https://universitio.com/askimate" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://universitio.com/askimate",
+          "name": "AskiMate AI — Personal Education Mentor",
+          "description": "AskiMate AI connects students with real education mentors for help with UK university applications, visas, accommodation, and study planning.",
+          "url": "https://universitio.com/askimate",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://universitio.com/#website",
+            "name": "Universitio",
+            "url": "https://universitio.com"
+          }
+        })}</script>
       </Helmet>
 
       <AskiMateNavbar />

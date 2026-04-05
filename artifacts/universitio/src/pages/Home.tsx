@@ -33,6 +33,32 @@ export default function Home() {
           content="Universitio helps international students apply to UK and global universities with expert guidance, personalised support, visa help, and free consultation."
         />
         <link rel="canonical" href="https://universitio.com/" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://universitio.com/#organization",
+              "name": "Universitio",
+              "url": "https://universitio.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://universitio.com/logo.png"
+              },
+              "sameAs": [
+                "https://www.instagram.com/universitio_",
+                "https://www.facebook.com/universitioco",
+                "https://www.linkedin.com/company/universitio"
+              ]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://universitio.com/#website",
+              "name": "Universitio",
+              "url": "https://universitio.com"
+            }
+          ]
+        })}</script>
       </Helmet>
       <Navbar />
       <main>

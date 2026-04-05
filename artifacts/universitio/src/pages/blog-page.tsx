@@ -37,6 +37,20 @@ export default function BlogPage() {
       <Helmet>
         <title>Universitio Blog | Guidance for International Students</title>
         <meta name="description" content="Expert guides and insights for international students studying abroad. Browse articles on UK universities, visas, scholarships, and student experience." />
+        <link rel="canonical" href="https://universitio.com/blog" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Universitio Blog",
+          "description": "Expert guides and insights for international students studying abroad. Browse articles on UK universities, visas, scholarships, and student experience.",
+          "url": "https://universitio.com/blog",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://universitio.com/#website",
+            "name": "Universitio",
+            "url": "https://universitio.com"
+          }
+        })}</script>
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
