@@ -61,6 +61,7 @@ function AskiMateDashboardContent() {
   const [showNewMessageButton, setShowNewMessageButton] = useState(false);
   const [lastNewMessageId, setLastNewMessageId] = useState<number | null>(null);
   const [deletingConvId, setDeletingConvId] = useState<number | null>(null);
+  const [newChatMode, setNewChatMode] = useState(false);
 
   // ─ Notification ────────────────────────────────────────────────────────
   const [visibleNotification, setVisibleNotification] = useState(false);
@@ -72,6 +73,9 @@ function AskiMateDashboardContent() {
   const knownMessageIds = useRef<Set<number>>(new Set());
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const newChatModeRef = useRef(false);
+  // Keep ref in sync with state so polling closures always see the latest value
+  useEffect(() => { newChatModeRef.current = newChatMode; }, [newChatMode]);
 
   // ─ Derived ─────────────────────────────────────────────────────────────
   const activeConvs = conversations.filter((c) => c.status === "open");
@@ -247,7 +251,7 @@ function AskiMateDashboardContent() {
           const data = await res.json();
           const convs = data.conversations || [];
           setConversations(convs);
-          if (convs.length > 0 && !selectedConversation) {
+          if (convs.length > 0 && !selectedConversation && !newChatModeRef.current) {
             setSelectedConversation(convs[0].id);
           }
         }
@@ -261,22 +265,13 @@ function AskiMateDashboardContent() {
   }, [activeTab, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─ Create conversation ─────────────────────────────────────────────────
-  const createNewConversation = async () => {
-    try {
-      const token = localStorage.getItem("askimate_token");
-      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/conversations`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const conv = data.conversation;
-        setConversations((prev) => [conv, ...prev]);
-        setSelectedConversation(conv.id);
-        setMessages([]);
-        setLastNewMessageId(null);
-      }
-    } catch { /* ignore */ }
+  const createNewConversation = () => {
+    setSelectedConversation(null);
+    setMessages([]);
+    setLastNewMessageId(null);
+    setShowNewMessageButton(false);
+    knownMessageIds.current.clear();
+    setNewChatMode(true);
   };
 
   // ─ Rename conversation ─────────────────────────────────────────────────
@@ -483,6 +478,7 @@ function AskiMateDashboardContent() {
         }
         const data = await res.json();
         convId = data.conversation.id;
+        setNewChatMode(false);
         setSelectedConversation(convId);
         knownMessageIds.current.add(data.message.id);
         setMessages([{ id: data.message.id, isUserMessage: true, sender: "user", content, createdAt: new Date().toISOString() }]);
@@ -514,6 +510,32 @@ function AskiMateDashboardContent() {
         knownMessageIds.current.add(data.message.id);
         setMessages((prev) => [...prev, { id: data.message.id, isUserMessage: true, sender: "user", content, createdAt: new Date().toISOString() }]);
         setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 0);
+        // Immediately fetch conversation history to show AI response without waiting for 2s poll.
+        // The server inserts the AI message synchronously before returning, so it is already in the DB.
+        if (data.aiResponse?.answer) {
+          fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${convId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }).then(async (r) => {
+            if (!r.ok) return;
+            const fresh = await r.json();
+            const all: any[] = fresh.messages || [];
+            setMessages((prev) => {
+              const newMsgs = all.filter((m) => !knownMessageIds.current.has(m.id));
+              if (newMsgs.length === 0) return prev;
+              newMsgs.forEach((m) => knownMessageIds.current.add(m.id));
+              const aiNew = newMsgs.filter((m) => m.sender === "ai");
+              aiNew.forEach((m) => {
+                console.log("[AskiMate-Dashboard] AI message fetched immediately:", {
+                  mode: m.metadata?.mode,
+                  reviewLevel: m.metadata?.reviewLevel,
+                  needsHumanReview: m.metadata?.needsHumanReview,
+                  sources: (m.metadata?.sources ?? []).map((s: { id: string }) => s.id),
+                });
+              });
+              return [...prev, ...newMsgs];
+            });
+          }).catch(() => {/* fallback to 2s poll */});
+        }
       } else {
         const err = await res.json();
         setUpdateError(err.message || err.error || "Failed to send message");
@@ -630,15 +652,13 @@ function AskiMateDashboardContent() {
                 <div className="hidden lg:flex flex-col w-64 bg-white border-r border-border/60 flex-shrink-0">
                   <div className="px-4 py-3 border-b border-border/60 flex items-center justify-between">
                     <h2 className="text-sm font-semibold text-foreground">Conversations</h2>
-                    {activeConvs.length === 0 && (
-                      <button
-                        onClick={createNewConversation}
-                        className="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors"
-                        title="New chat"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                      </button>
-                    )}
+                    <button
+                      onClick={createNewConversation}
+                      className="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors"
+                      title="New chat"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
                   </div>
 
                   <div className="flex-1 overflow-y-auto py-2">
@@ -653,7 +673,7 @@ function AskiMateDashboardContent() {
                                 ? "bg-primary/10 text-primary"
                                 : "text-foreground hover:bg-muted/50"
                             }`}
-                            onClick={() => { setSelectedConversation(conv.id); setEditingConvId(null); }}
+                            onClick={() => { setSelectedConversation(conv.id); setNewChatMode(false); setEditingConvId(null); }}
                           >
                             {editingConvId === conv.id ? (
                               <input
@@ -712,7 +732,7 @@ function AskiMateDashboardContent() {
                                 ? "bg-primary/10 opacity-100"
                                 : "opacity-60 hover:opacity-80 hover:bg-muted/50"
                             }`}
-                            onClick={() => { setSelectedConversation(conv.id); setEditingConvId(null); }}
+                            onClick={() => { setSelectedConversation(conv.id); setNewChatMode(false); setEditingConvId(null); }}
                           >
                             <span className="flex-1 text-sm truncate text-muted-foreground">{conv.title}</span>
                             <span className="text-xs bg-muted/60 text-muted-foreground px-1.5 py-0.5 rounded flex-shrink-0">arch</span>
@@ -730,20 +750,18 @@ function AskiMateDashboardContent() {
                   </div>
                 </div>
 
-                {/* Mobile: Conversation list (when no conv selected) */}
-                {!selectedConversation && (
+                {/* Mobile: Conversation list (when no conv selected and not in new-chat mode) */}
+                {!selectedConversation && !newChatMode && (
                   <div className="lg:hidden flex-1 overflow-y-auto bg-white">
                     <div className="px-4 py-3 border-b border-border/60 flex items-center justify-between">
                       <h2 className="font-semibold text-foreground">Your Chats</h2>
-                      {activeConvs.length === 0 && (
-                        <button
-                          onClick={createNewConversation}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                          New Chat
-                        </button>
-                      )}
+                      <button
+                        onClick={createNewConversation}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        New Chat
+                      </button>
                     </div>
 
                     {chatLoading && conversations.length === 0 ? (
@@ -767,7 +785,7 @@ function AskiMateDashboardContent() {
                         {activeConvs.map((conv) => (
                           <button
                             key={conv.id}
-                            onClick={() => setSelectedConversation(conv.id)}
+                            onClick={() => { setSelectedConversation(conv.id); setNewChatMode(false); }}
                             className="w-full text-left px-4 py-3.5 hover:bg-muted/20 transition-colors flex items-center gap-3"
                           >
                             <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
@@ -783,7 +801,7 @@ function AskiMateDashboardContent() {
                         {archivedConvs.map((conv) => (
                           <button
                             key={conv.id}
-                            onClick={() => setSelectedConversation(conv.id)}
+                            onClick={() => { setSelectedConversation(conv.id); setNewChatMode(false); }}
                             className="w-full text-left px-4 py-3.5 hover:bg-muted/20 transition-colors flex items-center gap-3 opacity-60"
                           >
                             <div className="w-9 h-9 rounded-full bg-muted text-muted-foreground flex items-center justify-center flex-shrink-0">
@@ -801,8 +819,8 @@ function AskiMateDashboardContent() {
                   </div>
                 )}
 
-                {/* Chat panel — full screen on mobile when conv selected, always visible on desktop */}
-                <div className={`flex-1 flex flex-col overflow-hidden ${!selectedConversation ? "hidden lg:flex" : "flex"}`}>
+                {/* Chat panel — visible when conv selected OR in new-chat mode */}
+                <div className={`flex-1 flex flex-col overflow-hidden ${!selectedConversation && !newChatMode ? "hidden lg:flex" : "flex"}`}>
                   {selectedConversation && selectedConv ? (
                     <>
                       {/* Conversation header */}
@@ -1008,18 +1026,62 @@ function AskiMateDashboardContent() {
                         </div>
                       )}
                     </>
+                  ) : newChatMode ? (
+                    /* New conversation panel */
+                    <div className="flex-1 flex flex-col bg-slate-50">
+                      {/* Mobile back button */}
+                      <div className="lg:hidden flex items-center gap-2 px-4 py-3 bg-white border-b border-border/60 flex-shrink-0">
+                        <button
+                          onClick={() => setNewChatMode(false)}
+                          className="p-1.5 rounded-lg hover:bg-muted/60 text-muted-foreground"
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <span className="font-semibold text-foreground text-sm">New Chat</span>
+                      </div>
+                      {/* Centred input area */}
+                      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                          <MessageSquare className="w-6 h-6 text-primary/60" />
+                        </div>
+                        <h3 className="font-semibold text-foreground mb-1">New Conversation</h3>
+                        <p className="text-sm text-muted-foreground mb-6">Ask AskiMate anything about studying in the UK</p>
+                        <div className="w-full max-w-md flex gap-2">
+                          <input
+                            type="text"
+                            value={messageInput}
+                            onChange={(e) => setMessageInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && !e.shiftKey && !sending) {
+                                e.preventDefault();
+                                handleSendMessage();
+                              }
+                            }}
+                            placeholder="Type your question…"
+                            disabled={sending}
+                            autoFocus
+                            className="flex-1 border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 bg-white"
+                          />
+                          <Button
+                            onClick={handleSendMessage}
+                            disabled={sending || !messageInput.trim()}
+                            className="bg-primary text-white hover:bg-primary/90 rounded-xl px-4"
+                          >
+                            {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
-                    /* Desktop empty state */
+                    /* No conversation selected */
                     <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-slate-50">
                       <MessageSquare className="w-12 h-12 text-muted-foreground/20 mb-4" />
                       <h3 className="font-semibold text-foreground mb-2">No conversation selected</h3>
                       <p className="text-sm text-muted-foreground mb-4">Select a conversation from the sidebar or start a new one</p>
-                      {activeConvs.length === 0 && (
-                        <Button onClick={createNewConversation} className="bg-primary hover:bg-primary/90 text-white">
-                          <Plus className="w-4 h-4 mr-2" />
-                          New Chat
-                        </Button>
-                      )}
+                      <Button onClick={createNewConversation} className="bg-primary hover:bg-primary/90 text-white">
+                        <Plus className="w-4 h-4 mr-2" />
+                        New Chat
+                      </Button>
                     </div>
                   )}
                 </div>

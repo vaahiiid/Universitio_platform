@@ -1,4 +1,5 @@
 import { Router, type IRouter, type Request, type Response } from "express";
+import jwt from "jsonwebtoken";
 import { generateAiAnswer, type AiChatMessage } from "../ai/chatService";
 
 const router: IRouter = Router();
@@ -17,7 +18,6 @@ function tryGetUser(req: Request): AskimateUserPayload | null {
   const token = authHeader.slice(7);
   if (!token) return null;
   try {
-    const jwt = require("jsonwebtoken");
     return jwt.verify(token, JWT_SECRET) as AskimateUserPayload;
   } catch {
     return null;

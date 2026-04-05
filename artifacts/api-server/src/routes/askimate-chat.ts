@@ -7,10 +7,12 @@ import {
   askimateWeeklyUsage,
   askimateUsers,
 } from "@workspace/db/schema";
-import { eq, and, ne, desc } from "drizzle-orm";
+import { eq, and, ne, desc, count } from "drizzle-orm";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 import { generateAiAnswer } from "../ai/chatService";
+import jwt from "jsonwebtoken";
 
+const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 const router: IRouter = Router();
 
 interface AskimateUserPayload {
@@ -61,8 +63,6 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
     if (isAuthenticated && token) {
       // Verify token and get user
       try {
-        const jwt = require("jsonwebtoken");
-        const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
         const decoded = jwt.verify(token, JWT_SECRET) as AskimateUserPayload;
         userId = decoded.id;
       } catch {
@@ -354,8 +354,6 @@ router.get("/askimate/chat/:conversationId", async (req: Request, res: Response)
     // Check if authenticated
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.slice(7);
-      const jwt = require("jsonwebtoken");
-      const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
       try {
         const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
         userId = decoded.id;
@@ -407,8 +405,6 @@ router.post("/askimate/chat/migrate", async (req: Request, res: Response) => {
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -463,8 +459,6 @@ router.post("/askimate/conversations", async (req: Request, res: Response) => {
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -513,8 +507,6 @@ router.get("/askimate/conversations", async (req: Request, res: Response) => {
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -551,8 +543,6 @@ router.post("/askimate/chat/:conversationId/mark-read", async (req: Request, res
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -604,8 +594,6 @@ router.get("/askimate/unread-count", async (req: Request, res: Response) => {
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -649,8 +637,6 @@ router.post("/askimate/chat/:conversationId/close", async (req: Request, res: Re
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -696,8 +682,6 @@ router.post("/askimate/chat/:conversationId/reopen", async (req: Request, res: R
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -751,8 +735,6 @@ router.put("/askimate/conversations/:conversationId", async (req: Request, res: 
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
@@ -799,8 +781,6 @@ router.delete("/askimate/conversations/:conversationId", async (req: Request, re
     }
 
     const token = authHeader.slice(7);
-    const jwt = require("jsonwebtoken");
-    const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
 
     let userId: number;
     try {
