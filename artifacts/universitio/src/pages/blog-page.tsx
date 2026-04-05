@@ -151,11 +151,7 @@ export default function BlogPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visible.map((post) => (
-              <article
-                key={post.id}
-                className="group bg-white rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer"
-                onClick={() => navigate(`/blog/${post.slug}`)}
-              >
+              <Link key={post.id} href={`/blog/${post.slug}`} className="group bg-white rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer">
                 <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
                   <img
                     src={`${BASE}${post.image}`}
@@ -178,7 +174,7 @@ export default function BlogPage() {
                     {post.categories[0] && (
                       <Link
                         href={`/blog/category/${post.categorySlugs[0]}`}
-                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                        onClick={(e: React.MouseEvent) => e.preventDefault()}
                       >
                         <span className="text-xs font-medium text-primary bg-primary/5 px-2 py-0.5 rounded-full hover:bg-primary/10 transition-colors">
                           {post.categories[0]}
@@ -194,7 +190,7 @@ export default function BlogPage() {
                     Read Article <ChevronRight className="w-4 h-4" />
                   </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
 
