@@ -76,7 +76,7 @@ async function buildAll() {
 
 async function copyAiDataFiles(distDir: string) {
   const aiSrcDir = path.resolve(__dirname, "src/ai");
-  const files = ["knowledge_base.json", "vector_store.json"];
+  const files = ["knowledge_base.json", "vector_store.json", "approved_kb_entries.json"];
   for (const file of files) {
     const src = path.join(aiSrcDir, file);
     const dest = path.join(distDir, file);

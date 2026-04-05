@@ -21,6 +21,8 @@ export const askimateMessages = pgTable("askimate_messages", {
   sender: text("sender").notNull().default("ai"), // "user", "ai", or "mentor"
   content: text("content").notNull(),
   isRead: boolean("is_read").notNull().default(false), // Track read status for notifications
+  // AI context stored on "ai" sender messages: { reviewLevel, needsHumanReview, sources, aiAttempt }
+  metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

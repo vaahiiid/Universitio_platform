@@ -21,6 +21,12 @@ import multer from "multer";
 import AdmZip from "adm-zip";
 import path from "path";
 import fs from "fs";
+import {
+  appendApprovedKbEntry,
+  reviewLevelToRisk,
+  inferDomain,
+  normalizeQuestion,
+} from "../ai/pendingKbManager";
 
 const router: IRouter = Router();
 
@@ -905,6 +911,7 @@ router.get("/admin/askimate-conversations/:conversationId/messages", async (req:
         sender: askimateMessages.sender,
         isUserMessage: askimateMessages.isUserMessage,
         content: askimateMessages.content,
+        metadata: askimateMessages.metadata,
         createdAt: askimateMessages.createdAt,
       })
       .from(askimateMessages)
@@ -922,7 +929,16 @@ router.get("/admin/askimate-conversations/:conversationId/messages", async (req:
 router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async (req: Request, res: Response) => {
   try {
     const conversationId = parseInt(String(req.params.conversationId), 10);
-    const { message } = req.body as { message: string };
+    const { message, approveForKb, aiContext } = req.body as {
+      message: string;
+      approveForKb?: boolean;
+      aiContext?: {
+        sourceQuestion: string;
+        aiAnswer?: string;
+        reviewLevel?: string;
+        topSources?: string[];
+      };
+    };
 
     if (!Number.isFinite(conversationId) || conversationId <= 0) {
       res.status(400).json({ error: "Invalid conversation ID" });
@@ -968,7 +984,35 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
       .set({ updatedAt: new Date() })
       .where(eq(askimateConversations.id, conversationId));
 
-    res.json({ data: inserted });
+    const adminEmail = (req as Request & { admin?: { email: string } }).admin?.email ?? "admin";
+    console.log(`[AITL] MENTOR_REPLY conversationId=${conversationId} messageId=${inserted.id} approveForKb=${!!approveForKb} by=${adminEmail}`);
+
+    // KB approval: persist the mentor reply + AI context to approved_kb_entries.json
+    if (approveForKb && aiContext?.sourceQuestion?.trim()) {
+      try {
+        const entry = appendApprovedKbEntry({
+          sourceQuestion: aiContext.sourceQuestion.trim(),
+          humanAnswer: message.trim(),
+          normalizedQuestion: normalizeQuestion(aiContext.sourceQuestion),
+          domain: inferDomain(aiContext.topSources),
+          risk_level: reviewLevelToRisk(aiContext.reviewLevel),
+          approvedBy: adminEmail,
+          approvedAt: new Date().toISOString(),
+          conversationId,
+          aiAnswer: aiContext.aiAnswer,
+          reviewLevel: aiContext.reviewLevel,
+          topSources: aiContext.topSources,
+        });
+        console.log(
+          `[AITL] KB_APPROVED id=${entry.id} conversationId=${conversationId} ` +
+            `question="${aiContext.sourceQuestion.slice(0, 80)}" by=${adminEmail}`
+        );
+      } catch (kbErr) {
+        console.error("[AITL] KB approval write failed:", kbErr);
+      }
+    }
+
+    res.json({ data: inserted, approvedForKb: !!approveForKb });
   } catch (err) {
     console.error("Mentor reply error:", err);
     res.status(500).json({ error: "Failed to send mentor reply" });

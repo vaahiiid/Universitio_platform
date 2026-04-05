@@ -1,0 +1,109 @@
+Do NOT touch or break any existing working system.
+
+Do NOT modify:
+- auth
+- signup/login
+- subscriptions
+- Stripe/payment
+- email flows
+- mentor system core logic
+- existing UI design except minimal additions required for this task
+- unrelated routes
+
+We now need to build the human-in-the-loop learning workflow for AskiMate.
+
+GOAL:
+1. AI should answer when it can.
+2. If AI is unsure or the topic is sensitive, human should be able to take over.
+3. When human replies, there must be an option to approve that reply for the knowledge base.
+4. Approved human replies should be stored for future ingestion into the KB.
+5. Later, AI should be able to answer similar questions more confidently using those approved entries.
+
+Build this in the safest and smallest possible way.
+
+TASKS:
+
+STEP 1 — Human handoff visibility
+In the admin/mentor side, make sure the human can see:
+- user question
+- AI answer
+- reviewLevel
+- needsHumanReview
+- top source titles if available
+
+If there is already a mentor/admin chat interface, extend it minimally.
+Do NOT redesign it.
+
+STEP 2 — Human reply approval option
+When the human/mentor sends a reply, add a checkbox or toggle:
+
+"Approve this reply for Knowledge Base"
+
+Default should be OFF.
+
+STEP 3 — Store approved replies
+If the checkbox is selected when the human sends the reply, store a new structured record in a safe place.
+
+Create a lightweight storage mechanism for now.
+Use either:
+- a JSON file like ai/approved_kb_entries.json
+or
+- a minimal DB table only if the app already has a simple place for this
+
+Preferred structure for each approved record:
+{
+  "id": "...",
+  "sourceQuestion": "...",
+  "humanAnswer": "...",
+  "normalizedQuestion": "...",
+  "domain": "...",
+  "risk_level": "...",
+  "approvedForKb": true,
+  "approvedBy": "...",
+  "approvedAt": "...",
+  "status": "pending_ingest"
+}
+
+STEP 4 — Domain and risk assignment
+When saving approved entries:
+- infer domain from the AI top source if available
+- infer risk_level from the current conversation/reviewLevel if available
+- if uncertain, default to medium
+
+STEP 5 — No auto-ingest yet
+Do NOT automatically push approved replies into the main knowledge base yet.
+Only store them in a pending_ingest collection/file.
+
+This is important.
+
+STEP 6 — Add a simple admin utility
+Create a simple backend utility or script that can later read pending approved entries.
+Do not build the full ingest flow yet.
+Just prepare the storage format cleanly.
+
+STEP 7 — Logging
+Log when:
+- AI escalates
+- human replies
+- human approves for KB
+Include:
+- user question
+- AI answer
+- human answer
+- reviewLevel
+- source ids if available
+
+STEP 8 — Output/report
+After implementing, tell me:
+1. what files were added
+2. what existing files were changed
+3. where approved KB answers are stored
+4. what the human sees in the admin/mentor chat
+5. how the checkbox works
+6. the exact saved schema for approved KB entries
+
+IMPORTANT:
+Keep all current working product flows intact.
+Make only minimal and isolated changes.
+Do not refactor unrelated code.
+Do not redesign the app.

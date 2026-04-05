@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import {
   Search, MessageSquare, Loader2, Zap, Send, Edit2, Trash2,
-  ChevronLeft, Users, X,
+  ChevronLeft, Users, X, BookCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
@@ -38,12 +38,20 @@ interface Conversation {
   updatedAt: Date;
 }
 
+interface AiMessageMeta {
+  reviewLevel?: "safe_auto" | "cautious_auto" | "escalate_human";
+  needsHumanReview?: boolean;
+  sources?: Array<{ id?: string; title?: string; score?: number }>;
+  aiAttempt?: string;
+}
+
 interface Message {
   id: number;
   conversationId: number;
   sender: "user" | "ai" | "mentor";
   isUserMessage: boolean;
   content: string;
+  metadata?: AiMessageMeta | null;
   createdAt: Date;
 }
 
@@ -163,6 +171,7 @@ function AdminChatPanel({
   const [showNewMessageButton, setShowNewMessageButton] = useState(false);
   const [lastNewMessageId, setLastNewMessageId] = useState<number | null>(null);
   const [localConvStatus, setLocalConvStatus] = useState(conversation.status || "open");
+  const [approveForKb, setApproveForKb] = useState(false);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -175,6 +184,7 @@ function AdminChatPanel({
     setLastNewMessageId(null);
     setShowNewMessageButton(false);
     setLocalConvStatus(conversation.status || "open");
+    setApproveForKb(false);
     knownMessageIds.current.clear();
   }, [conversation.id, conversation.status]);
 
@@ -252,13 +262,32 @@ function AdminChatPanel({
     setSending(true);
     setError("");
     try {
+      // Build KB context from conversation if approving
+      const lastUserMsg = [...messages].reverse().find((m) => m.sender === "user");
+      const lastAiWithMeta = [...messages].reverse().find((m) => m.sender === "ai" && m.metadata);
+      const aiCtx =
+        approveForKb && lastUserMsg
+          ? {
+              sourceQuestion: lastUserMsg.content,
+              aiAnswer: lastAiWithMeta?.metadata?.aiAttempt,
+              reviewLevel: lastAiWithMeta?.metadata?.reviewLevel,
+              topSources: (lastAiWithMeta?.metadata?.sources ?? [])
+                .map((s) => s.id || s.title || "")
+                .filter(Boolean),
+            }
+          : undefined;
+
       const response = await apiFetch<{ data: Message }>(
         `/admin/askimate-conversations/${conversation.id}/mentor-reply`,
-        { method: "POST", body: JSON.stringify({ message: msg }) }
+        { method: "POST", body: JSON.stringify({ message: msg, approveForKb, aiContext: aiCtx }) }
       );
       knownMessageIds.current.add(response.data.id);
       setMessages((prev) => [...prev, response.data]);
       setReplyText("");
+      if (approveForKb) {
+        toast({ title: "Approved for Knowledge Base", description: "Your reply has been queued for KB ingestion." });
+        setApproveForKb(false);
+      }
       setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 0);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to send reply");
@@ -343,13 +372,52 @@ function AdminChatPanel({
               key={msg.id}
               className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} ${msg.id === lastNewMessageId ? "animate-pulse" : ""}`}
             >
-              <div>
+              <div className="max-w-sm w-full">
                 <p className={`text-xs font-medium mb-1 ${msg.sender === "user" ? "text-right text-muted-foreground" : msg.sender === "mentor" ? "text-green-700" : "text-blue-600"}`}>
                   {getSenderLabel(msg.sender)}
                 </p>
-                <div className={`max-w-sm px-4 py-2.5 rounded-2xl text-sm ${getSenderStyle(msg.sender)} ${msg.id === lastNewMessageId ? "ring-2 ring-blue-400" : ""}`}>
+                <div className={`px-4 py-2.5 rounded-2xl text-sm ${getSenderStyle(msg.sender)} ${msg.id === lastNewMessageId ? "ring-2 ring-blue-400" : ""}`}>
                   {msg.content}
                 </div>
+
+                {/* AI context strip — only on AI messages that carry metadata */}
+                {msg.sender === "ai" && msg.metadata && (
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5 px-1">
+                    {msg.metadata.reviewLevel && (
+                      <span
+                        className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
+                          msg.metadata.reviewLevel === "escalate_human"
+                            ? "bg-red-100 text-red-700"
+                            : msg.metadata.reviewLevel === "cautious_auto"
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-green-100 text-green-700"
+                        }`}
+                      >
+                        {msg.metadata.reviewLevel === "escalate_human"
+                          ? "⚠ Needs mentor"
+                          : msg.metadata.reviewLevel === "cautious_auto"
+                          ? "~ Cautious auto"
+                          : "✓ Safe auto"}
+                      </span>
+                    )}
+                    {msg.metadata.sources?.slice(0, 2).map((s, i) => (
+                      <span key={i} className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-full">
+                        {s.title || s.id}
+                      </span>
+                    ))}
+                    {msg.metadata.reviewLevel === "escalate_human" && msg.metadata.aiAttempt && (
+                      <details className="w-full mt-1">
+                        <summary className="text-[10px] text-blue-600 cursor-pointer hover:underline select-none">
+                          AI attempt ↓
+                        </summary>
+                        <p className="text-xs text-foreground bg-blue-50 border border-blue-100 rounded-lg p-2 mt-1 leading-relaxed whitespace-pre-wrap">
+                          {msg.metadata.aiAttempt}
+                        </p>
+                      </details>
+                    )}
+                  </div>
+                )}
+
                 <p className={`text-xs mt-1 text-muted-foreground ${msg.sender === "user" ? "text-right" : "text-left"}`}>
                   {fmtTime(msg.createdAt)}
                 </p>
@@ -373,6 +441,21 @@ function AdminChatPanel({
       {/* Reply input */}
       {localConvStatus === "open" ? (
         <div className="px-4 pt-3 pb-4 border-t border-border/60 bg-white flex-shrink-0">
+          {/* KB approval toggle */}
+          <label className="flex items-center gap-2 mb-2 cursor-pointer select-none group w-fit">
+            <input
+              type="checkbox"
+              checked={approveForKb}
+              onChange={(e) => setApproveForKb(e.target.checked)}
+              disabled={sending}
+              className="rounded border-border cursor-pointer accent-green-600"
+            />
+            <BookCheck className={`w-3.5 h-3.5 flex-shrink-0 transition-colors ${approveForKb ? "text-green-600" : "text-muted-foreground"}`} />
+            <span className={`text-xs transition-colors ${approveForKb ? "text-green-700 font-medium" : "text-muted-foreground"}`}>
+              Approve this reply for Knowledge Base
+            </span>
+          </label>
+
           <div className="flex items-end gap-2">
             <textarea
               value={replyText}

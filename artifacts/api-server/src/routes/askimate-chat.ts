@@ -9,6 +9,7 @@ import {
 } from "@workspace/db/schema";
 import { eq, and, ne, desc } from "drizzle-orm";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
+import { generateAiAnswer } from "../ai/chatService";
 
 const router: IRouter = Router();
 
@@ -255,8 +256,8 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         .catch((err) => console.error("[ACTIVITY] Failed to update lastActiveAt on chat:", err));
     }
 
-    // Auto-acknowledgement: if no mentor/ai reply within the last 5 minutes, send one now
-    // This is a simple offline-fallback — no real-time presence detection exists in this architecture
+    // AI KB response: if no mentor/ai reply within the last 5 minutes, generate one now.
+    // Always calls the AI KB so admin can see review level + sources as context.
     const lastNonUserMsg = await db.query.askimateMessages.findFirst({
       where: and(
         eq(askimateMessages.conversationId, conversation.id),
@@ -266,12 +267,45 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
     });
     const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
     if (!lastNonUserMsg || (lastNonUserMsg.createdAt && new Date(lastNonUserMsg.createdAt) < fiveMinAgo)) {
-      await db.insert(askimateMessages).values({
-        conversationId: conversation.id,
-        isUserMessage: false,
-        sender: "ai",
-        content: "Thank you for your message. We've received it and will get back to you shortly.",
-      });
+      try {
+        const aiResult = await generateAiAnswer(message);
+
+        // Escalated questions show a hold-on message to the user but store the AI attempt in metadata for the mentor
+        const displayContent =
+          aiResult.reviewLevel === "escalate_human"
+            ? "Thank you for your question. One of our expert mentors will review this and get back to you shortly."
+            : aiResult.answer;
+
+        const aiMeta = {
+          reviewLevel: aiResult.reviewLevel,
+          needsHumanReview: aiResult.needsHumanReview,
+          sources: aiResult.sources ?? [],
+          aiAttempt: aiResult.answer,
+        };
+
+        await db.insert(askimateMessages).values({
+          conversationId: conversation.id,
+          isUserMessage: false,
+          sender: "ai",
+          content: displayContent,
+          metadata: aiMeta,
+        });
+
+        if (aiResult.reviewLevel === "escalate_human") {
+          console.log(
+            `[AITL] ESCALATE conversationId=${conversation.id} question="${message.slice(0, 100)}" ` +
+              `sources=${(aiResult.sources ?? []).map((s: { id: string }) => s.id).join(",")}`
+          );
+        }
+      } catch (aiErr) {
+        console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);
+        await db.insert(askimateMessages).values({
+          conversationId: conversation.id,
+          isUserMessage: false,
+          sender: "ai",
+          content: "Thank you for your message. We've received it and will get back to you shortly.",
+        });
+      }
     }
 
     // Return response with guest session ID if guest

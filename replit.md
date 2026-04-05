@@ -82,8 +82,18 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 - Auth: JWT-based admin auth in `src/middleware/auth.ts`; credentials default to `info@universitio.com` / `Universitio2002@` (env: ADMIN_EMAIL, ADMIN_PASSWORD, JWT_SECRET)
 - Depends on: `@workspace/db`, `@workspace/api-zod`, `jsonwebtoken`, `multer`, `adm-zip`
 - `pnpm --filter @workspace/api-server run dev` — run the dev server
-- `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
+- `pnpm --filter @workspace/api-server run build` — production esbuild bundle (ESM `dist/index.js`); copies `knowledge_base.json`, `vector_store.json`, `approved_kb_entries.json` to `dist/`
 - Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
+
+#### AskiMate AI KB & Human-in-the-Loop Workflow
+
+- **AI KB endpoint**: `POST /api/askimate/ai` — semantic retrieval (OpenAI) with BM25 fallback; returns `{answer, sources, reviewLevel, needsHumanReview, mode}`
+- **Risk levels**: `safe_auto` (auto-approved allowlist) | `cautious_auto` | `escalate_human` (visa/bank topics or keyword matches)
+- **Chat route integration**: `POST /api/askimate/chat` calls `generateAiAnswer()` per user message; stores real AI answer + metadata (reviewLevel, sources, aiAttempt) on the AI message row; if `escalate_human`, user sees a hold-on message but admin sees the AI attempt
+- **Logs**: `[AITL] ESCALATE`, `[AITL] MENTOR_REPLY`, `[AITL] KB_APPROVED` structured log lines
+- **KB approval storage**: `src/ai/approved_kb_entries.json` (JSON array, `status: "pending_ingest"`); written by `src/ai/pendingKbManager.ts`; admin utility: `npx tsx scripts/readPendingKb.ts`
+- **Admin UI**: Admin chat view shows review-level badge + sources beneath each AI message; "Approve this reply for Knowledge Base" checkbox on reply form sends `approveForKb + aiContext` to the mentor-reply route
+- **Schema**: `askimate_messages.metadata` (JSONB) stores `{reviewLevel, needsHumanReview, sources, aiAttempt}` on AI messages; nullable so old messages are unaffected
 
 ### `lib/db` (`@workspace/db`)
 
