@@ -1,0 +1,129 @@
+We need a full admin management system for AskiMate users.
+
+This is a NEW admin feature.
+
+Do NOT break existing admin panel.
+Extend it cleanly.
+
+====================================
+GOAL
+====================================
+
+Create a dedicated "AskiMate Members" section in admin.
+
+This is for:
+- managing users
+- tracking plans
+- exporting data
+- operational control
+
+====================================
+FEATURES — MEMBERS LIST
+====================================
+
+Create a new admin page:
+"AskiMate Members"
+
+Table columns:
+
+- Full Name
+- Email
+- Signup Date
+- Email Verified (Yes/No)
+- Plan Type:
+  - Free
+  - Premium
+- Plan Status:
+  - Active
+  - Expired
+- Plan Start Date
+- Plan End Date
+- Days Remaining (calculated)
+- Usage (if available)
+- Notes (editable)
+
+====================================
+FILTERS & SEARCH
+====================================
+
+Add:
+
+- search by name/email
+- filter:
+  - premium / free
+  - active / expired
+  - verified / unverified
+
+- sorting:
+  - signup date
+  - plan expiry
+  - usage
+
+====================================
+EXPORT
+====================================
+
+Add export button:
+
+- CSV format
+- includes ALL columns
+- clean headers
+
+====================================
+IMPORT
+====================================
+
+Add CSV import:
+
+Flow:
+1. upload file
+2. preview rows
+3. validate fields
+4. confirm import
+
+Fields supported:
+- email (required)
+- name
+- plan type
+- plan dates
+
+Do NOT overwrite blindly:
+- handle duplicates safely
+
+====================================
+EDITING
+====================================
+
+Allow:
+- inline notes editing
+- plan status update (admin control)
+- optional manual plan override
+
+====================================
+UI
+====================================
+
+- clean admin table
+- fast loading
+- pagination
+- responsive
+
+====================================
+BACKEND
+====================================
+
+- extend existing user/subscription model
+- compute "days remaining"
+- safe validation for import
+- no breaking changes
+
+====================================
+REPORT
+====================================
+
+Tell me:
+- new routes created
+- DB fields used or added
+- how days remaining is calculated
+- how import validation works
+- sample exported CSV format

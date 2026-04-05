@@ -4,7 +4,7 @@ import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import {
   LayoutDashboard, FileText, ClipboardCheck, Handshake, Users,
   Upload, LogOut, Menu, X, ChevronRight, MessageSquare, ClipboardList,
-  UserRound, Zap
+  UserRound, Zap, UserCog
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "@/lib/api";
@@ -28,7 +28,8 @@ const NAV_ITEMS = [
   { label: "Partners", path: "/admin/partners", icon: Handshake, unreadKey: "partners" as const, section: "Requests" },
   { label: "Referrals", path: "/admin/referrals", icon: Users, unreadKey: "referrals" as const, section: "Requests" },
   { label: "Contact Messages", path: "/admin/messages", icon: MessageSquare, unreadKey: "messages" as const, section: "Requests" },
-  { label: "AskiMate Users", path: "/admin/askimate-users", icon: Zap, unreadKey: null, section: "Products" },
+  { label: "AskiMate Members", path: "/admin/askimate-members", icon: UserCog, unreadKey: null, section: "Products" },
+  { label: "AskiMate Chat Monitor", path: "/admin/askimate-users", icon: Zap, unreadKey: null, section: "Products" },
 ];
 
 export function AdminLayout({ children, fullHeight = false }: { children: React.ReactNode; fullHeight?: boolean }) {

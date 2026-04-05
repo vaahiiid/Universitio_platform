@@ -43,6 +43,10 @@ export const askimateUsers = pgTable("askimate_users", {
   // Allows periodic resend (every 30 days) without being a boolean that allows only one send.
   reEngagementSentAt: timestamp("re_engagement_sent_at"),
   // ─────────────────────────────────────────────────────────────────────────
+  // ── Admin notes ──────────────────────────────────────────────────────────
+  // Free-text notes added by admins for internal operational tracking.
+  adminNotes: text("admin_notes"),
+  // ─────────────────────────────────────────────────────────────────────────
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

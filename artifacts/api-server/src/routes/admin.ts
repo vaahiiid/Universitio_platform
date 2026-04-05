@@ -1206,4 +1206,341 @@ router.delete("/admin/askimate-users/:userId", async (req: Request, res: Respons
   }
 });
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// AskiMate Members Management  (separate from /admin/askimate-users which is the
+// chat-monitoring view; this section is the CRM / operations view)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+function daysRemaining(trialEndsAt: Date | null, plan: string): number | null {
+  if (plan !== "premium" || !trialEndsAt) return null;
+  const diff = new Date(trialEndsAt).getTime() - Date.now();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function planStatus(trialEndsAt: Date | null, plan: string): "active" | "expired" | "free" {
+  if (plan === "free") return "free";
+  if (!trialEndsAt) return "expired";
+  return new Date(trialEndsAt) > new Date() ? "active" : "expired";
+}
+
+// ── GET /admin/askimate-members  (enhanced list) ──────────────────────────────
+router.get("/admin/askimate-members", async (req: Request, res: Response) => {
+  try {
+    const search    = req.query.search  ? String(req.query.search).trim()   : "";
+    const planF     = req.query.plan    ? String(req.query.plan)             : "";   // "free" | "premium"
+    const statusF   = req.query.status  ? String(req.query.status)           : "";   // "active" | "expired"
+    const verifiedF = req.query.verified? String(req.query.verified)         : "";   // "yes" | "no"
+    const sortBy    = req.query.sortBy  ? String(req.query.sortBy)           : "createdAt"; // "createdAt"|"trialEndsAt"|"usage"
+    const sortDir   = req.query.sortDir === "asc" ? "asc" as const : "desc" as const;
+    const page      = Math.max(1, parseInt(String(req.query.page  || "1"),  10));
+    const limit     = Math.min(100, Math.max(1, parseInt(String(req.query.limit || "20"), 10)));
+    const offset    = (page - 1) * limit;
+
+    const conditions: SQL[] = [];
+    if (search) {
+      conditions.push(or(
+        ilike(askimateUsers.email,     `%${search}%`),
+        ilike(askimateUsers.firstName, `%${search}%`),
+        ilike(askimateUsers.lastName,  `%${search}%`),
+      ) as SQL);
+    }
+    if (planF === "free" || planF === "premium") {
+      conditions.push(eq(askimateUsers.plan, planF));
+    }
+    if (verifiedF === "yes") conditions.push(eq(askimateUsers.emailVerified, true));
+    if (verifiedF === "no")  conditions.push(eq(askimateUsers.emailVerified, false));
+
+    const where = conditions.length ? and(...conditions) : undefined;
+
+    const [{ total }] = await db
+      .select({ total: count() })
+      .from(askimateUsers)
+      .where(where ?? sql`true`);
+
+    const orderCol: Column =
+      sortBy === "trialEndsAt" ? askimateUsers.trialEndsAt as Column
+      : askimateUsers.createdAt as Column;
+
+    const rows = await db.select({
+      id:             askimateUsers.id,
+      firstName:      askimateUsers.firstName,
+      lastName:       askimateUsers.lastName,
+      email:          askimateUsers.email,
+      emailVerified:  askimateUsers.emailVerified,
+      plan:           askimateUsers.plan,
+      planKey:        askimateUsers.planKey,
+      trialStartedAt: askimateUsers.trialStartedAt,
+      trialEndsAt:    askimateUsers.trialEndsAt,
+      adminNotes:     askimateUsers.adminNotes,
+      createdAt:      askimateUsers.createdAt,
+    })
+    .from(askimateUsers)
+    .where(where ?? sql`true`)
+    .orderBy(sortDir === "asc" ? orderCol : desc(orderCol as unknown as Parameters<typeof desc>[0]))
+    .limit(limit)
+    .offset(offset);
+
+    // Enrich with usage + status info, then apply statusF filter post-query
+    const enriched = await Promise.all(rows.map(async (u) => {
+      const [usageRow] = await db
+        .select({ questionsUsed: askimateWeeklyUsage.questionsUsed })
+        .from(askimateWeeklyUsage)
+        .where(eq(askimateWeeklyUsage.userId, u.id))
+        .orderBy(desc(askimateWeeklyUsage.week))
+        .limit(1);
+
+      const status = planStatus(u.trialEndsAt, u.plan);
+      return {
+        ...u,
+        status,
+        daysRemaining: daysRemaining(u.trialEndsAt, u.plan),
+        weeklyUsage: usageRow?.questionsUsed ?? 0,
+      };
+    }));
+
+    const filtered = statusF
+      ? enriched.filter((u) => {
+          if (statusF === "active")  return u.status === "active";
+          if (statusF === "expired") return u.status === "expired" || u.status === "free";
+          return true;
+        })
+      : enriched;
+
+    const sortedByUsage = sortBy === "usage"
+      ? [...filtered].sort((a, b) => sortDir === "asc" ? a.weeklyUsage - b.weeklyUsage : b.weeklyUsage - a.weeklyUsage)
+      : filtered;
+
+    res.json({
+      data: sortedByUsage,
+      pagination: { page, limit, total: Number(total), totalPages: Math.ceil(Number(total) / limit) },
+    });
+  } catch (err) {
+    console.error("askimate-members list error:", err);
+    res.status(500).json({ error: "Failed to fetch members" });
+  }
+});
+
+// ── GET /admin/askimate-members/export (CSV) ──────────────────────────────────
+router.get("/admin/askimate-members/export", async (_req: Request, res: Response) => {
+  try {
+    const rows = await db.select({
+      id:             askimateUsers.id,
+      firstName:      askimateUsers.firstName,
+      lastName:       askimateUsers.lastName,
+      email:          askimateUsers.email,
+      emailVerified:  askimateUsers.emailVerified,
+      plan:           askimateUsers.plan,
+      planKey:        askimateUsers.planKey,
+      trialStartedAt: askimateUsers.trialStartedAt,
+      trialEndsAt:    askimateUsers.trialEndsAt,
+      adminNotes:     askimateUsers.adminNotes,
+      createdAt:      askimateUsers.createdAt,
+    }).from(askimateUsers).orderBy(desc(askimateUsers.createdAt));
+
+    const enriched = await Promise.all(rows.map(async (u) => {
+      const [usageRow] = await db
+        .select({ questionsUsed: askimateWeeklyUsage.questionsUsed })
+        .from(askimateWeeklyUsage)
+        .where(eq(askimateWeeklyUsage.userId, u.id))
+        .orderBy(desc(askimateWeeklyUsage.week))
+        .limit(1);
+
+      const status = planStatus(u.trialEndsAt, u.plan);
+      const dr     = daysRemaining(u.trialEndsAt, u.plan);
+      return { ...u, status, daysRemaining: dr, weeklyUsage: usageRow?.questionsUsed ?? 0 };
+    }));
+
+    const esc = (v: unknown) => {
+      const s = v === null || v === undefined ? "" : String(v);
+      return s.includes(",") || s.includes('"') || s.includes("\n")
+        ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const fmt = (d: Date | null | undefined) => d ? new Date(d).toISOString().slice(0, 10) : "";
+
+    const header = [
+      "ID","First Name","Last Name","Email","Email Verified",
+      "Plan Type","Plan Key","Plan Status","Plan Start Date","Plan End Date",
+      "Days Remaining","Weekly Usage (questions)","Admin Notes","Signup Date",
+    ].join(",");
+
+    const csvRows = enriched.map((u) => [
+      esc(u.id),
+      esc(u.firstName),
+      esc(u.lastName),
+      esc(u.email),
+      u.emailVerified ? "Yes" : "No",
+      esc(u.plan),
+      esc(u.planKey ?? ""),
+      esc(u.status),
+      fmt(u.trialStartedAt),
+      fmt(u.trialEndsAt),
+      u.daysRemaining !== null ? String(u.daysRemaining) : "",
+      esc(u.weeklyUsage),
+      esc(u.adminNotes ?? ""),
+      fmt(u.createdAt),
+    ].join(","));
+
+    const csv = [header, ...csvRows].join("\n");
+    const filename = `askimate-members-${new Date().toISOString().slice(0, 10)}.csv`;
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.send(csv);
+  } catch (err) {
+    console.error("CSV export error:", err);
+    res.status(500).json({ error: "Failed to export" });
+  }
+});
+
+// ── POST /admin/askimate-members/import/preview ───────────────────────────────
+const csvUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
+
+router.post(
+  "/admin/askimate-members/import/preview",
+  csvUpload.single("file"),
+  async (req: Request, res: Response) => {
+    try {
+      if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
+
+      const text = req.file.buffer.toString("utf-8");
+      const lines = text.split(/\r?\n/).filter(Boolean);
+      if (lines.length < 2) { res.status(400).json({ error: "CSV has no data rows" }); return; }
+
+      const rawHeaders = lines[0].split(",").map((h) => h.trim().toLowerCase().replace(/[^a-z0-9_]/g, "_"));
+      const idx = (names: string[]) => names.reduce<number>((found, n) => found >= 0 ? found : rawHeaders.indexOf(n), -1);
+
+      const iEmail     = idx(["email"]);
+      const iFirst     = idx(["first_name", "firstname", "first"]);
+      const iLast      = idx(["last_name", "lastname", "last"]);
+      const iPlan      = idx(["plan", "plan_type"]);
+      const iPlanStart = idx(["plan_start_date", "trial_started_at", "started_at"]);
+      const iPlanEnd   = idx(["plan_end_date", "trial_ends_at", "ends_at"]);
+      const iNotes     = idx(["admin_notes", "notes"]);
+
+      if (iEmail < 0) { res.status(400).json({ error: "CSV must have an 'email' column" }); return; }
+
+      // Parse max 200 preview rows
+      const dataLines = lines.slice(1, 201);
+      const existingEmails = new Set(
+        (await db.select({ email: askimateUsers.email }).from(askimateUsers)).map((r) => r.email.toLowerCase())
+      );
+
+      const parsedRows = dataLines.map((line, i) => {
+        const cols = line.split(",").map((c) => c.trim().replace(/^"|"$/g, "").replace(/""/g, '"'));
+        const email = cols[iEmail]?.toLowerCase() ?? "";
+        const errors: string[] = [];
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("invalid email");
+        const planVal = iPlan >= 0 ? (cols[iPlan] ?? "").toLowerCase() : "free";
+        if (planVal && planVal !== "free" && planVal !== "premium") errors.push(`unknown plan "${planVal}"`);
+
+        return {
+          row: i + 2,
+          email,
+          firstName: iFirst >= 0 ? cols[iFirst] ?? "" : "",
+          lastName:  iLast  >= 0 ? cols[iLast]  ?? "" : "",
+          plan:      (planVal === "premium" ? "premium" : "free") as "free" | "premium",
+          planStartDate: iPlanStart >= 0 ? cols[iPlanStart] ?? "" : "",
+          planEndDate:   iPlanEnd   >= 0 ? cols[iPlanEnd]   ?? "" : "",
+          adminNotes:    iNotes     >= 0 ? cols[iNotes]     ?? "" : "",
+          isDuplicate: existingEmails.has(email),
+          errors,
+          valid: errors.length === 0,
+        };
+      });
+
+      res.json({
+        total:      parsedRows.length,
+        valid:      parsedRows.filter((r) => r.valid && !r.isDuplicate).length,
+        duplicates: parsedRows.filter((r) => r.isDuplicate).length,
+        invalid:    parsedRows.filter((r) => !r.valid).length,
+        rows:       parsedRows,
+      });
+    } catch (err) {
+      console.error("CSV preview error:", err);
+      res.status(500).json({ error: "Failed to parse CSV" });
+    }
+  }
+);
+
+// ── POST /admin/askimate-members/import/confirm ───────────────────────────────
+router.post("/admin/askimate-members/import/confirm", async (req: Request, res: Response) => {
+  try {
+    type ImportRow = {
+      email: string; firstName?: string; lastName?: string;
+      plan?: "free" | "premium";
+      planStartDate?: string; planEndDate?: string;
+      adminNotes?: string;
+    };
+    const { rows } = req.body as { rows: ImportRow[] };
+    if (!Array.isArray(rows) || rows.length === 0) {
+      res.status(400).json({ error: "No rows provided" }); return;
+    }
+
+    const existingEmails = new Set(
+      (await db.select({ email: askimateUsers.email }).from(askimateUsers)).map((r) => r.email.toLowerCase())
+    );
+
+    let inserted = 0; let skipped = 0;
+    for (const row of rows) {
+      const email = (row.email ?? "").toLowerCase().trim();
+      if (!email || existingEmails.has(email)) { skipped++; continue; }
+      await db.insert(askimateUsers).values({
+        email,
+        firstName:      row.firstName?.trim() || "Imported",
+        lastName:       row.lastName?.trim()  || "User",
+        passwordHash:   "$imported$",
+        plan:           row.plan ?? "free",
+        trialStartedAt: row.planStartDate ? new Date(row.planStartDate) : undefined,
+        trialEndsAt:    row.planEndDate   ? new Date(row.planEndDate)   : undefined,
+        adminNotes:     row.adminNotes?.trim() || undefined,
+        emailVerified:  false,
+      });
+      inserted++;
+    }
+
+    res.json({ inserted, skipped });
+  } catch (err) {
+    console.error("CSV import confirm error:", err);
+    res.status(500).json({ error: "Failed to import" });
+  }
+});
+
+// ── PATCH /admin/askimate-members/:userId ─────────────────────────────────────
+router.patch("/admin/askimate-members/:userId", async (req: Request, res: Response) => {
+  try {
+    const userId = parseId(req.params.userId);
+    if (!userId) { res.status(400).json({ error: "Invalid user ID" }); return; }
+
+    type PatchBody = {
+      adminNotes?: string | null;
+      plan?: "free" | "premium";
+      planKey?: string | null;
+      trialStartedAt?: string | null;
+      trialEndsAt?: string | null;
+    };
+    const body = req.body as PatchBody;
+    const updates: Record<string, unknown> = { updatedAt: new Date() };
+
+    if ("adminNotes"     in body) updates.adminNotes     = body.adminNotes ?? null;
+    if ("plan"           in body && (body.plan === "free" || body.plan === "premium"))
+      updates.plan = body.plan;
+    if ("planKey"        in body) updates.planKey        = body.planKey ?? null;
+    if ("trialStartedAt" in body) updates.trialStartedAt = body.trialStartedAt ? new Date(body.trialStartedAt) : null;
+    if ("trialEndsAt"    in body) updates.trialEndsAt    = body.trialEndsAt    ? new Date(body.trialEndsAt)    : null;
+
+    const [updated] = await db
+      .update(askimateUsers)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .set(updates as any)
+      .where(eq(askimateUsers.id, userId))
+      .returning({ id: askimateUsers.id });
+
+    if (!updated) { res.status(404).json({ error: "User not found" }); return; }
+    res.json({ success: true });
+  } catch (err) {
+    console.error("askimate-member patch error:", err);
+    res.status(500).json({ error: "Failed to update member" });
+  }
+});
+
 export default router;
