@@ -328,13 +328,18 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
 
         // Admin notification — only when a message needs human/mentor review (fire-and-forget)
         if (aiResult.needsHumanReview) {
-          const adminNotifEmail = process.env.ADMIN_EMAIL || "info@universitio.com";
-          sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminNotifEmail, {
-            event: "Message Needs Mentor Review",
-            userName: userId ? `User #${userId}` : "Guest",
-            preview: message.slice(0, 200),
-            adminLink: "https://universitio.com/admin",
-          }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
+          const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "info@universitio.com")
+            .split(",")
+            .map((e) => e.trim())
+            .filter(Boolean);
+          for (const adminEmail of adminEmails) {
+            sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminEmail, {
+              event: "Message Needs Mentor Review",
+              userName: userId ? `User #${userId}` : "Guest",
+              preview: message.slice(0, 200),
+              adminLink: "https://universitio.com/admin",
+            }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
+          }
         }
       } catch (aiErr) {
         console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);
@@ -345,6 +350,28 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           content: "Thank you for your message. We've received it and will get back to you shortly.",
         });
       }
+    } else {
+      // Mentor replied recently — AI is suppressed to preserve the human handoff flow.
+      // Insert a lightweight acknowledgement so the typing indicator resolves cleanly
+      // and the user knows their message was received.
+      const [ackMsg] = await db.insert(askimateMessages).values({
+        conversationId: conversation.id,
+        isUserMessage: false,
+        sender: "ai",
+        content: "Your message has been received. Your mentor will follow up with you shortly.",
+        metadata: { reviewLevel: "mentor_active", needsHumanReview: false, sources: [], aiAttempt: null },
+      }).returning();
+
+      aiResponseData = {
+        answer: ackMsg.content,
+        reviewLevel: "mentor_active",
+        needsHumanReview: false,
+        sources: [],
+        mode: "mentor_suppressed",
+      };
+      console.log(
+        `[AITL] MENTOR_ACK conversationId=${conversation.id} — AI suppressed, ack inserted (msg id=${ackMsg.id})`
+      );
     }
 
     // Return response — aiResponse included so guests only need one round-trip

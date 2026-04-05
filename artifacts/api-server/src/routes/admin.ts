@@ -1015,13 +1015,18 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
 
     // Admin notification — KB entry approved (fire-and-forget)
     if (approveForKb && aiContext?.sourceQuestion?.trim()) {
-      const adminNotifEmail = process.env.ADMIN_EMAIL || "info@universitio.com";
-      sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminNotifEmail, {
-        event: "Mentor Reply Approved for Knowledge Base",
-        userName: adminEmail,
-        preview: `Q: ${aiContext!.sourceQuestion!.slice(0, 120)}\nA: ${message.trim().slice(0, 120)}`,
-        adminLink: "https://universitio.com/admin",
-      }).catch((err) => console.error("[EMAIL] Admin KB approved notification failed:", err));
+      const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "info@universitio.com")
+        .split(",")
+        .map((e) => e.trim())
+        .filter(Boolean);
+      for (const recipient of adminEmails) {
+        sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, recipient, {
+          event: "Mentor Reply Approved for Knowledge Base",
+          userName: adminEmail,
+          preview: `Q: ${aiContext!.sourceQuestion!.slice(0, 120)}\nA: ${message.trim().slice(0, 120)}`,
+          adminLink: "https://universitio.com/admin",
+        }).catch((err) => console.error("[EMAIL] Admin KB approved notification failed:", err));
+      }
     }
 
     res.json({ data: inserted, approvedForKb: !!approveForKb });

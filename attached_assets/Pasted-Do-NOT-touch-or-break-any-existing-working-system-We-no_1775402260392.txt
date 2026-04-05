@@ -1,0 +1,82 @@
+Do NOT touch or break any existing working system.
+
+We now have 2 remaining issues to fix.
+
+Do NOT modify:
+- auth
+- payments
+- subscriptions
+- KB ingestion
+- mentor approval workflow
+- unrelated routes
+- unrelated UI
+
+Only fix these 2 issues.
+
+==================================================
+BUG 1 — Chat locks after admin/mentor reply
+==================================================
+
+Problem:
+The main user chat works well now, but after the admin/mentor sends a reply, the chat becomes locked/broken again.
+
+We need to diagnose the exact mentor-reply path.
+
+Tasks:
+1. Inspect the full flow after a mentor/admin reply is sent:
+   - backend response
+   - polling refresh
+   - conversation state update
+   - waiting/review flags
+   - scroll/input state
+   - any layout side effects
+2. Find the exact root cause of:
+   "chat becomes locked after admin reply"
+3. Fix it with the smallest safe change
+4. Test this exact scenario:
+   - user sends message
+   - AI escalates
+   - admin replies
+   - user returns to the same conversation
+   - user sends another message
+   - chat must still work normally
+5. Verify:
+   - input remains usable
+   - scroll remains correct
+   - no broken waiting state
+   - no broken conversation state
+
+==================================================
+CHANGE 2 — Admin notification emails must also go to vahidmoir@gmail.com
+==================================================
+
+Required behavior:
+All admin notification emails should go to:
+- existing admin email recipient(s)
+- AND also to vahidmoir@gmail.com
+
+Implement this in a clean and scalable way.
+
+Preferred solution:
+- support multiple admin recipients
+- use something like ADMIN_EMAILS as a comma-separated list if suitable
+- include vahidmoir@gmail.com in the recipients
+
+Do NOT hardcode this in a messy way if a cleaner recipient-list approach is possible.
+
+Verify for:
+- new user signup notification
+- mentor review needed notification
+- KB approval notification
+
+==================================================
+FINAL REPORT
+==================================================
+
+After implementation, tell me:
+1. exact root cause of the post-admin-reply chat lock bug
+2. files changed
+3. how you fixed it
+4. how you tested the mentor reply scenario end-to-end
+5. how admin email recipients are now configured
+6. confirmation that vahidmoir@gmail.com receives the same admin notifications
