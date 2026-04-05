@@ -280,11 +280,10 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       try {
         const aiResult = await generateAiAnswer(message);
 
-        // Escalated questions show a hold-on message to the user but store the AI attempt in metadata for the mentor
-        const displayContent =
-          aiResult.reviewLevel === "escalate_human"
-            ? "Thank you for your question. One of our expert mentors will review this and get back to you shortly."
-            : aiResult.answer;
+        // Always show the AI answer to the user. For escalate_human the GPT system prompt
+        // already ends the answer with a mentor-recommendation sentence. The mentor/admin
+        // handoff still happens in parallel via the metadata reviewLevel signal.
+        const displayContent = aiResult.answer;
 
         const aiMeta = {
           reviewLevel: aiResult.reviewLevel,
