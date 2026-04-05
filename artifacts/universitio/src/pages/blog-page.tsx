@@ -20,8 +20,11 @@ export default function BlogPage() {
   const [, navigate] = useLocation();
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
 
-  const featured = blogPosts[0];
-  const remaining = blogPosts.slice(1);
+  const sortedPosts = [...blogPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  const featured = sortedPosts[0];
+  const remaining = sortedPosts.slice(1);
   const visible = remaining.slice(0, visibleCount);
   const hasMore = visibleCount < remaining.length;
 
@@ -124,7 +127,7 @@ export default function BlogPage() {
 
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-foreground">Latest Articles</h2>
-            <p className="text-muted-foreground text-sm mt-1">{blogPosts.length} articles</p>
+            <p className="text-muted-foreground text-sm mt-1">{sortedPosts.length} articles</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
