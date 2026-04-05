@@ -27,10 +27,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Universitio | UK Education Consultancy for International Students</title>
+        <title>Universitio | UK University Application Support</title>
         <meta
           name="description"
-          content="Universitio helps international students apply to UK universities with expert guidance, trusted support, and free consultation options."
+          content="Universitio helps international students apply to UK and global universities with expert guidance, personalised support, visa help, and free consultation."
         />
         <link rel="canonical" href="https://universitio.com/" />
       </Helmet>

@@ -116,8 +116,8 @@ export default function BlogPostPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
-        <title>University for the Creative Arts Guide | Universitio Blog</title>
-        <meta name="description" content="Explore University for the Creative Arts courses, fees, entry requirements, and application tips for international students studying in the UK." />
+        <title>{post.title.length > 43 ? `${post.title.slice(0, 40)}… | Universitio` : `${post.title} | Universitio Blog`}</title>
+        <meta name="description" content={post.excerpt.length >= 150 ? post.excerpt.slice(0, 157) + "…" : post.excerpt.slice(0, 157) + " Expert guidance from Universitio."} />
         <link rel="canonical" href={`https://universitio.com/blog/${post.slug}`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://universitio.com/blog/${post.slug}`} />
