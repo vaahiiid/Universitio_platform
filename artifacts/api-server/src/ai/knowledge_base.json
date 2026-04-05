@@ -38,21 +38,20 @@
     "sample_questions": [
       "Describe the UK for me.",
       "Can you describe the UK for me?",
-      "Tell me about the UK?",
-      "What makes the UK attractive for international students?",
+      "Tell me about the UK.",
       "I want to study in the UK and I need to know more about there.",
       "Can you tell me about the UK?",
       "I want to study in the UK and need to know more about it.",
-      "What is student life like in the UK?",
+      "Where is the UK located?",
+      "What countries make up the United Kingdom?",
+      "What is the official language of the UK?",
+      "What are the major cities in the UK?",
+      "What is the capital city of the UK?",
       "What are the cultural differences between the UK and other countries?",
       "What should I know before moving to the UK as an international student?",
-      "What is the education system like in the UK?",
-      "What are the most popular cities for students in the UK?",
+      "What is the education system structure in the UK?",
       "Is the UK safe for international students?",
-      "What are the living costs in the UK compared to other countries?",
-      "What weather should I expect in the UK throughout the year?",
-      "What are the pros and cons of studying in the UK?",
-      "What are some tips for adapting to life in the UK?"
+      "What weather should I expect in the UK throughout the year?"
     ],
     "answer_variants": [
       "The United Kingdom of Great Britain and Northern Ireland, commonly known as the United Kingdom (UK) or simply Britain, is a country located in Northwestern Europe.\nEnglish is the official language, specifically British English, and the UK is home to many of the world’s top universities, alongside the United States. The UK is incredibly diverse; people from almost every ethnic background live here. The locals are generally welcoming and kind to immigrants and international students.\nThe United Kingdom consists of four nations: England, Scotland, Wales, and Northern Ireland — united under one sovereign state. If you are considering studying abroad, the UK is one of the best destinations, offering extensive future-focused plans and support for international students.\nThe UK provides a wide range of student services, accommodation options, and a well-developed transportation system. For instance, students are exempt from paying council tax, which typically costs around £200 per month — a significant saving.\nThe UK is home to some of the world’s leading schools, colleges, and universities. You can begin with school-level studies, a foundation year (similar to pre-university), then progress to a bachelor's degree (undergraduate), and later pursue a master's or PhD (postgraduate) degree.\nLondon is the capital city, while other major and well-known cities include Birmingham, Edinburgh, Belfast, Liverpool, Cardiff, and Manchester.\nThe UK is also considered one of the safest countries in the world — both internally and externally — thanks to strong government safety and security programmes.\nAlthough the UK is often known for its higher living costs, it also offers competitive salaries and opportunities that make living and studying here manageable. In fact, the shorter course durations (3 years for a bachelor's, 1 year for a master's, and around 3 years for a PhD) make studying in the UK more affordable than in many other countries."
@@ -109,7 +108,6 @@
       "Best UK Universities",
       "What are the top 10 universities in the UK?",
       "Which UK universities are best for international students?",
-      "What are the most affordable universities in the UK?",
       "How do UK universities rank globally?"
     ],
     "answer_variants": [
@@ -134,7 +132,6 @@
       "Best UK colleges",
       "What are the top 10 colleges in the UK?",
       "Which UK colleges are best for international students?",
-      "What are the most affordable colleges in the UK?",
       "How do UK colleges rank globally?"
     ],
     "answer_variants": [

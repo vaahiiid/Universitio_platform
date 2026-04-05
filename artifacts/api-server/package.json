@@ -11,7 +11,8 @@
     "ingest-kb": "tsx scripts/ingestApprovedKb.ts",
     "read-pending-kb": "tsx scripts/readPendingKb.ts",
     "eval-ai": "tsx scripts/runAskimateEval.ts",
-    "retrieval-audit": "tsx scripts/retrievalAudit.ts"
+    "retrieval-audit": "tsx scripts/retrievalAudit.ts",
+    "reembed": "tsx scripts/reembedEntries.ts"
   },
   "dependencies": {
     "@types/compression": "^1.8.1",
