@@ -19,6 +19,7 @@ import AskiMateSignup from "@/pages/askimate-signup";
 import AskiMateLogin from "@/pages/askimate-login";
 import AskiMateDashboard from "@/pages/askimate-dashboard";
 
+const AskiMateGuestChat = lazy(() => import("@/pages/askimate-guest-chat"));
 const BlogPage = lazy(() => import("@/pages/blog-page"));
 const BlogPostPage = lazy(() => import("@/pages/blog-post"));
 const BlogCategoryPage = lazy(() => import("@/pages/blog-category"));
@@ -109,6 +110,7 @@ function Router() {
           <Route path="/askimate-signup" component={AskiMateSignup} />
           <Route path="/askimate-login" component={AskiMateLogin} />
           <Route path="/askimate-dashboard" component={AskiMateDashboard} />
+          <Route path="/askimate-try" component={AskiMateGuestChat} />
           <Route path="/blog" component={BlogPage} />
           <Route path="/blog/category/:category" component={BlogCategoryPage} />
           <Route path="/blog/:slug" component={BlogPostPage} />

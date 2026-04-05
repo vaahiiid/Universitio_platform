@@ -67,7 +67,7 @@ export default function AskimateGuestChat() {
     setError("");
 
     try {
-      // Step 1: chat route — enforces guest limit and tracks conversation
+      // Single call: enforces guest limit, tracks conversation, and returns the AI answer
       const chatRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
         method: "POST",
         headers: {
@@ -104,52 +104,22 @@ export default function AskimateGuestChat() {
         localStorage.setItem("askimate_conversation_id", chatData.conversation.id);
       }
 
-      // Step 2: AI endpoint — get the real KB answer to display immediately
-      // Build history from existing messages for conversation context
-      const aiHistory = messages
-        .filter((m) => !m.aiMeta || m.aiMeta.reviewLevel !== undefined)
-        .flatMap((m) =>
-          m.isUserMessage
-            ? [{ role: "user" as const, content: m.content }]
-            : [{ role: "assistant" as const, content: m.content }]
-        )
-        .slice(-10);
-
-      let aiMessage: Message;
-      try {
-        const aiRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/ai`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: content, history: aiHistory }),
-        });
-
-        if (aiRes.ok) {
-          const aiData = await aiRes.json();
-          console.log("[AskiMate-Guest] AI response:", {
-            message: content.slice(0, 60),
-            mode: aiData.mode,
-            reviewLevel: aiData.reviewLevel,
-            needsHumanReview: aiData.needsHumanReview,
-            sources: (aiData.sources ?? []).map((s: { id: string }) => s.id),
-          });
-          aiMessage = {
+      // AI answer is included in the chat response — no second call needed
+      const ai = chatData.aiResponse;
+      const aiMessage: Message = ai
+        ? {
             isUserMessage: false,
-            content: aiData.answer,
+            content: ai.answer,
             aiMeta: {
-              reviewLevel: aiData.reviewLevel,
-              needsHumanReview: aiData.needsHumanReview,
+              reviewLevel: ai.reviewLevel,
+              needsHumanReview: ai.needsHumanReview,
             },
+          }
+        : {
+            isUserMessage: false,
+            content:
+              "I'm having trouble answering right now. Please try again or speak with a human advisor.",
           };
-        } else {
-          throw new Error("AI response error");
-        }
-      } catch {
-        aiMessage = {
-          isUserMessage: false,
-          content:
-            "I'm having trouble answering right now. Please try again or speak with a human advisor.",
-        };
-      }
 
       setMessages((prev) => [...prev, aiMessage]);
     } catch (err) {

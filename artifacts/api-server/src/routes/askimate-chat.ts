@@ -266,6 +266,16 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       orderBy: desc(askimateMessages.createdAt),
     });
     const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
+
+    // Captured and returned in the response so clients need only one call
+    let aiResponseData: {
+      answer: string;
+      reviewLevel: string;
+      needsHumanReview: boolean;
+      sources: { id: string; title: string; score: number }[];
+      mode: string;
+    } | null = null;
+
     if (!lastNonUserMsg || (lastNonUserMsg.createdAt && new Date(lastNonUserMsg.createdAt) < fiveMinAgo)) {
       try {
         const aiResult = await generateAiAnswer(message);
@@ -291,12 +301,23 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           metadata: aiMeta,
         });
 
-        if (aiResult.reviewLevel === "escalate_human") {
-          console.log(
-            `[AITL] ESCALATE conversationId=${conversation.id} question="${message.slice(0, 100)}" ` +
-              `sources=${(aiResult.sources ?? []).map((s: { id: string }) => s.id).join(",")}`
-          );
-        }
+        aiResponseData = {
+          answer: displayContent,
+          reviewLevel: aiResult.reviewLevel,
+          needsHumanReview: aiResult.needsHumanReview,
+          sources: (aiResult.sources ?? []) as { id: string; title: string; score: number }[],
+          mode: aiResult.mode ?? "openai_semantic",
+        };
+
+        // Persistent structured server-side log for all AI interactions
+        const sessionType = guestSessionId ? "guest" : "user";
+        const sourceIds = (aiResult.sources ?? []).map((s: { id: string }) => s.id).join(",") || "none";
+        console.log(
+          `[AITL] AI_RESPONSE conversationId=${conversation.id} sessionType=${sessionType} ` +
+          `reviewLevel=${aiResult.reviewLevel} needsHumanReview=${aiResult.needsHumanReview} ` +
+          `mode=${aiResult.mode ?? "openai_semantic"} sources=${sourceIds} ` +
+          `question="${message.slice(0, 100)}"`
+        );
       } catch (aiErr) {
         console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);
         await db.insert(askimateMessages).values({
@@ -308,7 +329,7 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       }
     }
 
-    // Return response with guest session ID if guest
+    // Return response — aiResponse included so guests only need one round-trip
     res.json({
       success: true,
       message: savedMessage,
@@ -317,6 +338,7 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         questionCount: conversation.questionCount + 1,
       },
       guestSessionId: guestSessionId || undefined,
+      aiResponse: aiResponseData ?? undefined,
     });
   } catch (error) {
     console.error("[ASKIMATE-CHAT] Chat error:", error);
