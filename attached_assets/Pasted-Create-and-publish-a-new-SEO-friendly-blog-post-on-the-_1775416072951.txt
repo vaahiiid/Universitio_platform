@@ -1,0 +1,249 @@
+Create and publish a new SEO-friendly blog post on the Universitio website using the exact content structure and metadata below.
+
+IMPORTANT:
+- Do NOT change unrelated parts of the website
+- Do NOT redesign the whole blog system
+- Only create this new blog post cleanly and correctly
+- Use the attached image as the featured image / blog cover image if possible
+- Make sure the post is placed in the category: United Kingdom
+- Make sure the post is included in the sitemap after publishing
+- Preserve good on-page SEO structure
+- Make the article visually clean and readable
+- Use proper heading hierarchy (H1, H2, H3)
+- Use internal and external links naturally
+- Ensure the slug is correct
+- If the site uses a CMS/blog collection, add the post there
+- If the site is static/generated, add the page and update blog index + sitemap accordingly
+- Do NOT break existing blog posts or routing
+
+==================================================
+BLOG METADATA
+==================================================
+
+SEO Title:
+University for the Creative Arts: Courses & Guide
+
+Meta Description:
+Explore University for the Creative Arts courses, fees, entry requirements, and how to apply. A complete guide for creative students in the UK.
+
+URL Slug:
+university-for-the-creative-arts-guide
+
+Category:
+United Kingdom
+
+Focus Keywords:
+Primary Keyword:
+University for the Creative Arts
+
+Secondary Keywords:
+UCA courses UK
+creative arts university UK
+UCA fees international students
+study creative arts UK
+UCA admission requirements
+
+Featured Image:
+Use the attached image as the blog featured image / cover image
+
+==================================================
+BLOG CONTENT
+==================================================
+
+H1:
+University for the Creative Arts: Courses & Guide
+
+Introduction:
+If you are planning to study creative subjects in the UK, the University for the Creative Arts (UCA) is one of the most specialised institutions in this field. It focuses entirely on creative disciplines and offers a practical, industry-driven learning experience.
+
+You can explore more details on the official website:
+https://www.uca.ac.uk/
+
+H2:
+Why Choose University for the Creative Arts?
+
+Paragraph:
+UCA is a specialist university dedicated to art, design, and creative industries.
+
+H3:
+Key Benefits
+
+Content:
+Focused entirely on creative subjects
+Strong industry connections
+Practical, portfolio-based learning
+Access to professional studios and equipment
+Campuses in creative hubs across the UK
+
+H2:
+Popular Courses at UCA
+
+Paragraph:
+The University for the Creative Arts offers a wide range of creative programmes.
+
+H3:
+Main Study Areas
+
+Content:
+Fashion Design and Fashion Business
+Graphic Design and Illustration
+Film, Media, and Animation
+Fine Art
+Architecture and Interior Design
+Photography
+
+Paragraph:
+These courses are designed to build both creative and professional skills.
+
+H2:
+UCA Fees for International Students
+
+Paragraph:
+Tuition fees depend on the course and level of study.
+
+H3:
+Estimated Fees
+
+Content:
+Undergraduate: £16,000 – £18,500 per year
+Postgraduate: £17,000 – £19,500 per year
+
+Paragraph:
+Always check the exact fee for your chosen course.
+
+H2:
+Entry Requirements
+
+Paragraph:
+Admission to UCA focuses on both academic qualifications and creative ability.
+
+H3:
+Academic Requirements
+
+Content:
+Undergraduate: High school qualification
+Postgraduate: Bachelor’s degree
+
+H3:
+Portfolio Requirement
+
+Content:
+A strong portfolio is essential
+Must demonstrate creativity and technical skills
+
+H3:
+English Language Requirements
+
+Content:
+IELTS: Typically 6.0 overall
+
+H2:
+How to Apply to UCA
+
+Paragraph:
+The application process includes both academic and creative evaluation.
+
+H3:
+Application Steps
+
+Content:
+Choose your course
+Prepare your portfolio
+Submit application and documents
+Attend interview (if required)
+Receive offer
+
+H2:
+UCA Campuses and Student Life
+
+Paragraph:
+UCA has multiple campuses across England.
+
+H3:
+Main Locations
+
+Content:
+Canterbury
+Epsom
+Farnham
+Maidstone
+
+H3:
+Student Experience
+
+Content:
+Creative community
+Collaboration opportunities
+Industry exposure
+Events and exhibitions
+
+H2:
+Is UCA a Good Choice?
+
+Paragraph:
+Yes — especially for students serious about creative careers.
+
+Paragraph:
+UCA is ideal if you:
+Want to specialise in creative fields
+Prefer hands-on learning
+Aim to work in design, media, or arts industries
+
+H2:
+Important Reality Check
+
+Paragraph:
+Unlike some expectations, creative degrees in the UK are:
+Rarely fully funded
+Portfolio-driven
+Competitive
+
+Paragraph:
+You should focus more on building a strong portfolio than relying on scholarships.
+
+==================================================
+LINKING
+==================================================
+
+Internal links to include naturally:
+https://universitio.com/free-consultation
+https://universitio.com/assessment-form
+
+Also link naturally to relevant related UK study / creative courses blog posts if they already exist.
+
+External links to include:
+https://www.uca.ac.uk/
+https://www.gov.uk/student-finance
+
+==================================================
+FINAL CTA
+==================================================
+
+At the end of the blog, add this CTA naturally:
+
+Book your free consultation now:
+https://universitio.com/free-consultation
+
+==================================================
+SEO + PUBLISHING REQUIREMENTS
+==================================================
+
+1. Use proper semantic HTML/article structure
+2. Ensure H1 appears once only
+3. Use H2 and H3 exactly as structured above
+4. Make the page readable with short paragraphs and clean spacing
+5. Use bullet formatting where appropriate for scanability
+6. Add the category United Kingdom
+7. Use the exact slug:
+   /university-for-the-creative-arts-guide
+8. Include meta title and meta description in the page/blog metadata
+9. Make sure the blog post appears in the blog index/listing
+10. Make sure the blog post is included in the sitemap
+11. If there is RSS/feed or blog JSON index, update that too if applicable
+12. Keep the design aligned with the existing Universitio blog style
+13. Do not overwrite other posts
+14. After completion, tell me:
+   - which files were created or changed
+   - the final public URL
+   - whether sitemap was updated
+   - whether the image was attached successfully as featured image
