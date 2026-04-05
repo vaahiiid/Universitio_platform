@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-04-05T10:32:35.116Z",
+  "mode": "dry-run",
+  "pendingCount": 3,
+  "mergedCount": 3,
+  "createdCount": 0,
+  "skippedCount": 0,
+  "warningCount": 2,
+  "entries": [
+    {
+      "approvedId": "test-001",
+      "sourceQuestion": "Why is the UK a great place to study abroad?",
+      "matchedKbId": "why_uk",
+      "matchReason": "topSources",
+      "similarityScore": null,
+      "isWarning": false,
+      "warningMessage": null,
+      "action": "merge"
+    },
+    {
+      "approvedId": "test-002",
+      "sourceQuestion": "What are the typical living costs in the UK for students?",
+      "matchedKbId": "uk_student_life",
+      "matchReason": "jaccard",
+      "similarityScore": 0.5,
+      "isWarning": true,
+      "warningMessage": "Review suggested before merge — borderline similarity (0.50)",
+      "action": "merge"
+    },
+    {
+      "approvedId": "test-003",
+      "sourceQuestion": "Can I bring my spouse with me on a UK student visa?",
+      "matchedKbId": "uk_student_visa",
+      "matchReason": "jaccard",
+      "similarityScore": 0.63,
+      "isWarning": true,
+      "warningMessage": "Review suggested before merge — borderline similarity (0.63)",
+      "action": "merge"
+    }
+  ]
+}
