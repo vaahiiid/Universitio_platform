@@ -1,0 +1,83 @@
+This is now a critical UI/layout bug.
+
+The previous fixes were not enough.
+
+Current problem:
+- After the first message, and especially after the second message, the chat input/composer moves downward and goes out of view.
+- The chat becomes effectively unusable.
+- Scrolling becomes broken or locked.
+- This happens in a way that suggests the whole chat shell/layout is structurally wrong, not just a small bug.
+
+I need you to treat this as a full chat layout rebuild for the Askimate dashboard chat area, with a mobile-app-like and user-friendly structure.
+
+IMPORTANT:
+Do NOT touch backend business logic unless absolutely necessary.
+Do NOT touch payments, subscriptions, KB, mentor workflow, auth, or unrelated routes.
+Focus on the frontend chat layout and message viewport architecture.
+
+GOAL:
+Rebuild the chat panel structure so it behaves like a proper chat app on desktop and mobile:
+- fixed/stable header area
+- independently scrollable message list
+- input/composer always visible at the bottom
+- typing indicator visible without pushing layout off screen
+- long messages handled cleanly
+- follow-up messages work correctly
+- no disappearing input
+- no broken scroll
+- no parent page scroll conflicts
+
+REQUIREMENTS:
+
+1. Rebuild the chat shell with the correct structure:
+   - outer chat panel as flex column
+   - message viewport as flex-1 min-h-0 overflow-y-auto
+   - composer/input area as fixed bottom section inside the panel
+   - no h-screen misuse inside nested dashboard layout
+   - no overflow-hidden on the wrong parents
+   - ensure all flex children that need shrinking have min-h-0
+
+2. Make it mobile-app-like:
+   - clean fixed composer at bottom
+   - message area scrolls smoothly
+   - comfortable padding and spacing
+   - AI responses readable
+   - no weird jumps after send
+   - no layout collapse after mentor reply or typing indicator
+
+3. Handle desktop + mobile:
+   - test narrow viewport
+   - test normal laptop viewport
+   - make sure the composer stays visible on both
+   - ensure sidebars/tabs do not break the chat body height
+
+4. Fix scroll ownership:
+   - only the messages viewport should scroll
+   - not the whole page
+   - not outer wrappers
+   - not the dashboard body
+
+5. Keep typing indicator and mentor follow-up states working:
+   - they must appear inside the messages area
+   - they must not push the composer out of view
+   - they must not break scroll behavior
+
+6. Test this exact sequence:
+   - open new conversation
+   - send 4 consecutive user messages
+   - receive AI responses
+   - trigger an escalated message
+   - receive mentor/admin reply
+   - send another follow-up message
+   - confirm the chat remains usable throughout
+
+7. Report clearly:
+   - exact root cause
+   - exact files changed
+   - what layout structure you changed
+   - how scroll is now controlled
+   - how desktop and mobile were tested
+
+IMPORTANT:
+Do not apply another small patch.
+Rebuild the chat panel layout properly so the input never leaves the viewport.
