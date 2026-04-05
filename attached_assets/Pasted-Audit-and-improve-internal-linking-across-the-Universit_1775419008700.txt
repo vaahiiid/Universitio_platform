@@ -1,0 +1,137 @@
+Audit and improve internal linking across the Universitio website with a focus on SEO and conversion.
+
+IMPORTANT:
+- Do NOT redesign the UI
+- Do NOT change content meaning
+- Only improve internal linking structure
+- Keep everything clean and minimal
+
+==================================================
+GOALS
+==================================================
+
+1. Strengthen SEO authority flow across the site
+2. Push authority from blog → key pages (/askimate, /free-consultation)
+3. Ensure no important page is isolated (no orphan pages)
+4. Improve conversion paths naturally
+
+==================================================
+TASKS
+==================================================
+
+1. HOMEPAGE LINKING
+
+- Ensure homepage includes clear internal links to:
+  - /askimate
+  - /free-consultation
+  - /assessment-form
+
+- These links should appear in:
+  - hero section (CTA if possible)
+  - AskiMate section
+  - services or features section
+
+- Anchor text should be natural and keyword-aware, for example:
+  - "AI study assistant"
+  - "free consultation"
+  - "check your admission chances"
+
+--------------------------------------------------
+
+2. BLOG → MONEY PAGES LINKING
+
+For ALL blog posts:
+
+- Add internal links naturally inside content (not just footer):
+
+  Must include:
+  - link to /askimate
+  - link to /free-consultation
+
+- Place links:
+  - mid-content (after explaining something important)
+  - at the end (CTA section)
+
+- Use natural anchor texts, NOT spammy:
+  - "get personalised guidance with our AI assistant"
+  - "book a free consultation"
+  - "check your chances with our assessment tool"
+
+--------------------------------------------------
+
+3. ASKIMATE PAGE LINKING
+
+- Ensure /askimate links back to:
+  - homepage
+  - /free-consultation
+  - /assessment-form
+
+- Add at least one strong CTA:
+  - "Start using AskiMate"
+  - "Get personalised advice"
+
+--------------------------------------------------
+
+4. NAVIGATION & FOOTER
+
+- Ensure /askimate appears in:
+  - main navigation menu
+  - footer links
+
+- Ensure blog section is linked from nav
+
+--------------------------------------------------
+
+5. LATEST BLOGS / BLOG CARDS
+
+- Ensure each blog card:
+  - links to the correct blog URL
+  - is not broken or placeholder
+
+- Ensure homepage latest posts section:
+  - links to real blog pages
+  - is not using static or outdated links
+
+--------------------------------------------------
+
+6. NO ORPHAN PAGES
+
+Check these pages:
+- /askimate
+- /free-consultation
+- /assessment-form
+- latest blog posts
+
+Ensure ALL of them are reachable via internal links.
+
+--------------------------------------------------
+
+7. ANCHOR TEXT QUALITY
+
+- Avoid generic anchors like:
+  - "click here"
+  - "read more"
+
+- Replace with keyword-rich but natural phrases
+
+--------------------------------------------------
+
+8. DO NOT OVERDO
+
+- Do NOT add excessive links
+- Keep links natural and useful
+- Maintain readability
+
+==================================================
+FINAL REPORT
+==================================================
+
+After changes, tell me:
+
+- what files were changed
+- what links were added (homepage, blog, askimate)
+- whether any orphan pages were found
+- confirmation that /askimate now receives internal links from:
+  - homepage
+  - blog posts
+  - navigation

@@ -41,12 +41,19 @@ export function Hero() {
               </Link>
               <Link href="/assessment-form">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto text-base rounded-full px-8 h-14 bg-white/50 backdrop-blur hover:bg-white border-border/80 hover:border-primary/30 transition-all">
-                  Take Our Assessment
+                  Check Your Chances
                 </Button>
               </Link>
             </div>
+
+            <p className="mt-5 text-sm text-muted-foreground">
+              Have a quick question?{" "}
+              <Link href="/askimate" className="text-primary font-semibold hover:underline">
+                Ask our AI study assistant →
+              </Link>
+            </p>
             
-            <div className="mt-10 flex items-center gap-4 text-sm text-muted-foreground font-medium">
+            <div className="mt-8 flex items-center gap-4 text-sm text-muted-foreground font-medium">
               <div className="flex -space-x-2">
                 {[1,2,3,4].map((i) => (
                   <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden">

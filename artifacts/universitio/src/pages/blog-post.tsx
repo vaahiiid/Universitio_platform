@@ -281,7 +281,11 @@ export default function BlogPostPage() {
               Need Personalised Guidance?
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
-              Our expert consultants are ready to help you navigate your study abroad journey.
+              Our expert consultants are ready to help you navigate your study abroad journey — or{" "}
+              <Link href="/askimate" className="text-primary font-semibold hover:underline">
+                get instant answers from our AI study assistant
+              </Link>
+              .
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/free-consultation">
@@ -291,7 +295,7 @@ export default function BlogPostPage() {
               </Link>
               <Link href="/assessment-form">
                 <Button variant="outline" size="lg" className="rounded-full px-8">
-                  Take a Free Assessment
+                  Check Your Admission Chances
                 </Button>
               </Link>
             </div>

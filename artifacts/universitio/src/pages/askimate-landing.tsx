@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useRef } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { AskiMateNavbar } from "@/components/layout/AskiMateNavbar";
@@ -609,6 +609,17 @@ export default function AskiMateLanding() {
               </Button>
             )}
           </div>
+          <p className="mt-6 text-sm text-muted-foreground">
+            Prefer to speak with a consultant?{" "}
+            <Link href="/free-consultation" className="text-primary font-semibold hover:underline">
+              Book a free consultation
+            </Link>
+            {" "}or{" "}
+            <Link href="/assessment-form" className="text-primary font-semibold hover:underline">
+              check your admission chances
+            </Link>
+            .
+          </p>
         </div>
       </section>
 

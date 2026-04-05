@@ -1,9 +1,8 @@
-import { useLocation } from "wouter";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Zap, BookOpen, Sparkles, ArrowRight, Shield } from "lucide-react";
 
 export function AskiMatePreview() {
-  const [, setLocation] = useLocation();
 
   return (
     <section className="py-16 md:py-24 relative overflow-hidden border-b border-border/40">
@@ -67,23 +66,25 @@ export function AskiMatePreview() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                size="lg"
-                onClick={() => setLocation("/askimate-signup")}
-                className="bg-primary hover:bg-primary/90 text-white rounded-full px-7 shadow-lg hover:shadow-primary/25 hover:-translate-y-px transition-all"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Try AskiMate Free
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => setLocation("/askimate")}
-                className="rounded-full px-7 border-primary/30 text-primary hover:bg-primary/5"
-              >
-                Learn More
-              </Button>
+              <Link href="/askimate-signup">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-7 shadow-lg hover:shadow-primary/25 hover:-translate-y-px transition-all"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Try AskiMate Free
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+              <Link href="/askimate">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full px-7 border-primary/30 text-primary hover:bg-primary/5"
+                >
+                  See How It Works
+                </Button>
+              </Link>
             </div>
           </div>
 
