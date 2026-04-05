@@ -91,7 +91,8 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 - **Risk levels**: `safe_auto` (auto-approved allowlist) | `cautious_auto` | `escalate_human` (visa/bank topics or keyword matches)
 - **Chat route integration**: `POST /api/askimate/chat` calls `generateAiAnswer()` per user message; stores real AI answer + metadata (reviewLevel, sources, aiAttempt) on the AI message row; if `escalate_human`, user sees a hold-on message but admin sees the AI attempt
 - **Logs**: `[AITL] ESCALATE`, `[AITL] MENTOR_REPLY`, `[AITL] KB_APPROVED` structured log lines
-- **KB approval storage**: `src/ai/approved_kb_entries.json` (JSON array, `status: "pending_ingest"`); written by `src/ai/pendingKbManager.ts`; admin utility: `npx tsx scripts/readPendingKb.ts`
+- **KB approval storage**: `src/ai/approved_kb_entries.json` (JSON array, `status: "pending_ingest"` → `"ingested"`); written by `src/ai/pendingKbManager.ts`; admin utility: `npx tsx scripts/readPendingKb.ts`
+- **Ingest pipeline**: `scripts/ingestApprovedKb.ts` — controlled manual script; reads pending entries, runs duplicate detection (topSources → Jaccard fallback → new entry), re-embeds affected entries, updates both JSON files, marks as "ingested"; run via `pnpm --filter @workspace/api-server run ingest-kb`
 - **Admin UI**: Admin chat view shows review-level badge + sources beneath each AI message; "Approve this reply for Knowledge Base" checkbox on reply form sends `approveForKb + aiContext` to the mentor-reply route
 - **Schema**: `askimate_messages.metadata` (JSONB) stores `{reviewLevel, needsHumanReview, sources, aiAttempt}` on AI messages; nullable so old messages are unaffected
 

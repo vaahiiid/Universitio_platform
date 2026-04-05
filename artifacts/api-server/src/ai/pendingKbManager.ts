@@ -18,7 +18,8 @@ export interface ApprovedKbEntry {
   approvedForKb: true;
   approvedBy: string;
   approvedAt: string;
-  status: "pending_ingest";
+  status: "pending_ingest" | "ingested";
+  ingestedAt?: string;
   conversationId: number;
   aiAnswer?: string;
   reviewLevel?: string;

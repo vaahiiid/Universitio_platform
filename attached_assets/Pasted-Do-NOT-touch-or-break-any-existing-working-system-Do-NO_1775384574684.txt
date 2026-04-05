@@ -1,0 +1,96 @@
+Do NOT touch or break any existing working system.
+
+Do NOT modify:
+- auth
+- signup/login
+- subscriptions
+- Stripe/payment
+- email flows
+- mentor chat core
+- design/UI except minimal additions required
+- unrelated routes
+
+We have completed the human-in-the-loop approval workflow.
+
+Now build the next step:
+INGEST approved mentor replies into the AI knowledge base safely.
+
+GOAL:
+When a mentor reply has been approved for KB and stored with status "pending_ingest",
+we need a controlled ingestion pipeline that updates the knowledge base and vector store.
+
+TASKS:
+
+STEP 1 — Read pending approved entries
+Use:
+src/ai/approved_kb_entries.json
+
+Find all entries with:
+status = "pending_ingest"
+
+STEP 2 — Normalize and prepare
+For each entry:
+- normalize the sourceQuestion
+- use the approved humanAnswer as the canonical answer
+- keep domain and risk_level from the stored record
+- keep approvedBy and approvedAt as metadata
+
+STEP 3 — Duplicate detection
+Before adding a new KB item:
+- compare against the existing knowledge base entries
+- if the approved question is very similar to an existing KB topic or sample question,
+  do NOT create a duplicate entry
+- instead append the new question to that entry's sample_questions
+- optionally add/merge the humanAnswer if needed in a safe way
+
+If there is no close match:
+- create a new KB entry
+
+STEP 4 — Update KB
+Update the working knowledge base file safely.
+Do NOT destroy the existing structure.
+
+STEP 5 — Re-embed
+After KB update:
+- regenerate embeddings for the affected/new entries
+- update vector_store.json
+- keep the AI chat working normally
+
+STEP 6 — Mark ingestion status
+After successful ingestion:
+- change status from "pending_ingest" to "ingested"
+
+If ingestion fails:
+- keep status unchanged
+
+STEP 7 — Add safe script/admin utility
+Create a script or backend utility like:
+- scripts/ingestApprovedKb.ts
+
+It should:
+- process all pending entries
+- print a clear summary:
+  - how many pending entries found
+  - how many matched existing KB items
+  - how many new KB items created
+  - how many embeddings updated
+  - how many marked as ingested
+
+STEP 8 — Keep it safe
+Do NOT auto-run this on every reply yet.
+This should remain a controlled/manual ingestion step.
+
+STEP 9 — Output/report
+After implementation, tell me:
+1. what files were added
+2. what files were changed
+3. how duplicate detection works
+4. where KB is updated
+5. where vector_store is updated
+6. how to run the ingestion script
+7. what status changes happen after success
+
+IMPORTANT:
+Keep all current product flows intact.
+Make only minimal, isolated changes.
+Do not refactor unrelated systems.
