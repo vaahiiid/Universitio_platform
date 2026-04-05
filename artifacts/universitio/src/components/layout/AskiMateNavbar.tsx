@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Menu, X, ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, LayoutDashboard, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
@@ -57,7 +57,8 @@ export function AskiMateNavbar() {
             onClick={() => setLocation("/")}
           >
             <img src={logoImg} alt="Universitio" className="h-8 w-auto object-contain" />
-            <span className="hidden sm:inline-block text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20">
+              <Sparkles className="w-3 h-3 text-primary/80" />
               AskiMate AI
             </span>
           </div>

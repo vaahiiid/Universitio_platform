@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Instagram, Facebook, Linkedin } from "lucide-react";
+import { Instagram, Facebook, Linkedin, Sparkles } from "lucide-react";
 import { useEffect } from "react";
 import logoImg from "@assets/universitio logo.png";
 import { trackEvent } from "@/lib/analytics";
@@ -65,6 +65,12 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link href="/services" className="hover:text-white transition-colors">Our Services</Link></li>
+              <li>
+                <Link href="/askimate" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-white/50 flex-shrink-0" />
+                  AskiMate AI
+                </Link>
+              </li>
               <li><Link href="/free-consultation" className="hover:text-white transition-colors">Free Consultation</Link></li>
               <li><Link href="/assessment-form" className="hover:text-white transition-colors">Free Assessment</Link></li>
               <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>

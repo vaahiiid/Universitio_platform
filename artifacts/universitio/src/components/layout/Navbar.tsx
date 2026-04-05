@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
 
@@ -38,7 +38,7 @@ export function Navbar() {
   const navLinks = [
     { name: "About Us", href: "/about" },
     { name: "Our Services", href: "/services" },
-    { name: "AskiMate AI", href: "/askimate", badge: "New" },
+    { name: "AskiMate AI", href: "/askimate", aiIcon: true },
     { name: "Agents", href: "/#agents" },
     { name: "Earn as a Student", href: "/#earn" },
     { name: "Contact", href: "/contact" },
@@ -68,13 +68,11 @@ export function Navbar() {
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors flex items-center gap-2"
+                  className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors flex items-center gap-1.5"
                 >
                   {link.name}
-                  {"badge" in link && (
-                    <span className="inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold animate-pulse">
-                      {link.badge}
-                    </span>
+                  {"aiIcon" in link && link.aiIcon && (
+                    <Sparkles className="w-3.5 h-3.5 text-primary/70" />
                   )}
                 </button>
               ))}
@@ -127,10 +125,8 @@ export function Navbar() {
                 className="flex items-center gap-2 w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
               >
                 {link.name}
-                {"badge" in link && (
-                  <span className="inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold animate-pulse">
-                    {link.badge}
-                  </span>
+                {"aiIcon" in link && link.aiIcon && (
+                  <Sparkles className="w-3.5 h-3.5 text-primary/70" />
                 )}
               </button>
             ))}

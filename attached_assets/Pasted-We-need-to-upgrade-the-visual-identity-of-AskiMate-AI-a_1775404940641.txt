@@ -1,0 +1,108 @@
+We need to upgrade the visual identity of AskiMate AI across the product.
+
+This is NOT just UI changes — this is about making AskiMate clearly feel like a modern AI product.
+
+Do NOT change backend, logic, routing, or functionality.
+Focus ONLY on visual/UI improvements.
+
+====================================
+GOAL
+====================================
+
+Make AskiMate visually communicate:
+- AI-powered
+- intelligent assistant
+- modern, premium, trustworthy
+
+Users must understand in under 2 seconds:
+"This is an AI assistant"
+
+====================================
+PART 1 — AskiMate Hero Section
+====================================
+
+Upgrade the hero section of the AskiMate page.
+
+Requirements:
+- Add a strong AI visual element:
+  - animated orb / neural glow / soft pulse
+  - or connected nodes / intelligence network
+- Subtle motion is required (not distracting)
+
+- Improve layout:
+  - left: headline + subheadline + CTA
+  - right: AI visual element OR chat mockup
+
+- Add a small AI badge near title:
+  e.g. "AI-powered assistant"
+
+- Optional:
+  - show a mini chat preview UI
+  - or floating smart responses
+
+Style:
+- modern gradients (blue / purple / subtle neon)
+- soft shadows
+- not cartoonish
+- not overly sci-fi
+
+====================================
+PART 2 — Universitio Homepage (AskiMate Section)
+====================================
+
+The AskiMate section on the main Universitio homepage must clearly show AI.
+
+Requirements:
+- Add a visual element:
+  - chat mockup OR AI card OR assistant preview
+
+- Show:
+  - a sample question
+  - a smart answer preview
+
+- Add label:
+  "AskiMate AI"
+
+- Improve hierarchy:
+  - title
+  - short explanation
+  - visual
+  - CTA (Try now / Start chat)
+
+====================================
+PART 3 — Navbar & Footer AI Identity
+====================================
+
+Next to "AskiMate AI" in navbar and footer:
+
+- Add a small, clean AI icon:
+  examples:
+  - spark
+  - brain
+  - circuit
+  - assistant glow dot
+
+Requirements:
+- subtle
+- aligned with brand
+- not emoji
+- not oversized
+
+====================================
+CONSTRAINTS
+====================================
+
+- Do NOT break layout
+- Do NOT touch logic
+- Do NOT change routing
+- Keep performance high (no heavy animations)
+
+====================================
+REPORT
+====================================
+
+Tell me:
+- what visual system you chose
+- where animations were added
+- what components were modified
+- how consistency was maintained across pages

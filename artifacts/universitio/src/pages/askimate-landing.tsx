@@ -15,6 +15,8 @@ import {
   Clock,
   Shield,
   ChevronRight,
+  Sparkles,
+  Bot,
 } from "lucide-react";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
@@ -75,70 +77,186 @@ export default function AskiMateLanding() {
 
       {/* ─── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden">
+        {/* Background grid */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(66,20,125,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(66,20,125,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        {/* Radial gradient wash */}
         <div
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(66,20,125,0.12) 0%, transparent 70%)",
+              "radial-gradient(ellipse 70% 70% at 60% 50%, rgba(66,20,125,0.09) 0%, transparent 70%)",
           }}
         />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(66,20,125,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(66,20,125,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-medium text-primary">Real mentors online now</span>
-          </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6 tracking-tight">
-            Expert education guidance,
-            <span
-              className="block"
-              style={{ color: "#42147d" }}
-            >
-              whenever you need it
-            </span>
-          </h1>
+            {/* ── LEFT: Text content ── */}
+            <div className="text-center lg:text-left">
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            Ask real questions about UK universities, visa applications, accommodation,
-            and more. Our experienced mentors are here to give you clear, honest answers
-            — not generic advice.
-          </p>
+              {/* AI badge */}
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/25 rounded-full px-4 py-1.5 mb-5">
+                <Sparkles className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs font-semibold text-primary">AI-powered assistant</span>
+              </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
-            <Button
-              onClick={handleStartChat}
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 h-13 text-base shadow-lg hover:shadow-primary/30 hover:-translate-y-px transition-all"
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              {isAuthenticated && user ? `Continue as ${user.firstName}` : "Start Chat Free"}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button
-              onClick={scrollToPackages}
-              variant="outline"
-              size="lg"
-              className="rounded-full px-8 h-13 text-base border-primary/30 text-primary hover:bg-primary/5"
-            >
-              View Packages
-            </Button>
-          </div>
+              {/* Live mentor badge */}
+              <div className="flex items-center gap-2 mb-6 justify-center lg:justify-start">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-medium text-muted-foreground">Real mentors online now</span>
+              </div>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-green-500" />
-              No credit card required
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-green-500" />
-              5 free questions per week
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-green-500" />
-              Real human mentors
-            </span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6 tracking-tight">
+                Expert education guidance,
+                <span className="block" style={{ color: "#42147d" }}>
+                  whenever you need it
+                </span>
+              </h1>
+
+              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
+                Ask real questions about UK universities, visa applications, accommodation,
+                and more. Our experienced mentors give you clear, honest answers — not generic advice.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+                <Button
+                  onClick={handleStartChat}
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 h-13 text-base shadow-lg hover:shadow-primary/30 hover:-translate-y-px transition-all"
+                >
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  {isAuthenticated && user ? `Continue as ${user.firstName}` : "Start Chat Free"}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <Button
+                  onClick={scrollToPackages}
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-8 h-13 text-base border-primary/30 text-primary hover:bg-primary/5"
+                >
+                  View Packages
+                </Button>
+              </div>
+
+              <div className="flex flex-wrap justify-center lg:justify-start gap-5 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-green-500" />
+                  No credit card required
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-green-500" />
+                  5 free questions per week
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-green-500" />
+                  Real human mentors
+                </span>
+              </div>
+            </div>
+
+            {/* ── RIGHT: AI Visual ── */}
+            <div className="relative hidden lg:flex items-center justify-center min-h-[500px]">
+              {/* Orb layers */}
+              <div
+                className="absolute w-96 h-96 rounded-full animate-pulse-glow pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(99,70,220,0.22) 0%, rgba(66,20,125,0.12) 45%, transparent 70%)",
+                  filter: "blur(24px)",
+                }}
+              />
+              <div
+                className="absolute w-56 h-56 rounded-full top-10 right-10 animate-pulse-glow pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)",
+                  filter: "blur(18px)",
+                  animationDelay: "1.4s",
+                }}
+              />
+
+              {/* Chat mockup card */}
+              <div className="relative z-10 bg-white/96 backdrop-blur-sm rounded-2xl shadow-2xl border border-primary/12 w-[340px] animate-float-slow">
+                {/* Card header */}
+                <div className="flex items-center gap-3 px-5 py-4 border-b border-border/40 rounded-t-2xl bg-gradient-to-r from-primary/6 to-transparent">
+                  <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground">AskiMate AI</p>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                      <span className="text-xs text-muted-foreground">Mentor online</span>
+                    </div>
+                  </div>
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Bot className="w-3.5 h-3.5 text-primary" />
+                  </div>
+                </div>
+
+                {/* Messages */}
+                <div className="px-4 py-4 space-y-3 bg-slate-50/60">
+                  <div className="flex justify-end">
+                    <div className="bg-primary text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm max-w-[85%] shadow-sm">
+                      Can I get into UCL with ABB at A-level?
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2.5 items-start">
+                    <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                      <Sparkles className="w-3 h-3 text-white" />
+                    </div>
+                    <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 text-sm max-w-[85%] shadow-sm border border-border/30">
+                      Yes — UCL's typical offer for most programmes is AAB–ABB. Strong candidates also apply to Computer Science, Economics, or Engineering. Want me to help with your personal statement?
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <div className="bg-primary text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm max-w-[85%] shadow-sm">
+                      Yes please! 🎓
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mock input */}
+                <div className="px-4 pb-4 pt-3">
+                  <div className="flex items-center gap-2 bg-muted/50 rounded-xl px-4 py-2.5 border border-border/40">
+                    <span className="flex-1 text-sm text-muted-foreground">Ask anything…</span>
+                    <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating accent: free questions */}
+              <div
+                className="absolute top-10 -left-6 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3.5 py-2.5 flex items-center gap-2 animate-float-gentle"
+                style={{ animationDelay: "0.6s" }}
+              >
+                <Zap className="w-4 h-4 text-amber-500 fill-amber-400" />
+                <span className="text-xs font-semibold text-foreground whitespace-nowrap">5 free questions / week</span>
+              </div>
+
+              {/* Floating accent: rating */}
+              <div
+                className="absolute bottom-12 -right-6 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3.5 py-2.5 flex items-center gap-2 animate-float"
+                style={{ animationDelay: "1.8s" }}
+              >
+                <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
+                <span className="text-xs font-semibold text-foreground whitespace-nowrap">4.9 / 5 rating</span>
+              </div>
+
+              {/* Floating accent: students */}
+              <div
+                className="absolute top-1/2 -right-8 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3.5 py-2.5 flex items-center gap-2 animate-float-gentle"
+                style={{ animationDelay: "1.1s" }}
+              >
+                <Users className="w-4 h-4 text-primary" />
+                <span className="text-xs font-semibold text-foreground whitespace-nowrap">1,200+ students</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
