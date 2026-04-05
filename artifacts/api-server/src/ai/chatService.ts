@@ -52,28 +52,48 @@ const ESCALATE_KEYWORDS = [
 const SEMANTIC_LOW_CONFIDENCE = 0.20;
 const BM25_LOW_CONFIDENCE = 0.15;
 
+const CAUTIOUS_AUTO_ALLOWLIST = new Set([
+  "english_requirements",
+  "uk_student_jobs",
+  "tuition_fees",
+  "uk_cost_of_living",
+  "admissions_requirements",
+]);
+
+const ALWAYS_ESCALATE_IDS = new Set([
+  "bank_statement_requirements",
+  "uk_student_visa",
+  "confirmation_of_acceptance",
+  "atas",
+]);
+
 function computeReviewLevel(
   query: string,
   entries: RetrievedEntry[],
   retrievalMode: "openai_semantic" | "bm25_fallback"
 ): ReviewLevel {
+  // 1. Explicit keyword in query always escalates
   if (ESCALATE_KEYWORDS.some((re) => re.test(query))) return "escalate_human";
 
+  // 2. Low retrieval confidence escalates (answer not reliable enough to auto-publish)
   const topScore = entries[0]?.score ?? 0;
   const confidenceThreshold =
     retrievalMode === "openai_semantic" ? SEMANTIC_LOW_CONFIDENCE : BM25_LOW_CONFIDENCE;
   if (topScore < confidenceThreshold) return "escalate_human";
 
-  const maxRisk = entries.reduce<"low" | "medium" | "high">((worst, e) => {
-    if (e.risk_level === "high") return "high";
-    if (e.risk_level === "medium" && worst !== "high") return "medium";
-    return worst;
-  }, "low");
+  // 3. Risk is determined by the PRIMARY (top-ranked) source only — prevents contamination
+  const primary = entries[0];
+  if (!primary) return "escalate_human";
 
-  const anyNeedsReview = entries.some((e) => e.needs_human_review);
+  // 4. IDs that are always high-risk regardless of query wording
+  if (ALWAYS_ESCALATE_IDS.has(primary.id)) return "escalate_human";
 
-  if (maxRisk === "high") return "escalate_human";
-  if (maxRisk === "medium" || anyNeedsReview) return "cautious_auto";
+  // 5. IDs explicitly allowlisted as informational — cap at cautious_auto
+  if (CAUTIOUS_AUTO_ALLOWLIST.has(primary.id)) return "cautious_auto";
+
+  // 6. Fall back to primary source KB flags
+  if (primary.risk_level === "high") return "escalate_human";
+  if (primary.risk_level === "medium" || primary.needs_human_review) return "cautious_auto";
   return "safe_auto";
 }
 
