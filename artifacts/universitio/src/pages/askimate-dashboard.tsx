@@ -381,6 +381,18 @@ function AskiMateDashboardContent() {
             }
             if (newMsgs.length === 0) return prev;
             newMsgs.forEach((m: any) => knownMessageIds.current.add(m.id));
+            // Log AI messages for debugging
+            const aiNew = newMsgs.filter((m: any) => m.sender === "ai");
+            if (aiNew.length > 0) {
+              aiNew.forEach((m: any) => {
+                console.log("[AskiMate-Dashboard] AI message polled:", {
+                  mode: m.metadata?.mode,
+                  reviewLevel: m.metadata?.reviewLevel,
+                  needsHumanReview: m.metadata?.needsHumanReview,
+                  sources: (m.metadata?.sources ?? []).map((s: { id: string }) => s.id),
+                });
+              });
+            }
             // Detect new incoming (mentor/ai) messages and trigger indicator
             const incomingNew = newMsgs.filter((m: any) => m.sender !== "user");
             if (incomingNew.length > 0) {
@@ -491,6 +503,7 @@ function AskiMateDashboardContent() {
     setSending(true);
     try {
       const token = localStorage.getItem("askimate_token");
+      console.log("[AskiMate-Dashboard] Sending message:", content.slice(0, 60));
       const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -895,6 +908,9 @@ function AskiMateDashboardContent() {
                                   {msg.sender === "mentor" && (
                                     <p className="text-xs font-semibold text-green-700 mb-1 ml-1">Mentor</p>
                                   )}
+                                  {msg.sender === "ai" && (
+                                    <p className="text-xs font-semibold text-primary/60 mb-1 ml-1">AskiMate AI</p>
+                                  )}
                                   <div className={`max-w-xs sm:max-w-sm px-4 py-2.5 rounded-2xl text-sm ${
                                     msg.sender === "user"
                                       ? "bg-primary text-white rounded-br-sm"
@@ -907,6 +923,12 @@ function AskiMateDashboardContent() {
                                   <p className={`text-xs mt-1 text-muted-foreground ${msg.sender === "user" ? "text-right" : "text-left"}`}>
                                     {fmtTime(msg.createdAt)}
                                   </p>
+                                  {/* AI metadata strip */}
+                                  {msg.sender === "ai" && msg.metadata?.needsHumanReview && (
+                                    <p className="text-xs text-amber-600 mt-1 ml-1 italic">
+                                      A mentor will follow up on this shortly.
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                             </div>

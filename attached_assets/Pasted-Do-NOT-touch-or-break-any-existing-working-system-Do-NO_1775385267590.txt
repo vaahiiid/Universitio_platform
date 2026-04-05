@@ -1,0 +1,89 @@
+Do NOT touch or break any existing working system.
+
+Do NOT modify:
+- auth
+- signup/login
+- subscriptions
+- Stripe/payment
+- email flows
+- mentor/admin chat core
+- onboarding
+- unrelated routes
+- existing design system except minimal additions needed for this task
+
+The backend AI workflow is now ready:
+- semantic retrieval works
+- human escalation works
+- KB approval works
+- pending ingest works
+- dry-run audit works
+
+Now connect the AI safely to the real user-facing AskiMate chat UI.
+
+GOAL:
+Users should be able to chat with AskiMate in the app using the new AI endpoint.
+
+BACKEND ALREADY EXISTS:
+POST /api/askimate/ai
+
+Response shape:
+{
+  answer,
+  sources,
+  mode,
+  reviewLevel,
+  needsHumanReview
+}
+
+TASKS:
+
+STEP 1 — Find the real AskiMate user chat interface
+Locate the user-facing Askimate chat component/page.
+Do NOT redesign it.
+
+STEP 2 — Connect the chat submit flow
+On user message submit:
+- call POST /api/askimate/ai
+- send the user message
+- render the returned answer in the chat
+
+STEP 3 — Show minimal AI metadata
+In a very small, clean way show:
+- reviewLevel
+- if needsHumanReview is true, show a message like:
+  "This question may need review by a human advisor."
+
+Do NOT clutter the UI.
+
+STEP 4 — Human escalation UX
+If needsHumanReview = true:
+- show a small status line under the AI answer
+- if there is an existing mentor/contact path, link to it safely
+- do NOT modify the mentor system itself
+
+STEP 5 — Failure handling
+If the AI endpoint fails:
+show:
+"I’m having trouble answering right now. Please try again or speak with a human advisor."
+
+STEP 6 — Logging
+Add lightweight safe logging for:
+- user message
+- returned mode
+- reviewLevel
+- needsHumanReview
+- source ids
+
+No major database redesign unless absolutely necessary.
+
+STEP 7 — Keep changes minimal
+Do not redesign the chat page.
+Do not refactor unrelated code.
+Do not break current functionality.
+
+DELIVERABLES:
+1. files changed
+2. files added
+3. where the frontend calls the AI endpoint
+4. how human review appears in the UI
+5. how to test the full user chat flow

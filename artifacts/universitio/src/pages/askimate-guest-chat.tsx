@@ -5,11 +5,17 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 
+interface AiMeta {
+  reviewLevel?: string;
+  needsHumanReview?: boolean;
+}
+
 interface Message {
   id?: number;
   isUserMessage: boolean;
   content: string;
   createdAt?: string;
+  aiMeta?: AiMeta;
 }
 
 interface Conversation {
@@ -48,34 +54,36 @@ export default function AskimateGuestChat() {
   const handleSendMessage = async () => {
     if (!inputValue.trim() || !guestSessionId) return;
 
+    const content = inputValue.trim();
+
     const userMessage: Message = {
       isUserMessage: true,
-      content: inputValue,
+      content,
     };
 
-    setMessages([...messages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
+      // Step 1: chat route — enforces guest limit and tracks conversation
+      const chatRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-Guest-Session-Id": guestSessionId,
         },
         body: JSON.stringify({
-          message: inputValue,
+          message: content,
           conversationId: conversationId || undefined,
         }),
       });
 
-      const data = await res.json();
+      const chatData = await chatRes.json();
 
-      if (!res.ok) {
-        // Handle limit reached
-        if (data.error === "GUEST_LIMIT_REACHED") {
+      if (!chatRes.ok) {
+        if (chatData.error === "GUEST_LIMIT_REACHED") {
           setLimitReached(true);
           setMessages((prev) => [
             ...prev.slice(0, -1),
@@ -88,26 +96,65 @@ export default function AskimateGuestChat() {
           setLoading(false);
           return;
         }
-
-        throw new Error(data.error || "Failed to send message");
+        throw new Error(chatData.error || "Failed to send message");
       }
 
-      // Success
       if (!conversationId) {
-        setConversationId(data.conversation.id);
-        localStorage.setItem("askimate_conversation_id", data.conversation.id);
+        setConversationId(chatData.conversation.id);
+        localStorage.setItem("askimate_conversation_id", chatData.conversation.id);
       }
 
-      // Add mentor response (simulated for now)
-      const mentorResponse: Message = {
-        isUserMessage: false,
-        content: "Thank you for your question. Our mentor will review this and get back to you within 24-48 hours.",
-      };
+      // Step 2: AI endpoint — get the real KB answer to display immediately
+      // Build history from existing messages for conversation context
+      const aiHistory = messages
+        .filter((m) => !m.aiMeta || m.aiMeta.reviewLevel !== undefined)
+        .flatMap((m) =>
+          m.isUserMessage
+            ? [{ role: "user" as const, content: m.content }]
+            : [{ role: "assistant" as const, content: m.content }]
+        )
+        .slice(-10);
 
-      setMessages((prev) => [...prev, mentorResponse]);
+      let aiMessage: Message;
+      try {
+        const aiRes = await fetch(`${import.meta.env.BASE_URL}api/askimate/ai`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: content, history: aiHistory }),
+        });
+
+        if (aiRes.ok) {
+          const aiData = await aiRes.json();
+          console.log("[AskiMate-Guest] AI response:", {
+            message: content.slice(0, 60),
+            mode: aiData.mode,
+            reviewLevel: aiData.reviewLevel,
+            needsHumanReview: aiData.needsHumanReview,
+            sources: (aiData.sources ?? []).map((s: { id: string }) => s.id),
+          });
+          aiMessage = {
+            isUserMessage: false,
+            content: aiData.answer,
+            aiMeta: {
+              reviewLevel: aiData.reviewLevel,
+              needsHumanReview: aiData.needsHumanReview,
+            },
+          };
+        } else {
+          throw new Error("AI response error");
+        }
+      } catch {
+        aiMessage = {
+          isUserMessage: false,
+          content:
+            "I'm having trouble answering right now. Please try again or speak with a human advisor.",
+        };
+      }
+
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to send message");
-      setMessages((prev) => prev.slice(0, -1)); // Remove the unsent message
+      setMessages((prev) => prev.slice(0, -1));
     } finally {
       setLoading(false);
     }
@@ -164,14 +211,33 @@ export default function AskimateGuestChat() {
               key={idx}
               className={`mb-4 flex ${msg.isUserMessage ? "justify-end" : "justify-start"}`}
             >
-              <div
-                className={`max-w-xs sm:max-w-md px-4 py-3 rounded-lg ${
-                  msg.isUserMessage
-                    ? "bg-primary text-white rounded-br-none"
-                    : "bg-muted/50 text-foreground rounded-bl-none"
-                }`}
-              >
-                <p className="text-sm leading-relaxed">{msg.content}</p>
+              <div className="max-w-xs sm:max-w-md">
+                <div
+                  className={`px-4 py-3 rounded-lg ${
+                    msg.isUserMessage
+                      ? "bg-primary text-white rounded-br-none"
+                      : "bg-muted/50 text-foreground rounded-bl-none"
+                  }`}
+                >
+                  <p className="text-sm leading-relaxed">{msg.content}</p>
+                </div>
+                {/* AI metadata strip — only for AI responses */}
+                {!msg.isUserMessage && msg.aiMeta && (
+                  <div className="mt-1.5 px-1 space-y-0.5">
+                    {msg.aiMeta.needsHumanReview && (
+                      <p className="text-xs text-amber-700">
+                        This question may need review by a human advisor.{" "}
+                        <a
+                          href="/askimate-signup"
+                          className="underline hover:text-amber-800"
+                        >
+                          Sign up to chat with a mentor
+                        </a>
+                        .
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}
