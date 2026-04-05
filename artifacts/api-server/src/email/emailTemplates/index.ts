@@ -9,6 +9,7 @@ import { buildUsageLimitReached }  from "./usageLimitReached";
 import { buildRenewalPush }        from "./renewalPush";
 import { buildReEngagement }        from "./reEngagement";
 import { buildEmailVerifiedConfirm } from "./emailVerifiedConfirm";
+import { buildAdminNotification }   from "./adminNotification";
 
 /**
  * Central template registry.
@@ -30,4 +31,5 @@ export const templateRegistry: {
   [EmailType.RENEWAL_PUSH]:        buildRenewalPush,
   [EmailType.RE_ENGAGEMENT]:       buildReEngagement,
   [EmailType.EMAIL_VERIFIED]:      buildEmailVerifiedConfirm,
+  [EmailType.ADMIN_NOTIFICATION]:  buildAdminNotification,
 };

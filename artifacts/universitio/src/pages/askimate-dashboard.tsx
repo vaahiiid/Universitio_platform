@@ -64,6 +64,13 @@ function AskiMateDashboardContent() {
   const [deletingConvId, setDeletingConvId] = useState<number | null>(null);
   const [newChatMode, setNewChatMode] = useState(false);
 
+  // ─ Typing / waiting indicator ──────────────────────────────────────────
+  const [isWaiting, setIsWaiting] = useState(false);
+
+  // ─ Resend verification email ───────────────────────────────────────────
+  const [resendStatus, setResendStatus] = useState<"idle" | "loading" | "sent" | "error">("idle");
+  const [resendCooldown, setResendCooldown] = useState(0);
+
   // ─ Notification ────────────────────────────────────────────────────────
   const [visibleNotification, setVisibleNotification] = useState(false);
   const [notificationMessageId, setNotificationMessageId] = useState<number | null>(null);
@@ -88,6 +95,39 @@ function AskiMateDashboardContent() {
     { id: "profile" as Tab, label: "Profile", icon: Settings },
     { id: "subscription" as Tab, label: "Subscription", icon: CreditCard },
   ];
+
+  // ─ Resend verification cooldown timer ─────────────────────────────────
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setTimeout(() => setResendCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendCooldown]);
+
+  const handleResendVerification = async () => {
+    if (resendCooldown > 0 || resendStatus === "loading") return;
+    setResendStatus("loading");
+    try {
+      const token = localStorage.getItem("askimate_token");
+      const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/auth/resend-verification`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setResendStatus("sent");
+        setResendCooldown(60);
+      } else {
+        const err = await res.json();
+        if (err.error === "ALREADY_VERIFIED") {
+          setResendStatus("sent");
+        } else {
+          setResendStatus("error");
+        }
+      }
+    } catch {
+      setResendStatus("error");
+    }
+    setTimeout(() => setResendStatus((s) => (s !== "sent" ? "idle" : s)), 5000);
+  };
 
   // ─ Logout ──────────────────────────────────────────────────────────────
   const handleLogout = async () => {
@@ -465,6 +505,7 @@ function AskiMateDashboardContent() {
     // First message: create conversation
     if (!convId) {
       setSending(true);
+      setIsWaiting(true);
       try {
         const token = localStorage.getItem("askimate_token");
         const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/chat`, {
@@ -474,7 +515,12 @@ function AskiMateDashboardContent() {
         });
         if (!res.ok) {
           const err = await res.json();
-          setUpdateError(err.message || err.error || "Failed to send message");
+          if (err.error === "EMAIL_NOT_VERIFIED") {
+            // Silently handled by the verification banner
+          } else {
+            setUpdateError(err.message || err.error || "Failed to send message");
+          }
+          setIsWaiting(false);
           return;
         }
         const data = await res.json();
@@ -492,12 +538,14 @@ function AskiMateDashboardContent() {
         setUpdateError("Failed to send message");
       } finally {
         setSending(false);
+        setIsWaiting(false);
       }
       return;
     }
 
     setMessageInput("");
     setSending(true);
+    setIsWaiting(true);
     try {
       const token = localStorage.getItem("askimate_token");
       console.log("[AskiMate-Dashboard] Sending message:", content.slice(0, 60));
@@ -516,6 +564,7 @@ function AskiMateDashboardContent() {
         fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${convId}`, {
           headers: { Authorization: `Bearer ${token}` },
         }).then(async (r) => {
+          setIsWaiting(false);
           if (!r.ok) return;
           const fresh = await r.json();
           const all: any[] = fresh.messages || [];
@@ -526,13 +575,17 @@ function AskiMateDashboardContent() {
             return [...prev, ...newMsgs];
           });
           setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 50);
-        }).catch(() => {/* fallback to 2s poll */});
+        }).catch(() => { setIsWaiting(false); /* fallback to 2s poll */ });
       } else {
         const err = await res.json();
-        setUpdateError(err.message || err.error || "Failed to send message");
+        if (err.error !== "EMAIL_NOT_VERIFIED") {
+          setUpdateError(err.message || err.error || "Failed to send message");
+        }
+        setIsWaiting(false);
       }
     } catch {
       setUpdateError("Failed to send message");
+      setIsWaiting(false);
     } finally {
       setSending(false);
     }
@@ -876,6 +929,36 @@ function AskiMateDashboardContent() {
                         </div>
                       )}
 
+                      {/* Email verification banner */}
+                      {user?.emailVerified === false && (
+                        <div className="px-4 py-2.5 bg-amber-50 border-b border-amber-200 flex-shrink-0">
+                          <div className="flex items-start gap-3">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-amber-800">Email not verified</p>
+                              <p className="text-xs text-amber-700 mt-0.5">
+                                Please verify your email address to use the chat. Check your inbox for the verification link.
+                              </p>
+                              {resendStatus === "sent" && (
+                                <p className="text-xs text-green-700 mt-1 font-medium">
+                                  ✓ Verification email sent — check your inbox.
+                                  {resendCooldown > 0 && ` Resend again in ${resendCooldown}s.`}
+                                </p>
+                              )}
+                              {resendStatus === "error" && (
+                                <p className="text-xs text-red-700 mt-1">Failed to send. Please try again.</p>
+                              )}
+                            </div>
+                            <button
+                              onClick={handleResendVerification}
+                              disabled={resendStatus === "loading" || resendCooldown > 0}
+                              className="flex-shrink-0 text-xs font-semibold text-amber-800 bg-amber-100 hover:bg-amber-200 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
+                            >
+                              {resendStatus === "loading" ? "Sending…" : resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend email"}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Error banner */}
                       {updateError && (
                         <div className="px-4 py-2 bg-red-50 border-b border-red-200 flex items-center justify-between flex-shrink-0">
@@ -964,6 +1047,21 @@ function AskiMateDashboardContent() {
                               </div>
                             </div>
                           ))}
+
+                          {/* Typing / waiting indicator */}
+                          {isWaiting && (
+                            <div className="flex justify-start">
+                              <div>
+                                <p className="text-xs font-semibold text-primary/60 mb-1 ml-1">AskiMate AI</p>
+                                <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-white border border-border/60 shadow-sm flex items-center gap-1.5">
+                                  <span className="w-2 h-2 rounded-full bg-primary/40 animate-bounce [animation-delay:0ms]" />
+                                  <span className="w-2 h-2 rounded-full bg-primary/40 animate-bounce [animation-delay:150ms]" />
+                                  <span className="w-2 h-2 rounded-full bg-primary/40 animate-bounce [animation-delay:300ms]" />
+                                  <span className="ml-2 text-xs text-muted-foreground">AskiMate is preparing your answer…</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
 
                           <div ref={messagesEndRef} />
 

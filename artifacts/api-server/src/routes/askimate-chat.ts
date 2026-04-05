@@ -325,6 +325,19 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
           `mode=${aiResult.mode ?? "openai_semantic"} sources=${sourceIds} ` +
           `question="${message.slice(0, 100)}"`
         );
+
+        // Admin notification — only when a message needs human/mentor review (fire-and-forget)
+        if (aiResult.needsHumanReview) {
+          const adminEmail = process.env.ADMIN_EMAIL || "info@universitio.com";
+          import("../email/transactionalEmailService").then(({ sendTransactionalEmail, EmailType }) => {
+            sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminEmail, {
+              event: "Message Needs Mentor Review",
+              userName: userId ? `User #${userId}` : "Guest",
+              preview: message.slice(0, 200),
+              adminLink: `https://universitio.com/admin`,
+            }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
+          }).catch(() => {});
+        }
       } catch (aiErr) {
         console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);
         await db.insert(askimateMessages).values({

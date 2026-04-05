@@ -1,0 +1,99 @@
+Do NOT touch or break any existing working system.
+
+After finishing the current chat-flow and formatting fix, I want you to implement these 3 additional improvements before we start real user testing.
+
+Do NOT modify:
+- payments
+- subscriptions
+- KB ingestion logic
+- mentor approval workflow
+- unrelated routes
+- unrelated UI
+
+Only implement the following safely and minimally:
+
+==================================================
+1) USER WAITING / TYPING / PROCESSING INDICATOR
+==================================================
+
+Problem:
+When the user sends a message, there is no clear visual sign that AI or mentor is preparing a response.
+
+Required behavior:
+- As soon as the user sends a message, show a visible temporary status in the chat
+- If AI is preparing a response, show something like:
+  "AskiMate is preparing your answer..."
+- If the message is escalated / waiting for mentor review, show something like:
+  "Your question is being reviewed by a mentor..."
+
+Requirements:
+- clean and minimal UI
+- no full redesign
+- must disappear or update correctly when the real message arrives
+- must work in the dashboard chat
+- should not create duplicate messages
+
+==================================================
+2) RESEND VERIFICATION EMAIL EVERYWHERE NEEDED
+==================================================
+
+Problem:
+If a user has not verified their email and they lose the activation email, the product currently does not help them enough.
+
+Required behavior:
+Wherever the user is blocked because email verification is required,
+also provide a clear action:
+
+"Resend verification email"
+
+Requirements:
+- use the existing email verification / resend backend if already available
+- if not available in those locations, connect it safely
+- show loading state
+- show success / error feedback
+- do not allow abusive rapid repeat clicks
+- if already verified, handle gracefully
+- add this to all relevant blocked/verification-required states
+
+==================================================
+3) ADMIN EMAIL NOTIFICATIONS FOR IMPORTANT EVENTS
+==================================================
+
+We need email notifications to the admin, but only for important events.
+
+Send admin email notifications for:
+- new user signup
+- new message that needs mentor review
+- new user message in an active askimate conversation that needs human attention
+- mentor reply approved for knowledge base
+
+Do NOT send admin emails for:
+- every low-risk AI response
+- every minor chat event
+- every poll/update
+
+Requirements:
+- use the existing email system safely if possible
+- keep templates minimal and useful
+- include enough context in the email:
+  - user name/email if available
+  - event type
+  - short message preview
+  - link or direction to the relevant admin area if available
+
+==================================================
+REPORT BACK
+==================================================
+
+After implementation, tell me:
+1. what files were changed
+2. what files were added
+3. how the typing/processing indicator works
+4. where resend verification was added
+5. which exact admin events now send email notifications
+6. how to test all 3 improvements
+
+IMPORTANT:
+Keep all current working product flows intact.
+Make only minimal, isolated changes.
+Do not refactor unrelated systems.

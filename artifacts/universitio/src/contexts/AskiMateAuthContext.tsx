@@ -13,6 +13,7 @@ export interface AskiMateUser {
   plan: "free" | "premium";
   trialEndsAt?: string;
   createdAt?: string;
+  emailVerified?: boolean;
 }
 
 interface AskiMateAuthContextType {

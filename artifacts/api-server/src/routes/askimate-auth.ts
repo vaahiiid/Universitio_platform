@@ -140,6 +140,15 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
       expiryHours: 24,
     }).catch((err) => console.error("[EMAIL] Verification email failed:", err));
 
+    // Admin notification — new user signup (fire-and-forget)
+    const adminEmail = process.env.ADMIN_EMAIL || "info@universitio.com";
+    sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminEmail, {
+      event: "New User Signup",
+      userName: `${newUser.firstName} ${newUser.lastName}`.trim(),
+      userEmail: newUser.email,
+      adminLink: "https://universitio.com/admin",
+    }).catch((err) => console.error("[EMAIL] Admin signup notification failed:", err));
+
     res.status(201).json({
       token,
       user: {
