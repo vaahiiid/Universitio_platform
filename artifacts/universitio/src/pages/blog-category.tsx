@@ -62,6 +62,8 @@ export default function BlogCategoryPage() {
       <Helmet>
         <title>{category.name} Articles | Universitio Blog</title>
         <meta name="description" content={`Browse ${posts.length} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`} />
+        <link rel="canonical" href={`https://universitio.com/blog/category/${category.slug}`} />
+        {posts.length < 3 && <meta name="robots" content="noindex, follow" />}
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
@@ -87,21 +89,21 @@ export default function BlogCategoryPage() {
           <div className="mb-10">
             <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
               <Link href="/blog">
-                <button className="px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap bg-white text-foreground border-border hover:border-primary hover:text-primary transition-all">
+                <span className="px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap bg-white text-foreground border-border hover:border-primary hover:text-primary transition-all inline-block">
                   All
-                </button>
+                </span>
               </Link>
               {allCategoriesSorted.map((cat) => (
                 <Link key={cat.slug} href={`/blog/category/${cat.slug}`}>
-                  <button
+                  <span
                     className={`px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition-all ${
                       cat.slug === categorySlug
                         ? "bg-primary text-white border-primary shadow-md"
                         : "bg-white text-foreground border-border hover:border-primary hover:text-primary"
-                    }`}
+                    } inline-block`}
                   >
                     {cat.name}
-                  </button>
+                  </span>
                 </Link>
               ))}
             </div>
