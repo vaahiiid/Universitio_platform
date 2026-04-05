@@ -11,6 +11,7 @@ import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { StudyDestinations } from "@/components/home/StudyDestinations";
 import { Partnerships } from "@/components/home/Partnerships";
 import { SocialProof } from "@/components/home/SocialProof";
+import { Helmet } from "react-helmet-async";
 
 export default function Home() {
   useEffect(() => {
@@ -25,6 +26,14 @@ export default function Home() {
   }, []);
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Universitio | UK Education Consultancy for International Students</title>
+        <meta
+          name="description"
+          content="Universitio helps international students apply to UK universities with expert guidance, trusted support, and free consultation options."
+        />
+        <link rel="canonical" href="https://universitio.com/" />
+      </Helmet>
       <Navbar />
       <main>
         {/* 1 — Hero: primary CTA for ready users */}

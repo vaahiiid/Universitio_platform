@@ -68,10 +68,10 @@ export default function AskiMateLanding() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Helmet>
-        <title>AskiMate AI — Your Personal Education Mentor | Universitio</title>
+        <title>AskiMate AI | Personal Education Mentor | Universitio</title>
         <meta
           name="description"
-          content="Get personalised mentoring from real education experts. Ask any question about studying in the UK — university applications, visas, accommodation and more."
+          content="AskiMate AI connects students with real education mentors for help with UK university applications, visas, accommodation, and study planning."
         />
         <link rel="canonical" href="https://universitio.com/askimate" />
       </Helmet>
