@@ -41,6 +41,7 @@ export default function AskiMateSignup() {
       <Helmet>
         <title>Sign Up — AskiMate AI</title>
         <meta name="description" content="Create your AskiMate account to get started with mentoring." />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="w-full max-w-md">

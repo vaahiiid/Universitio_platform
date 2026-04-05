@@ -600,6 +600,7 @@ function AskiMateDashboardContent() {
     <DashboardLayout>
       <Helmet>
         <title>Dashboard — AskiMate AI</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       {/* ─── APP SHELL ─────────────────────────────────────────────────────── */}

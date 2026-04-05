@@ -39,6 +39,7 @@ export default function AskiMateLogin() {
       <Helmet>
         <title>Log In — AskiMate AI</title>
         <meta name="description" content="Log in to your AskiMate account." />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="w-full max-w-md">
