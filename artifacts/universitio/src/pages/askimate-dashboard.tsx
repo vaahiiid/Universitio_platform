@@ -630,7 +630,7 @@ function AskiMateDashboardContent() {
         </header>
 
         {/* ── BODY ───────────────────────────────────────────────────────── */}
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden min-h-0">
 
           {/* ── DESKTOP SIDEBAR ─────────────────────────────────────────── */}
           <aside className="hidden lg:flex flex-col w-60 bg-white border-r border-border/60 flex-shrink-0">
@@ -692,7 +692,7 @@ function AskiMateDashboardContent() {
 
             {/* ══ CHAT TAB ══════════════════════════════════════════════ */}
             {activeTab === "chat" && (
-              <div className="flex flex-1 overflow-hidden">
+              <div className="flex flex-1 overflow-hidden min-h-0">
 
                 {/* Desktop: Conversation sidebar */}
                 <div className="hidden lg:flex flex-col w-64 bg-white border-r border-border/60 flex-shrink-0">
