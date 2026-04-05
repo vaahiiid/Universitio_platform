@@ -1,0 +1,78 @@
+Do NOT touch or break any existing working system.
+
+Current issues in the Askimate dashboard chat:
+
+ISSUE 1 — AI answer formatting is poor
+The AI response is being shown as ugly raw text / badly formatted markdown.
+It is not visually suitable for a chat product.
+
+ISSUE 2 — AI only responds properly on a new conversation
+The first message in a new chat gets an answer, but follow-up messages in the same conversation are not reliably getting AI responses.
+
+We need both fixed.
+
+TASKS:
+
+STEP 1 — Diagnose follow-up message bug
+Inspect the full dashboard chat flow for existing conversations.
+
+Check:
+- send-message handler for subsequent messages
+- conversationId handling
+- polling / refresh after sending
+- whether the backend response is being ignored
+- whether any throttle / guard logic blocks subsequent AI replies
+- whether newChatMode or empty-state logic is interfering with normal chat mode
+
+Find the exact root cause of:
+"AI responds on first message in new conversation, but not properly on follow-up messages"
+
+Then fix it with the smallest safe change.
+
+STEP 2 — Verify conversation continuity
+After the fix, test one conversation with 4 consecutive user messages.
+Confirm that AI replies to each message in the same conversation, not just the first one.
+
+STEP 3 — Improve AI answer rendering
+Make AI messages display in a clean chat-friendly format.
+
+Requirements:
+- render markdown properly if markdown is present
+- headings should look clean, not oversized
+- bullet points should render as real lists
+- preserve line breaks and spacing
+- long answers should be visually readable
+- do NOT redesign the whole app
+- only improve the AI message bubble rendering
+
+If needed, use a lightweight markdown renderer already compatible with the frontend stack.
+Keep it minimal and safe.
+
+STEP 4 — Keep escalated UX intact
+For high-risk answers:
+- still show the AI answer
+- still show the mentor follow-up note
+- do not break admin escalation or AI metadata
+
+STEP 5 — Report clearly
+Tell me:
+1. exact root cause of the follow-up-message bug
+2. what files were changed
+3. how AI rendering was improved
+4. how you tested 4 consecutive messages in one conversation
+5. whether admin handoff still works
+
+IMPORTANT:
+Do NOT touch:
+- auth
+- payments
+- subscriptions
+- emails
+- KB approval flow
+- ingestion pipeline
+- mentor/admin workflow
+- unrelated routes
+
+Only fix:
+- subsequent AI reply flow in same conversation
+- AI answer formatting/rendering

@@ -256,8 +256,9 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         .catch((err) => console.error("[ACTIVITY] Failed to update lastActiveAt on chat:", err));
     }
 
-    // AI KB response: if no mentor/ai reply within the last 5 minutes, generate one now.
-    // Always calls the AI KB so admin can see review level + sources as context.
+    // AI KB response: always generate unless a human mentor replied within the last 5 minutes.
+    // Throttle exists only to preserve the human-handoff flow — AI follow-up messages must
+    // always be answered regardless of how recently the AI last replied.
     const lastNonUserMsg = await db.query.askimateMessages.findFirst({
       where: and(
         eq(askimateMessages.conversationId, conversation.id),
@@ -266,6 +267,13 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       orderBy: desc(askimateMessages.createdAt),
     });
     const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
+
+    // Only suppress AI when a real mentor (human) has replied within the last 5 min.
+    // AI-sender messages never block follow-up responses.
+    const mentorRecentlyReplied =
+      lastNonUserMsg?.sender === "mentor" &&
+      lastNonUserMsg.createdAt !== null &&
+      new Date(lastNonUserMsg.createdAt) >= fiveMinAgo;
 
     // Captured and returned in the response so clients need only one call
     let aiResponseData: {
@@ -276,7 +284,7 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       mode: string;
     } | null = null;
 
-    if (!lastNonUserMsg || (lastNonUserMsg.createdAt && new Date(lastNonUserMsg.createdAt) < fiveMinAgo)) {
+    if (!mentorRecentlyReplied) {
       try {
         const aiResult = await generateAiAnswer(message);
 

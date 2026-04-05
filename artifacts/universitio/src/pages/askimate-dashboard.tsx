@@ -12,6 +12,7 @@ import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { playNotificationSound } from "@/utils/askimate-realtime";
 import logoImg from "@assets/universitio logo.png";
+import ReactMarkdown from "react-markdown";
 
 type Tab = "chat" | "profile" | "subscription";
 
@@ -510,32 +511,22 @@ function AskiMateDashboardContent() {
         knownMessageIds.current.add(data.message.id);
         setMessages((prev) => [...prev, { id: data.message.id, isUserMessage: true, sender: "user", content, createdAt: new Date().toISOString() }]);
         setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 0);
-        // Immediately fetch conversation history to show AI response without waiting for 2s poll.
-        // The server inserts the AI message synchronously before returning, so it is already in the DB.
-        if (data.aiResponse?.answer) {
-          fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${convId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }).then(async (r) => {
-            if (!r.ok) return;
-            const fresh = await r.json();
-            const all: any[] = fresh.messages || [];
-            setMessages((prev) => {
-              const newMsgs = all.filter((m) => !knownMessageIds.current.has(m.id));
-              if (newMsgs.length === 0) return prev;
-              newMsgs.forEach((m) => knownMessageIds.current.add(m.id));
-              const aiNew = newMsgs.filter((m) => m.sender === "ai");
-              aiNew.forEach((m) => {
-                console.log("[AskiMate-Dashboard] AI message fetched immediately:", {
-                  mode: m.metadata?.mode,
-                  reviewLevel: m.metadata?.reviewLevel,
-                  needsHumanReview: m.metadata?.needsHumanReview,
-                  sources: (m.metadata?.sources ?? []).map((s: { id: string }) => s.id),
-                });
-              });
-              return [...prev, ...newMsgs];
-            });
-          }).catch(() => {/* fallback to 2s poll */});
-        }
+        // Always immediately fetch conversation history after send.
+        // The server inserts the AI message synchronously before returning, so it is in the DB.
+        fetch(`${import.meta.env.BASE_URL}api/askimate/chat/${convId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).then(async (r) => {
+          if (!r.ok) return;
+          const fresh = await r.json();
+          const all: any[] = fresh.messages || [];
+          setMessages((prev) => {
+            const newMsgs = all.filter((m) => !knownMessageIds.current.has(m.id));
+            if (newMsgs.length === 0) return prev;
+            newMsgs.forEach((m) => knownMessageIds.current.add(m.id));
+            return [...prev, ...newMsgs];
+          });
+          setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 50);
+        }).catch(() => {/* fallback to 2s poll */});
       } else {
         const err = await res.json();
         setUpdateError(err.message || err.error || "Failed to send message");
@@ -912,7 +903,7 @@ function AskiMateDashboardContent() {
                             </div>
                           )}
 
-                          {messages.map((msg) => (
+                          {[...new Map(messages.map((m) => [m.id, m])).values()].map((msg) => (
                             <div key={msg.id}>
                               {msg.id === lastNewMessageId && lastNewMessageId !== null && (
                                 <div className="flex items-center gap-2 my-2">
@@ -929,14 +920,36 @@ function AskiMateDashboardContent() {
                                   {msg.sender === "ai" && (
                                     <p className="text-xs font-semibold text-primary/60 mb-1 ml-1">AskiMate AI</p>
                                   )}
-                                  <div className={`max-w-xs sm:max-w-sm px-4 py-2.5 rounded-2xl text-sm ${
+                                  <div className={`px-4 py-2.5 rounded-2xl text-sm ${
                                     msg.sender === "user"
-                                      ? "bg-primary text-white rounded-br-sm"
+                                      ? "max-w-xs sm:max-w-sm bg-primary text-white rounded-br-sm"
                                       : msg.sender === "mentor"
-                                        ? `bg-white text-foreground rounded-bl-sm border border-green-200 shadow-sm ${msg.id === lastNewMessageId ? "ring-2 ring-green-400" : ""}`
-                                        : "bg-white text-foreground rounded-bl-sm border border-border/60 shadow-sm"
+                                        ? `max-w-xs sm:max-w-sm bg-white text-foreground rounded-bl-sm border border-green-200 shadow-sm ${msg.id === lastNewMessageId ? "ring-2 ring-green-400" : ""}`
+                                        : "max-w-xs sm:max-w-lg bg-white text-foreground rounded-bl-sm border border-border/60 shadow-sm"
                                   }`}>
-                                    {msg.content}
+                                    {msg.sender === "ai" ? (
+                                      <ReactMarkdown
+                                        components={{
+                                          p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
+                                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                                          em: ({ children }) => <em className="italic">{children}</em>,
+                                          h1: ({ children }) => <h1 className="text-base font-bold mb-2 mt-1">{children}</h1>,
+                                          h2: ({ children }) => <h2 className="text-sm font-bold mb-1.5 mt-1">{children}</h2>,
+                                          h3: ({ children }) => <h3 className="text-sm font-semibold mb-1 mt-1">{children}</h3>,
+                                          ul: ({ children }) => <ul className="list-disc list-outside pl-4 mb-2 space-y-0.5">{children}</ul>,
+                                          ol: ({ children }) => <ol className="list-decimal list-outside pl-4 mb-2 space-y-0.5">{children}</ol>,
+                                          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+                                          a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">{children}</a>,
+                                          code: ({ children }) => <code className="bg-slate-100 rounded px-1 py-0.5 text-xs font-mono">{children}</code>,
+                                          blockquote: ({ children }) => <blockquote className="border-l-2 border-border pl-3 italic text-muted-foreground my-1">{children}</blockquote>,
+                                          hr: () => <hr className="border-border/40 my-2" />,
+                                        }}
+                                      >
+                                        {msg.content}
+                                      </ReactMarkdown>
+                                    ) : (
+                                      msg.content
+                                    )}
                                   </div>
                                   <p className={`text-xs mt-1 text-muted-foreground ${msg.sender === "user" ? "text-right" : "text-left"}`}>
                                     {fmtTime(msg.createdAt)}
