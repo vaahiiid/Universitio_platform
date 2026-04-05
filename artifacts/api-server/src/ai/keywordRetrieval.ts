@@ -34,6 +34,10 @@ const TOKEN_NORMALISE: Record<string, string> = {
   students: "student", applications: "application", letters: "letter",
   fees: "fee", costs: "cost", rules: "rule", months: "month",
   qualifications: "qualification", institutions: "institution",
+  affordable: "fee", affordability: "fee", expensive: "cost", cheaper: "cost",
+  studentlife: "student", lifestyle: "life", life: "life",
+  attraction: "benefit", attractive: "benefit", benefits: "benefit", why: "why",
+  visa: "visa", visas: "visa", dependants: "dependent", dependent: "dependent",
 };
 
 function normalise(token: string): string {
@@ -180,6 +184,22 @@ function exactAcronymBoost(query: string, entry: IndexedEntry): number {
   return matches > 0 ? Math.log(matches + 1) * 2 : 0;
 }
 
+function titleTopicBoost(queryTokens: string[], entry: IndexedEntry): number {
+  const q = new Set(queryTokens);
+  const has = (t: string) => q.has(t);
+  let boost = 0;
+
+  if (entry.id === "why_uk" && has("why")) boost += 0.6;
+  if (entry.id === "about_uk" && (has("about") || has("attractive") || has("benefit"))) boost += 0.8;
+  if (entry.id === "uk_universities" && has("university")) boost += 0.9;
+  if (entry.id === "tuition_fees" && (has("fee") || has("cost") || has("affordable") || has("expensive"))) boost += 1.0;
+  if (entry.id === "uk_student_visa" && (has("visa") || has("dependent") || has("dependant") || has("dependents"))) boost += 1.2;
+  if (entry.id === "uk_student_jobs" && (has("job") || has("work") || has("hours"))) boost += 1.0;
+  if (entry.id === "uk_student_life" && (has("life") || has("student"))) boost += 0.8;
+
+  return boost;
+}
+
 export interface KeywordRetrievedEntry {
   id: string;
   title: string;
@@ -210,6 +230,7 @@ export function retrieveByKeyword(
     const acroBoost = isShortAcronym
       ? exactAcronymBoost(query, entry)
       : 0;
+    const topicBoost = titleTopicBoost(queryTokens, entry);
 
     return {
       id: entry.id,
@@ -217,7 +238,7 @@ export function retrieveByKeyword(
       risk_level: entry.risk_level,
       needs_human_review: entry.needs_human_review,
       answer: entry.answer,
-      score: base + qBoost + acroBoost,
+      score: base + qBoost + acroBoost + topicBoost,
     };
   });
 
