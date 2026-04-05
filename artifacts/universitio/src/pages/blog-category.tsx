@@ -118,7 +118,10 @@ export default function BlogCategoryPage() {
                   <img
                     src={`${BASE}${post.image}`}
                     alt={post.imageAlt}
+                    width="1200"
+                    height="675"
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>

@@ -57,7 +57,10 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
           src={`${BASE}${post.image}`}
           srcSet={`${BASE}${post.image.replace('.webp', '-400.webp')} 400w, ${BASE}${post.image.replace('.webp', '-600.webp')} 600w, ${BASE}${post.image} 1200w`}
           alt={post.imageAlt}
+          width="1200"
+          height="675"
           loading="lazy"
+          decoding="async"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
@@ -195,8 +198,11 @@ export default function BlogPostPage() {
             <img
               src={`${BASE}${post.image}`}
               alt={post.imageAlt}
+              width="1200"
+              height="675"
               className="w-full max-h-[480px] object-cover"
               loading="eager"
+              decoding="async"
             />
           </div>
 

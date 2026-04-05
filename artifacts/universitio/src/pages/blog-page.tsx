@@ -105,6 +105,10 @@ export default function BlogPage() {
                     srcSet={`${BASE}${featured.image.replace('.webp', '-400.webp')} 400w, ${BASE}${featured.image.replace('.webp', '-600.webp')} 600w, ${BASE}${featured.image} 1200w`}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     alt={featured.imageAlt}
+                    width="1200"
+                    height="675"
+                    fetchPriority="high"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -157,7 +161,10 @@ export default function BlogPage() {
                     src={`${BASE}${post.image}`}
                     srcSet={`${BASE}${post.image.replace('.webp', '-400.webp')} 400w, ${BASE}${post.image.replace('.webp', '-600.webp')} 600w, ${BASE}${post.image} 1200w`}
                     alt={post.imageAlt}
+                    width="1200"
+                    height="675"
                     loading="lazy"
+                    decoding="async"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
