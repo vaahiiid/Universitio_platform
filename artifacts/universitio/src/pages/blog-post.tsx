@@ -239,7 +239,7 @@ export default function BlogPostPage() {
 
           <article
             className="prose prose-slate max-w-none prose-headings:text-foreground prose-a:text-primary prose-a:no-underline prose-img:rounded-xl prose-img:mx-auto prose-strong:text-foreground prose-li:marker:text-primary/60 mb-10 blog-content"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: post.content.replace(/^\s*<h1[^>]*>.*?<\/h1>\s*/is, "") }}
           />
 
           {post.tags.length > 0 && (
