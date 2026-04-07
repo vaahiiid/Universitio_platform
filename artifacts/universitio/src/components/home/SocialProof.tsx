@@ -16,7 +16,7 @@ import { ConsentFields } from "@/components/ui/ConsentFields";
 
 const homePostsData = [...blogPosts]
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  .slice(0, 4);
+  .slice(0, 3);
 
 function StarRating({ count = 5 }: { count?: number }) {
   return (
@@ -148,7 +148,7 @@ export function SocialProof() {
 
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-3 gap-8 mb-12">
-            {homePostsData.slice(0, 4).map((post) => (
+            {homePostsData.slice(0, 3).map((post) => (
               <div key={post.id} className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
                 <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
                   <img
@@ -179,7 +179,7 @@ export function SocialProof() {
               className="w-full"
             >
               <CarouselContent className="-ml-4">
-                {homePostsData.slice(0, 4).map((post) => (
+                {homePostsData.slice(0, 3).map((post) => (
                   <CarouselItem key={post.id} className="pl-4 basis-full">
                     <div className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
                       <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
