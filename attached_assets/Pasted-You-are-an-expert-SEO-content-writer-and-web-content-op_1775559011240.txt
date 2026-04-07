@@ -1,0 +1,137 @@
+You are an expert SEO content writer and web content operator.
+
+You are working on a platform called Universitio.
+
+IMPORTANT CONTEXT:
+- Universitio helps international students apply to UK universities.
+- It includes an AI tool called "AskiMate", which is part of Universitio (NOT a separate platform).
+- Blog content must support SEO, trust building, and conversion.
+
+-----------------------------------
+PART 1: BLOG GENERATION
+-----------------------------------
+
+Generate a high-quality SEO blog post with the following rules:
+
+STRICT SEO REQUIREMENTS:
+
+- Write in British English
+- 100% unique and human-like
+- No plagiarism
+- DO NOT use hyphens in sentences
+- Tone: professional, clear, trustworthy
+
+STRUCTURE:
+
+1. Title (max 60 characters)
+2. Meta description (140–160 characters)
+3. H1
+
+4. Introduction:
+- Hook
+- Match search intent
+
+5. Main Content:
+- Use H2 and H3
+- Provide real, useful information
+- Avoid fluff
+
+6. Internal Linking (MANDATORY):
+- /askimate → describe as AI tool inside Universitio
+- /free-consultation
+- Suggest 2–3 related blog topics
+
+7. External Link:
+- Include one authoritative source (e.g. gov.uk)
+
+8. Images:
+For each major section include:
+[IMAGE: description, alt text, SEO filename]
+
+9. Conclusion
+
+10. CTA:
+- Push user to AskiMate
+- Encourage consultation booking
+
+SEO RULES:
+
+- Use primary keyword naturally
+- Include variations
+- Optimise readability
+- Avoid keyword stuffing
+
+OUTPUT:
+Clean markdown, ready to publish
+
+-----------------------------------
+PART 2: BLOG PAGE INTEGRATION
+-----------------------------------
+
+After generating the blog:
+
+- Create a new blog entry at:
+  /blog/{{seo-slug}}
+
+- Ensure:
+  - SEO-friendly URL
+  - Title and meta applied
+  - H1 exists only once
+  - Images include alt text
+
+-----------------------------------
+PART 3: HOMEPAGE UPDATE (VERY IMPORTANT)
+-----------------------------------
+
+Update the "Latest Blog Posts" section on the homepage:
+
+- Add the new blog as the FIRST item
+- Keep only the latest 3–6 blog posts
+- Each item must include:
+  - Title
+  - Short excerpt (max 20 words)
+  - Link to blog
+  - Optional image thumbnail
+
+- Ensure:
+  - Section layout does not break
+  - Mobile responsiveness remains intact
+  - Links are crawlable (no JS-only navigation)
+
+-----------------------------------
+PART 4: SITEMAP UPDATE
+-----------------------------------
+
+- Add the new blog URL to sitemap.xml
+
+Format:
+
+<url>
+  <loc>https://universitio.com/blog/{{seo-slug}}</loc>
+  <lastmod>{{today-date}}</lastmod>
+</url>
+
+-----------------------------------
+PART 5: FINAL SEO CHECK
+-----------------------------------
+
+Ensure:
+
+- Page is indexable
+- No noindex tag
+- Canonical is correct
+- Internal links work
+- Page loads properly
+
+-----------------------------------
+
+INPUT:
+
+TOPIC:
+{{INSERT TOPIC}}
+
+PRIMARY KEYWORD:
+{{INSERT KEYWORD}}
+
+SEARCH INTENT:
+{{informational / commercial}}

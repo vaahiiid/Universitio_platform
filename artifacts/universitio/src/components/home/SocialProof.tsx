@@ -16,7 +16,7 @@ import { ConsentFields } from "@/components/ui/ConsentFields";
 
 const homePostsData = [...blogPosts]
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  .slice(0, 3);
+  .slice(0, 4);
 
 function StarRating({ count = 5 }: { count?: number }) {
   return (
@@ -148,7 +148,7 @@ export function SocialProof() {
 
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-3 gap-8 mb-12">
-            {homePostsData.slice(0, 3).map((post) => (
+            {homePostsData.slice(0, 4).map((post) => (
               <div key={post.id} className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
                 <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
                   <img
@@ -164,11 +164,9 @@ export function SocialProof() {
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
                   <p className="text-muted-foreground text-sm mb-6 line-clamp-3 flex-grow">{post.excerpt}</p>
-                  <Link href={`/blog/${post.slug}`}>
-                    <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
-                      Read More
-                    </span>
-                  </Link>
+                  <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
+                    <Link href={`/blog/${post.slug}`}>Read More</Link>
+                  </span>
                 </div>
               </div>
             ))}
@@ -181,7 +179,7 @@ export function SocialProof() {
               className="w-full"
             >
               <CarouselContent className="-ml-4">
-                {homePostsData.slice(0, 3).map((post) => (
+                {homePostsData.slice(0, 4).map((post) => (
                   <CarouselItem key={post.id} className="pl-4 basis-full">
                     <div className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
                       <div className="aspect-[16/9] w-full bg-muted overflow-hidden">
@@ -198,11 +196,9 @@ export function SocialProof() {
                         </div>
                         <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
                         <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-grow">{post.excerpt}</p>
-                        <Link href={`/blog/${post.slug}`}>
-                          <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
-                            Read More
-                          </span>
-                        </Link>
+                        <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
+                          <Link href={`/blog/${post.slug}`}>Read More</Link>
+                        </span>
                       </div>
                     </div>
                   </CarouselItem>
