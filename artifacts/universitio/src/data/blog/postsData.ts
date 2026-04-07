@@ -21,14 +21,14 @@ export const blogPosts: BlogPost[] = [
     date: "2026-04-05",
     author: `Amelia Clarke`,
     excerpt: `Learn how to study in the UK with clear steps on applications, visas, costs, accommodation, and student support.`,
-    image: "study_in_the_uk_01_1775559099911.webp",
+    image: "study_in_the_uk_01_1775559443520.webp",
     imageAlt: `Student studying in the UK with a notebook and British flag`,
     categories: ["Student Guides"],
     categorySlugs: ["student-guides"],
     tags: ["study in the UK", "UK university application", "UK student visa", "international students UK", "study abroad guide", "UK admissions"],
     content: `<h1>Study in the UK: Complete Guide for Students</h1>
 
-<img src="@assets/study_in_the_uk_01_1775559282132.webp" alt="International student studying in the UK with a notebook and British flag" loading="lazy" />
+<img src="@assets/study_in_the_uk_01_1775559443520.webp" alt="International student studying in the UK with a notebook and British flag" loading="lazy" />
 
 <p>Studying in the UK remains one of the most popular choices for international students because of its respected universities, structured academic pathways, and strong graduate outcomes. If you are planning your move, it helps to understand the process clearly from the start.</p>
 
@@ -60,11 +60,11 @@ export const blogPosts: BlogPost[] = [
 <li>Respond to your offer and secure your place</li>
 </ol>
 
-<p>If you want guided support, you can use <a href="/askimate">AskiMate, the AI tool inside Universitio</a> for fast answers, or book a <a href="/free-consultation">free consultation</a> with our team.</p>
+<p>If you want guided support, you can use <a href="/askimate">the AI tool inside Universitio to check your chances</a> for fast answers, or <a href="/free-consultation">book a free consultation with an expert</a>.</p>
 
 <h2>What Do You Need for a UK Student Visa?</h2>
 
-<p>Once you have an offer, your next step is usually the student visa application. Official guidance is available on <a href="https://www.gov.uk/student-visa" target="_blank" rel="noopener noreferrer">gov.uk</a>.</p>
+<p>Once you have an offer, your next step is usually the student visa application. Official guidance is available on <a href="https://www.gov.uk/student-visa" target="_blank" rel="noopener noreferrer">official UK student visa requirements</a>.</p>
 
 <h3>Common visa requirements</h3>
 <ul>
@@ -90,7 +90,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Choosing the right university, preparing documents, and understanding visa rules can feel overwhelming. Universitio supports students through each stage with practical advice and personalised guidance.</p>
 
-<p>For fast help, try <a href="/askimate">AskiMate inside Universitio</a>. If you want one to one support, you can also <a href="/free-consultation">book a free consultation</a>.</p>
+<p>Not sure if you qualify to study in the UK? Use <a href="/askimate">the AI tool inside Universitio to check your chances</a> and get personalised guidance. Or <a href="/free-consultation">book a free consultation with an expert</a>.</p>
 
 <p>Related reading: <a href="/blog/scholarship-vs-funding-guide">Scholarship vs Funding</a>, <a href="/blog/university-for-the-creative-arts-guide">University for the Creative Arts Guide</a>, and <a href="/blog/uk-student-visa-guide">UK Student Visa Guide</a>.</p>
 

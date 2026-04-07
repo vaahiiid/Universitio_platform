@@ -164,9 +164,9 @@ export function SocialProof() {
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
                   <p className="text-muted-foreground text-sm mb-6 line-clamp-3 flex-grow">{post.excerpt}</p>
-                  <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
-                    <Link href={`/blog/${post.slug}`}>Read More</Link>
-                  </span>
+                  <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
+                    Read More
+                  </Link>
                 </div>
               </div>
             ))}
@@ -196,9 +196,9 @@ export function SocialProof() {
                         </div>
                         <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
                         <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-grow">{post.excerpt}</p>
-                        <span className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
-                          <Link href={`/blog/${post.slug}`}>Read More</Link>
-                        </span>
+                        <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-foreground border-b-2 border-secondary pb-1 inline-block hover:text-secondary transition-colors">
+                          Read More
+                        </Link>
                       </div>
                     </div>
                   </CarouselItem>
