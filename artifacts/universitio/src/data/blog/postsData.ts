@@ -21,14 +21,14 @@ export const blogPosts: BlogPost[] = [
     date: "2026-04-05",
     author: `Amelia Clarke`,
     excerpt: `Learn how to study in the UK with clear steps on applications, visas, costs, accommodation, and student support.`,
-    image: "study_in_the_uk_01_1775559443520.webp",
+    image: "study_in_the_uk_01_1775559557065.webp",
     imageAlt: `Student studying in the UK with a notebook and British flag`,
     categories: ["Student Guides"],
     categorySlugs: ["student-guides"],
     tags: ["study in the UK", "UK university application", "UK student visa", "international students UK", "study abroad guide", "UK admissions"],
     content: `<h1>Study in the UK: Complete Guide for Students</h1>
 
-<img src="@assets/study_in_the_uk_01_1775559443520.webp" alt="International student studying in the UK with a notebook and British flag" loading="lazy" />
+<img src="/images/blog/study_in_the_uk_01.webp" alt="International student studying in the UK holding a British flag" loading="lazy" />
 
 <p>Studying in the UK remains one of the most popular choices for international students because of its respected universities, structured academic pathways, and strong graduate outcomes. If you are planning your move, it helps to understand the process clearly from the start.</p>
 
