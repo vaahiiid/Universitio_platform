@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-04-05",
     author: `Amelia Clarke`,
     excerpt: `Learn how to study in the UK with clear steps on applications, visas, costs, accommodation, and student support.`,
-    image: "study_in_the_uk_01.webp",
+    image: "blog-images/study_in_the_uk_01.webp",
     imageAlt: `Student studying in the UK with a notebook and British flag`,
     categories: ["Student Guides"],
     categorySlugs: ["student-guides"],
