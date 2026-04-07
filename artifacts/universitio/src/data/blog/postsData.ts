@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [
     tags: ["study in the UK", "UK university application", "UK student visa", "international students UK", "study abroad guide", "UK admissions"],
     content: `<h1>Study in the UK: Complete Guide for Students</h1>
 
-<img src="/images/blog/study_in_the_uk_01.webp" alt="International student studying in the UK holding a British flag" loading="lazy" />
+<img src="/blog-images/study_in_the_uk_01.webp" alt="International student studying in the UK holding a British flag" loading="lazy" />
 
 <p>Studying in the UK remains one of the most popular choices for international students because of its respected universities, structured academic pathways, and strong graduate outcomes. If you are planning your move, it helps to understand the process clearly from the start.</p>
 
