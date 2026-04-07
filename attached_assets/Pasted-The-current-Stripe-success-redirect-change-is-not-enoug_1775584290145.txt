@@ -1,0 +1,62 @@
+The current Stripe success redirect change is not enough for analytics and ad tracking.
+
+Why this matters:
+We are setting up Google Ads for AskiMate subscriptions. Google Ads must optimise for real paid subscriptions, not for generic dashboard visits. For that to work, Google Analytics needs to reliably detect a unique post-payment success signal.
+
+What we need:
+After a successful Stripe payment, the user should return to the dashboard with a unique URL parameter so Google Analytics can detect a confirmed paid subscription event.
+
+Current intended success URL:
+https://universitio.com/askimate-dashboard?payment=success&session_id={CHECKOUT_SESSION_ID}
+
+The problem:
+Although this URL is being set, the success signal is not being reliably captured for conversion tracking. This means our paid subscription conversion in GA4 / Google Ads is still not working correctly.
+
+Why it must be fixed:
+
+* We are launching Google Ads for a paid subscription product.
+* Ads must optimise for actual successful payments.
+* A normal dashboard visit is not a valid purchase signal.
+* If this is not fixed, Google Ads will optimise for the wrong behaviour and waste budget.
+
+Required outcome:
+Make the successful Stripe payment flow reliably detectable as a unique conversion event for analytics.
+
+Important constraints:
+
+* Do NOT change anything unrelated.
+* Do NOT refactor the app.
+* Do NOT change UI or styling.
+* Do NOT change subscription logic unless required for this exact fix.
+* Preserve the existing session_id verification flow if it is needed for plan activation.
+
+What to investigate and fix:
+
+1. Confirm that after successful Stripe payment, the browser really lands on:
+   /askimate-dashboard?payment=success&session_id=...
+   before any cleanup happens.
+
+2. Confirm whether the URL parameters are being removed too quickly for GA4 to detect the page-load condition.
+
+3. If URL cleanup happens immediately, delay cleanup enough for analytics detection, or implement a more reliable event trigger.
+
+Preferred robust solution:
+If URL-based detection is unreliable, explicitly fire a Google Analytics event after successful payment confirmation and successful premium activation, for example:
+
+* event name: subscribe_paid
+
+This event should only fire:
+
+* after Stripe success is verified
+* after the backend confirms the session and activates the premium plan
+
+It must NOT fire:
+
+* on normal dashboard visits
+* on failed payments
+* on cancelled checkouts
+
+Goal:
+We need a reliable paid subscription conversion signal for GA4 and Google Ads.
+
+Please fix only this issue and explain exactly what changed.

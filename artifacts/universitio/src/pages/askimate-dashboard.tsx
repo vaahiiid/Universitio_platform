@@ -11,6 +11,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { playNotificationSound } from "@/utils/askimate-realtime";
+import { trackEvent } from "@/lib/analytics";
 import logoImg from "@assets/universitio logo.png";
 import ReactMarkdown from "react-markdown";
 
@@ -207,6 +208,12 @@ function AskiMateDashboardContent() {
           setActiveTab("subscription");
           setPaymentSuccess(true);
           setTimeout(() => setPaymentSuccess(false), 12000);
+
+          // Fire GA4 conversion event — only here, only after backend confirms payment and plan activation
+          trackEvent("subscribe_paid", {
+            plan: confirmData.planLabel || "premium",
+            currency: "GBP",
+          });
 
           toast({
             title: "🎉 Payment successful!",
