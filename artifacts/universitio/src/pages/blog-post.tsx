@@ -238,7 +238,7 @@ export default function BlogPostPage() {
           <hr className="border-border mb-8" />
 
           <article
-            className="prose prose-slate max-w-none prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:mx-auto prose-strong:text-foreground prose-li:marker:text-primary/60 mb-10"
+            className="prose prose-slate max-w-none prose-headings:text-foreground prose-a:text-primary prose-a:no-underline prose-img:rounded-xl prose-img:mx-auto prose-strong:text-foreground prose-li:marker:text-primary/60 mb-10 blog-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 

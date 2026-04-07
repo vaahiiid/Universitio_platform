@@ -187,3 +187,7 @@
 .glass-panel {
   @apply bg-white/70 dark:bg-black/50 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg;
 }
+
+.blog-content a:hover {
+  text-decoration: underline;
+}

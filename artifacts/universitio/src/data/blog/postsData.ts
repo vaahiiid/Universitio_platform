@@ -26,11 +26,7 @@ export const blogPosts: BlogPost[] = [
     categories: ["Student Guides"],
     categorySlugs: ["student-guides"],
     tags: ["study in the UK", "UK university application", "UK student visa", "international students UK", "study abroad guide", "UK admissions"],
-    content: `<h1>Complete Guide to Studying in the UK</h1>
-
-<img src="/blog-images/study_in_the_uk_01.webp" alt="International student studying in the UK holding a British flag" loading="lazy" />
-
-<p>Studying in the UK remains one of the most attractive options for international students, but making the right decisions at the right time is what truly determines success. Many students focus only on choosing a university, while ignoring critical factors such as visa requirements, financial planning, and application strategy.</p>
+    content: `<p>Studying in the UK remains one of the most attractive options for international students, but making the right decisions at the right time is what truly determines success. Many students focus only on choosing a university, while ignoring critical factors such as visa requirements, financial planning, and application strategy.</p>
 
 <p>This guide provides a complete and practical overview of studying in the UK, helping you understand the process step by step and avoid common mistakes that can delay or damage your chances.</p>
 
