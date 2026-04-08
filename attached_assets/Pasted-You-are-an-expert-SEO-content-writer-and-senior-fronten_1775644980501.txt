@@ -1,0 +1,214 @@
+You are an expert SEO content writer and senior frontend engineer working on the Universitio website.
+
+Your task is to CREATE and PUBLISH a new blog post with full SEO optimisation and correct system integration.
+
+-----------------------------------
+CONTEXT
+-----------------------------------
+
+Platform: Universitio  
+Purpose: Help international students apply to universities  
+
+Countries covered:
+- UK
+- USA
+- Canada
+- Germany
+- Netherlands
+- Italy
+
+Core features:
+- AI tool: /askimate
+- Free consultation: /free-consultation
+
+-----------------------------------
+BLOG TOPIC
+-----------------------------------
+
+Title:
+UK Student Visa Requirements 2026
+
+-----------------------------------
+SEO REQUIREMENTS (CRITICAL)
+-----------------------------------
+
+- British English
+- 900–1200 words
+- Human tone
+- No fluff
+- No hyphens in sentences
+- Clear structure with H1 (ONLY ONCE), H2, H3
+- Optimised for search intent
+- No duplicate headings
+- No inline image tags (image handled separately)
+
+-----------------------------------
+STRUCTURE
+-----------------------------------
+
+- Title (under 60 characters)
+- Meta description (150–160 characters)
+- H1 (only once)
+- Multiple H2 sections
+- Bullet points where useful
+- Conclusion
+- Strong CTA
+
+-----------------------------------
+LINKING RULES
+-----------------------------------
+
+INTERNAL LINKS:
+- /askimate
+- /free-consultation
+- Link to UK pillar article if exists (/blog/study-in-uk-complete-guide)
+
+EXTERNAL LINK:
+- https://www.gov.uk/student-visa
+
+Use anchor text properly, no raw URLs.
+
+-----------------------------------
+CONTENT TO PUBLISH
+-----------------------------------
+
+Title:
+UK Student Visa Requirements 2026
+
+Meta Description:
+Learn the full UK student visa requirements for 2026, including financial rules, documents, and tips to avoid rejection.
+
+H1:
+UK Student Visa Requirements 2026
+
+Introduction:
+Understanding the UK student visa process is one of the most important steps for any international student planning to study in the UK. Many applicants receive university offers but face delays or refusals due to mistakes in their visa application.
+
+This guide explains everything you need to know about UK student visa requirements in 2026, including documents, financial rules, and common mistakes to avoid.
+
+What is a UK Student Visa:
+A UK Student visa allows international students to study at licensed institutions in the UK. It is required for most non UK residents who plan to study for more than six months.
+
+To apply, you must first receive a Confirmation of Acceptance for Studies from a university.
+
+Who Needs a UK Student Visa:
+You will need a student visa if:
+
+- You are not a UK or Irish citizen  
+- Your course lasts more than six months  
+- You have received an official offer from a UK institution  
+
+You can learn more about studying in the UK in this  
+<a href="/blog/study-in-uk-complete-guide">complete UK study guide</a>.
+
+Financial Requirements:
+One of the most common reasons for visa refusal is incorrect financial documentation.
+
+You must prove that you can cover:
+
+- Tuition fees for one year  
+- Living expenses  
+
+Typical requirements:
+
+- £1,334 per month for London  
+- £1,023 per month outside London  
+
+You must hold this money in your account for at least 28 consecutive days.
+
+Always check the official requirements here:  
+<a href="https://www.gov.uk/student-visa" target="_blank">UK student visa requirements</a>.
+
+Documents Required:
+You will typically need:
+
+- Valid passport  
+- Confirmation of Acceptance for Studies (CAS)  
+- Proof of funds  
+- English language certificate  
+- Academic documents  
+
+Each document must be accurate and consistent.
+
+Common Mistakes to Avoid:
+Many applicants fail due to avoidable errors:
+
+- Incorrect bank statements  
+- Funds not held for enough days  
+- Missing documents  
+- Inconsistent information  
+- Weak explanation of study plans  
+
+Avoiding these mistakes can significantly improve your chances.
+
+Processing Time:
+Most UK student visa applications are processed within three weeks.
+
+However, delays can occur if documents are incomplete or unclear.
+
+Applying early is strongly recommended.
+
+How to Increase Your Chances:
+Instead of guessing, you should evaluate your profile before applying.
+
+The  
+<a href="/askimate">AI tool inside Universitio to check your chances</a>  
+can help you understand your eligibility and identify risks.
+
+If you need personalised support, you can also  
+<a href="/free-consultation">book a free consultation</a>  
+with an expert.
+
+Conclusion:
+Applying for a UK student visa is not complicated, but it requires accuracy and preparation. Understanding financial requirements and preparing the correct documents will greatly reduce your risk of rejection.
+
+CTA:
+Not sure if your visa application will be approved?
+
+Use the  
+<a href="/askimate">AI tool inside Universitio to check your chances</a>  
+or  
+<a href="/free-consultation">book a free consultation</a>  
+to move forward with confidence.
+
+-----------------------------------
+IMAGE HANDLING
+-----------------------------------
+
+- Use the uploaded image (provided separately)
+- Set it as the featured image ONLY
+- Do NOT insert <img> inside content
+- Ensure correct path: /blog-images/filename.webp
+
+-----------------------------------
+HOMEPAGE UPDATE
+-----------------------------------
+
+- Ensure this new post appears in homepage "Latest Blog Posts"
+- Homepage must show ONLY the latest 3 posts
+- Sorted by date descending
+
+-----------------------------------
+SITEMAP & INDEXING (CRITICAL)
+-----------------------------------
+
+1. Add this blog URL to sitemap.xml
+
+2. Ensure sitemap is accessible at:
+   https://universitio.com/sitemap.xml
+
+3. Ensure no "noindex" tag exists
+
+4. Ensure page is crawlable
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+- Only one H1 exists
+- No duplicate title in content
+- No duplicate image
+- Links work correctly
+- SEO structure is clean
+- Blog appears on homepage
+- Sitemap updated
