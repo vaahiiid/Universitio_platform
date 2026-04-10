@@ -191,3 +191,14 @@
 .blog-content a:hover {
   text-decoration: underline;
 }
+
+/* AskiMate AI nav sparkle icon — subtle shimmer, not distracting */
+@keyframes nav-sparkle {
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  40% { opacity: 0.65; transform: scale(0.88) rotate(-8deg); }
+  60% { opacity: 1; transform: scale(1.12) rotate(8deg); }
+}
+
+.nav-sparkle-icon {
+  animation: nav-sparkle 3.2s ease-in-out infinite;
+}

@@ -1,0 +1,79 @@
+Enhance the visibility and prominence of "AskiMate AI" in the main navigation (header menu) to make the platform feel AI-first.
+
+IMPORTANT:
+- Do NOT change layout structure
+- Do NOT break responsiveness
+- Do NOT affect SEO
+- Only improve visibility, styling, and emphasis of "AskiMate AI"
+
+-----------------------------------
+GOAL
+-----------------------------------
+
+When a user enters the site, "AskiMate AI" should immediately stand out as the main product.
+
+It should feel like:
+- The core feature of the platform
+- A product, not just a menu item
+
+-----------------------------------
+DESIGN CHANGES (APPLY CAREFULLY)
+-----------------------------------
+
+1. Make "AskiMate AI" visually stronger than other menu items:
+   - Slightly bolder font weight
+   - Slightly different color or gradient
+   - Optional subtle glow or highlight
+
+2. Add a small AI indicator:
+   - Example: a small dot, sparkle, or subtle icon
+   - Keep it minimal and premium (NOT flashy or cartoonish)
+
+3. Optional enhancement:
+   - Add a subtle animated effect (e.g. soft pulse or glow)
+   - Must be very smooth and not distracting
+
+4. Hover state:
+   - Slight scale or brightness increase
+   - Smooth transition
+
+-----------------------------------
+POSITIONING
+-----------------------------------
+
+- Keep "AskiMate AI" in its current position
+- Do NOT move menu structure
+- Do NOT add new menu items
+
+-----------------------------------
+VISUAL STYLE
+-----------------------------------
+
+- Modern, premium, AI-first
+- Clean and minimal
+- No heavy animations
+- No visual clutter
+
+-----------------------------------
+ACCESSIBILITY
+-----------------------------------
+
+- Ensure contrast is readable
+- Keep text clear and accessible
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+- "AskiMate AI" is clearly more noticeable than other items
+- Looks like a product, not just navigation
+- No layout shift
+- Works on mobile and desktop
+- No SEO impact
+
+-----------------------------------
+GOAL SUMMARY
+-----------------------------------
+
+The user should instantly notice:
+"AskiMate AI is the main thing I should click"

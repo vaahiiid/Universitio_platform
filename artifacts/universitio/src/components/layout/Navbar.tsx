@@ -64,18 +64,27 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors flex items-center gap-1.5"
-                >
-                  {link.name}
-                  {"aiIcon" in link && link.aiIcon && (
-                    <Sparkles className="w-3.5 h-3.5 text-primary/70" />
-                  )}
-                </button>
-              ))}
+              {navLinks.map((link) =>
+                link.aiIcon ? (
+                  <button
+                    key={link.name}
+                    onClick={() => handleNavClick(link.href)}
+                    className="relative text-sm font-semibold text-primary flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/35 hover:scale-[1.04] transition-all duration-200 shadow-sm hover:shadow-[0_0_12px_rgba(66,20,125,0.18)] group"
+                    aria-label="AskiMate AI"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-primary nav-sparkle-icon" />
+                    {link.name}
+                  </button>
+                ) : (
+                  <button
+                    key={link.name}
+                    onClick={() => handleNavClick(link.href)}
+                    className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors flex items-center gap-1.5"
+                  >
+                    {link.name}
+                  </button>
+                )
+              )}
             </div>
             <div className="flex items-center space-x-3 pl-4 border-l border-border">
               <Button
@@ -118,18 +127,26 @@ export function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-b shadow-lg absolute w-full left-0">
           <div className="px-4 pt-2 pb-6 space-y-1">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => handleNavClick(link.href)}
-                className="flex items-center gap-2 w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
-              >
-                {link.name}
-                {"aiIcon" in link && link.aiIcon && (
-                  <Sparkles className="w-3.5 h-3.5 text-primary/70" />
-                )}
-              </button>
-            ))}
+            {navLinks.map((link) =>
+              link.aiIcon ? (
+                <button
+                  key={link.name}
+                  onClick={() => handleNavClick(link.href)}
+                  className="flex items-center gap-2 w-full text-left px-3 py-3 text-base font-semibold text-primary bg-primary/5 border border-primary/15 rounded-xl"
+                >
+                  <Sparkles className="w-4 h-4 text-primary nav-sparkle-icon" />
+                  {link.name}
+                </button>
+              ) : (
+                <button
+                  key={link.name}
+                  onClick={() => handleNavClick(link.href)}
+                  className="flex items-center gap-2 w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
+                >
+                  {link.name}
+                </button>
+              )
+            )}
             <button
               onClick={() => handleNavClick("/blog")}
               className="block w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
