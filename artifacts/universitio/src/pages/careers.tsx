@@ -44,10 +44,10 @@ export default function Careers() {
               If you would like to be considered for future opportunities,
               please send your CV and a brief cover letter to{" "}
               <a
-                href="mailto:info@universitio.com"
+                href="mailto:vahidmoir@gmail.com"
                 className="text-primary font-semibold hover:underline"
               >
-                info@universitio.com
+                vahidmoir@gmail.com
               </a>
               . We will keep your details on file and get in touch should a
               suitable role arise.

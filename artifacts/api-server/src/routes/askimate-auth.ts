@@ -141,7 +141,7 @@ router.post("/askimate/signup", async (req: Request, res: Response) => {
     }).catch((err) => console.error("[EMAIL] Verification email failed:", err));
 
     // Admin notification — new user signup (fire-and-forget)
-    const signupAdminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "info@universitio.com")
+    const signupAdminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "vahidmoir@gmail.com")
       .split(",")
       .map((e) => e.trim())
       .filter(Boolean);

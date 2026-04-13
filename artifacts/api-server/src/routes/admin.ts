@@ -1059,7 +1059,7 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
 
     // Admin notification — KB entry approved (fire-and-forget)
     if (approveForKb && aiContext?.sourceQuestion?.trim()) {
-      const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "info@universitio.com")
+      const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "vahidmoir@gmail.com")
         .split(",")
         .map((e) => e.trim())
         .filter(Boolean);

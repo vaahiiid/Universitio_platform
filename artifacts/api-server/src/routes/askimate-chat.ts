@@ -328,7 +328,7 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
 
         // Admin notification — only when a message needs human/mentor review (fire-and-forget)
         if (aiResult.needsHumanReview) {
-          const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "info@universitio.com")
+          const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "vahidmoir@gmail.com")
             .split(",")
             .map((e) => e.trim())
             .filter(Boolean);

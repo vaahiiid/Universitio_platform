@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "universitio-admin-secret-key-2026";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@universitio.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "vahidmoir@gmail.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Universitio2002@";
 
 if (!process.env.JWT_SECRET) {

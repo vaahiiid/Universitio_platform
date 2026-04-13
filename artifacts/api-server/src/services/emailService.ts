@@ -24,7 +24,7 @@ const SENDERS = {
 
 export type EmailSender = keyof typeof SENDERS;
 
-const REPLY_TO = "info@universitio.com";
+const REPLY_TO = "vahidmoir@gmail.com";
 
 export interface SendEmailOptions {
   to: string | string[];

@@ -2359,7 +2359,7 @@ At Universitio, we are official representatives of UK universities, colleges and
 <p>No hidden steps. No unnecessary intermediaries.</p>
 
 <h2>How to Start a Partnership</h2>
-<p>To start working with us, simply email <strong><a class="decorated-link cursor-pointer" rel="noopener noreferrer">info@universitio.com</a></strong> with the following details:</p>
+<p>To start working with us, simply email <strong><a class="decorated-link cursor-pointer" rel="noopener noreferrer">vahidmoir@gmail.com</a></strong> with the following details:</p>
 
 <ul>
         <li>
