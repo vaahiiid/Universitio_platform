@@ -33,6 +33,12 @@ const router: IRouter = Router();
 
 router.use(requireAdmin);
 
+// ── Mentor-reply email rate limiter ─────────────────────────────────────────
+// Prevents email spam: max 1 notification per conversation per 2 minutes.
+// In-memory only — intentionally resets on server restart (fire-and-forget safety).
+const MENTOR_EMAIL_COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes
+const mentorEmailLastSent = new Map<number, number>(); // conversationId → timestamp
+
 const CONSULTATION_STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
 const GENERAL_STATUSES = ["New", "Under Review", "Contacted", "Accepted", "Rejected"];
 const MESSAGE_STATUSES = ["New", "Reviewed", "Contacted", "Closed"];
@@ -951,9 +957,9 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
       return;
     }
 
-    // Verify conversation exists
+    // Verify conversation exists and get userId for notification
     const [conversation] = await db
-      .select({ id: askimateConversations.id })
+      .select({ id: askimateConversations.id, userId: askimateConversations.userId })
       .from(askimateConversations)
       .where(eq(askimateConversations.id, conversationId))
       .limit(1);
@@ -984,6 +990,44 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
       .update(askimateConversations)
       .set({ updatedAt: new Date() })
       .where(eq(askimateConversations.id, conversationId));
+
+    // ── Mentor reply email notification (fire-and-forget) ────────────────────
+    // Triggers only for authenticated users; rate-limited to 1 per conversation per 2 min.
+    if (conversation.userId) {
+      const lastSent = mentorEmailLastSent.get(conversationId) ?? 0;
+      const now = Date.now();
+      if (now - lastSent >= MENTOR_EMAIL_COOLDOWN_MS) {
+        mentorEmailLastSent.set(conversationId, now);
+        // Fetch user asynchronously — do not await; failure must never block the response
+        db.query.askimateUsers.findFirst({
+          where: eq(askimateUsers.id, conversation.userId),
+        }).then((user) => {
+          if (!user?.email) return;
+          const preview = message.trim().slice(0, 100) + (message.trim().length > 100 ? "…" : "");
+          const mentorDisplayName = (req as Request & { admin?: { email: string } }).admin?.email
+            ? "Universitio Mentor"
+            : undefined;
+          return sendTransactionalEmail(EmailType.MENTOR_REPLY, user.email, {
+            firstName: user.firstName ?? "there",
+            mentorName: mentorDisplayName,
+            messagePreview: preview,
+            conversationId,
+          });
+        }).then((result) => {
+          if (result && !result.success) {
+            console.error(`[EMAIL] Mentor reply notification failed for conversationId=${conversationId}:`, result.error);
+          } else if (result?.success) {
+            console.log(`[EMAIL] Mentor reply notification sent for conversationId=${conversationId}`);
+          }
+        }).catch((err) => {
+          console.error(`[EMAIL] Mentor reply notification error for conversationId=${conversationId}:`, err);
+        });
+      } else {
+        const remaining = Math.ceil((MENTOR_EMAIL_COOLDOWN_MS - (now - lastSent)) / 1000);
+        console.log(`[EMAIL] Mentor reply email rate-limited for conversationId=${conversationId} (${remaining}s remaining)`);
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     const adminEmail = (req as Request & { admin?: { email: string } }).admin?.email ?? "admin";
     console.log(`[AITL] MENTOR_REPLY conversationId=${conversationId} messageId=${inserted.id} approveForKb=${!!approveForKb} by=${adminEmail}`);

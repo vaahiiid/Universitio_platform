@@ -1,0 +1,119 @@
+Implement an email notification system that sends an email to the user whenever a mentor sends a new message in a conversation.
+
+IMPORTANT:
+- This must trigger ONLY when a mentor sends a message (not AI, not system)
+- Do NOT send duplicate emails
+- Must be reliable and production-safe
+
+-----------------------------------
+GOAL
+-----------------------------------
+
+When a mentor replies to a user:
+
+→ The user receives an email notification:
+"You have a new message from your mentor"
+
+→ Email includes a button/link:
+"View Message"
+
+→ Clicking the link takes the user directly to the conversation
+
+-----------------------------------
+TRIGGER LOGIC
+-----------------------------------
+
+Trigger email ONLY when:
+
+- message.sender_role === "mentor"
+- message is successfully saved in DB
+- message is new (not edited, not retried)
+
+DO NOT trigger for:
+- AI messages
+- system messages
+- user messages
+
+-----------------------------------
+EMAIL CONTENT
+-----------------------------------
+
+Subject:
+You have a new message from your mentor
+
+Body (clean HTML):
+
+Hello,
+
+You have received a new message from your mentor on Universitio.
+
+Click below to view and respond:
+
+[ View Message ]
+
+Button URL:
+https://universitio.com/dashboard/messages
+
+Optional:
+Include short preview of message (first 100 characters)
+
+-----------------------------------
+TECH IMPLEMENTATION
+-----------------------------------
+
+1. Hook into message creation logic (backend)
+2. After saving mentor message → trigger email function
+3. Use existing email service (SMTP / SendGrid / etc.)
+
+4. Ensure:
+- Async (non-blocking)
+- Retry-safe
+- No duplicate sends
+
+-----------------------------------
+USER DATA
+-----------------------------------
+
+- Fetch user email from user profile
+- Ensure email exists before sending
+- If no email → skip silently
+
+-----------------------------------
+RATE LIMIT / SAFETY
+-----------------------------------
+
+- Prevent spam:
+  Max 1 email per conversation per 2 minutes
+
+-----------------------------------
+OPTIONAL (IF EASY)
+-----------------------------------
+
+- Include mentor name in email
+- Include message snippet preview
+
+-----------------------------------
+UX REQUIREMENT
+-----------------------------------
+
+Email must feel:
+- Clean
+- Professional
+- Trustworthy
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+- Email triggers only on mentor messages
+- No duplicates
+- Link works
+- Email renders correctly (mobile + desktop)
+- No performance impact
+
+-----------------------------------
+GOAL SUMMARY
+-----------------------------------
+
+User should feel:
+"I got a reply — I should go back and continue the conversation"

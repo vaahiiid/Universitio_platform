@@ -10,6 +10,7 @@ import { buildRenewalPush }        from "./renewalPush";
 import { buildReEngagement }        from "./reEngagement";
 import { buildEmailVerifiedConfirm } from "./emailVerifiedConfirm";
 import { buildAdminNotification }   from "./adminNotification";
+import { buildMentorReply }         from "./mentorReply";
 
 /**
  * Central template registry.
@@ -32,4 +33,5 @@ export const templateRegistry: {
   [EmailType.RE_ENGAGEMENT]:       buildReEngagement,
   [EmailType.EMAIL_VERIFIED]:      buildEmailVerifiedConfirm,
   [EmailType.ADMIN_NOTIFICATION]:  buildAdminNotification,
+  [EmailType.MENTOR_REPLY]:        buildMentorReply,
 };

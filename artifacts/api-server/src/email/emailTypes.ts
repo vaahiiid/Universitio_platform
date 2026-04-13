@@ -16,6 +16,7 @@ export const EmailType = {
   RE_ENGAGEMENT:        "RE_ENGAGEMENT",
   EMAIL_VERIFIED:       "EMAIL_VERIFIED",
   ADMIN_NOTIFICATION:   "ADMIN_NOTIFICATION",
+  MENTOR_REPLY:         "MENTOR_REPLY",
 } as const;
 
 export type EmailType = (typeof EmailType)[keyof typeof EmailType];
@@ -86,6 +87,13 @@ export interface AdminNotificationPayload {
   adminLink?: string;
 }
 
+export interface MentorReplyPayload {
+  firstName: string;
+  mentorName?: string;
+  messagePreview?: string;
+  conversationId?: number;
+}
+
 // ─── Payload Map — ties each EmailType to its payload interface ───────────────
 
 export type EmailPayloadMap = {
@@ -102,6 +110,7 @@ export type EmailPayloadMap = {
   [EmailType.RE_ENGAGEMENT]:       ReEngagementPayload;
   [EmailType.EMAIL_VERIFIED]:      EmailVerifiedPayload;
   [EmailType.ADMIN_NOTIFICATION]:  AdminNotificationPayload;
+  [EmailType.MENTOR_REPLY]:        MentorReplyPayload;
 };
 
 // ─── Compiled Template — what every builder must return ──────────────────────
