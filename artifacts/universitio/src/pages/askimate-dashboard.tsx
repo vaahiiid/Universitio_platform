@@ -745,7 +745,10 @@ function AskiMateDashboardContent() {
                               />
                             ) : (
                               <>
-                                <span className="flex-1 text-sm truncate">{conv.title}</span>
+                                <span className="flex-1 text-sm truncate min-w-0">{conv.title}</span>
+                                {conv.mentorTakenOver && (
+                                  <span className="flex-shrink-0 w-2 h-2 rounded-full bg-primary/70 ml-1" title="Mentor Supervised" />
+                                )}
                                 <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                                   <button
                                     onClick={(e) => { e.stopPropagation(); setEditingConvId(conv.id); setEditingTitle(conv.title); }}
@@ -907,9 +910,17 @@ function AskiMateDashboardContent() {
                           ) : (
                             <h3 className="text-sm font-semibold text-foreground truncate">{selectedConv.title}</h3>
                           )}
-                          <p className={`text-xs ${selectedConv.status === "closed" ? "text-amber-600" : "text-green-600"}`}>
-                            {selectedConv.status === "closed" ? "Archived" : "Active"}
-                          </p>
+                          <div className="flex items-center gap-2">
+                            <p className={`text-xs ${selectedConv.status === "closed" ? "text-amber-600" : "text-green-600"}`}>
+                              {selectedConv.status === "closed" ? "Archived" : "Active"}
+                            </p>
+                            {selectedConv.mentorTakenOver && (
+                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full">
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                Mentor Supervised
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                         <div className="flex items-center gap-1 flex-shrink-0">
@@ -1005,6 +1016,14 @@ function AskiMateDashboardContent() {
                                   <div className="flex-1 h-px bg-green-300" />
                                 </div>
                               )}
+                              {msg.sender === "system" ? (
+                                <div className="flex justify-center my-3">
+                                  <div className="flex items-center gap-2 bg-primary/5 border border-primary/15 text-primary/80 text-xs font-medium px-4 py-2 rounded-full shadow-sm max-w-xs text-center">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50 flex-shrink-0" />
+                                    {msg.content}
+                                  </div>
+                                </div>
+                              ) : (
                               <div className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} ${msg.id === lastNewMessageId ? "animate-pulse" : ""}`}>
                                 <div>
                                   {msg.sender === "mentor" && (
@@ -1055,6 +1074,7 @@ function AskiMateDashboardContent() {
                                   )}
                                 </div>
                               </div>
+                            )}
                             </div>
                           ))}
 
@@ -1067,7 +1087,7 @@ function AskiMateDashboardContent() {
                                   <span className="w-2 h-2 rounded-full bg-primary/40 animate-bounce [animation-delay:0ms]" />
                                   <span className="w-2 h-2 rounded-full bg-primary/40 animate-bounce [animation-delay:150ms]" />
                                   <span className="w-2 h-2 rounded-full bg-primary/40 animate-bounce [animation-delay:300ms]" />
-                                  <span className="ml-2 text-xs text-muted-foreground">AskiMate is preparing your answer…</span>
+                                  <span className="ml-2 text-xs text-muted-foreground">{selectedConv?.mentorTakenOver ? "Your mentor will reply shortly…" : "AskiMate is preparing your answer…"}</span>
                                 </div>
                               </div>
                             </div>
@@ -1117,7 +1137,7 @@ function AskiMateDashboardContent() {
                                   handleSendMessage();
                                 }
                               }}
-                              placeholder="Type your question…"
+                              placeholder={selectedConv?.mentorTakenOver ? "Message your mentor…" : "Type your question…"}
                               className="flex-1 border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 bg-slate-50"
                               disabled={sending}
                             />

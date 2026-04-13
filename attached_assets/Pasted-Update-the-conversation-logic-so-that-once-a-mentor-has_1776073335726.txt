@@ -1,0 +1,110 @@
+Update the conversation logic so that once a mentor has replied in a conversation, AI must be disabled for that conversation from that point onward.
+
+IMPORTANT:
+- This must apply per conversation
+- As soon as a mentor sends at least one message in a conversation, that conversation becomes mentor-led
+- After that, user messages in the same conversation must NOT trigger any new AI response
+- This rule must persist for the whole conversation unless explicitly reset in code later
+
+-----------------------------------
+GOAL
+-----------------------------------
+
+If a conversation has had a mentor reply, then:
+
+1. The AI must stop replying in that conversation
+2. Any new user message in that conversation must NOT generate an AI answer
+3. Instead, the user should see a clear system message explaining that the conversation is now handled by a human mentor
+
+-----------------------------------
+REQUIRED BEHAVIOUR
+-----------------------------------
+
+Once a mentor replies in a conversation:
+
+- Mark the conversation as mentor-supervised or mentor-owned
+- Store this state in a reliable way in the database
+- Do NOT rely only on frontend state
+
+Then, when the user sends another message in that same conversation:
+
+- Save the user message normally
+- Do NOT trigger AI generation
+- Show a system message in the conversation such as:
+
+"This conversation is now being handled by a mentor supervisor, an experienced expert from our team. From this point, your replies will be reviewed and answered by your mentor. If you would like to continue chatting with AskiMate AI, please start a new conversation."
+
+-----------------------------------
+MESSAGE RULES
+-----------------------------------
+
+- This notice should appear only when needed
+- Do NOT insert it repeatedly on every message if it has already been shown recently
+- Avoid spammy repeated system notices
+
+Recommended behaviour:
+- Show the notice once immediately after the first user message sent after mentor takeover
+- Or show it once at the moment mentor takeover becomes active
+
+-----------------------------------
+AI LOGIC RULES
+-----------------------------------
+
+After mentor takeover in a conversation:
+
+- AI must not respond
+- AI must not queue a response
+- AI must not silently generate hidden output
+- Any polling or frontend logic must also respect this state
+
+This applies even if:
+- The user sends multiple follow-up messages
+- The user waits a long time
+- The page refreshes
+
+-----------------------------------
+FRONTEND / UX
+-----------------------------------
+
+- Keep the conversation usable
+- User can continue messaging in the same thread
+- Messages go to the mentor only
+- Display the mentor-supervised notice in a clean, professional style
+- Do not confuse the user with mixed AI and mentor replies
+
+-----------------------------------
+OPTIONAL LABEL
+-----------------------------------
+
+If easy to implement, add a small visible badge in the conversation UI such as:
+"Mentor Supervised"
+or
+"Handled by Mentor"
+
+-----------------------------------
+TECHNICAL REQUIREMENTS
+-----------------------------------
+
+1. Add a persistent conversation-level flag, such as:
+- mentorTakenOver = true
+or similar
+
+2. Set this flag automatically when a mentor sends the first reply
+
+3. Update message creation / AI response pipeline so that:
+- if mentorTakenOver === true
+- skip AI generation completely
+
+4. Ensure this applies in backend logic first
+5. Update frontend to reflect the new state cleanly
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+- Before mentor reply: AI responds normally
+- After mentor reply: AI stops permanently in that conversation
+- User sees a clear explanation
+- User can still continue with mentor in same thread
+- If user wants AI again, they must start a new conversation
+- No duplicate or conflicting responses

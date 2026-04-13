@@ -9,6 +9,7 @@ export const askimateConversations = pgTable("askimate_conversations", {
   isGuest: boolean("is_guest").notNull().default(true),
   questionCount: integer("question_count").default(0),
   status: text("status").notNull().default("open"), // "open" or "closed"
+  mentorTakenOver: boolean("mentor_taken_over").notNull().default(false), // true = mentor has replied; AI is permanently disabled for this conversation
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -18,7 +19,7 @@ export const askimateMessages = pgTable("askimate_messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversation_id").notNull(),
   isUserMessage: boolean("is_user_message").notNull(), // true = user question, false = non-user (AI or mentor)
-  sender: text("sender").notNull().default("ai"), // "user", "ai", or "mentor"
+  sender: text("sender").notNull().default("ai"), // "user", "ai", "mentor", or "system"
   content: text("content").notNull(),
   isRead: boolean("is_read").notNull().default(false), // Track read status for notifications
   // AI context stored on "ai" sender messages: { reviewLevel, needsHumanReview, sources, aiAttempt }

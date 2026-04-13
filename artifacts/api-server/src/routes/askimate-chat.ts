@@ -256,24 +256,22 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         .catch((err) => console.error("[ACTIVITY] Failed to update lastActiveAt on chat:", err));
     }
 
-    // AI KB response: always generate unless a human mentor replied within the last 5 minutes.
-    // Throttle exists only to preserve the human-handoff flow — AI follow-up messages must
-    // always be answered regardless of how recently the AI last replied.
-    const lastNonUserMsg = await db.query.askimateMessages.findFirst({
-      where: and(
-        eq(askimateMessages.conversationId, conversation.id),
-        ne(askimateMessages.sender, "user")
-      ),
-      orderBy: desc(askimateMessages.createdAt),
-    });
-    const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
-
-    // Only suppress AI when a real mentor (human) has replied within the last 5 min.
-    // AI-sender messages never block follow-up responses.
-    const mentorRecentlyReplied =
-      lastNonUserMsg?.sender === "mentor" &&
-      lastNonUserMsg.createdAt !== null &&
-      new Date(lastNonUserMsg.createdAt) >= fiveMinAgo;
+    // ── Permanent mentor-takeover gate ───────────────────────────────────────
+    // Once a mentor has replied in a conversation, AI is disabled permanently.
+    // The mentorTakenOver flag is set by the admin route when the first mentor
+    // message is saved. No 5-minute window — this is a hard, persistent state.
+    if (conversation.mentorTakenOver) {
+      console.log(`[AITL] MENTOR_OWNED conversationId=${conversation.id} — AI skipped, conversation is mentor-supervised`);
+      res.json({
+        success: true,
+        message: savedMessage,
+        conversation: { id: conversation.id, questionCount: (conversation.questionCount || 0) + 1 },
+        guestSessionId: guestSessionId || undefined,
+        mentorTakenOver: true,
+      });
+      return;
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     // Captured and returned in the response so clients need only one call
     let aiResponseData: {
@@ -284,94 +282,70 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
       mode: string;
     } | null = null;
 
-    if (!mentorRecentlyReplied) {
-      try {
-        const aiResult = await generateAiAnswer(message);
+    try {
+      const aiResult = await generateAiAnswer(message);
 
-        // Always show the AI answer to the user. For escalate_human the GPT system prompt
-        // already ends the answer with a mentor-recommendation sentence. The mentor/admin
-        // handoff still happens in parallel via the metadata reviewLevel signal.
-        const displayContent = aiResult.answer;
+      // Always show the AI answer to the user. For escalate_human the GPT system prompt
+      // already ends the answer with a mentor-recommendation sentence. The mentor/admin
+      // handoff still happens in parallel via the metadata reviewLevel signal.
+      const displayContent = aiResult.answer;
 
-        const aiMeta = {
-          reviewLevel: aiResult.reviewLevel,
-          needsHumanReview: aiResult.needsHumanReview,
-          sources: aiResult.sources ?? [],
-          aiAttempt: aiResult.answer,
-        };
+      const aiMeta = {
+        reviewLevel: aiResult.reviewLevel,
+        needsHumanReview: aiResult.needsHumanReview,
+        sources: aiResult.sources ?? [],
+        aiAttempt: aiResult.answer,
+      };
 
-        await db.insert(askimateMessages).values({
-          conversationId: conversation.id,
-          isUserMessage: false,
-          sender: "ai",
-          content: displayContent,
-          metadata: aiMeta,
-        });
-
-        aiResponseData = {
-          answer: displayContent,
-          reviewLevel: aiResult.reviewLevel,
-          needsHumanReview: aiResult.needsHumanReview,
-          sources: (aiResult.sources ?? []) as { id: string; title: string; score: number }[],
-          mode: aiResult.mode ?? "openai_semantic",
-        };
-
-        // Persistent structured server-side log for all AI interactions
-        const sessionType = guestSessionId ? "guest" : "user";
-        const sourceIds = (aiResult.sources ?? []).map((s: { id: string }) => s.id).join(",") || "none";
-        console.log(
-          `[AITL] AI_RESPONSE conversationId=${conversation.id} sessionType=${sessionType} ` +
-          `reviewLevel=${aiResult.reviewLevel} needsHumanReview=${aiResult.needsHumanReview} ` +
-          `mode=${aiResult.mode ?? "openai_semantic"} sources=${sourceIds} ` +
-          `question="${message.slice(0, 100)}"`
-        );
-
-        // Admin notification — only when a message needs human/mentor review (fire-and-forget)
-        if (aiResult.needsHumanReview) {
-          const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "vahidmoir@gmail.com")
-            .split(",")
-            .map((e) => e.trim())
-            .filter(Boolean);
-          for (const adminEmail of adminEmails) {
-            sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminEmail, {
-              event: "Message Needs Mentor Review",
-              userName: userId ? `User #${userId}` : "Guest",
-              preview: message.slice(0, 200),
-              adminLink: "https://universitio.com/admin",
-            }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
-          }
-        }
-      } catch (aiErr) {
-        console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);
-        await db.insert(askimateMessages).values({
-          conversationId: conversation.id,
-          isUserMessage: false,
-          sender: "ai",
-          content: "Thank you for your message. We've received it and will get back to you shortly.",
-        });
-      }
-    } else {
-      // Mentor replied recently — AI is suppressed to preserve the human handoff flow.
-      // Insert a lightweight acknowledgement so the typing indicator resolves cleanly
-      // and the user knows their message was received.
-      const [ackMsg] = await db.insert(askimateMessages).values({
+      await db.insert(askimateMessages).values({
         conversationId: conversation.id,
         isUserMessage: false,
         sender: "ai",
-        content: "Your message has been received. Your mentor will follow up with you shortly.",
-        metadata: { reviewLevel: "mentor_active", needsHumanReview: false, sources: [], aiAttempt: null },
-      }).returning();
+        content: displayContent,
+        metadata: aiMeta,
+      });
 
       aiResponseData = {
-        answer: ackMsg.content,
-        reviewLevel: "mentor_active",
-        needsHumanReview: false,
-        sources: [],
-        mode: "mentor_suppressed",
+        answer: displayContent,
+        reviewLevel: aiResult.reviewLevel,
+        needsHumanReview: aiResult.needsHumanReview,
+        sources: (aiResult.sources ?? []) as { id: string; title: string; score: number }[],
+        mode: aiResult.mode ?? "openai_semantic",
       };
+
+      // Persistent structured server-side log for all AI interactions
+      const sessionType = guestSessionId ? "guest" : "user";
+      const sourceIds = (aiResult.sources ?? []).map((s: { id: string }) => s.id).join(",") || "none";
       console.log(
-        `[AITL] MENTOR_ACK conversationId=${conversation.id} — AI suppressed, ack inserted (msg id=${ackMsg.id})`
+        `[AITL] AI_RESPONSE conversationId=${conversation.id} sessionType=${sessionType} ` +
+        `reviewLevel=${aiResult.reviewLevel} needsHumanReview=${aiResult.needsHumanReview} ` +
+        `mode=${aiResult.mode ?? "openai_semantic"} sources=${sourceIds} ` +
+        `question="${message.slice(0, 100)}"`
       );
+
+      // Admin notification — only when a message needs human/mentor review (fire-and-forget)
+      if (aiResult.needsHumanReview) {
+        const adminEmails = (process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || "vahidmoir@gmail.com")
+          .split(",")
+          .map((e) => e.trim())
+          .filter(Boolean);
+        for (const adminEmail of adminEmails) {
+          sendTransactionalEmail(EmailType.ADMIN_NOTIFICATION, adminEmail, {
+            event: "Message Needs Mentor Review",
+            userName: userId ? `User #${userId}` : "Guest",
+            preview: message.slice(0, 200),
+            adminLink: "https://universitio.com/admin",
+          }).catch((err) => console.error("[EMAIL] Admin mentor review notification failed:", err));
+        }
+      }
+    } catch (aiErr) {
+      console.error("[AITL] AI KB call failed, falling back to generic ack:", aiErr);
+      await db.insert(askimateMessages).values({
+        conversationId: conversation.id,
+        isUserMessage: false,
+        sender: "ai",
+        content: "Thank you for your message. We've received it and will get back to you shortly.",
+      });
     }
 
     // Return response — aiResponse included so guests only need one round-trip

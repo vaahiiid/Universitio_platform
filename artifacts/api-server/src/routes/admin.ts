@@ -959,7 +959,11 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
 
     // Verify conversation exists and get userId for notification
     const [conversation] = await db
-      .select({ id: askimateConversations.id, userId: askimateConversations.userId })
+      .select({
+        id: askimateConversations.id,
+        userId: askimateConversations.userId,
+        mentorTakenOver: askimateConversations.mentorTakenOver,
+      })
       .from(askimateConversations)
       .where(eq(askimateConversations.id, conversationId))
       .limit(1);
@@ -985,11 +989,27 @@ router.post("/admin/askimate-conversations/:conversationId/mentor-reply", async 
         createdAt: askimateMessages.createdAt,
       });
 
-    // Update conversation timestamp
-    await db
-      .update(askimateConversations)
-      .set({ updatedAt: new Date() })
-      .where(eq(askimateConversations.id, conversationId));
+    // Update conversation timestamp + set mentorTakenOver on first reply
+    if (!conversation.mentorTakenOver) {
+      await db
+        .update(askimateConversations)
+        .set({ updatedAt: new Date(), mentorTakenOver: true })
+        .where(eq(askimateConversations.id, conversationId));
+
+      // Insert a one-time system notice so the user sees the takeover in the chat UI
+      await db.insert(askimateMessages).values({
+        conversationId,
+        content: "A mentor has joined this conversation and will personally handle your questions from here.",
+        isUserMessage: false,
+        sender: "system",
+      });
+      console.log(`[AITL] MENTOR_TAKEOVER conversationId=${conversationId} — mentorTakenOver set, system notice inserted`);
+    } else {
+      await db
+        .update(askimateConversations)
+        .set({ updatedAt: new Date() })
+        .where(eq(askimateConversations.id, conversationId));
+    }
 
     // ── Mentor reply email notification (fire-and-forget) ────────────────────
     // Triggers only for authenticated users; rate-limited to 1 per conversation per 2 min.
