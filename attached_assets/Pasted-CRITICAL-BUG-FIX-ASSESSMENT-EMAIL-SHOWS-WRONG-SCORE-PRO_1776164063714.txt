@@ -1,0 +1,117 @@
+CRITICAL BUG FIX — ASSESSMENT EMAIL SHOWS WRONG SCORE
+
+PROBLEM:
+The score shown in the assessment email does NOT match the actual score shown in the UI.
+
+Example:
+- UI shows: UK = 93/100
+- Email shows: UK = 76/100
+
+This is a critical trust-breaking issue and must be fixed properly.
+
+-----------------------------------
+ROOT CAUSE (LIKELY)
+-----------------------------------
+
+The email system is NOT using the same final computed result used by the UI.
+
+Instead, it is likely using:
+- a fallback score
+- a base score
+- an outdated variable
+- or a separately computed value
+
+-----------------------------------
+REQUIRED FIX (STRICT)
+-----------------------------------
+
+There must be ONE SINGLE SOURCE OF TRUTH for assessment results.
+
+The exact same data used in the UI must be used in the email.
+
+-----------------------------------
+TASKS
+-----------------------------------
+
+1. Locate where the FINAL assessment result is calculated
+   (the exact data used to render the UI result screen)
+
+2. Identify the exact object/structure used in the UI:
+   Example:
+   {
+     countries: [
+       { code: "UK", score: 93, band: "Top Shape Fit" },
+       { code: "US", score: 91, band: "Strong" }
+     ]
+   }
+
+3. Ensure THIS SAME object is passed forward:
+   - stored (if needed)
+   - and passed into the email payload
+
+4. REMOVE any separate scoring logic inside the email layer
+
+5. The email MUST NOT:
+   - recalculate scores
+   - use fallback values
+   - use averages unless explicitly defined in core logic
+
+-----------------------------------
+MULTI-COUNTRY SUPPORT (MANDATORY)
+-----------------------------------
+
+If the user selected multiple countries:
+
+The email must render ALL of them correctly.
+
+Example output:
+
+Your assessment results:
+
+United Kingdom: 93 / 100 (Top Shape Fit)
+United States: 91 / 100 (Strong)
+
+-----------------------------------
+TEMPLATE FIX
+-----------------------------------
+
+Update the email template to:
+
+- loop through all selected countries
+- show:
+  - country name
+  - score
+  - band/label
+- remove any single static score block
+
+-----------------------------------
+VALIDATION
+-----------------------------------
+
+After fix:
+
+1. Submit assessment with:
+   - UK = 93
+   - US = 91
+
+2. Verify:
+   - UI shows correct values
+   - Email shows EXACT same values
+   - No mismatch
+
+-----------------------------------
+IMPORTANT RULE
+-----------------------------------
+
+The email must be a reflection of the actual result — not a separate interpretation.
+
+-----------------------------------
+GOAL
+-----------------------------------
+
+Perfect consistency between:
+- frontend UI
+- stored data
+- email output
+
+No mismatches allowed.

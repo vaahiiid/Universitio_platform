@@ -1,6 +1,13 @@
 import type { EmailTemplate, EmailTemplateBuilder, AssessmentResultPayload, AssessmentDestinationResult } from "../emailTypes";
 import { buildUniversitioEmailHtml, buildUniversitioEmailText } from "./_base";
 
+/**
+ * Band thresholds and colours MUST exactly match the frontend UI:
+ *   >= 90  → Top Shape         (#15803d green-700)
+ *   >= 70  → Strong Potential  (#16a34a green-500)
+ *   >= 50  → On the Right Track (#d97706 amber-600)
+ *   < 50   → Needs a Boost     (#dc2626 red-500)
+ */
 interface BandContext {
   colour: string;
   summary: string;
@@ -8,24 +15,20 @@ interface BandContext {
 
 function getBandContext(score: number): BandContext {
   if (score >= 90) return {
+    colour: "#15803d",
+    summary: "Excellent admission readiness — your profile is in a strong position for competitive programmes.",
+  };
+  if (score >= 70) return {
     colour: "#16a34a",
-    summary: "Excellent admission readiness — strong position for competitive programmes.",
+    summary: "Good potential for admission — a well-structured application could secure strong offers.",
   };
-  if (score >= 75) return {
-    colour: "#059669",
-    summary: "Competitive profile with genuine potential. A well-structured application could secure strong offers.",
-  };
-  if (score >= 60) return {
+  if (score >= 50) return {
     colour: "#d97706",
-    summary: "Moderate potential — targeted preparation could make a meaningful difference.",
-  };
-  if (score >= 40) return {
-    colour: "#ea580c",
-    summary: "Developing profile — specific areas can be strengthened to improve admission readiness.",
+    summary: "You are on the right track — targeted preparation in a few areas could meaningfully improve your chances.",
   };
   return {
     colour: "#dc2626",
-    summary: "Early stage — foundational steps are recommended before applying.",
+    summary: "Your profile could benefit from strengthening before applying — our consultants can guide you through the key steps.",
   };
 }
 
@@ -56,18 +59,20 @@ function buildResultRowHtml(r: AssessmentDestinationResult): string {
                   border:1px solid #ede8f5">
       <tr>
         <td style="padding:18px 22px">
-          <div style="font-size:13px;font-weight:700;color:#42147d;text-transform:uppercase;
-                      letter-spacing:0.5px;margin-bottom:10px">
+          <div style="font-size:12px;font-weight:700;color:#42147d;text-transform:uppercase;
+                      letter-spacing:0.6px;margin-bottom:10px">
             ${destLabel(r.destination)}
           </div>
-          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-            <div style="font-size:30px;font-weight:800;color:${colour};line-height:1">
-              ${r.score}<span style="font-size:16px;font-weight:600;color:#999"> / 100</span>
-            </div>
-            <div style="display:inline-block;background:${colour};color:#fff;font-size:12px;
-                        font-weight:700;padding:4px 13px;border-radius:20px">
+          <div>
+            <span style="font-size:30px;font-weight:800;color:${colour};line-height:1">
+              ${r.score}
+            </span><span style="font-size:16px;font-weight:600;color:#999"> / 100</span>
+            &nbsp;&nbsp;
+            <span style="display:inline-block;background:${colour};color:#fff;font-size:12px;
+                         font-weight:700;padding:4px 13px;border-radius:20px;
+                         vertical-align:middle">
               ${r.band}
-            </div>
+            </span>
           </div>
           <p style="margin:10px 0 0 0;font-size:14px;color:#555;line-height:1.6">${summary}</p>
           ${observationHtml}
@@ -80,7 +85,7 @@ function buildResultRowHtml(r: AssessmentDestinationResult): string {
 function buildResultRowText(r: AssessmentDestinationResult): string {
   const { summary } = getBandContext(r.score);
   const lines = [
-    `  ${destLabel(r.destination)}: ${r.score}/100 — ${r.band}`,
+    `  ${destLabel(r.destination)}: ${r.score} / 100 — ${r.band}`,
     `  ${summary}`,
   ];
   if (r.observations && r.observations.length > 0) {
@@ -94,7 +99,6 @@ function buildResultRowText(r: AssessmentDestinationResult): string {
 export const buildAssessmentResult: EmailTemplateBuilder<AssessmentResultPayload> = (payload) => {
   const heading = `Your assessment results from Universitio`;
   const { results, firstName } = payload;
-
   const isMulti = results.length > 1;
 
   const bodyHtml = `
@@ -104,7 +108,7 @@ export const buildAssessmentResult: EmailTemplateBuilder<AssessmentResultPayload
     ${results.map(buildResultRowHtml).join("\n")}
 
     <p style="margin-top:20px;color:#555">
-      Based on your assessment, we strongly recommend booking a free consultation so we can review your profile in detail and guide you toward the best next step.
+      Based on your results, we strongly recommend booking a free consultation so we can review your profile in detail and guide you toward the best next step.
     </p>
 
     <p style="margin-top:28px">
@@ -126,7 +130,7 @@ export const buildAssessmentResult: EmailTemplateBuilder<AssessmentResultPayload
     `Thank you for completing the Universitio assessment. Here ${isMulti ? "are your results for each selected destination" : "is your result"}:`,
     ``,
     ...results.map(buildResultRowText).flatMap((s) => [s, ""]),
-    `We strongly recommend booking a free consultation so we can review your profile and guide you toward the best next step.`,
+    `Based on your results, we strongly recommend booking a free consultation so we can review your profile in detail.`,
     ``,
     `Book here: https://universitio.com/free-consultation`,
     ``,
