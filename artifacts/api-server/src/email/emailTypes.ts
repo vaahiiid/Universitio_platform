@@ -107,10 +107,16 @@ export interface ConsultationConfirmationPayload {
   firstName: string;
 }
 
-export interface AssessmentResultPayload {
-  firstName: string;
+export interface AssessmentDestinationResult {
+  destination: string;
   score: number;
   band: string;
+  observations?: string[];
+}
+
+export interface AssessmentResultPayload {
+  firstName: string;
+  results: AssessmentDestinationResult[];
 }
 
 export interface ContactConfirmationPayload {

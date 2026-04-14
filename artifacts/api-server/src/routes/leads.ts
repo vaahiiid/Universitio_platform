@@ -232,16 +232,21 @@ router.post("/leads/assessment", cvUpload.single("cvFile"), async (req: Request,
     const [row] = await db.insert(assessments).values(values).returning();
     res.status(201).json({ success: true, data: row, scores: destinationScores });
 
-    // Fire-and-forget: send assessment result email with score and band
+    // Fire-and-forget: send per-country assessment result email
     if (values.email) {
       sendTransactionalEmail(EmailType.ASSESSMENT_RESULT, values.email, {
         firstName: getFirstName(values.fullName),
-        score: bestScore.score,
-        band: bestScore.band,
+        results: destinationScores.map((ds) => ({
+          destination: ds.destination,
+          score: ds.score,
+          band: ds.band,
+          observations: ds.observations,
+        })),
       }).then((r) => {
-        if (r.success) console.log(`[EMAIL] Assessment result sent to ${values.email} (id=${row.id}, score=${bestScore.score}, band=${bestScore.band})`);
-        else console.error(`[EMAIL] Assessment result failed for ${values.email}:`, r.error);
-      }).catch((e) => console.error(`[EMAIL] Assessment result error for ${values.email}:`, e));
+        const summary = destinationScores.map((ds) => `${ds.destination}:${ds.score}`).join(", ");
+        if (r.success) console.log(`[EMAIL] Assessment results sent to ${values.email} (id=${row.id}, [${summary}])`);
+        else console.error(`[EMAIL] Assessment results failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Assessment results error for ${values.email}:`, e));
     }
   } catch (err) {
     console.error("Error saving assessment:", err);
