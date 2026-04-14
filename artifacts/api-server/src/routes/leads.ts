@@ -15,9 +15,15 @@ import type { InsertStudentReferral } from "@workspace/db";
 import type { InsertContactMessage } from "@workspace/db";
 import type { InsertServiceRequest } from "@workspace/db";
 import { computeScores, type AssessmentProfile } from "../lib/assessmentScoring";
+import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+
+/** Extract first name from a full name string for email personalisation. */
+function getFirstName(fullName: string): string {
+  return fullName.trim().split(/\s+/)[0] || fullName.trim();
+}
 
 const router: IRouter = Router();
 
@@ -132,6 +138,16 @@ router.post("/leads/consultation", cvUpload.single("cvFile"), async (req: Reques
 
     const [row] = await db.insert(consultations).values(values).returning();
     res.status(201).json({ success: true, data: row });
+
+    // Fire-and-forget: send confirmation email after response is already sent
+    if (values.email) {
+      sendTransactionalEmail(EmailType.CONSULTATION_CONFIRMATION, values.email, {
+        firstName: getFirstName(values.fullName),
+      }).then((r) => {
+        if (r.success) console.log(`[EMAIL] Consultation confirmation sent to ${values.email} (id=${row.id})`);
+        else console.error(`[EMAIL] Consultation confirmation failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Consultation confirmation error for ${values.email}:`, e));
+    }
   } catch (err) {
     console.error("Error saving consultation:", err);
     res.status(500).json({ error: "Failed to save consultation" });
@@ -215,6 +231,18 @@ router.post("/leads/assessment", cvUpload.single("cvFile"), async (req: Request,
 
     const [row] = await db.insert(assessments).values(values).returning();
     res.status(201).json({ success: true, data: row, scores: destinationScores });
+
+    // Fire-and-forget: send assessment result email with score and band
+    if (values.email) {
+      sendTransactionalEmail(EmailType.ASSESSMENT_RESULT, values.email, {
+        firstName: getFirstName(values.fullName),
+        score: bestScore.score,
+        band: bestScore.band,
+      }).then((r) => {
+        if (r.success) console.log(`[EMAIL] Assessment result sent to ${values.email} (id=${row.id}, score=${bestScore.score}, band=${bestScore.band})`);
+        else console.error(`[EMAIL] Assessment result failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Assessment result error for ${values.email}:`, e));
+    }
   } catch (err) {
     console.error("Error saving assessment:", err);
     res.status(500).json({ error: "Failed to save assessment" });
@@ -248,6 +276,16 @@ router.post("/leads/partners", async (req: Request, res: Response) => {
 
     const [row] = await db.insert(partnerRequests).values(values).returning();
     res.status(201).json({ success: true, data: row });
+
+    // Fire-and-forget: agent/partner confirmation email
+    if (values.email) {
+      sendTransactionalEmail(EmailType.AGENT_CONFIRMATION, values.email, {
+        firstName: getFirstName(values.fullName),
+      }).then((r) => {
+        if (r.success) console.log(`[EMAIL] Agent confirmation sent to ${values.email} (id=${row.id})`);
+        else console.error(`[EMAIL] Agent confirmation failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Agent confirmation error for ${values.email}:`, e));
+    }
   } catch (err) {
     console.error("Error saving partner request:", err);
     res.status(500).json({ error: "Failed to save partner request" });
@@ -277,6 +315,16 @@ router.post("/leads/referral", async (req: Request, res: Response) => {
 
     const [row] = await db.insert(studentReferrals).values(values).returning();
     res.status(201).json({ success: true, data: row });
+
+    // Fire-and-forget: referral confirmation email
+    if (values.email) {
+      sendTransactionalEmail(EmailType.REFERRAL_CONFIRMATION, values.email, {
+        firstName: getFirstName(values.fullName),
+      }).then((r) => {
+        if (r.success) console.log(`[EMAIL] Referral confirmation sent to ${values.email} (id=${row.id})`);
+        else console.error(`[EMAIL] Referral confirmation failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Referral confirmation error for ${values.email}:`, e));
+    }
   } catch (err) {
     console.error("Error saving student referral:", err);
     res.status(500).json({ error: "Failed to save student referral" });
@@ -303,6 +351,16 @@ router.post("/leads/contact", async (req: Request, res: Response) => {
 
     const [row] = await db.insert(contactMessages).values(values).returning();
     res.status(201).json({ success: true, data: row });
+
+    // Fire-and-forget: contact confirmation email
+    if (values.email) {
+      sendTransactionalEmail(EmailType.CONTACT_CONFIRMATION, values.email, {
+        firstName: getFirstName(values.fullName),
+      }).then((r) => {
+        if (r.success) console.log(`[EMAIL] Contact confirmation sent to ${values.email} (id=${row.id})`);
+        else console.error(`[EMAIL] Contact confirmation failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Contact confirmation error for ${values.email}:`, e));
+    }
   } catch (err) {
     console.error("Error saving contact message:", err);
     res.status(500).json({ error: "Failed to save contact message" });
@@ -356,6 +414,17 @@ router.post("/leads/service-request", async (req: Request, res: Response) => {
     };
     const [row] = await db.insert(serviceRequests).values(values).returning();
     res.status(201).json({ success: true, data: row });
+
+    // Fire-and-forget: service confirmation email
+    if (values.email) {
+      sendTransactionalEmail(EmailType.SERVICES_CONFIRMATION, values.email, {
+        firstName: getFirstName(values.fullName),
+        serviceType: values.serviceType ?? undefined,
+      }).then((r) => {
+        if (r.success) console.log(`[EMAIL] Services confirmation sent to ${values.email} (id=${row.id}, type=${values.serviceType})`);
+        else console.error(`[EMAIL] Services confirmation failed for ${values.email}:`, r.error);
+      }).catch((e) => console.error(`[EMAIL] Services confirmation error for ${values.email}:`, e));
+    }
   } catch (err) {
     console.error("Error saving service request:", err);
     res.status(500).json({ error: "Failed to save service request" });

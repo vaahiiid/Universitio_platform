@@ -1,0 +1,249 @@
+Implement email automation for all website forms EXCEPT AskiMate AI.
+
+IMPORTANT:
+- AskiMate already has its own email logic, so do NOT modify it
+- Build email automation only for the following sections/forms:
+  1. Free Consultation
+  2. Assessment
+  3. Contact Us
+  4. Student Referral
+  5. Agents
+  6. Services
+
+GOAL:
+Whenever a user submits one of these forms, they must automatically receive a relevant confirmation email based on that specific form.
+
+The email system must:
+- Trigger automatically after successful form submission
+- Use the correct email template for each form type
+- Be reliable and production-safe
+- Avoid duplicate sends
+- Log failures safely
+- Use the existing email service / transactional email system already in the project
+
+-----------------------------------
+GENERAL REQUIREMENTS
+-----------------------------------
+
+1. Trigger email ONLY after the form is successfully saved/submitted
+2. Use the submitted user email address as recipient
+3. If no email exists, skip sending silently
+4. Do not block the user response while sending email
+5. Send asynchronously
+6. Prevent duplicate email sends if the same request is retried
+7. Create separate email templates per form type
+8. Keep email styling professional, clean, and consistent with Universitio branding
+9. Subject lines must be clear and human
+10. Include a simple CTA or next-step message where appropriate
+
+-----------------------------------
+FORM-SPECIFIC EMAIL AUTOMATIONS
+-----------------------------------
+
+1) FREE CONSULTATION FORM
+
+Trigger:
+When user submits the consultation form
+
+Subject:
+Your consultation request has been received
+
+Body intent:
+- Thank the user for submitting the consultation form
+- Confirm that the request has been received
+- Tell them our team will review the details and get back to them shortly
+- Make it sound warm and reassuring
+- Encourage them to keep an eye on their inbox
+
+Suggested message direction:
+"Thank you for booking a consultation with Universitio. We have received your request and our team will review your details shortly. Please keep an eye on your email, as we will contact you with the next steps."
+
+-----------------------------------
+
+2) ASSESSMENT FORM
+
+Trigger:
+When user submits the assessment form
+
+SPECIAL REQUIREMENT:
+This email must include the assessment result and next-step recommendation based on the submitted result.
+
+Requirements:
+- Include a summary of the assessment outcome
+- If the system already calculates an assessment result, include that result in the email
+- If there are categories such as strong / moderate / needs improvement / eligible / not yet ready, reflect that in the email
+- Tailor the message based on the result
+- End with a strong recommendation to book a consultation so we can help properly
+
+Subject:
+Your assessment result from Universitio
+
+Body intent:
+- Confirm assessment received
+- Show the result clearly
+- Give a short explanation of what the result means
+- Suggest the next step
+- Strong CTA to book a consultation
+
+Example logic:
+- If result is strong / high chance:
+  congratulate briefly and encourage consultation to move forward correctly
+- If result is moderate:
+  explain that there is potential but details matter, and suggest consultation
+- If result is weak / incomplete:
+  explain that there may be issues to improve, and suggest consultation to strengthen the case
+
+Suggested ending direction:
+"Based on your assessment, we strongly recommend booking a consultation so we can review your case properly and guide you toward the best next step."
+
+Also include CTA link if available:
+- /free-consultation
+
+-----------------------------------
+
+3) CONTACT US FORM
+
+Trigger:
+When user submits the contact form
+
+Subject:
+We have received your message
+
+Body intent:
+- Confirm we received their message
+- Tell them we will reply if needed within a maximum of 1 working day
+- Keep it short and professional
+
+Suggested message direction:
+"Thank you for contacting Universitio. We have received your message and, if a reply is needed, our team will get back to you within a maximum of 1 working day."
+
+-----------------------------------
+
+4) STUDENT REFERRAL FORM
+
+Trigger:
+When user submits the student referral form
+
+Subject:
+Your referral has been received
+
+Body intent:
+- Confirm referral form received
+- Thank them for their submission
+- Tell them the result or follow-up will be sent by email within a maximum of 1 working day
+
+Suggested message direction:
+"Thank you for submitting a student referral. We have received your details, and our team will review the information. You will receive an update by email within a maximum of 1 working day."
+
+-----------------------------------
+
+5) AGENTS FORM
+
+Trigger:
+When user submits the agents form
+
+Subject:
+Your agent enquiry has been received
+
+Body intent:
+- Confirm we received their enquiry/application
+- Tell them the team will review it
+- Tell them they will hear back by email within a maximum of 1 working day
+
+Suggested message direction:
+"Thank you for your interest in working with Universitio. We have received your enquiry and our team will review it carefully. You will hear back from us by email within a maximum of 1 working day."
+
+-----------------------------------
+
+6) SERVICES FORM / SERVICES SECTION ENQUIRY
+
+Trigger:
+When user submits the services form or service enquiry
+
+Subject:
+Your service enquiry has been received
+
+Body intent:
+- Confirm submission received
+- Reassure user that the relevant team will review the request
+- Tell them to expect follow-up by email shortly
+
+Suggested message direction:
+"Thank you for your enquiry. We have received your request and our team will review it shortly. Please keep an eye on your inbox for the next steps."
+
+-----------------------------------
+TECHNICAL IMPLEMENTATION
+-----------------------------------
+
+1. Identify all backend routes / API handlers / form submission handlers for:
+- consultation
+- assessment
+- contact
+- referral
+- agents
+- services
+
+2. After successful submission:
+- trigger the relevant email template
+
+3. Reuse the existing email infrastructure already in the project:
+- email service
+- template registry
+- send function
+- payload typing system
+
+4. Add new email template types if needed:
+- CONSULTATION_CONFIRMATION
+- ASSESSMENT_RESULT
+- CONTACT_CONFIRMATION
+- STUDENT_REFERRAL_CONFIRMATION
+- AGENT_CONFIRMATION
+- SERVICES_CONFIRMATION
+
+5. Add matching payload types for each email
+
+6. Ensure templates are registered in the email template registry
+
+7. If assessment already has scoring/result logic:
+- extract the result and pass it to the email template
+- include result label + explanation + recommendation
+
+8. Do not send duplicate emails:
+- use submission id, request id, or another reliable check
+- do not send twice on retries
+
+9. Log email activity clearly for debugging:
+- success
+- skipped due to missing email
+- failed send attempts
+
+-----------------------------------
+EMAIL DESIGN REQUIREMENTS
+-----------------------------------
+
+- Clean branded HTML
+- Mobile-friendly
+- Professional and trustworthy tone
+- Matching existing Universitio email style
+- Include footer branding
+- Keep emails readable and not too long
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+Verify all of the following:
+
+1. Consultation form sends confirmation email
+2. Assessment form sends result email with recommendation and consultation CTA
+3. Contact form sends “we received your message” email
+4. Student referral form sends confirmation email
+5. Agents form sends confirmation email
+6. Services form sends confirmation email
+7. No duplicate sends
+8. Emails send only after successful form submission
+9. AskiMate email system remains untouched
+10. All templates render correctly
+
+GOAL SUMMARY:
+Every non-AskiMate form submission should immediately feel acknowledged, professional, and trustworthy, while also guiding the user toward the next meaningful step.

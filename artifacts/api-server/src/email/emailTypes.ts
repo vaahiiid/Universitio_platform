@@ -3,20 +3,27 @@ import type { EmailSender } from "../services/emailService";
 // ─── Email Event Identifiers ──────────────────────────────────────────────────
 
 export const EmailType = {
-  SIGNUP_WELCOME:       "SIGNUP_WELCOME",
-  EMAIL_VERIFICATION:   "EMAIL_VERIFICATION",
-  PAYMENT_SUCCESS:      "PAYMENT_SUCCESS",
-  PAYMENT_FAILED:       "PAYMENT_FAILED",
-  EXPIRY_REMINDER_5D:   "EXPIRY_REMINDER_5D",
-  EXPIRY_REMINDER_3D:   "EXPIRY_REMINDER_3D",
-  EXPIRY_REMINDER_1D:   "EXPIRY_REMINDER_1D",
-  PLAN_EXPIRED:         "PLAN_EXPIRED",
-  USAGE_LIMIT_REACHED:  "USAGE_LIMIT_REACHED",
-  RENEWAL_PUSH:         "RENEWAL_PUSH",
-  RE_ENGAGEMENT:        "RE_ENGAGEMENT",
-  EMAIL_VERIFIED:       "EMAIL_VERIFIED",
-  ADMIN_NOTIFICATION:   "ADMIN_NOTIFICATION",
-  MENTOR_REPLY:         "MENTOR_REPLY",
+  SIGNUP_WELCOME:                "SIGNUP_WELCOME",
+  EMAIL_VERIFICATION:            "EMAIL_VERIFICATION",
+  PAYMENT_SUCCESS:               "PAYMENT_SUCCESS",
+  PAYMENT_FAILED:                "PAYMENT_FAILED",
+  EXPIRY_REMINDER_5D:            "EXPIRY_REMINDER_5D",
+  EXPIRY_REMINDER_3D:            "EXPIRY_REMINDER_3D",
+  EXPIRY_REMINDER_1D:            "EXPIRY_REMINDER_1D",
+  PLAN_EXPIRED:                  "PLAN_EXPIRED",
+  USAGE_LIMIT_REACHED:           "USAGE_LIMIT_REACHED",
+  RENEWAL_PUSH:                  "RENEWAL_PUSH",
+  RE_ENGAGEMENT:                 "RE_ENGAGEMENT",
+  EMAIL_VERIFIED:                "EMAIL_VERIFIED",
+  ADMIN_NOTIFICATION:            "ADMIN_NOTIFICATION",
+  MENTOR_REPLY:                  "MENTOR_REPLY",
+  // ─── Website form confirmation emails ──────────────────────────────────────
+  CONSULTATION_CONFIRMATION:     "CONSULTATION_CONFIRMATION",
+  ASSESSMENT_RESULT:             "ASSESSMENT_RESULT",
+  CONTACT_CONFIRMATION:          "CONTACT_CONFIRMATION",
+  REFERRAL_CONFIRMATION:         "REFERRAL_CONFIRMATION",
+  AGENT_CONFIRMATION:            "AGENT_CONFIRMATION",
+  SERVICES_CONFIRMATION:         "SERVICES_CONFIRMATION",
 } as const;
 
 export type EmailType = (typeof EmailType)[keyof typeof EmailType];
@@ -94,23 +101,58 @@ export interface MentorReplyPayload {
   conversationId?: number;
 }
 
+// ─── Website form confirmation payloads ───────────────────────────────────────
+
+export interface ConsultationConfirmationPayload {
+  firstName: string;
+}
+
+export interface AssessmentResultPayload {
+  firstName: string;
+  score: number;
+  band: string;
+}
+
+export interface ContactConfirmationPayload {
+  firstName: string;
+}
+
+export interface ReferralConfirmationPayload {
+  firstName: string;
+}
+
+export interface AgentConfirmationPayload {
+  firstName: string;
+}
+
+export interface ServicesConfirmationPayload {
+  firstName: string;
+  serviceType?: string;
+}
+
 // ─── Payload Map — ties each EmailType to its payload interface ───────────────
 
 export type EmailPayloadMap = {
-  [EmailType.SIGNUP_WELCOME]:      SignupWelcomePayload;
-  [EmailType.EMAIL_VERIFICATION]:  EmailVerificationPayload;
-  [EmailType.PAYMENT_SUCCESS]:     PaymentSuccessPayload;
-  [EmailType.PAYMENT_FAILED]:      PaymentFailedPayload;
-  [EmailType.EXPIRY_REMINDER_5D]:  ExpiryReminderPayload;
-  [EmailType.EXPIRY_REMINDER_3D]:  ExpiryReminderPayload;
-  [EmailType.EXPIRY_REMINDER_1D]:  ExpiryReminderPayload;
-  [EmailType.PLAN_EXPIRED]:        PlanExpiredPayload;
-  [EmailType.USAGE_LIMIT_REACHED]: UsageLimitReachedPayload;
-  [EmailType.RENEWAL_PUSH]:        RenewalPushPayload;
-  [EmailType.RE_ENGAGEMENT]:       ReEngagementPayload;
-  [EmailType.EMAIL_VERIFIED]:      EmailVerifiedPayload;
-  [EmailType.ADMIN_NOTIFICATION]:  AdminNotificationPayload;
-  [EmailType.MENTOR_REPLY]:        MentorReplyPayload;
+  [EmailType.SIGNUP_WELCOME]:             SignupWelcomePayload;
+  [EmailType.EMAIL_VERIFICATION]:         EmailVerificationPayload;
+  [EmailType.PAYMENT_SUCCESS]:            PaymentSuccessPayload;
+  [EmailType.PAYMENT_FAILED]:             PaymentFailedPayload;
+  [EmailType.EXPIRY_REMINDER_5D]:         ExpiryReminderPayload;
+  [EmailType.EXPIRY_REMINDER_3D]:         ExpiryReminderPayload;
+  [EmailType.EXPIRY_REMINDER_1D]:         ExpiryReminderPayload;
+  [EmailType.PLAN_EXPIRED]:               PlanExpiredPayload;
+  [EmailType.USAGE_LIMIT_REACHED]:        UsageLimitReachedPayload;
+  [EmailType.RENEWAL_PUSH]:               RenewalPushPayload;
+  [EmailType.RE_ENGAGEMENT]:              ReEngagementPayload;
+  [EmailType.EMAIL_VERIFIED]:             EmailVerifiedPayload;
+  [EmailType.ADMIN_NOTIFICATION]:         AdminNotificationPayload;
+  [EmailType.MENTOR_REPLY]:               MentorReplyPayload;
+  [EmailType.CONSULTATION_CONFIRMATION]:  ConsultationConfirmationPayload;
+  [EmailType.ASSESSMENT_RESULT]:          AssessmentResultPayload;
+  [EmailType.CONTACT_CONFIRMATION]:       ContactConfirmationPayload;
+  [EmailType.REFERRAL_CONFIRMATION]:      ReferralConfirmationPayload;
+  [EmailType.AGENT_CONFIRMATION]:         AgentConfirmationPayload;
+  [EmailType.SERVICES_CONFIRMATION]:      ServicesConfirmationPayload;
 };
 
 // ─── Compiled Template — what every builder must return ──────────────────────
