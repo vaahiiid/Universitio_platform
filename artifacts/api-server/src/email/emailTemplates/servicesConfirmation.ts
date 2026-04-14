@@ -40,6 +40,6 @@ export const buildServicesConfirmation: EmailTemplateBuilder<ServicesConfirmatio
     subject: `Your service enquiry has been received`,
     html: buildUniversitioEmailHtml(heading, bodyHtml),
     text: buildUniversitioEmailText(heading, bodyText),
-    sender: "info",
+    sender: "universitio-info",
   } satisfies EmailTemplate;
 };

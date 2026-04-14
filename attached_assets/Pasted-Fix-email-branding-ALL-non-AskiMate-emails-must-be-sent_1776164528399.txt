@@ -1,0 +1,103 @@
+Fix email branding: ALL non-AskiMate emails must be sent as Universitio, not AskiMate.
+
+PROBLEM:
+Currently emails (including assessment emails and form emails) are being sent under the AskiMate branding.
+This is incorrect.
+
+REQUIREMENT:
+- AskiMate branding should ONLY be used for AskiMate chat-related emails
+- ALL other emails must use Universitio branding
+
+-----------------------------------
+SCOPE
+-----------------------------------
+
+The following emails MUST use Universitio branding:
+
+- Assessment emails
+- Consultation confirmation emails
+- Contact form emails
+- Referral emails
+- Agent emails
+- Service enquiry emails
+- Any admin notification emails (optional but recommended)
+
+ONLY these can remain AskiMate:
+- AI chat / conversation emails (if any)
+- AskiMate-specific product notifications
+
+-----------------------------------
+WHAT TO CHANGE
+-----------------------------------
+
+1. Sender Name
+Change FROM:
+"AskiMate" or "AskiMate AI"
+
+TO:
+"Universitio"
+
+-----------------------------------
+
+2. Email Header / Branding
+
+Update email templates so that:
+- Logo / header shows Universitio
+- NOT AskiMate
+
+-----------------------------------
+
+3. Subject Lines
+
+Ensure subjects do NOT mention AskiMate for non-AI emails
+
+Correct:
+"Your assessment results from Universitio"
+
+Wrong:
+"Your assessment results from AskiMate"
+
+-----------------------------------
+
+4. Email Footer
+
+Footer must reflect Universitio:
+- Universitio name
+- Company info (if already used)
+- No mention of AskiMate unless explicitly needed
+
+-----------------------------------
+
+5. Template Separation (IMPORTANT)
+
+Ensure templates are clearly separated:
+
+- Universitio templates (forms, assessment, leads)
+- AskiMate templates (AI/chat only)
+
+Do NOT reuse AskiMate base template for Universitio emails.
+
+-----------------------------------
+
+6. Base Template Check
+
+If there is a shared base template (e.g. _base.ts):
+- Create a Universitio-specific base if needed
+- Ensure correct branding is injected per email type
+
+-----------------------------------
+
+7. Final Verification
+
+Test:
+- Submit assessment → email must show Universitio branding
+- Submit consultation → Universitio
+- Submit referral → Universitio
+- Send chat message (if email exists) → only then AskiMate
+
+-----------------------------------
+
+FINAL GOAL:
+Users interacting with Universitio services must always receive Universitio-branded emails.
+
+AskiMate should ONLY appear when the interaction is explicitly AI/chat-related.

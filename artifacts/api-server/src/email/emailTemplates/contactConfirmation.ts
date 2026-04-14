@@ -34,6 +34,6 @@ export const buildContactConfirmation: EmailTemplateBuilder<ContactConfirmationP
     subject: `We have received your message`,
     html: buildUniversitioEmailHtml(heading, bodyHtml),
     text: buildUniversitioEmailText(heading, bodyText),
-    sender: "info",
+    sender: "universitio-info",
   } satisfies EmailTemplate;
 };

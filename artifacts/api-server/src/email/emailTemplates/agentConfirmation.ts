@@ -34,6 +34,6 @@ export const buildAgentConfirmation: EmailTemplateBuilder<AgentConfirmationPaylo
     subject: `Your agent enquiry has been received`,
     html: buildUniversitioEmailHtml(heading, bodyHtml),
     text: buildUniversitioEmailText(heading, bodyText),
-    sender: "info",
+    sender: "universitio-info",
   } satisfies EmailTemplate;
 };

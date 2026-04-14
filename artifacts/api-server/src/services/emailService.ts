@@ -9,17 +9,24 @@ if (!RESEND_API_KEY) {
 const resend = new Resend(RESEND_API_KEY);
 
 /**
- * The two authorised sender addresses for Universitio / AskiMate.
+ * Authorised sender addresses.
  *
- * "noreply" — system emails that should not invite replies
- *   e.g. email verification, payment confirmations, expiry reminders, limit warnings
+ * AskiMate senders — used for AskiMate product emails
+ *   (signup, verification, payment, expiry reminders, AI/chat notifications)
  *
- * "info"    — reply-friendly emails where a response makes sense
- *   e.g. welcome messages, support-style communication
+ * Universitio senders — used for all website / lead-form emails
+ *   (consultation, assessment, contact, referral, agent, service enquiry)
+ *
+ * "noreply" variants — system emails that should not invite replies
+ * "info"    variants — reply-friendly emails where a response makes sense
  */
 const SENDERS = {
-  noreply: "AskiMate <noreply@universitio.com>",
-  info:    "AskiMate <info@universitio.com>",
+  // ── AskiMate product emails ─────────────────────────────────────────────
+  noreply:             "AskiMate <noreply@universitio.com>",
+  info:                "AskiMate <info@universitio.com>",
+  // ── Universitio website / lead-form emails ───────────────────────────────
+  "universitio-noreply": "Universitio <noreply@universitio.com>",
+  "universitio-info":    "Universitio <info@universitio.com>",
 } as const;
 
 export type EmailSender = keyof typeof SENDERS;

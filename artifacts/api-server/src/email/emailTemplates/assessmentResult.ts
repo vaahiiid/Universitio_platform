@@ -141,6 +141,6 @@ export const buildAssessmentResult: EmailTemplateBuilder<AssessmentResultPayload
     subject: `Your assessment results from Universitio`,
     html: buildUniversitioEmailHtml(heading, bodyHtml),
     text: buildUniversitioEmailText(heading, bodyText),
-    sender: "info",
+    sender: "universitio-info",
   } satisfies EmailTemplate;
 };

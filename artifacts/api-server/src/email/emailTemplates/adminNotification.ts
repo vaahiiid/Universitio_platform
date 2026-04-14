@@ -35,6 +35,6 @@ export function buildAdminNotification(payload: AdminNotificationPayload): Email
     subject: `[AskiMate Admin] ${event}`,
     html: buildEmailHtml(`Admin Alert: ${event}`, bodyHtml),
     text: buildEmailText(`Admin Alert: ${event}`, bodyText),
-    sender: "noreply",
+    sender: "universitio-noreply",
   };
 }

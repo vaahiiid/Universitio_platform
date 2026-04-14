@@ -34,6 +34,6 @@ export const buildReferralConfirmation: EmailTemplateBuilder<ReferralConfirmatio
     subject: `Your referral has been received`,
     html: buildUniversitioEmailHtml(heading, bodyHtml),
     text: buildUniversitioEmailText(heading, bodyText),
-    sender: "info",
+    sender: "universitio-info",
   } satisfies EmailTemplate;
 };
