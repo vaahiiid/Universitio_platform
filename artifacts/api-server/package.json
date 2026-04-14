@@ -17,6 +17,7 @@
   "dependencies": {
     "@types/compression": "^1.8.1",
     "@workspace/api-zod": "workspace:*",
+    "@workspace/assessment-scoring": "workspace:*",
     "@workspace/db": "workspace:*",
     "adm-zip": "^0.5.16",
     "bcryptjs": "^2.4.3",

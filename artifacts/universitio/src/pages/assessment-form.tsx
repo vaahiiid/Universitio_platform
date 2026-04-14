@@ -22,7 +22,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ConsentFields } from "@/components/ui/ConsentFields";
-import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@/lib/assessmentScoring";
+import { computeScores, getBand, type AssessmentProfile, type DestinationScore } from "@workspace/assessment-scoring";
 import { apiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { trackEvent } from "@/lib/analytics";

@@ -14,7 +14,7 @@ import type { InsertPartnerRequest } from "@workspace/db";
 import type { InsertStudentReferral } from "@workspace/db";
 import type { InsertContactMessage } from "@workspace/db";
 import type { InsertServiceRequest } from "@workspace/db";
-import { computeScores, type AssessmentProfile } from "../lib/assessmentScoring";
+import { computeScores, type AssessmentProfile } from "@workspace/assessment-scoring";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
 import multer from "multer";
 import path from "path";
