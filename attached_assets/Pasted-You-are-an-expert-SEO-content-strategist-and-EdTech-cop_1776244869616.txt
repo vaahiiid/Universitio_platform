@@ -1,0 +1,149 @@
+You are an expert SEO content strategist and EdTech copywriter.
+
+Your task is to write a high-quality, SEO-optimised blog post for Universitio.
+
+OUTPUT REQUIREMENT:
+- Minimum 1200 words
+- Fully written blog (ready to publish)
+- No placeholders
+- No explanations outside the article
+
+TOPIC:
+The Biggest Mistakes International Students Make When Applying to UK Universities (And How to Avoid Them)
+
+TARGET KEYWORDS:
+- UK university application mistakes
+- why students get rejected UK universities
+- UK admission mistakes international students
+- how to avoid UK university rejection
+
+SECONDARY KEYWORDS:
+- UCAS mistakes
+- UK personal statement mistakes
+- UK admission strategy
+- study in UK tips
+
+TONE:
+- Professional, insightful, non-generic
+- Sounds like an insider expert
+- Clear and structured
+
+IMPORTANT:
+- Avoid generic explanations
+- Go deep into real reasons behind mistakes
+- Include strategic insights
+
+STRUCTURE:
+- H1 title
+- Strong intro (pain-driven)
+- 8–12 mistakes (each with explanation + fix)
+- Section explaining how admissions actually work
+- Section introducing data-driven evaluation
+- Soft CTA at the end (assessment)
+
+NOW WRITE THE FULL BLOG BELOW:
+
+---
+
+# The Biggest Mistakes International Students Make When Applying to UK Universities (And How to Avoid Them)
+
+Applying to UK universities often looks simple on the surface. Meet the requirements, submit your application, and wait for an offer.
+
+But in reality, the process is far more strategic — and this is exactly where most international students make critical mistakes.
+
+Every year, thousands of applicants get rejected not because they are unqualified, but because they misunderstand how UK admissions actually work.
+
+This guide breaks down the most common mistakes — and more importantly, how to avoid them.
+
+## Mistake 1: Treating Minimum Requirements as Safe
+
+Many students believe that meeting entry requirements guarantees admission. It doesn’t.
+
+Minimum requirements are just thresholds. In competitive courses, accepted students often exceed them.
+
+Fix: Always aim above the requirement, especially for high-demand programmes.
+
+## Mistake 2: No Application Strategy
+
+Applying only to top universities — or choosing randomly — leads to poor outcomes.
+
+Fix: Build a balanced strategy with safe, target, and ambitious choices.
+
+## Mistake 3: Generic Personal Statement
+
+Admissions teams instantly recognise weak, generic statements.
+
+Fix: Show clear motivation, subject depth, and evidence of interest.
+
+## Mistake 4: Ignoring Course Competition
+
+Students focus on university ranking, not course demand.
+
+Fix: Evaluate competitiveness at the course level, not just the institution.
+
+## Mistake 5: Weak Academic Alignment
+
+Switching fields or lacking relevant background reduces acceptance chances.
+
+Fix: Build a clear academic narrative that makes sense.
+
+## Mistake 6: Poor English Strategy
+
+Minimum IELTS is not always enough.
+
+Fix: Aim higher than required where possible.
+
+## Mistake 7: Not Understanding Admissions Logic
+
+Admissions are multi-factor, not binary.
+
+They evaluate:
+- academics
+- alignment
+- English
+- personal statement
+- competition
+
+## Mistake 8: Applying Blindly
+
+Many students don’t evaluate their profile realistically.
+
+Fix: Understand your level before applying.
+
+## Mistake 9: Poor Timing
+
+Late preparation leads to weak applications.
+
+Fix: Prepare early and strategically.
+
+## Mistake 10: Following Generic Advice
+
+Most online advice is not personalised.
+
+Fix: Use tailored, profile-based guidance.
+
+## How Admissions Actually Work
+
+UK admissions function like a scoring system, even if not visible.
+
+Your profile is assessed across multiple dimensions, not just one metric.
+
+## A Smarter Approach
+
+Instead of guessing, evaluate your profile:
+
+- strengths
+- weaknesses
+- realistic chances
+
+This is how strong applicants make decisions.
+
+## Final Thoughts
+
+Success in UK admissions is not about luck — it is about strategy.
+
+## Check Your Admission Chances
+
+If you want to avoid these mistakes, use Universitio’s assessment tool to understand your real position and improve your strategy.
+
+---
