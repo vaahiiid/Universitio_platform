@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [
     tags: ["uk university application mistakes", "why students get rejected uk universities", "uk admission mistakes international students", "how to avoid uk university rejection", "ucas mistakes", "uk personal statement mistakes", "uk admission strategy", "study in uk tips"],
     content: `<h1>The Biggest Mistakes International Students Make When Applying to UK Universities (And How to Avoid Them)</h1>
 
-<p>Applying to UK universities often looks straightforward on the surface. Meet the entry requirements, complete your UCAS application, write a personal statement, and wait for an offer. Simple, right?</p>
+<p>Applying to UK universities often looks straightforward on the surface. Meet the entry requirements, complete your <a href="https://www.ucas.com" target="_blank" rel="noopener noreferrer">UCAS application</a>, write a personal statement, and wait for an offer. Simple, right?</p>
 
 <p>Not quite. The reality is that UK university admissions — especially for international students applying to competitive programmes — is a highly strategic process that most applicants fundamentally misunderstand. Every year, thousands of students are rejected not because they lack ability, but because they made avoidable errors at critical stages of their application.</p>
 
@@ -80,7 +80,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Beyond the overall band score, sub-scores matter. Many programmes in law, humanities, and social sciences place particular weight on writing and reading components, while science and engineering programmes may be less concerned. Ignoring sub-score requirements is a common oversight.</p>
 
-<p><strong>The fix:</strong> Aim above the minimum wherever you can. If you have the time and access to preparation, push your English score to the highest level you can realistically achieve. Check sub-score requirements carefully for each course and make sure all components meet programme-specific thresholds — not just the overall band.</p>
+<p><strong>The fix:</strong> Aim above the minimum wherever you can. If you have the time and access to preparation, push your English score to the highest level you can realistically achieve. Check sub-score requirements carefully for each course and make sure all components meet programme-specific thresholds — not just the overall band. Note that English language requirements also feed directly into your <a href="https://www.gov.uk/student-visa" target="_blank" rel="noopener noreferrer">UK student visa</a> application, so meeting the correct level from the outset avoids delays later.</p>
 
 <h2>Mistake 7: Misunderstanding How UK Admissions Decisions Are Actually Made</h2>
 
@@ -96,7 +96,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Applying without an honest, data-informed understanding of where you stand is essentially applying blind. The consequences — wasted application cycles, unnecessary rejections, and missed opportunities at well-matched universities — are entirely avoidable.</p>
 
-<p><strong>The fix:</strong> Before submitting any application, conduct a structured self-assessment. Evaluate your academic profile honestly against the typical profile for each course you are considering. Identify your genuine strengths and the areas most likely to concern admissions teams. Use this analysis to guide both your university choices and the emphasis of your personal statement.</p>
+<p><strong>The fix:</strong> Before submitting any application, conduct a structured self-assessment. Evaluate your academic profile honestly against the typical profile for each course you are considering. Identify your genuine strengths and the areas most likely to concern admissions teams. Use this analysis to guide both your university choices and the emphasis of your personal statement. Universitio's <a href="https://universitio.com/assessment">free admission assessment tool</a> is designed to help you do exactly this — giving you a clear, data-informed view of your profile before you commit to any choices.</p>
 
 <h2>Mistake 9: Poor Timing and Lack of Preparation</h2>
 
@@ -112,7 +112,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Generic advice optimises for the average applicant. Your application needs to be optimised for you.</p>
 
-<p><strong>The fix:</strong> Supplement general guidance with personalised, profile-specific strategy. Work with advisers who understand your background, the specific courses you are targeting, and the current admissions landscape. The difference between good generic advice and genuinely tailored guidance is often the difference between an offer and a rejection.</p>
+<p><strong>The fix:</strong> Supplement general guidance with personalised, profile-specific strategy. While resources such as the <a href="https://www.britishcouncil.org" target="_blank" rel="noopener noreferrer">British Council</a> offer a solid starting point, there is no substitute for advice tailored to your specific profile, qualifications, and target courses. <a href="https://universitio.com/free-consultation">Speak to an advisor</a> who understands your background and the current admissions landscape. The difference between good generic guidance and genuinely tailored strategy is often the difference between an offer and a rejection.</p>
 
 <h2>How UK Admissions Actually Works: The Logic Behind the Decision</h2>
 
@@ -128,7 +128,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>This means assessing each component of your profile systematically — academic performance and qualification equivalency, English language strength, personal statement readiness, course competitiveness, and the balance of your UCAS choices — and using that assessment to make informed decisions about where to apply and how to position your application.</p>
 
-<p>Students who take this approach know their realistic chances before they apply. They can identify the gaps in their profile and address them. They can allocate their five UCAS choices strategically rather than speculatively. And they can enter the process with confidence because their application reflects a clear understanding of where they stand.</p>
+<p>Students who take this approach know their realistic chances before they apply. They can identify the gaps in their profile and address them. They can allocate their five UCAS choices strategically rather than speculatively. And they can enter the process with confidence because their application reflects a clear understanding of where they stand. Universitio's <a href="https://universitio.com/services">end-to-end application guidance</a> is built on exactly this methodology — profile first, strategy second.</p>
 
 <h2>Final Thoughts</h2>
 
@@ -138,9 +138,9 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Check Your Admission Chances with Universitio</h2>
 
-<p>If you want to avoid the mistakes above and build a genuinely competitive application strategy, start with an honest evaluation of your profile. Universitio's free assessment tool analyses your academic background, English language profile, and target universities to give you a clear picture of your strengths, your gaps, and your realistic chances — before you apply.</p>
+<p>If you want to avoid the mistakes above and build a genuinely competitive application strategy, start with an honest evaluation of your profile. Use Universitio's <a href="https://universitio.com/assessment">free assessment tool</a> to understand your real position — your strengths, your gaps, and your realistic chances across different destinations and course types.</p>
 
-<p>Understanding where you stand is not a luxury. It is the foundation of every strong application.</p>`,
+<p>Understanding where you stand is not a luxury. It is the foundation of every strong application. For personalised guidance beyond the assessment, you can also <a href="https://universitio.com/free-consultation">book a free consultation</a> with one of our advisors. For more guides like this, visit our <a href="https://universitio.com/blog">study abroad resource centre</a>.</p>`,
   },
   {
     id: 260,
