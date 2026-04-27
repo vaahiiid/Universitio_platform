@@ -171,7 +171,7 @@ export function Hero() {
           >
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium text-primary mb-6 shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span>AskiMate AI — Powered by Universitio</span>
+              <span>Built with Universitio Technology</span>
               <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
             </div>
 
