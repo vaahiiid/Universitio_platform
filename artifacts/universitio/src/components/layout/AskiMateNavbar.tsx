@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Menu, X, ChevronDown, LogOut, LayoutDashboard, Sparkles } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
+import askiMateLogoImg from "@assets/Mate_1777308270097.png";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
 export function AskiMateNavbar() {
@@ -52,15 +53,31 @@ export function AskiMateNavbar() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div
-            className="flex-shrink-0 flex items-center gap-2.5 cursor-pointer"
-            onClick={() => setLocation("/")}
-          >
-            <img src={logoImg} alt="Universitio" className="h-8 w-auto object-contain" />
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20">
-              <Sparkles className="w-3 h-3 text-primary/80" />
-              AskiMate AI
-            </span>
+          <div className="flex-shrink-0 flex items-center gap-3">
+            {/* AskiMate logo — main brand */}
+            <img
+              src={askiMateLogoImg}
+              alt="AskiMate"
+              className="h-9 w-auto object-contain"
+              style={{ mixBlendMode: "multiply" }}
+            />
+            {/* Divider */}
+            <div className="hidden sm:block h-5 w-px bg-border/60" />
+            {/* Powered by Universitio */}
+            <div
+              className="hidden sm:flex items-center gap-1.5 cursor-pointer"
+              onClick={() => setLocation("/")}
+              title="Go to Universitio"
+            >
+              <span className="text-xs text-muted-foreground font-normal leading-none">
+                Powered by
+              </span>
+              <img
+                src={logoImg}
+                alt="Universitio"
+                className="h-5 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
