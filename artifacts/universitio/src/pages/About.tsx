@@ -147,10 +147,10 @@ export default function About() {
                   Universitio is a UK-based international education company built to support students through complex study abroad decisions. Alongside its advisory work, the company has developed AskiMate AI — a structured, multi-layer technology system designed to provide reliable guidance, evaluate student readiness, and support decision-making with a combination of intelligent processing and expert oversight.
                 </p>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  We work with students from across the world — particularly from Nigeria, Pakistan, India, Bangladesh, Ghana, Nepal, and Turkey — helping them apply to universities in the United Kingdom, Europe, and beyond.
+                  We support students globally, guiding them through applications to leading universities across the United Kingdom, Europe, and other major study destinations.
                 </p>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  Our team is ICEF-accredited and British Council certified. We are registered with the Information Commissioner's Office (ICO) and operate in full compliance with UK GDPR. Every piece of advice we give is backed by genuine expertise and a duty of care to the student.
+                  Universitio is ICEF-accredited and British Council certified. We are registered with the Information Commissioner's Office (ICO) and operate in full compliance with UK GDPR. Every piece of guidance we provide is grounded in genuine expertise and a clear duty of care to each student.
                 </p>
               </div>
 
@@ -283,43 +283,6 @@ export default function About() {
                   AskiMate was designed and developed by the same team that has been advising international students since 2022. The knowledge base it draws from reflects real cases, real outcomes, and real mistakes — which is precisely what makes it more useful than a generic AI tool.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── 5. HOW WE SUPPORT STUDENTS ───────────────────────────────── */}
-        <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-white">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12">
-              <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
-                <HeartHandshake className="w-3.5 h-3.5" />
-                THE STUDENT JOURNEY
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                How we support students
-              </h2>
-              <p className="text-white/80 text-base leading-relaxed max-w-2xl">
-                Studying abroad involves more than choosing a university and submitting a form. We support students across the entire journey — from the earliest research stage through to life in a new country.
-              </p>
-            </div>
-            <div className="space-y-4">
-              {journeySteps.map((item) => (
-                <div
-                  key={item.step}
-                  className="flex gap-6 items-start bg-white/10 border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all"
-                >
-                  <div className="shrink-0 flex flex-col items-center gap-2">
-                    <span className="text-xs font-bold text-white/50 tracking-widest">{item.step}</span>
-                    <div className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white mb-1.5">{item.title}</h3>
-                    <p className="text-sm text-white/75 leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </section>
