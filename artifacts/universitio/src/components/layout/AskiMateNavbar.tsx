@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { Menu, X, ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
-import askiMateLogoImg from "@assets/Mate_1777308270097.png";
+import askiMateLogoImg from "@assets/Mate_(1590_x_396_px)_1777308437729.png";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
 export function AskiMateNavbar() {
@@ -58,7 +58,7 @@ export function AskiMateNavbar() {
             <img
               src={askiMateLogoImg}
               alt="AskiMate"
-              className="h-9 w-auto object-contain"
+              className="h-10 sm:h-11 w-auto object-contain"
               style={{ mixBlendMode: "multiply" }}
             />
             {/* Divider */}
