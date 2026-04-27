@@ -37,9 +37,10 @@ export function Navbar() {
 
   const navLinks = [
     { name: "About Us", href: "/about" },
-    { name: "Our Services", href: "/services" },
     { name: "AskiMate AI", href: "/askimate", aiIcon: true },
     { name: "Blog", href: "/blog" },
+    { name: "Free Consultation", href: "/free-consultation" },
+    { name: "Other Services", href: "/services" },
   ];
 
   return (
@@ -51,10 +52,10 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex items-center justify-between h-20 gap-4">
 
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleNavClick("/")}>
+          {/* LEFT: Logo */}
+          <div className="flex-shrink-0 cursor-pointer" onClick={() => handleNavClick("/")}>
             <img
               src={logoImg}
               alt="Universitio"
@@ -62,16 +63,15 @@ export function Navbar() {
             />
           </div>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {/* Centre links */}
+          {/* CENTER: Nav links — absolutely centered on desktop */}
+          <div className="hidden lg:flex items-center justify-center flex-1">
             <div className="flex items-center gap-1">
               {navLinks.map((link) =>
                 link.aiIcon ? (
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.href)}
-                    className="relative text-sm font-semibold text-primary flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/35 hover:scale-[1.04] transition-all duration-200 shadow-sm hover:shadow-[0_0_12px_rgba(66,20,125,0.18)]"
+                    className="text-sm font-semibold text-primary flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/35 hover:scale-[1.03] transition-all duration-200 shadow-sm hover:shadow-[0_0_12px_rgba(66,20,125,0.18)]"
                     aria-label="AskiMate AI"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-primary nav-sparkle-icon" />
@@ -81,37 +81,37 @@ export function Navbar() {
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.href)}
-                    className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-muted/50"
+                    className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-muted/50 whitespace-nowrap"
                   >
                     {link.name}
                   </button>
                 )
               )}
             </div>
+          </div>
 
-            {/* Right CTAs */}
-            <div className="flex items-center gap-2 pl-4 border-l border-border/60">
-              <Button
-                size="sm"
-                className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all flex items-center gap-1.5"
-                onClick={() => setLocation("/askimate")}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                Try AskiMate AI
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="rounded-full px-5 font-medium border-primary/30 text-primary hover:bg-primary/5"
-                onClick={() => setLocation("/assessment-form")}
-              >
-                Free Assessment
-              </Button>
-            </div>
+          {/* RIGHT: CTA buttons */}
+          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+            <Button
+              size="sm"
+              className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all flex items-center gap-1.5 whitespace-nowrap"
+              onClick={() => setLocation("/askimate")}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              Try AskiMate AI
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full px-5 font-medium border-primary/30 text-primary hover:bg-primary/5 whitespace-nowrap"
+              onClick={() => setLocation("/assessment-form")}
+            >
+              Free Assessment
+            </Button>
           </div>
 
           {/* Mobile hamburger */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-foreground p-2 focus:outline-none"
@@ -124,7 +124,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-b shadow-lg absolute w-full left-0">
+        <div className="lg:hidden bg-white border-b shadow-lg absolute w-full left-0">
           <div className="px-4 pt-2 pb-6 space-y-1">
             {navLinks.map((link) =>
               link.aiIcon ? (
