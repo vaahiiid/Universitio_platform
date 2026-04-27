@@ -116,158 +116,187 @@ export default function AskiMateLanding() {
 
       {/* ─── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(66,20,125,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(66,20,125,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
-        <div className="absolute inset-0 -z-10" style={{ background: "radial-gradient(ellipse 70% 70% at 60% 50%, rgba(66,20,125,0.09) 0%, transparent 70%)" }} />
+        {/* Grid */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(66,20,125,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(66,20,125,0.03)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        {/* Gradient */}
+        <div className="absolute inset-0 -z-10" style={{ background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(66,20,125,0.07) 0%, transparent 70%)" }} />
+        {/* Blur orb */}
+        <div className="absolute top-0 right-0 -z-10 w-[600px] h-[600px] rounded-full" style={{ background: "radial-gradient(circle, rgba(99,70,220,0.08) 0%, transparent 65%)", filter: "blur(60px)" }} />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-12 lg:gap-16 items-center">
 
-            {/* LEFT */}
+            {/* ── LEFT: Copy ── */}
             <div
-              className="text-center lg:text-left transition-all duration-700"
-              style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(22px)" }}
+              className="text-center lg:text-left"
+              style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(22px)", transition: "all 0.7s ease" }}
             >
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/25 rounded-full px-4 py-1.5 mb-6">
-                <Sparkles className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs font-semibold text-primary">AI-first · Human-supervised</span>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 rounded-full px-4 py-1.5 mb-7">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                <span className="text-xs font-semibold text-primary tracking-wide">AI-driven · Expert-supervised system</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight mb-6 tracking-tight">
-                Your AI Mate for
-                <span className="block" style={{ color: "#42147d" }}>Studying Abroad</span>
+              <h1 className="text-4xl sm:text-5xl md:text-[3.4rem] font-bold text-foreground leading-[1.12] mb-6 tracking-tight">
+                Make the right study abroad decisions —
+                <span className="block mt-1" style={{ color: "#42147d" }}>with AI that actually understands your profile</span>
               </h1>
 
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed">
-                Get personalised, supervised guidance for every step of your study abroad journey — from choosing a course to applications, visa, arrival, and beyond.
+              <p className="text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
+                AskiMate analyses your profile, evaluates your options, and guides your next steps — combining structured AI reasoning with expert human validation where it matters.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-5">
                 <Button
                   onClick={handleStartChat}
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 h-13 text-base shadow-lg hover:shadow-primary/30 hover:-translate-y-px transition-all"
+                  className="bg-primary hover:bg-primary/90 text-white rounded-full px-9 h-13 text-base shadow-lg shadow-primary/20 hover:-translate-y-px transition-all"
                 >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  {isAuthenticated && user ? `Continue as ${user.firstName}` : "Start Chat Free"}
+                  {isAuthenticated && user ? `Continue as ${user.firstName}` : "Get Your Answer"}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
                 <Button
-                  onClick={scrollToPackages}
+                  onClick={() => { const el = document.getElementById("how-it-works"); if (el) el.scrollIntoView({ behavior: "smooth" }); }}
                   variant="outline"
                   size="lg"
-                  className="rounded-full px-8 h-13 text-base border-primary/30 text-primary hover:bg-primary/5"
+                  className="rounded-full px-8 h-13 text-base border-primary/25 text-primary hover:bg-primary/5"
                 >
-                  View Pricing
+                  See How It Works
                 </Button>
               </div>
 
-              <div className="flex flex-wrap justify-center lg:justify-start gap-5 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-green-500" />No credit card required</span>
-                <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-green-500" />5 free questions per week</span>
-                <span className="flex items-center gap-1.5"><Check className="w-4 h-4 text-green-500" />Human-supervised AI</span>
+              {/* Microcopy */}
+              <p className="text-xs text-muted-foreground text-center lg:text-left tracking-wide">
+                No generic answers · Structured guidance · Continuous learning system
+              </p>
+
+              {/* System signals */}
+              <div className="mt-8 flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 justify-center lg:justify-start flex-wrap">
+                {[
+                  { icon: Users, label: "Human-in-the-loop system" },
+                  { icon: Database, label: "Continuously improving knowledge base" },
+                  { icon: TrendingUp, label: "Answers get better over time" },
+                ].map((s) => (
+                  <span key={s.label} className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <s.icon className="w-3.5 h-3.5 text-primary shrink-0" />
+                    {s.label}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* RIGHT: AI Decision Path Visual */}
+            {/* ── RIGHT: System Flow Diagram ── */}
             <div
-              className="relative hidden lg:flex items-center justify-center min-h-[520px]"
-              style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(16px)", transition: "all 0.9s ease 0.15s" }}
+              className="relative hidden lg:flex items-center justify-center"
+              style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(12px)", transition: "all 0.9s ease 0.18s" }}
             >
-              <div className="absolute w-96 h-96 rounded-full pointer-events-none animate-pulse-glow"
-                style={{ background: "radial-gradient(circle, rgba(99,70,220,0.22) 0%, rgba(66,20,125,0.10) 45%, transparent 70%)", filter: "blur(28px)" }} />
+              {/* Background glow */}
+              <div className="absolute inset-0 rounded-3xl" style={{ background: "radial-gradient(ellipse 80% 80% at 50% 50%, rgba(66,20,125,0.06) 0%, transparent 70%)" }} />
 
-              <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-[380px]">
-                <div className="flex justify-between w-full px-4">
-                  <div className="bg-white rounded-2xl shadow-lg border border-primary/15 px-4 py-3 flex items-center gap-2.5 animate-float-gentle" style={{ animationDelay: "0s" }}>
-                    <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <MessageSquare className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-foreground">Student asks</p>
-                      <p className="text-[10px] text-muted-foreground">Any study question</p>
-                    </div>
+              {/* Flow diagram */}
+              <div className="relative w-full max-w-[420px] flex flex-col items-center gap-0 py-4">
+
+                {/* Node 1: User Question */}
+                <div className="w-full bg-white/90 backdrop-blur-sm border border-border/60 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md hover:border-primary/25 transition-all animate-float-gentle" style={{ animationDelay: "0s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <MessageSquare className="w-5 h-5 text-primary" />
                   </div>
-                  <div className="bg-white rounded-2xl shadow-lg border border-primary/15 px-4 py-3 flex items-center gap-2.5 animate-float-gentle" style={{ animationDelay: "0.6s" }}>
-                    <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-amber-500" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-foreground">AI guidance</p>
-                      <p className="text-[10px] text-muted-foreground">Verified knowledge</p>
-                    </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-0.5">User Input</p>
+                    <p className="text-sm font-bold text-foreground">Student question + profile context</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-2xl border border-primary/20 w-full p-5 relative z-20">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-md">
-                      <Sparkles className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-foreground">AskiMate AI</p>
-                      <p className="text-xs text-muted-foreground">Personalised guidance</p>
-                    </div>
-                    <div className="bg-green-50 border border-green-200 rounded-full px-2 py-0.5 flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-green-600" />
-                      <span className="text-[10px] font-semibold text-green-700">Verified</span>
-                    </div>
-                  </div>
+                {/* Connector 1 */}
+                <div className="flex flex-col items-center gap-0 py-1">
+                  <div className="w-px h-5 bg-gradient-to-b from-primary/30 to-primary/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <div className="w-px h-5 bg-gradient-to-b from-primary/60 to-primary/30" />
+                </div>
 
-                  <div className="space-y-2.5 mb-4">
-                    <div className="flex justify-end">
-                      <div className="bg-primary text-white rounded-2xl rounded-tr-sm px-3.5 py-2 text-xs max-w-[80%] shadow-sm">
-                        What grades do I need for UCL Computer Science?
-                      </div>
-                    </div>
-                    <div className="flex gap-2 items-start">
-                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center shrink-0 mt-0.5">
-                        <Sparkles className="w-3 h-3 text-white" />
-                      </div>
-                      <div className="bg-slate-50 rounded-2xl rounded-tl-sm px-3.5 py-2 text-xs max-w-[80%] border border-border/30 shadow-sm">
-                        UCL CS typically requires A*AA. Your predicted grades suggest a strong chance — want me to check your full profile?
-                      </div>
-                    </div>
+                {/* Node 2: AI Analysis */}
+                <div className="w-full bg-gradient-to-r from-primary/6 to-primary/3 border border-primary/20 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md hover:border-primary/40 transition-all animate-float-gentle" style={{ animationDelay: "0.4s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shrink-0 shadow-sm">
+                    <Brain className="w-5 h-5 text-white" />
                   </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-0.5">AI Analysis</p>
+                    <p className="text-sm font-bold text-foreground">Structured reasoning · Verified knowledge</p>
+                  </div>
+                  <span className="text-[10px] font-semibold text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-1 whitespace-nowrap">AI decides</span>
+                </div>
 
-                  <div className="flex items-center gap-2 bg-muted/40 rounded-xl px-3.5 py-2 border border-border/40">
-                    <span className="flex-1 text-xs text-muted-foreground">Ask anything about studying abroad…</span>
-                    <div className="w-6 h-6 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                      <ArrowRight className="w-3 h-3 text-white" />
-                    </div>
+                {/* Connector 2 */}
+                <div className="flex flex-col items-center gap-0 py-1">
+                  <div className="w-px h-5 bg-gradient-to-b from-primary/30 to-amber-400/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" style={{ animationDelay: "0.5s" }} />
+                  <div className="w-px h-5 bg-gradient-to-b from-amber-400/60 to-amber-400/30" />
+                </div>
+
+                {/* Node 3: Confidence Check */}
+                <div className="w-full bg-white/90 backdrop-blur-sm border border-amber-200 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "0.8s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-5 h-5 text-amber-500" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-amber-600 uppercase tracking-widest mb-0.5">Confidence Check</p>
+                    <p className="text-sm font-bold text-foreground">Complex? Flags for review</p>
+                  </div>
+                  <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1 whitespace-nowrap">Escalates if needed</span>
+                </div>
+
+                {/* Connector 3 */}
+                <div className="flex flex-col items-center gap-0 py-1">
+                  <div className="w-px h-5 bg-gradient-to-b from-amber-400/30 to-green-400/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" style={{ animationDelay: "1s" }} />
+                  <div className="w-px h-5 bg-gradient-to-b from-green-400/60 to-green-400/30" />
+                </div>
+
+                {/* Node 4: Expert Review */}
+                <div className="w-full bg-white/90 backdrop-blur-sm border border-green-200 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "1.2s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
+                    <UserCheck className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-0.5">Expert Review</p>
+                    <p className="text-sm font-bold text-foreground">Human-in-the-loop — only when needed</p>
                   </div>
                 </div>
 
-                <div className="flex justify-between w-full px-4">
-                  <div className="bg-white rounded-2xl shadow-lg border border-green-200 px-4 py-3 flex items-center gap-2.5 animate-float-gentle" style={{ animationDelay: "1.2s" }}>
-                    <div className="w-8 h-8 rounded-xl bg-green-50 flex items-center justify-center">
-                      <UserCheck className="w-4 h-4 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-foreground">Expert review</p>
-                      <p className="text-[10px] text-muted-foreground">Human in the loop</p>
-                    </div>
-                  </div>
-                  <div className="bg-white rounded-2xl shadow-lg border border-primary/15 px-4 py-3 flex items-center gap-2.5 animate-float-gentle" style={{ animationDelay: "1.8s" }}>
-                    <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <RefreshCw className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-foreground">System learns</p>
-                      <p className="text-[10px] text-muted-foreground">Knowledge grows</p>
-                    </div>
-                  </div>
+                {/* Connector 4 */}
+                <div className="flex flex-col items-center gap-0 py-1">
+                  <div className="w-px h-5 bg-gradient-to-b from-green-400/30 to-primary/50" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" style={{ animationDelay: "1.5s" }} />
+                  <div className="w-px h-5 bg-gradient-to-b from-primary/50 to-primary/20" />
                 </div>
 
-                <div className="absolute top-2 -right-8 z-30 bg-white rounded-xl shadow-lg border border-border/40 px-3.5 py-2.5 flex items-center gap-2 animate-float" style={{ animationDelay: "0.9s" }}>
-                  <Users className="w-4 h-4 text-primary" />
+                {/* Node 5: Final Answer */}
+                <div className="w-full bg-white/90 backdrop-blur-sm border border-primary/25 rounded-2xl px-5 py-4 shadow-md flex items-center gap-4 hover:shadow-lg hover:border-primary/40 transition-all animate-float-gentle" style={{ animationDelay: "1.6s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-0.5">Final Answer</p>
+                    <p className="text-sm font-bold text-foreground">Structured, validated guidance</p>
+                  </div>
+                  <span className="text-[10px] font-semibold text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-1 whitespace-nowrap">Learns over time</span>
+                </div>
+
+                {/* Floating accent: students */}
+                <div className="absolute -right-6 top-1/4 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3 py-2 flex items-center gap-1.5 animate-float" style={{ animationDelay: "0.5s" }}>
+                  <Users className="w-3.5 h-3.5 text-primary" />
                   <span className="text-xs font-semibold text-foreground whitespace-nowrap">1,500+ students</span>
                 </div>
-                <div className="absolute bottom-6 -left-10 z-30 bg-white rounded-xl shadow-lg border border-border/40 px-3.5 py-2.5 flex items-center gap-2 animate-float-gentle" style={{ animationDelay: "0.3s" }}>
-                  <BadgeCheck className="w-4 h-4 text-green-600" />
+                {/* Floating accent: success */}
+                <div className="absolute -left-8 bottom-1/4 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3 py-2 flex items-center gap-1.5 animate-float-gentle" style={{ animationDelay: "1.1s" }}>
+                  <BadgeCheck className="w-3.5 h-3.5 text-green-600" />
                   <span className="text-xs font-semibold text-foreground whitespace-nowrap">95% success rate</span>
                 </div>
+
               </div>
             </div>
+
           </div>
         </div>
       </section>

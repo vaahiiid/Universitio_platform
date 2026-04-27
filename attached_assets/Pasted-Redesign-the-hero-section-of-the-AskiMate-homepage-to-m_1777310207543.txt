@@ -1,0 +1,108 @@
+Redesign the hero section of the AskiMate homepage to make it feel like a premium AI product (not a generic chatbot or landing page).
+
+IMPORTANT:
+
+* Do NOT change backend logic, APIs, routing, or functionality
+* Only update UI, UX, layout, animations, and copy
+
+OBJECTIVE:
+The hero must clearly communicate that AskiMate is a decision-support AI system, not just a chatbot. It should show that the system is AI-first, human-supervised, and designed to deliver structured, reliable guidance.
+
+---
+
+REPLACE HERO COPY WITH:
+
+Badge (top small pill):
+"AI-driven · Expert-supervised system"
+
+Headline (H1):
+"Make the right study abroad decisions — with AI that actually understands your profile"
+
+Subheadline:
+"AskiMate analyses your profile, evaluates your options, and guides your next steps — combining structured AI reasoning with expert human validation where it matters."
+
+---
+
+CTA SECTION (COMPLETELY REDESIGN)
+
+Primary CTA (solid button):
+"Get Your Answer"
+Action: scroll to chat or focus chat input
+
+Secondary CTA (outline button):
+"See How It Works"
+Action: scroll to system explanation section
+
+Small microcopy under buttons:
+"No generic answers · Structured guidance · Continuous learning system"
+
+---
+
+HERO VISUAL (RIGHT SIDE)
+
+REMOVE the current chat UI mockup completely.
+
+REPLACE with a system-based animated visual showing flow:
+
+Step 1: User Input
+Step 2: AI Analysis
+Step 3: Decision / Output
+
+Include nodes/cards such as:
+
+* User Question
+* AI Analysis
+* Confidence Check
+* Expert Review (only when needed)
+* Final Answer
+
+Connect nodes with animated lines or flows.
+
+Add subtle labels:
+
+* "AI decides"
+* "Escalates if needed"
+* "Learns over time"
+
+---
+
+TRUST / SYSTEM SIGNALS
+
+Add small supporting elements near CTA or visual:
+
+* "Human-in-the-loop system"
+* "Continuously improving knowledge base"
+* "Answers get better over time"
+
+---
+
+REMOVE THE FOLLOWING:
+
+* "Mentors available now"
+* Any fake chat conversation UI
+* Generic phrases like "personalised guidance"
+* Any unclear labels like "Verified"
+
+---
+
+ANIMATION STYLE:
+
+* Subtle floating motion
+* Light connection pulses between nodes
+* Smooth hover effects
+* Keep it minimal and premium (not flashy)
+
+---
+
+DESIGN DIRECTION:
+
+* Clean, modern AI product (NOT agency style)
+* Inspired by: Stripe / Notion AI / Perplexity
+* Use soft gradients, depth, blur, and glass effects
+
+---
+
+FINAL EXPECTATION:
+
+The hero should immediately communicate:
+"This is a smart system that helps me make decisions — not just answer questions."
