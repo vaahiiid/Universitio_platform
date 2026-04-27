@@ -19,20 +19,18 @@ export function TrustStrip() {
   const [hoveredAcc, setHoveredAcc] = useState<string | null>(null);
 
   return (
-    <section className="py-10 md:py-16 bg-slate-50 border-b border-border/40">
+    <section className="py-10 md:py-16 bg-white border-b border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-8">
-          {/* Title */}
           <div className="text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-              A Trusted Partner in Education
+              AI-First Guidance. Human-Backed Trust.
             </h2>
-            <p className="text-sm text-muted-foreground">
-              UK-registered, ICEF-accredited, and recognised by leading education bodies
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+              Universitio combines AI-powered guidance with expert support. AskiMate gives instant direction, while our accredited team helps you execute the next steps.
             </p>
           </div>
 
-          {/* Logo Strip */}
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
             {siteData.accreditations
               .filter(acc => acc.logoKey !== "trustpilot")
@@ -54,7 +52,6 @@ export function TrustStrip() {
                           className="h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
                           loading="lazy"
                         />
-                        {/* Tooltip */}
                         <div className={`
                           absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-10
                           bg-foreground text-background text-xs rounded-lg px-3 py-2 w-48
@@ -73,10 +70,9 @@ export function TrustStrip() {
               })}
           </div>
 
-          {/* Mini About + Link */}
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl p-6 border border-border/40 text-center space-y-3">
-            <p className="text-muted-foreground">
-              We help students apply to universities in the UK and worldwide with expert, personalised support.
+          <div className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 border border-primary/15 text-center space-y-3">
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              UK-registered, ICEF-accredited, and recognised by leading education bodies worldwide. Every AI answer is backed by our expert admissions team.
             </p>
             <Link href="/about">
               <span className="inline-flex items-center text-primary hover:text-primary/80 font-semibold text-sm transition-colors cursor-pointer">

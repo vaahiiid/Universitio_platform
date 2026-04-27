@@ -1,0 +1,157 @@
+Redesign the Universitio homepage to make it AskiMate AI–focused, WITHOUT changing any backend logic, routes, APIs, or infrastructure.
+
+IMPORTANT:
+- Do NOT touch backend code
+- Do NOT modify database, APIs, or business logic
+- Only update frontend layout, content, and UI components
+- Keep all existing functionality working exactly as is
+
+-----------------------------------
+GOAL
+-----------------------------------
+
+Make the homepage AI-first and product-led, with AskiMate AI as the main focus, while keeping Universitio as the parent brand.
+
+-----------------------------------
+1. HERO SECTION (CRITICAL)
+-----------------------------------
+
+Replace the current hero section with an AskiMate AI-focused hero.
+
+Headline:
+"Meet AskiMate AI, Your Smart Study Abroad Assistant"
+
+Subheadline:
+"Ask questions, check your chances, compare study options, and get personalised guidance powered by AI and supported by real experts."
+
+PRIMARY CTA:
+"Try AskiMate AI" → link to /askimate
+
+SECONDARY CTA:
+"Start Smart Assessment" → link to /assessment
+
+-----------------------------------
+HERO IMAGE / VISUAL
+-----------------------------------
+
+Replace current image with a TECHNOLOGY-FOCUSED ANIMATED VISUAL.
+
+Requirements:
+- Must feel AI-driven and modern
+- Anime-style or futuristic motion graphic (NOT cartoon childish)
+- Theme:
+  - AI intelligence
+  - global education paths
+  - decision-making / data / networks
+- Can be:
+  - Lottie animation
+  - subtle motion gradient + particles
+  - animated SVG
+- Must be lightweight and fast (performance safe)
+- Must be responsive
+
+DO NOT use:
+- static student photos
+- generic stock images
+
+-----------------------------------
+2. TRUST / POSITIONING SECTION
+-----------------------------------
+
+Keep existing section but slightly rewrite content to be AskiMate-centric.
+
+New direction:
+- AI-first guidance
+- human expert support behind it
+
+Example idea:
+"Universitio combines AI-powered guidance with expert support. AskiMate gives instant direction, while our team helps you execute the next steps."
+
+-----------------------------------
+3. ASKIMATE FEATURES SECTION (MOVE UP)
+-----------------------------------
+
+Create a strong section immediately after hero:
+
+Title:
+"What AskiMate AI Can Help You With"
+
+Cards:
+- Ask Study Abroad Questions
+- Check Your Admission Chances
+- Compare Countries and Courses
+- Understand Visa and Risks
+- Get Mentor Support
+
+CTA:
+"Try AskiMate AI"
+
+IMPORTANT:
+- This replaces the old AskiMate section
+- Make it visually strong and product-focused
+
+-----------------------------------
+4. SERVICES SECTION (RENAME + REPOSITION)
+-----------------------------------
+
+Rename:
+"Services" → "Other Services by Universitio"
+
+Move this section BELOW the AskiMate features section.
+
+Keep functionality but adjust tone:
+- Supporting layer, not primary product
+
+-----------------------------------
+5. PARTNERSHIP + REFERRAL SECTIONS
+-----------------------------------
+
+Move these sections to the MIDDLE of the page:
+
+- Partner with Universitio
+- Student Referral Programme
+
+Keep content but improve visual hierarchy.
+
+-----------------------------------
+6. BLOG SECTION
+-----------------------------------
+
+Keep existing blog section.
+
+Ensure:
+- Only 3 latest posts shown
+- Layout remains clean
+
+-----------------------------------
+7. FINAL CTA SECTION
+-----------------------------------
+
+Add or improve final CTA:
+
+Message direction:
+"Start with AI. Finish with expert support."
+
+Buttons:
+- Try AskiMate AI
+- Book a Free Consultation
+
+-----------------------------------
+DESIGN STYLE
+-----------------------------------
+
+- Keep existing color palette (purple theme)
+- Make it more modern / product-style
+- Clean spacing, strong hierarchy
+- Slight SaaS feel (like AI products)
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+- No backend changes
+- No broken links
+- All CTAs working
+- Hero visually AI-focused
+- Page clearly communicates:
+  AI product first, services second

@@ -11,6 +11,7 @@ import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { StudyDestinations } from "@/components/home/StudyDestinations";
 import { Partnerships } from "@/components/home/Partnerships";
 import { SocialProof } from "@/components/home/SocialProof";
+import { FinalCTA } from "@/components/home/FinalCTA";
 import { Helmet } from "react-helmet-async";
 
 export default function Home() {
@@ -27,10 +28,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Universitio | UK University Application Support</title>
+        <title>AskiMate AI — Smart Study Abroad Assistant | Universitio</title>
         <meta
           name="description"
-          content="Universitio helps international students apply to UK and global universities with expert guidance, personalised support, visa help, and free consultation."
+          content="Meet AskiMate AI — ask study abroad questions, check your admission chances, compare countries and courses, and get personalised guidance powered by AI and supported by real experts."
         />
         <link rel="canonical" href="https://universitio.com/" />
         <script type="application/ld+json">{JSON.stringify({
@@ -62,26 +63,28 @@ export default function Home() {
       </Helmet>
       <Navbar />
       <main>
-        {/* 1 — Hero: primary CTA for ready users */}
+        {/* 1 — AI-focused hero */}
         <Hero />
         {/* 2 — Accreditation strip + Stats + University marquee */}
         <TrustIndicators />
-        {/* 3 — Compact Trust & About */}
-        <TrustStrip />
-        {/* 4 — Services Preview */}
-        <ServicesPreview />
-        {/* 4.5 — AskiMate Preview */}
+        {/* 3 — AskiMate feature cards (immediately after hero) */}
         <AskiMatePreview />
-        {/* 5 — Why Choose Preview */}
+        {/* 4 — AI-first trust & positioning strip */}
+        <TrustStrip />
+        {/* 5 — Other Services by Universitio */}
+        <ServicesPreview />
+        {/* 6 — Why Choose */}
         <WhyChoosePreview />
-        {/* 6 — Assessment CTA: capture undecided users after they understand the service */}
-        <AssessmentCTA />
-        {/* 7 — Study Destinations (merged with Global Reach) */}
-        <StudyDestinations />
-        {/* 8 — Partner & Student Referral */}
+        {/* 7 — Partner & Student Referral (middle of page) */}
         <Partnerships />
+        {/* 8 — Assessment CTA */}
+        <AssessmentCTA />
+        {/* 9 — Study Destinations */}
+        <StudyDestinations />
         {/* 10 — Testimonials, Blog, Contact */}
         <SocialProof />
+        {/* 11 — Final CTA: Start with AI. Finish with expert support. */}
+        <FinalCTA />
       </main>
       <Footer />
     </div>
