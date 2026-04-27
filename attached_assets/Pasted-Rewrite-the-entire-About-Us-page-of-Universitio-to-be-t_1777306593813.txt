@@ -1,0 +1,157 @@
+Rewrite the entire "About Us" page of Universitio to be technology-driven, product-led, and AI-first.
+
+IMPORTANT:
+- DO NOT copy any existing text
+- DO NOT reuse current wording
+- Create a completely new version inspired by a product-led AI company
+- Keep all accreditations and compliance facts, but rewrite tone and structure
+- Position Universitio as a digital technology company, not a traditional agency
+
+-----------------------------------
+GOAL
+-----------------------------------
+
+Transform Universitio from:
+"education consultancy"
+
+into:
+"AI-powered EdTech platform with a proprietary system (AskiMate)"
+
+-----------------------------------
+STRUCTURE
+-----------------------------------
+
+1. HERO TITLE
+
+Replace with:
+
+"Building Intelligent Pathways to Global Education"
+
+Subheadline:
+
+"Universitio is a product-led EdTech platform powered by AskiMate AI — designed to guide, evaluate, and support international students through complex study abroad decisions."
+
+-----------------------------------
+
+2. WHO WE ARE (REWRITE COMPLETELY)
+
+Replace agency-style explanation with:
+
+- Universitio as a technology company
+- Built around a central AI system (AskiMate)
+- Designed for structured decision-making, not generic advice
+
+Key ideas to include:
+- platform, not consultancy
+- system, not service
+- decision engine, not just guidance
+
+-----------------------------------
+
+3. TECHNOLOGY SECTION (NEW — VERY IMPORTANT)
+
+Title:
+"Our Technology"
+
+Content direction:
+
+Explain AskiMate as:
+
+- a structured AI system (not chatbot)
+- decision-support infrastructure
+- evaluates user profiles
+- produces admission readiness insights
+- integrates human-in-the-loop validation
+
+Include concepts like:
+- AI + human oversight
+- continuous learning system
+- knowledge base growth
+- controlled outputs (not random answers)
+
+-----------------------------------
+
+4. HOW THE PLATFORM WORKS
+
+Create a step-based explanation:
+
+1. User inputs data / questions
+2. AI processes and evaluates
+3. System generates structured outputs
+4. Human mentors intervene when needed
+5. Knowledge base improves over time
+
+-----------------------------------
+
+5. PRODUCT + SERVICES RELATIONSHIP
+
+Clarify:
+
+- AskiMate = core product
+- Universitio services = execution layer
+
+Message:
+"AI guides decisions, experts help execute them."
+
+-----------------------------------
+
+6. TRUST & ACCREDITATION (KEEP BUT REFRAME)
+
+Keep all these:
+- ICEF
+- British Council
+- ICO
+- Companies House
+- Chambers of Commerce
+
+BUT rewrite tone:
+
+NOT:
+"we are trusted"
+
+INSTEAD:
+"regulated, verified, compliant infrastructure"
+
+-----------------------------------
+
+7. WHY UNIVERSITIO (REWRITE)
+
+Make it product-focused:
+
+- Structured guidance (not generic advice)
+- Decision clarity
+- Risk reduction
+- AI + expert combination
+- Scalable support
+
+-----------------------------------
+
+8. FINAL CTA
+
+Replace with:
+
+"Start with AI. Move forward with confidence."
+
+Buttons:
+- Try AskiMate AI
+- Book a Free Consultation
+
+-----------------------------------
+
+TONE & STYLE
+
+- Product-first (like SaaS companies)
+- Technical but readable
+- Confident, not salesy
+- Clean and structured
+- No generic agency language
+
+-----------------------------------
+
+FINAL RESULT
+
+The page should clearly communicate:
+
+- Universitio is a technology company
+- AskiMate is the core system
+- This is an AI-powered platform, not a traditional consultancy
