@@ -82,10 +82,16 @@ export function AskiMateNavbar() {
 
           <div className="hidden md:flex items-center gap-4">
             <button
+              onClick={() => setLocation("/about")}
+              className="text-sm font-medium text-foreground/60 hover:text-primary transition-colors"
+            >
+              About Universitio
+            </button>
+            <button
               onClick={scrollToPackages}
               className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
             >
-              Packages
+              Pricing
             </button>
 
             {isAuthenticated && user ? (
@@ -163,10 +169,16 @@ export function AskiMateNavbar() {
         <div className="md:hidden bg-white border-b shadow-lg">
           <div className="px-4 pt-2 pb-5 space-y-1">
             <button
+              onClick={() => { setLocation("/about"); setIsMobileMenuOpen(false); }}
+              className="block w-full text-left px-3 py-3 text-base font-medium text-foreground/70 hover:bg-muted rounded-md"
+            >
+              About Universitio
+            </button>
+            <button
               onClick={scrollToPackages}
               className="block w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
             >
-              Packages
+              Pricing
             </button>
 
             {isAuthenticated && user ? (

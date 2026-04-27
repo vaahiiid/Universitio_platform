@@ -1,0 +1,253 @@
+Redesign the AskiMate homepage (/askimate) into a premium, animation-led SaaS landing page.
+
+IMPORTANT:
+- Apply ONLY to /askimate
+- Do NOT change backend, APIs, database, auth, subscriptions, payments, or logic
+- Only update frontend layout, copy, visuals, animations, and navigation labels
+- Keep all current functionality working
+
+GOAL:
+Make the AskiMate homepage feel like a modern AI product, not a simple chat page.
+
+Use the uploaded deck as strategic inspiration:
+- AskiMate is an AI mate for studying abroad
+- Human-supervised AI
+- Personalised guidance
+- End-to-end student journey support
+- Verified, contextual, accountable answers
+- Universitio is the company behind AskiMate
+
+-----------------------------------
+NAVBAR
+-----------------------------------
+
+Change menu label:
+"Packages" → "Pricing"
+
+Keep:
+- Login
+- Sign Up Free
+
+Add a subtle link:
+"About Universitio" → /about
+
+Header branding:
+- Use the new attached AskiMate logo
+- Keep "Powered by Universitio" subtle and small
+- AskiMate must remain visually dominant
+
+-----------------------------------
+PAGE ENTRY ANIMATION
+-----------------------------------
+
+When /askimate loads, add a subtle premium opening animation:
+
+Ideas:
+- Logo fades/slides in
+- AI particles or glowing path briefly appears
+- Hero content animates in smoothly
+
+Rules:
+- Must be lightweight
+- No heavy loading screen
+- No delay that annoys users
+- Smooth, modern, SaaS-style
+
+-----------------------------------
+HERO SECTION
+-----------------------------------
+
+Create a new creative hero section.
+
+Headline:
+Your AI Mate for Studying Abroad
+
+Subheadline:
+Ask questions, understand your options, and get personalised guidance from AskiMate AI, supported by real Universitio mentors when expert review is needed.
+
+Primary CTA:
+Start Chat Free
+
+Secondary CTA:
+View Pricing
+
+Micro trust line:
+No credit card required · 5 free questions per week · Human-supervised guidance
+
+Hero visual:
+Create a modern animated visual related to:
+- AI guidance
+- study abroad journey
+- decision paths
+- human-supervised support
+- knowledge base learning
+
+Do NOT use a basic chat screenshot as the main visual.
+Use something more creative:
+- animated global study pathway
+- AI decision map
+- flowing nodes from question → AI → mentor → guidance
+- glowing knowledge base animation
+
+Keep purple branding.
+
+-----------------------------------
+UPDATED STATS
+-----------------------------------
+
+Use updated numbers:
+- 1,500+ students supported
+- 95% application success rate
+- 1,100+ community members
+- Human-supervised AI
+- From £12/month
+
+Do NOT use outdated:
+- 1,000+ students
+- 200+ countries
+
+-----------------------------------
+REPLACE CURRENT “HOW IT WORKS” COPY
+-----------------------------------
+
+Replace current steps:
+
+Old:
+Ask your question
+Mentor reviews it
+Get clear guidance
+
+New section title:
+How AskiMate Works
+
+New steps:
+
+1. Ask Anything About Studying Abroad
+Description:
+From university choices and applications to visas, documents, accommodation, and life after arrival, AskiMate helps you ask the right questions at every stage of the journey.
+
+2. AI Gives Structured Guidance
+Description:
+AskiMate uses a specialised knowledge base and student profile context to provide clear, relevant, and personalised guidance instead of generic answers.
+
+3. Human Experts Step In When Needed
+Description:
+When a question is complex or confidence is low, a Universitio mentor can review, improve, or take over the response to keep guidance accurate and accountable.
+
+4. The System Gets Smarter
+Description:
+Approved expert answers are added to the knowledge base, helping AskiMate improve over time while keeping learning controlled and human-supervised.
+
+-----------------------------------
+NEW SECTION: WHY ASKIMATE
+-----------------------------------
+
+Title:
+Why AskiMate Is Different
+
+Cards:
+1. Human-Supervised AI
+Not just automated answers. Expert mentors can review and support complex cases.
+
+2. Personalised to Your Profile
+Guidance adapts to your background, goals, budget, academic history, and destination.
+
+3. Full Journey Support
+From choosing a course to applications, visa, travel, accommodation, and settling in.
+
+4. Built on Verified Knowledge
+Answers are based on structured guidance and expert-reviewed information.
+
+5. Affordable Access
+Start free, then upgrade from £12/month for priority support and premium guidance.
+
+-----------------------------------
+NEW SECTION: ABOUT UNIVERSITIO
+-----------------------------------
+
+Add a short section introducing Universitio.
+
+Title:
+Built by Universitio
+
+Copy:
+AskiMate is a technology product created by Universitio, a UK-based international education company supporting students worldwide. Universitio combines real education expertise, institutional partnerships, and student support experience with AI technology to make study abroad guidance more accessible, accurate, and accountable.
+
+Include small trust badges:
+- ICEF Accredited
+- British Council Certified
+- UK Registered Company
+- 1,500+ students supported
+
+CTA:
+Learn About Universitio → /about
+
+-----------------------------------
+PRICING SECTION
+-----------------------------------
+
+Rename section/menu:
+Packages → Pricing
+
+Keep current pricing logic and payment functionality unchanged.
+
+Improve copy:
+Free Plan:
+Basic Mentoring
+5 free questions per week
+Structured AI guidance
+Good for early exploration
+
+Premium Plan:
+Premium Mentoring
+£12/month
+Unlimited questions
+Priority replies
+Human mentor support
+Document and application guidance
+
+CTA buttons:
+Free: Start Free
+Premium: Upgrade to Premium
+
+-----------------------------------
+FINAL CTA SECTION
+-----------------------------------
+
+Create a strong final CTA.
+
+Title:
+Start with AskiMate. Move forward with confidence.
+
+Description:
+Whether you are choosing a country, preparing documents, or planning your next step, AskiMate helps you get clear guidance without guessing.
+
+Buttons:
+Start Chat Free
+View Pricing
+
+-----------------------------------
+DESIGN STYLE
+-----------------------------------
+
+- Premium SaaS landing page
+- Animation-led but clean
+- Purple, white, soft gradients
+- Smooth motion
+- Strong spacing
+- Mobile responsive
+- No clutter
+- No generic education agency look
+
+-----------------------------------
+FINAL CHECK
+-----------------------------------
+
+- /askimate homepage feels like a serious AI product
+- Pricing label updated
+- About Universitio included
+- Hero has creative animation
+- Opening animation works smoothly
+- Current package/payment functionality remains untouched
+- No backend changes
+- All CTAs work
