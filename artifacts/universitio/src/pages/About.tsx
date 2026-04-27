@@ -118,7 +118,7 @@ export default function About() {
         <title>About Universitio — AI-Powered EdTech Platform</title>
         <meta
           name="description"
-          content="Universitio is a product-led EdTech platform powered by AskiMate AI — designed to guide, evaluate, and support international students through complex study abroad decisions."
+          content="Universitio is a product-led EdTech platform that develops and operates proprietary technology solutions, including AskiMate AI — a structured AI system designed to guide, evaluate, and support international students through complex study abroad decisions."
         />
         <link rel="canonical" href="https://universitio.com/about" />
       </Helmet>
@@ -137,7 +137,7 @@ export default function About() {
               Building Intelligent Pathways<br className="hidden md:block" /> to Global Education
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Universitio is a product-led EdTech platform powered by AskiMate AI — designed to guide, evaluate, and support international students through complex study abroad decisions.
+              Universitio is a product-led EdTech platform that develops and operates proprietary technology solutions, including AskiMate AI — a structured AI system designed to guide, evaluate, and support international students through complex study abroad decisions.
             </p>
           </div>
         </section>
