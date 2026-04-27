@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
@@ -39,9 +39,7 @@ export function Navbar() {
     { name: "About Us", href: "/about" },
     { name: "Our Services", href: "/services" },
     { name: "AskiMate AI", href: "/askimate", aiIcon: true },
-    { name: "Agents", href: "/#agents" },
-    { name: "Earn as a Student", href: "/#earn" },
-    { name: "Contact", href: "/contact" },
+    { name: "Blog", href: "/blog" },
   ];
 
   return (
@@ -54,6 +52,8 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
+
+          {/* Logo */}
           <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => handleNavClick("/")}>
             <img
               src={logoImg}
@@ -62,14 +62,16 @@ export function Navbar() {
             />
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <div className="flex space-x-6">
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-8">
+            {/* Centre links */}
+            <div className="flex items-center gap-1">
               {navLinks.map((link) =>
                 link.aiIcon ? (
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.href)}
-                    className="relative text-sm font-semibold text-primary flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/35 hover:scale-[1.04] transition-all duration-200 shadow-sm hover:shadow-[0_0_12px_rgba(66,20,125,0.18)] group"
+                    className="relative text-sm font-semibold text-primary flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/35 hover:scale-[1.04] transition-all duration-200 shadow-sm hover:shadow-[0_0_12px_rgba(66,20,125,0.18)]"
                     aria-label="AskiMate AI"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-primary nav-sparkle-icon" />
@@ -79,29 +81,23 @@ export function Navbar() {
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.href)}
-                    className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors flex items-center gap-1.5"
+                    className="text-sm font-medium text-foreground/75 hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-muted/50"
                   >
                     {link.name}
                   </button>
                 )
               )}
             </div>
-            <div className="flex items-center space-x-2 pl-4 border-l border-border">
+
+            {/* Right CTAs */}
+            <div className="flex items-center gap-2 pl-4 border-l border-border/60">
               <Button
-                variant="ghost"
                 size="sm"
-                className="font-medium text-foreground/75 hover:text-primary"
-                onClick={() => setLocation("/blog")}
+                className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all flex items-center gap-1.5"
+                onClick={() => setLocation("/askimate")}
               >
-                Blog
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="font-medium text-foreground/75 hover:text-primary"
-                onClick={() => setLocation("/free-consultation")}
-              >
-                Free Consultation
+                <Sparkles className="w-3.5 h-3.5" />
+                Try AskiMate AI
               </Button>
               <Button
                 variant="outline"
@@ -111,17 +107,10 @@ export function Navbar() {
               >
                 Free Assessment
               </Button>
-              <Button
-                size="sm"
-                className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all flex items-center gap-1.5"
-                onClick={() => setLocation("/askimate")}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                Try AskiMate AI
-              </Button>
             </div>
           </div>
 
+          {/* Mobile hamburger */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -133,6 +122,7 @@ export function Navbar() {
         </div>
       </div>
 
+      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-b shadow-lg absolute w-full left-0">
           <div className="px-4 pt-2 pb-6 space-y-1">
@@ -156,25 +146,20 @@ export function Navbar() {
                 </button>
               )
             )}
-            <button
-              onClick={() => handleNavClick("/blog")}
-              className="block w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
-            >
-              Blog
-            </button>
             <div className="pt-4 space-y-3">
               <Button
-                className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6"
-                onClick={() => handleNavClick("/free-consultation")}
+                className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl py-6 flex items-center gap-2 justify-center"
+                onClick={() => handleNavClick("/askimate")}
               >
-                Book Free Consultation
+                <Sparkles className="w-4 h-4" />
+                Try AskiMate AI
               </Button>
               <Button
                 variant="outline"
                 className="w-full rounded-xl py-6 border-primary/30 text-primary"
                 onClick={() => handleNavClick("/assessment-form")}
               >
-                Take Free Assessment
+                Free Assessment
               </Button>
             </div>
           </div>

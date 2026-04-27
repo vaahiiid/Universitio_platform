@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Globe, BarChart3, MessageCircle, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Brain, Target, BarChart3, Compass, Shield } from "lucide-react";
 
 function AIVisual() {
   const nodes = [
@@ -107,11 +107,11 @@ function AIVisual() {
         className="absolute top-8 right-4 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
       >
         <div className="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Globe className="w-4 h-4 text-blue-600" />
+          <Target className="w-4 h-4 text-blue-600" />
         </div>
         <div>
-          <div className="text-xs font-semibold text-foreground whitespace-nowrap">UK, USA, Canada</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Europe & Australia</div>
+          <div className="text-xs font-semibold text-foreground whitespace-nowrap">Guidance Engine</div>
+          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Step-by-step direction</div>
         </div>
       </motion.div>
 
@@ -124,8 +124,8 @@ function AIVisual() {
           <BarChart3 className="w-4 h-4 text-emerald-600" />
         </div>
         <div>
-          <div className="text-xs font-bold text-foreground">98%</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Acceptance rate</div>
+          <div className="text-xs font-bold text-foreground">Admission Score</div>
+          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Real-time evaluation</div>
         </div>
       </motion.div>
 
@@ -135,9 +135,12 @@ function AIVisual() {
         className="absolute bottom-12 right-2 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
       >
         <div className="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <MessageCircle className="w-4 h-4 text-amber-600" />
+          <Compass className="w-4 h-4 text-amber-600" />
         </div>
-        <div className="text-xs font-semibold text-foreground whitespace-nowrap">Ask anything</div>
+        <div>
+          <div className="text-xs font-semibold text-foreground whitespace-nowrap">Decision Path</div>
+          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Structured next steps</div>
+        </div>
       </motion.div>
 
       <motion.div
@@ -168,7 +171,7 @@ export function Hero() {
           >
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium text-primary mb-6 shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span>Built with Universitio Technology</span>
+              <span>AskiMate AI — Powered by Universitio</span>
               <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
             </div>
 
@@ -179,7 +182,7 @@ export function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-              Ask questions, check your chances, compare study options, and get personalised guidance powered by AI and supported by real experts.
+              Ask complex questions, get structured answers, evaluate your admission chances, and receive guided next steps — all in one AI-powered system designed for international students.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">

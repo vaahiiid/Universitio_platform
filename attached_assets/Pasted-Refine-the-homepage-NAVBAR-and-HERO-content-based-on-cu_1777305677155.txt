@@ -1,0 +1,140 @@
+Refine the homepage NAVBAR and HERO content based on current UI issues.
+
+IMPORTANT:
+- DO NOT touch backend, routing, APIs, or logic
+- ONLY update frontend layout, labels, and content
+- Fix UI alignment issues cleanly
+
+-----------------------------------
+1. NAVBAR FIX (CRITICAL)
+-----------------------------------
+
+Current navbar is broken and overcrowded.
+
+Make these exact changes:
+
+REMOVE from top navbar:
+- Agents
+- Earn as a Student
+- Contact
+
+These should remain accessible in the FOOTER only.
+
+-----------------------------------
+
+Reorder remaining navbar items:
+
+LEFT:
+- Logo
+
+CENTER:
+- About Us
+- Our Services
+- AskiMate AI
+- Blog
+
+RIGHT (CTA buttons):
+
+1. Primary button:
+"Try AskiMate AI" → /askimate
+
+2. Secondary button:
+"Free Assessment" → /assessment
+
+IMPORTANT:
+- "Try AskiMate AI" must be FIRST (most prominent)
+- "Free Assessment" must be SECOND (outlined or secondary style)
+
+Ensure:
+- Proper spacing
+- Clean alignment
+- No wrapping or broken layout
+
+-----------------------------------
+
+-----------------------------------
+2. HERO BADGE FIX
+-----------------------------------
+
+Current badge:
+"Built with Universitio Technology"
+
+This is too generic and NOT product-focused.
+
+Replace with something AskiMate-specific:
+
+Options:
+"AskiMate AI — Powered by Universitio"
+or
+"AI Guidance by AskiMate"
+or
+"Smart AI for Study Abroad"
+
+Must:
+- Clearly reference AskiMate
+- Feel product-driven
+- Not generic "technology" wording
+
+-----------------------------------
+
+-----------------------------------
+3. HERO DESCRIPTION FIX (IMPORTANT)
+-----------------------------------
+
+Current description is weak and generic.
+
+Replace with a sharper, product-driven description:
+
+New version:
+
+"Ask complex questions, get structured answers, evaluate your admission chances, and receive guided next steps — all in one AI-powered system designed for international students."
+
+Tone:
+- Clear
+- Confident
+- Product-focused
+- Not generic marketing text
+
+-----------------------------------
+
+-----------------------------------
+4. HERO VISUAL DIRECTION (ADJUST)
+-----------------------------------
+
+Keep existing animation style but refine meaning.
+
+Ensure the visual represents:
+
+- AI decision-making
+- data connections
+- scoring / evaluation
+- guidance flow
+
+NOT:
+- generic nodes without meaning
+- decorative-only graphics
+
+Add subtle UI labels inside animation:
+- "AI Analysis"
+- "Admission Score"
+- "Guidance Engine"
+
+-----------------------------------
+
+-----------------------------------
+5. FINAL CHECK
+-----------------------------------
+
+After changes, the hero must communicate:
+
+- AskiMate = main product
+- AI system (not just chatbot)
+- Helps decision-making + evaluation + guidance
+
+-----------------------------------
+
+OUTPUT:
+- Clean navbar
+- Strong hero messaging
+- Better product clarity
+- No backend changes
