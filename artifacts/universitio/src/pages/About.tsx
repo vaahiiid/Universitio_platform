@@ -152,7 +152,7 @@ export default function About() {
                   <div className="w-12 h-1 bg-primary rounded-full mb-6" />
                 </div>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  Universitio is not a traditional education agency. We are a technology company that has built a proprietary AI decision system — AskiMate — to fundamentally change how international students navigate study abroad.
+                  Universitio is a UK-based international education company built to support students through complex study abroad decisions. Alongside its advisory work, the company has developed AskiMate AI — a structured, multi-layer technology system designed to provide reliable guidance, evaluate student readiness, and support decision-making with a combination of intelligent processing and expert oversight.
                 </p>
                 <p className="text-muted-foreground text-base leading-relaxed">
                   Where conventional consultancies rely on individual advisors and manual processes, Universitio operates a platform. Every student interaction is structured, evaluated, and supported by a system designed for consistency, accuracy, and scale.
