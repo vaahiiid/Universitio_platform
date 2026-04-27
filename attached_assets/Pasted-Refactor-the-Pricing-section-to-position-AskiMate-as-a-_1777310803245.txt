@@ -1,0 +1,119 @@
+Refactor the Pricing section to position AskiMate as a SaaS AI product (NOT a consultancy service).
+
+IMPORTANT:
+
+* Do NOT include manual or agency-style services (e.g. CV review, visa checks, application submission)
+* This section must clearly communicate a technology product with scalable features
+* Keep layout structure, but fully replace content, labels, and logic
+
+---
+
+SECTION TITLE (optional improvement)
+
+Replace any generic heading with:
+
+Simple, transparent access to a smarter system
+
+Subtext:
+Choose how deeply you want the system to analyse, guide, and support your decisions.
+
+---
+
+FREE PLAN (REPLACE COMPLETELY)
+
+Title:
+Basic Access
+
+Subtitle (small):
+Get started with structured AI guidance
+
+Features:
+
+* 5 questions per week
+* AI-powered structured answers (not generic responses)
+* Covers study options, visas, and applications
+* Learns from your interaction history
+* Access to shared knowledge base
+* Standard response depth
+
+CTA:
+Start Free
+
+Microcopy under CTA:
+No credit card required
+
+---
+
+PREMIUM PLAN (FULL REBUILD)
+
+Title:
+Pro Access — £12/month
+
+Subtitle:
+Full system capability with deeper analysis and smarter guidance
+
+Features:
+
+* Unlimited questions
+* Priority response handling
+* Deeper AI analysis (multi-step reasoning)
+* Personalised answers based on your profile and history
+* Conversation memory (context-aware responses)
+* Continuous system learning from your interactions
+
+--- ADVANCED SYSTEM FEATURES (IMPORTANT DIFFERENTIATION) ---
+
+* Confidence-based decision engine
+  (system evaluates answer reliability before responding)
+
+* Smart escalation for complex cases
+  (automatically routes edge cases for expert validation)
+
+* Human-in-the-loop validation
+  (expert review only when required, not for every query)
+
+* Knowledge base expansion
+  (validated answers improve future system performance)
+
+* Adaptive guidance layer
+  (system improves recommendations over time)
+
+---
+
+CTA:
+Upgrade to Pro
+
+Microcopy under CTA:
+Cancel anytime · No lock-in
+
+---
+
+REMOVE COMPLETELY:
+
+* CV review
+* Visa document check
+* Application submission
+* Any wording implying manual done-for-you services
+
+---
+
+DESIGN IMPROVEMENTS:
+
+* Highlight Pro plan as “Most effective” (NOT “Most popular”)
+* Add subtle comparison emphasis (depth, intelligence, adaptability)
+* Avoid clutter — keep it product-focused, not marketing-heavy
+
+---
+
+TONE:
+
+* Confident, technical, product-driven
+* Avoid generic phrases like “best support” or “personalised help”
+* Focus on system capability, intelligence, and decision quality
+
+---
+
+GOAL:
+
+The user should feel:
+“I am upgrading the intelligence of the system — not buying a service.”

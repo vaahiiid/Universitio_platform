@@ -15,9 +15,6 @@ import {
   Shield,
   ChevronRight,
   Sparkles,
-  FileCheck2,
-  GraduationCap,
-  Send,
   Brain,
   RefreshCw,
   UserCheck,
@@ -493,30 +490,34 @@ export default function AskiMateLanding() {
               PRICING
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Simple, honest pricing
+              Simple, transparent access to a smarter system
             </h2>
-            <p className="text-muted-foreground">
-              Start free. Upgrade only when you need more support.
+            <p className="text-muted-foreground max-w-lg mx-auto">
+              Choose how deeply you want the system to analyse, guide, and support your decisions.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {/* Free */}
-            <div className="rounded-2xl border border-border/70 bg-white p-8">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Free Plan</p>
-              <h3 className="text-2xl font-bold text-foreground mb-1">Basic Mentoring</h3>
-              <p className="text-sm text-muted-foreground mb-6">Good for early exploration</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
+
+            {/* ── Basic Access ── */}
+            <div className="rounded-2xl border border-border/60 bg-white p-8">
+              <p className="text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest mb-3">Basic Access</p>
+              <h3 className="text-2xl font-bold text-foreground mb-1">Start for free</h3>
+              <p className="text-sm text-muted-foreground mb-6">Get started with structured AI guidance</p>
+
               <div className="mb-8">
                 <span className="text-5xl font-black text-foreground">Free</span>
                 <span className="text-sm text-muted-foreground ml-2">forever</span>
               </div>
+
               <ul className="space-y-3 mb-8">
                 {[
-                  "5 free questions per week",
-                  "AI-guided support",
-                  "UCAS & university queries",
-                  "Student visa questions",
-                  "Accommodation advice",
+                  "5 questions per week",
+                  "AI-powered structured answers",
+                  "Covers study options, visas, and applications",
+                  "Learns from your interaction history",
+                  "Access to shared knowledge base",
+                  "Standard response depth",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
@@ -524,6 +525,7 @@ export default function AskiMateLanding() {
                   </li>
                 ))}
               </ul>
+
               <Button
                 onClick={() => setLocation("/askimate-signup")}
                 variant="outline"
@@ -533,22 +535,23 @@ export default function AskiMateLanding() {
                 Start Free
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
+              <p className="text-xs text-center text-muted-foreground mt-3">No credit card required</p>
             </div>
 
-            {/* Premium */}
+            {/* ── Pro Access ── */}
             <div
               className="rounded-2xl border-2 p-8 relative"
-              style={{ background: "linear-gradient(135deg, rgba(66,20,125,0.04) 0%, #fff 60%)", borderColor: "#42147d" }}
+              style={{ background: "linear-gradient(145deg, rgba(66,20,125,0.04) 0%, #fff 55%)", borderColor: "#42147d" }}
             >
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                <span className="bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm">
-                  Most Popular
+                <span className="bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm tracking-wide">
+                  Most effective
                 </span>
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "#42147d" }}>Premium Plan</p>
-              <h3 className="text-2xl font-bold text-foreground mb-1">Premium Mentoring</h3>
-              <p className="text-sm text-muted-foreground mb-6">Priority guidance & full access</p>
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: "#42147d" }}>Pro Access</p>
+              <h3 className="text-2xl font-bold text-foreground mb-1">Full system capability</h3>
+              <p className="text-sm text-muted-foreground mb-6">Deeper analysis and smarter guidance</p>
 
               <div className="mb-8">
                 <span className="text-5xl font-black text-foreground">£12</span>
@@ -556,78 +559,58 @@ export default function AskiMateLanding() {
                 <p className="text-xs text-muted-foreground mt-1">Billed monthly · cancel anytime</p>
               </div>
 
-              <div className="space-y-4 mb-8">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
-                    <FileCheck2 className="w-3 h-3" /> Documents & Visa
-                  </p>
-                  <ul className="space-y-2">
-                    {[
-                      { icon: GraduationCap, text: "Full Academic Document Review" },
-                      { icon: Shield, text: "UK Visa Document Check & Guidance" },
-                      { icon: BookOpen, text: "Personal Statement feedback" },
-                      { icon: Check, text: "CV & cover letter review" },
-                    ].map(({ icon: Icon, text }) => (
-                      <li key={text} className="flex items-center gap-2.5">
-                        <Icon className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                        <span className="text-sm text-foreground">{text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
-                    <Send className="w-3 h-3" /> Application
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2.5 rounded-lg bg-primary/8 px-2.5 py-1.5 -mx-2.5">
-                      <span className="flex items-center justify-center w-4 h-4 rounded-full bg-primary/15 flex-shrink-0">
-                        <Send className="w-2.5 h-2.5 text-primary" />
-                      </span>
-                      <span className="text-sm font-semibold text-primary leading-snug">
-                        Free Application Submission
-                        <span className="ml-1 text-xs font-normal text-muted-foreground">(University, College &amp; School)</span>
-                      </span>
+              {/* Core features */}
+              <div className="mb-5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70 mb-3">Core capability</p>
+                <ul className="space-y-2.5">
+                  {[
+                    { icon: Zap, text: "Unlimited questions", strong: true },
+                    { icon: Brain, text: "Deeper AI analysis — multi-step reasoning" },
+                    { icon: Sparkles, text: "Personalised answers based on your profile and history" },
+                    { icon: MessageSquare, text: "Conversation memory — context-aware responses" },
+                    { icon: RefreshCw, text: "Continuous system learning from your interactions" },
+                    { icon: Clock, text: "Priority response handling" },
+                  ].map(({ icon: Icon, text, strong }) => (
+                    <li key={text} className="flex items-start gap-2.5">
+                      <Icon className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className={`text-sm ${strong ? "font-semibold text-foreground" : "text-foreground"}`}>{text}</span>
                     </li>
-                    <li className="flex items-center gap-2.5">
-                      <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                      <span className="text-sm text-foreground">Application form guidance</span>
-                    </li>
-                  </ul>
-                </div>
+                  ))}
+                </ul>
+              </div>
 
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
-                    <MessageSquare className="w-3 h-3" /> Support
-                  </p>
-                  <ul className="space-y-2">
-                    {[
-                      { icon: Zap, text: "Unlimited questions", strong: true },
-                      { icon: UserCheck, text: "Human-supervised support", strong: false },
-                      { icon: Clock, text: "Priority replies — typically within 1 hour", strong: false },
-                      { icon: Sparkles, text: "AI Personalised Guidance", strong: false },
-                      { icon: Users, text: "Ongoing support throughout your journey", strong: false },
-                    ].map(({ icon: Icon, text, strong }) => (
-                      <li key={text} className="flex items-center gap-2.5">
-                        <Icon className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                        <span className={`text-sm ${strong ? "font-semibold text-foreground" : "text-foreground"}`}>{text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {/* Advanced system features */}
+              <div className="border-t border-border/40 pt-5 mb-8">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70 mb-3">Advanced system capabilities</p>
+                <ul className="space-y-3">
+                  {[
+                    { icon: ShieldCheck, title: "Confidence-based decision engine", desc: "Evaluates answer reliability before responding" },
+                    { icon: Target, title: "Smart escalation for complex cases", desc: "Routes edge cases for expert validation automatically" },
+                    { icon: UserCheck, title: "Human-in-the-loop validation", desc: "Expert review only when required — not for every query" },
+                    { icon: Database, title: "Knowledge base expansion", desc: "Validated answers improve future system performance" },
+                    { icon: TrendingUp, title: "Adaptive guidance layer", desc: "System improves recommendations over time" },
+                  ].map(({ icon: Icon, title, desc }) => (
+                    <li key={title} className="flex items-start gap-3 rounded-xl bg-primary/4 px-3 py-2.5">
+                      <Icon className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-semibold text-foreground leading-snug">{title}</p>
+                        <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{desc}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div className="space-y-2">
                 <Button
                   onClick={() => handleCheckout("monthly")}
-                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl shadow-md hover:shadow-primary/30 hover:-translate-y-px transition-all"
+                  className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl shadow-md hover:shadow-primary/25 hover:-translate-y-px transition-all"
                   size="lg"
                 >
-                  Upgrade to Premium — £12/month
+                  Upgrade to Pro
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-                <p className="text-xs text-center text-muted-foreground">Secure checkout via Stripe</p>
+                <p className="text-xs text-center text-muted-foreground">Cancel anytime · No lock-in</p>
               </div>
 
               <div className="mt-5 pt-5 border-t border-border/40">
