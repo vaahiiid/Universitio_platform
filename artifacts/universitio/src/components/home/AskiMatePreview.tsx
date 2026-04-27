@@ -1,38 +1,43 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, BarChart3, Globe, FileWarning, Users, ArrowRight, Sparkles } from "lucide-react";
+import { MessageCircle, BarChart3, Users, AlertTriangle, Brain, ArrowRight, Sparkles } from "lucide-react";
 
 const features = [
   {
     icon: MessageCircle,
     color: "bg-violet-100 text-primary",
-    title: "Ask Study Abroad Questions",
-    desc: "Get instant, accurate answers about universities, courses, entry requirements, and deadlines — any time of day.",
+    accentColor: "border-primary/20",
+    title: "Get Real Answers, Not Generic Advice",
+    desc: "Ask complex questions about universities, visas, and applications — get structured, accurate responses instantly.",
   },
   {
     icon: BarChart3,
     color: "bg-blue-100 text-blue-600",
+    accentColor: "border-blue-200/60",
     title: "Check Your Admission Chances",
-    desc: "Upload your grades and profile. AskiMate analyses your chances and highlights your strongest options.",
-  },
-  {
-    icon: Globe,
-    color: "bg-emerald-100 text-emerald-600",
-    title: "Compare Countries and Courses",
-    desc: "UK vs Canada vs Germany — instantly compare study destinations, tuition costs, and living expenses side by side.",
-  },
-  {
-    icon: FileWarning,
-    color: "bg-amber-100 text-amber-600",
-    title: "Understand Visa and Risks",
-    desc: "Navigate UK Student visa requirements, financial proofs, and timelines with clear, step-by-step guidance.",
+    desc: "Receive a real-time admission score based on your academic profile, English level, and study plans.",
   },
   {
     icon: Users,
+    color: "bg-emerald-100 text-emerald-600",
+    accentColor: "border-emerald-200/60",
+    title: "AI + Human Mentors",
+    desc: "When needed, expert mentors step in to guide you — combining AI speed with real experience.",
+  },
+  {
+    icon: AlertTriangle,
+    color: "bg-amber-100 text-amber-600",
+    accentColor: "border-amber-200/60",
+    title: "Understand Risks Before You Apply",
+    desc: "Identify weak points in your profile before applying and avoid costly mistakes.",
+  },
+  {
+    icon: Brain,
     color: "bg-rose-100 text-rose-600",
-    title: "Get Mentor Support",
-    desc: "Every complex answer is reviewed by ICEF-accredited mentors. AI speed, human expertise — together.",
+    accentColor: "border-rose-200/60",
+    title: "Continuously Improving Intelligence",
+    desc: "AskiMate learns from expert-reviewed answers and builds a verified knowledge base over time.",
   },
 ];
 
@@ -58,10 +63,10 @@ export function AskiMatePreview() {
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            What AskiMate AI Can Help You With
+            What AskiMate AI Actually Does
           </h2>
           <p className="text-base text-muted-foreground leading-relaxed">
-            Everything you need to plan, apply, and succeed — powered by AI and backed by real admissions experts.
+            A structured AI system designed to guide, evaluate, and support your study abroad journey.
           </p>
         </div>
 
@@ -78,12 +83,12 @@ export function AskiMatePreview() {
               <motion.div
                 key={i}
                 variants={cardVariants}
-                className={`relative group bg-slate-50 hover:bg-white border border-border/60 hover:border-primary/30 hover:shadow-lg rounded-2xl p-6 transition-all duration-300 ${i === 4 ? "sm:col-span-2 lg:col-span-1" : ""}`}
+                className={`relative group bg-slate-50 hover:bg-white border border-border/60 hover:border-primary/25 hover:shadow-lg rounded-2xl p-6 transition-all duration-300 ${i === 4 ? "sm:col-span-2 lg:col-span-1" : ""}`}
               >
                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${f.color}`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-foreground mb-2 text-base">{f.title}</h3>
+                <h3 className="font-bold text-foreground mb-2 text-base leading-snug">{f.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
                 <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowRight className="w-4 h-4 text-primary" />
@@ -97,7 +102,7 @@ export function AskiMatePreview() {
           <Link href="/askimate">
             <Button
               size="lg"
-              className="rounded-full bg-primary hover:bg-primary/90 text-white px-10 h-13 shadow-lg shadow-primary/20 hover:shadow-xl transition-all hover:-translate-y-0.5 group"
+              className="rounded-full bg-primary hover:bg-primary/90 text-white px-10 shadow-lg shadow-primary/20 hover:shadow-xl transition-all hover:-translate-y-0.5 group"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Try AskiMate AI

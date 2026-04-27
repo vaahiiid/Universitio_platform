@@ -7,6 +7,8 @@ import { TrustStrip } from "@/components/home/TrustStrip";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { WhyChoosePreview } from "@/components/home/WhyChoosePreview";
 import { AskiMatePreview } from "@/components/home/AskiMatePreview";
+import { ConsultationCTA } from "@/components/home/ConsultationCTA";
+import { AIMotionSection } from "@/components/home/AIMotionSection";
 import { AssessmentCTA } from "@/components/home/AssessmentCTA";
 import { StudyDestinations } from "@/components/home/StudyDestinations";
 import { Partnerships } from "@/components/home/Partnerships";
@@ -67,23 +69,27 @@ export default function Home() {
         <Hero />
         {/* 2 — Accreditation strip + Stats + University marquee */}
         <TrustIndicators />
-        {/* 3 — AskiMate feature cards (immediately after hero) */}
+        {/* 3 — AskiMate feature cards: "What AskiMate AI Actually Does" */}
         <AskiMatePreview />
-        {/* 4 — AI-first trust & positioning strip */}
+        {/* 4 — Free Consultation: "Need Expert Help?" */}
+        <ConsultationCTA />
+        {/* 5 — AI decision-graph animation + stats */}
+        <AIMotionSection />
+        {/* 6 — AI-first trust & positioning strip */}
         <TrustStrip />
-        {/* 5 — Other Services by Universitio */}
+        {/* 7 — Other Services by Universitio */}
         <ServicesPreview />
-        {/* 6 — Why Choose */}
+        {/* 8 — Why Choose */}
         <WhyChoosePreview />
-        {/* 7 — Partner & Student Referral (middle of page) */}
+        {/* 9 — Partner + Student Referral (two-column, single section) */}
         <Partnerships />
-        {/* 8 — Assessment CTA */}
+        {/* 10 — Assessment CTA */}
         <AssessmentCTA />
-        {/* 9 — Study Destinations */}
+        {/* 11 — Study Destinations */}
         <StudyDestinations />
-        {/* 10 — Testimonials, Blog, Contact */}
+        {/* 12 — Testimonials, Blog, Contact */}
         <SocialProof />
-        {/* 11 — Final CTA: Start with AI. Finish with expert support. */}
+        {/* 13 — Final CTA: Start with AI. Finish with expert support. */}
         <FinalCTA />
       </main>
       <Footer />

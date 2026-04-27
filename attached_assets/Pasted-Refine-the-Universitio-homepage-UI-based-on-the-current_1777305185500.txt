@@ -1,0 +1,193 @@
+Refine the Universitio homepage UI based on the current implementation.
+
+IMPORTANT:
+- DO NOT change backend, logic, APIs, or structure
+- ONLY update frontend content, labels, layout, and visuals
+- Keep all existing routes and functionality intact
+
+-----------------------------------
+FIX HERO SECTION CONTENT
+-----------------------------------
+
+1. Replace badge text:
+Current: "Powered by AskiMate AI"
+Replace with:
+"Built with Universitio Technology"
+
+(Or similar: must position AskiMate as a product of Universitio, NOT the parent)
+
+-----------------------------------
+
+2. Fix country messaging:
+
+Current:
+"200+ Countries" → REMOVE (incorrect)
+
+Replace with:
+"Supporting UK, USA, Canada, Europe & Australia"
+
+Add a small supporting stat:
+"Applications processed across 20+ countries"
+
+-----------------------------------
+
+3. Update social proof:
+
+"1,000+ students guided" → change to:
+"1,500+ students guided"
+
+-----------------------------------
+
+-----------------------------------
+NAVBAR CTA UPDATE
+-----------------------------------
+
+Top right buttons:
+
+- Replace current buttons with:
+  - "Try AskiMate AI" → /askimate
+  - "Free Assessment" → /assessment
+
+Keep Free Consultation accessible but NOT as primary navbar CTA.
+
+-----------------------------------
+
+-----------------------------------
+REMOVE / CLEAN
+-----------------------------------
+
+- REMOVE any university list sections (if shown)
+- REMOVE irrelevant or generic content not aligned with AI positioning
+
+-----------------------------------
+
+-----------------------------------
+ASKIMATE FEATURES SECTION (MAJOR UPGRADE)
+-----------------------------------
+
+Replace current feature content with stronger product-driven messaging.
+
+Title:
+"What AskiMate AI Actually Does"
+
+Subtitle:
+"A structured AI system designed to guide, evaluate, and support your study abroad journey."
+
+Cards (rewrite completely):
+
+1.
+Title: "Get Real Answers, Not Generic Advice"
+Description:
+Ask complex questions about universities, visas, and applications — get structured, accurate responses instantly.
+
+2.
+Title: "Check Your Admission Chances"
+Description:
+Receive a real-time admission score based on your academic profile, English level, and study plans.
+
+3.
+Title: "AI + Human Mentors"
+Description:
+When needed, expert mentors step in to guide you — combining AI speed with real experience.
+
+4.
+Title: "Understand Risks Before You Apply"
+Description:
+Identify weak points in your profile before applying and avoid costly mistakes.
+
+5.
+Title: "Continuously Improving Intelligence"
+Description:
+AskiMate learns from expert-reviewed answers and builds a verified knowledge base over time.
+
+CTA stays:
+"Try AskiMate AI"
+
+-----------------------------------
+
+-----------------------------------
+ADD NEW SECTION: FREE CONSULTATION (IMPORTANT)
+-----------------------------------
+
+Create a strong section AFTER AskiMate features.
+
+Title:
+"Need Expert Help? Speak to a Real Advisor"
+
+Description:
+AI gives you direction — our experts help you execute.
+
+CTA:
+"Book a Free Consultation"
+
+Design:
+- Clean card or split section
+- Human-focused (contrast with AI sections)
+
+-----------------------------------
+
+-----------------------------------
+PARTNER + STUDENT REFERRAL SECTION (REDESIGN)
+-----------------------------------
+
+Merge into ONE section with TWO columns:
+
+LEFT:
+"Partner with Universitio"
+- For agents, schools, consultants
+
+RIGHT:
+"Earn as a Student"
+- Referral programme
+
+IMPORTANT:
+- Use different background colors for each column
+- Visually distinct but balanced
+- Modern SaaS style layout
+
+-----------------------------------
+
+-----------------------------------
+ADD SECOND VISUAL / ANIMATION SECTION
+-----------------------------------
+
+Add one more animated visual section (NOT hero).
+
+Placement:
+Between Features and Consultation OR before final CTA
+
+Requirements:
+- AI/data/decision-based animation
+- Subtle motion (NOT heavy)
+- Tech-driven aesthetic (nodes, flows, scoring, etc.)
+
+-----------------------------------
+
+-----------------------------------
+FINAL POSITIONING CHECK
+-----------------------------------
+
+Ensure the page communicates:
+
+- AskiMate = core product
+- Universitio = platform behind it
+- AI first, human support second
+
+-----------------------------------
+
+-----------------------------------
+TONE & DESIGN
+-----------------------------------
+
+- Product-led (like SaaS landing pages)
+- Minimal, modern, clean
+- Keep purple theme
+- Strong hierarchy
+- No clutter
+
+-----------------------------------
+
+FINAL OUTPUT:
+- Clean updated homepage
+- No backend changes
+- Improved clarity, positioning, and conversion

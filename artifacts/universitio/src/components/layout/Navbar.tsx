@@ -86,7 +86,7 @@ export function Navbar() {
                 )
               )}
             </div>
-            <div className="flex items-center space-x-3 pl-4 border-l border-border">
+            <div className="flex items-center space-x-2 pl-4 border-l border-border">
               <Button
                 variant="ghost"
                 size="sm"
@@ -94,6 +94,14 @@ export function Navbar() {
                 onClick={() => setLocation("/blog")}
               >
                 Blog
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="font-medium text-foreground/75 hover:text-primary"
+                onClick={() => setLocation("/free-consultation")}
+              >
+                Free Consultation
               </Button>
               <Button
                 variant="outline"
@@ -105,10 +113,11 @@ export function Navbar() {
               </Button>
               <Button
                 size="sm"
-                className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all"
-                onClick={() => setLocation("/free-consultation")}
+                className="bg-primary hover:bg-primary/90 text-white rounded-full px-5 shadow-md hover:shadow-lg hover:-translate-y-px transition-all flex items-center gap-1.5"
+                onClick={() => setLocation("/askimate")}
               >
-                Free Consultation
+                <Sparkles className="w-3.5 h-3.5" />
+                Try AskiMate AI
               </Button>
             </div>
           </div>

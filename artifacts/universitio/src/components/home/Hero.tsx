@@ -109,7 +109,10 @@ function AIVisual() {
         <div className="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
           <Globe className="w-4 h-4 text-blue-600" />
         </div>
-        <div className="text-xs font-semibold text-foreground whitespace-nowrap">200+ Countries</div>
+        <div>
+          <div className="text-xs font-semibold text-foreground whitespace-nowrap">UK, USA, Canada</div>
+          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Europe & Australia</div>
+        </div>
       </motion.div>
 
       <motion.div
@@ -165,7 +168,7 @@ export function Hero() {
           >
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium text-primary mb-6 shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span>Powered by AskiMate AI</span>
+              <span>Built with Universitio Technology</span>
               <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
             </div>
 
@@ -203,7 +206,7 @@ export function Hero() {
                     </div>
                   ))}
                 </div>
-                <p>1,000+ students guided</p>
+                <p>1,500+ students guided</p>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Shield className="w-4 h-4 text-primary/60" />
