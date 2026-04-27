@@ -195,103 +195,88 @@ export default function AskiMateLanding() {
               <div className="absolute inset-0 rounded-3xl" style={{ background: "radial-gradient(ellipse 80% 80% at 50% 50%, rgba(66,20,125,0.06) 0%, transparent 70%)" }} />
 
               {/* Flow diagram */}
-              <div className="relative w-full max-w-[420px] flex flex-col items-center gap-0 py-4">
+              <div className="relative w-full max-w-[420px] flex flex-col items-center gap-0 py-2">
 
-                {/* Node 1: User Question */}
-                <div className="w-full bg-white/90 backdrop-blur-sm border border-border/60 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md hover:border-primary/25 transition-all animate-float-gentle" style={{ animationDelay: "0s" }}>
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                {/* Node 1: User Input */}
+                <div className="w-full bg-white border border-border/50 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:border-primary/20 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "0s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center shrink-0">
                     <MessageSquare className="w-5 h-5 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-0.5">User Input</p>
-                    <p className="text-sm font-bold text-foreground">Student question + profile context</p>
+                    <p className="text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest mb-0.5">User Input</p>
+                    <p className="text-sm font-semibold text-foreground">Student question + profile context</p>
                   </div>
                 </div>
 
                 {/* Connector 1 */}
-                <div className="flex flex-col items-center gap-0 py-1">
-                  <div className="w-px h-5 bg-gradient-to-b from-primary/30 to-primary/60" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  <div className="w-px h-5 bg-gradient-to-b from-primary/60 to-primary/30" />
+                <div className="flex flex-col items-center my-1.5">
+                  <div className="w-px h-8 bg-border/40" />
+                  <div className="w-1 h-1 rounded-full bg-border/60" />
                 </div>
 
                 {/* Node 2: AI Analysis */}
-                <div className="w-full bg-gradient-to-r from-primary/6 to-primary/3 border border-primary/20 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md hover:border-primary/40 transition-all animate-float-gentle" style={{ animationDelay: "0.4s" }}>
+                <div className="w-full bg-primary/5 border border-primary/15 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:border-primary/30 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "0.4s" }}>
                   <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shrink-0 shadow-sm">
                     <Brain className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-0.5">AI Analysis</p>
-                    <p className="text-sm font-bold text-foreground">Structured reasoning · Verified knowledge</p>
+                    <p className="text-[10px] font-semibold text-primary/70 uppercase tracking-widest mb-0.5">AI Analysis</p>
+                    <p className="text-sm font-semibold text-foreground">Structured reasoning · Validated data</p>
                   </div>
-                  <span className="text-[10px] font-semibold text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-1 whitespace-nowrap">AI decides</span>
+                  <span className="text-[10px] font-semibold text-primary bg-primary/8 border border-primary/15 rounded-full px-2.5 py-1 whitespace-nowrap">AI decides</span>
                 </div>
 
                 {/* Connector 2 */}
-                <div className="flex flex-col items-center gap-0 py-1">
-                  <div className="w-px h-5 bg-gradient-to-b from-primary/30 to-amber-400/60" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" style={{ animationDelay: "0.5s" }} />
-                  <div className="w-px h-5 bg-gradient-to-b from-amber-400/60 to-amber-400/30" />
+                <div className="flex flex-col items-center my-1.5">
+                  <div className="w-px h-8 bg-amber-200/80" />
+                  <div className="w-1 h-1 rounded-full bg-amber-300" />
                 </div>
 
                 {/* Node 3: Confidence Check */}
-                <div className="w-full bg-white/90 backdrop-blur-sm border border-amber-200 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "0.8s" }}>
+                <div className="w-full bg-white border border-amber-100 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:border-amber-200 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "0.8s" }}>
                   <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-5 h-5 text-amber-500" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-amber-600 uppercase tracking-widest mb-0.5">Confidence Check</p>
-                    <p className="text-sm font-bold text-foreground">Complex? Flags for review</p>
+                    <p className="text-[10px] font-semibold text-amber-500/80 uppercase tracking-widest mb-0.5">Confidence Check</p>
+                    <p className="text-sm font-semibold text-foreground">Complex or uncertain? Flags for review</p>
                   </div>
-                  <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1 whitespace-nowrap">Escalates if needed</span>
+                  <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-100 rounded-full px-2.5 py-1 whitespace-nowrap">Escalates if needed</span>
                 </div>
 
                 {/* Connector 3 */}
-                <div className="flex flex-col items-center gap-0 py-1">
-                  <div className="w-px h-5 bg-gradient-to-b from-amber-400/30 to-green-400/60" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" style={{ animationDelay: "1s" }} />
-                  <div className="w-px h-5 bg-gradient-to-b from-green-400/60 to-green-400/30" />
+                <div className="flex flex-col items-center my-1.5">
+                  <div className="w-px h-8 bg-green-200/80" />
+                  <div className="w-1 h-1 rounded-full bg-green-300" />
                 </div>
 
                 {/* Node 4: Expert Review */}
-                <div className="w-full bg-white/90 backdrop-blur-sm border border-green-200 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "1.2s" }}>
+                <div className="w-full bg-white border border-green-100 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:border-green-200 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "1.2s" }}>
                   <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
                     <UserCheck className="w-5 h-5 text-green-600" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-green-700 uppercase tracking-widest mb-0.5">Expert Review</p>
-                    <p className="text-sm font-bold text-foreground">Human-in-the-loop — only when needed</p>
+                    <p className="text-[10px] font-semibold text-green-600/70 uppercase tracking-widest mb-0.5">Expert Review</p>
+                    <p className="text-sm font-semibold text-foreground">Human-in-the-loop — only when needed</p>
                   </div>
                 </div>
 
                 {/* Connector 4 */}
-                <div className="flex flex-col items-center gap-0 py-1">
-                  <div className="w-px h-5 bg-gradient-to-b from-green-400/30 to-primary/50" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" style={{ animationDelay: "1.5s" }} />
-                  <div className="w-px h-5 bg-gradient-to-b from-primary/50 to-primary/20" />
+                <div className="flex flex-col items-center my-1.5">
+                  <div className="w-px h-8 bg-border/40" />
+                  <div className="w-1 h-1 rounded-full bg-primary/30" />
                 </div>
 
                 {/* Node 5: Final Answer */}
-                <div className="w-full bg-white/90 backdrop-blur-sm border border-primary/25 rounded-2xl px-5 py-4 shadow-md flex items-center gap-4 hover:shadow-lg hover:border-primary/40 transition-all animate-float-gentle" style={{ animationDelay: "1.6s" }}>
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="w-full bg-white border border-primary/20 rounded-2xl px-5 py-4 shadow-sm flex items-center gap-4 hover:border-primary/35 hover:shadow-md transition-all animate-float-gentle" style={{ animationDelay: "1.6s" }}>
+                  <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center shrink-0">
                     <Sparkles className="w-5 h-5 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-0.5">Final Answer</p>
-                    <p className="text-sm font-bold text-foreground">Structured, validated guidance</p>
+                    <p className="text-[10px] font-semibold text-primary/70 uppercase tracking-widest mb-0.5">Final Answer</p>
+                    <p className="text-sm font-semibold text-foreground">Structured, validated guidance</p>
                   </div>
-                  <span className="text-[10px] font-semibold text-primary bg-primary/10 border border-primary/20 rounded-full px-2.5 py-1 whitespace-nowrap">Learns over time</span>
-                </div>
-
-                {/* Floating accent: students */}
-                <div className="absolute -right-6 top-1/4 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3 py-2 flex items-center gap-1.5 animate-float" style={{ animationDelay: "0.5s" }}>
-                  <Users className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-xs font-semibold text-foreground whitespace-nowrap">1,500+ students</span>
-                </div>
-                {/* Floating accent: success */}
-                <div className="absolute -left-8 bottom-1/4 z-20 bg-white rounded-xl shadow-lg border border-border/40 px-3 py-2 flex items-center gap-1.5 animate-float-gentle" style={{ animationDelay: "1.1s" }}>
-                  <BadgeCheck className="w-3.5 h-3.5 text-green-600" />
-                  <span className="text-xs font-semibold text-foreground whitespace-nowrap">95% success rate</span>
+                  <span className="text-[10px] font-semibold text-primary bg-primary/8 border border-primary/15 rounded-full px-2.5 py-1 whitespace-nowrap">Learns over time</span>
                 </div>
 
               </div>
@@ -300,18 +285,6 @@ export default function AskiMateLanding() {
           </div>
         </div>
       </section>
-
-      {/* ─── SOCIAL PROOF BAR ────────────────────────────────────────────── */}
-      <div className="border-y border-border/40 bg-muted/20 py-5">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2"><Users className="w-4 h-4 text-primary" /><span><strong className="text-foreground">1,500+</strong> students supported</span></div>
-            <div className="flex items-center gap-2"><BadgeCheck className="w-4 h-4 text-green-600" /><span><strong className="text-foreground">95%</strong> application success rate</span></div>
-            <div className="flex items-center gap-2"><Star className="w-4 h-4 text-amber-500 fill-amber-400" /><span><strong className="text-foreground">5.0</strong> Trustpilot rating</span></div>
-            <div className="flex items-center gap-2"><Shield className="w-4 h-4 text-primary" /><span>ICEF accredited · <strong className="text-foreground">Co. No. 15168670</strong></span></div>
-          </div>
-        </div>
-      </div>
 
       {/* ─── PROBLEM SECTION ──────────────────────────────────────────────── */}
       <section className="py-20 md:py-24 bg-white">
