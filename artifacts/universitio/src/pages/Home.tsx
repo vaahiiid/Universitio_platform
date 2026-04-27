@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
-import { TrustIndicators } from "@/components/home/TrustIndicators";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { ServicesPreview } from "@/components/home/ServicesPreview";
 import { WhyChoosePreview } from "@/components/home/WhyChoosePreview";
@@ -67,9 +66,7 @@ export default function Home() {
       <main>
         {/* 1 — AI-focused hero */}
         <Hero />
-        {/* 2 — Accreditation strip + Stats + University marquee */}
-        <TrustIndicators />
-        {/* 3 — AskiMate feature cards: "What AskiMate AI Actually Does" */}
+        {/* 2 — AskiMate feature cards: "What AskiMate AI Actually Does" */}
         <AskiMatePreview />
         {/* 4 — Free Consultation: "Need Expert Help?" */}
         <ConsultationCTA />
