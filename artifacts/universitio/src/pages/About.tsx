@@ -8,14 +8,18 @@ import {
   Brain,
   ShieldCheck,
   ArrowRight,
-  Database,
   UserCheck,
   RefreshCw,
-  Layers,
-  Cpu,
-  BarChart3,
+  Globe,
+  FileText,
+  Plane,
+  Home,
+  HeartHandshake,
+  BadgeCheck,
   Lock,
   Building2,
+  MessageSquare,
+  Scale,
 } from "lucide-react";
 import { siteData } from "@/data/siteData";
 import icefBadge from "@assets/001bG000006Y3MkQAK_badge_1773399029266.webp";
@@ -32,80 +36,68 @@ const CRED_LOGOS: Record<string, { img: string; alt: string }> = {
   "companies-house": { img: companiesHouse, alt: "UK-Registered Company" },
 };
 
-const platformSteps = [
+const journeySteps = [
   {
     step: "01",
-    icon: Database,
-    title: "User inputs data & questions",
+    icon: Globe,
+    title: "Research & shortlisting",
     description:
-      "Students describe their academic background, goals, and target institutions. AskiMate collects structured inputs to establish a complete decision profile.",
+      "We help students identify the right countries, institutions, and programmes based on their academic profile, career goals, and personal circumstances — not a generic ranked list.",
   },
   {
     step: "02",
-    icon: Cpu,
-    title: "AI evaluates the profile",
+    icon: FileText,
+    title: "Application preparation",
     description:
-      "The system processes the inputs against its knowledge base — institution requirements, visa conditions, academic entry criteria — and generates a calibrated assessment.",
+      "From personal statements to reference letters and supporting documents, we guide students through every element of a strong application with structured feedback at each stage.",
   },
   {
     step: "03",
-    icon: BarChart3,
-    title: "Structured output generated",
+    icon: ShieldCheck,
+    title: "Visa guidance",
     description:
-      "AskiMate produces clear, actionable outputs: admission readiness scores, risk flags, document checklists, and prioritised next steps — not generic advice.",
+      "Once an offer is secured, we walk students through the visa application process — financial requirements, documentation, biometrics, and timelines — with clear, accurate information.",
   },
   {
     step: "04",
-    icon: UserCheck,
-    title: "Human mentors intervene when needed",
+    icon: Plane,
+    title: "Pre-departure support",
     description:
-      "Complex edge cases, visa appeals, and personal statement reviews are escalated to verified education professionals. AI recommends; humans execute.",
+      "We help students prepare for departure: accommodation considerations, arrival logistics, what to expect in the first weeks, and how to navigate life in a new country.",
   },
   {
     step: "05",
-    icon: RefreshCw,
-    title: "Knowledge base improves over time",
+    icon: Home,
+    title: "Settling in & beyond",
     description:
-      "Every interaction refines the system. Outcomes are fed back into the platform so future evaluations become more precise, contextually aware, and reliable.",
+      "Our support does not stop at the airport. We stay in contact with students during the early weeks of their journey, ensuring they have someone to turn to if questions arise.",
   },
 ];
 
-const whyItems = [
+const differentiators = [
   {
     icon: Brain,
-    title: "Structured guidance, not generic advice",
+    title: "AI that is supervised, not autonomous",
     description:
-      "AskiMate produces decision-specific outputs based on your exact profile — not templated responses designed for the average student.",
+      "AskiMate AI assists with analysis and structured guidance, but every significant output is reviewed and validated by our advisory team. We built it this way on purpose.",
   },
   {
-    icon: BarChart3,
-    title: "Decision clarity at every stage",
+    icon: Scale,
+    title: "No commission-driven recommendations",
     description:
-      "From shortlisting institutions to submitting a visa application, the platform makes each step visible, measurable, and actionable.",
+      "We do not receive undisclosed commissions for recommending specific universities. Our guidance is based on what suits the student — not what generates a higher fee.",
   },
   {
-    icon: ShieldCheck,
-    title: "Risk reduction through AI analysis",
+    icon: MessageSquare,
+    title: "Personalised, not templated",
     description:
-      "The system surfaces hidden risks — eligibility gaps, document deficiencies, visa history issues — before they become rejection reasons.",
+      "Students receive guidance based on their specific academic background, nationality, goals, and circumstances. We do not apply the same advice to every case.",
   },
   {
-    icon: Layers,
-    title: "AI + expert combination",
+    icon: HeartHandshake,
+    title: "End-to-end support, not a one-off service",
     description:
-      "Automated evaluation handles speed and scale. Certified advisors handle complexity and judgement. The two work in tandem, not isolation.",
-  },
-  {
-    icon: Sparkles,
-    title: "Scalable, always-on support",
-    description:
-      "AskiMate is available 24/7. Students across multiple time zones get immediate, consistent, and accurate guidance without waiting for office hours.",
-  },
-  {
-    icon: Lock,
-    title: "Compliant & secure infrastructure",
-    description:
-      "All data is processed under UK GDPR, ICO-registered protocols, and industry-standard encryption. Your information is never sold or shared.",
+      "We work with students from initial research through to arrival and settling in. The relationship does not end when an offer letter lands in their inbox.",
   },
 ];
 
@@ -115,10 +107,10 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>About Universitio — AI-Powered EdTech Platform</title>
+        <title>About Universitio — UK International Education Company</title>
         <meta
           name="description"
-          content="Universitio is a UK-based international education company supporting students in their study abroad journey, and the creator of AskiMate AI — a technology product designed to help students understand their options, evaluate their chances, and make better decisions."
+          content="Universitio is a UK-based international education company that has supported over 1,500 students with their study abroad journey. We are also the creators of AskiMate AI, a structured technology system built to complement expert guidance."
         />
         <link rel="canonical" href="https://universitio.com/about" />
       </Helmet>
@@ -134,10 +126,10 @@ export default function About() {
               ABOUT UNIVERSITIO
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-              Building Intelligent Pathways<br className="hidden md:block" /> to Global Education
+              Education first.<br className="hidden md:block" /> Technology built on top.
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Universitio is a UK-based international education company supporting students in their study abroad journey, and the creator of AskiMate AI — a technology product designed to help students understand their options, evaluate their chances, and make better decisions.
+              Universitio is a UK-based international education company that has helped over 1,500 students navigate the process of studying abroad. We are also the creators of AskiMate AI — a structured technology system built from our advisory experience to make that guidance more accessible, consistent, and reliable.
             </p>
           </div>
         </section>
@@ -155,34 +147,34 @@ export default function About() {
                   Universitio is a UK-based international education company built to support students through complex study abroad decisions. Alongside its advisory work, the company has developed AskiMate AI — a structured, multi-layer technology system designed to provide reliable guidance, evaluate student readiness, and support decision-making with a combination of intelligent processing and expert oversight.
                 </p>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  Where conventional consultancies rely on individual advisors and manual processes, Universitio operates a platform. Every student interaction is structured, evaluated, and supported by a system designed for consistency, accuracy, and scale.
+                  We work with students from across the world — particularly from Nigeria, Pakistan, India, Bangladesh, Ghana, Nepal, and Turkey — helping them apply to universities in the United Kingdom, Europe, and beyond.
                 </p>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  We are ICEF-accredited, British Council certified, and ICO-registered — operating under verified, regulated infrastructure to ensure every output students receive meets the highest professional and data compliance standards.
+                  Our team is ICEF-accredited and British Council certified. We are registered with the Information Commissioner's Office (ICO) and operate in full compliance with UK GDPR. Every piece of advice we give is backed by genuine expertise and a duty of care to the student.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 gap-4">
                 {[
                   {
-                    icon: Cpu,
-                    label: "Platform, not consultancy",
-                    detail: "A scalable system that processes structured inputs and produces calibrated outputs — not ad-hoc advice.",
+                    icon: BadgeCheck,
+                    label: "Established and accredited",
+                    detail: "ICEF-accredited and British Council certified. A real company with verifiable credentials and a track record of results.",
                   },
                   {
-                    icon: Brain,
-                    label: "System, not service",
-                    detail: "AskiMate operates as decision-support infrastructure, not a help desk. Every output is structured and verifiable.",
+                    icon: UserCheck,
+                    label: "Student-first, always",
+                    detail: "Our recommendations are based solely on what is right for the student. We have no undisclosed agreements that influence our advice.",
                   },
                   {
-                    icon: BarChart3,
-                    label: "Decision engine, not just guidance",
-                    detail: "Students receive admission readiness scores, risk assessments, and prioritised action plans — not opinions.",
+                    icon: Globe,
+                    label: "International reach",
+                    detail: "We support students from over 20 countries and have experience with the specific challenges each nationality faces during the application process.",
                   },
                   {
                     icon: Lock,
-                    label: "Regulated & compliant",
-                    detail: "ICO-registered, UK GDPR-compliant, ICEF-accredited. Verified at every layer of the platform.",
+                    label: "ICO-registered, GDPR-compliant",
+                    detail: "All personal data is handled securely and responsibly. We are registered with the UK's Information Commissioner's Office.",
                   },
                 ].map((item) => (
                   <div
@@ -203,45 +195,74 @@ export default function About() {
           </div>
         </section>
 
-        {/* ── 3. OUR TECHNOLOGY ────────────────────────────────────────── */}
+        {/* ── 3. WHAT MAKES US DIFFERENT ───────────────────────────────── */}
         <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-background border-y border-border/40">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-14">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">What Makes Us Different</h2>
+              <div className="w-12 h-1 bg-primary rounded-full mb-6" />
+              <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
+                Plenty of companies offer study abroad guidance. Fewer are honest about how that guidance is produced, who it benefits, and how far it actually goes.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {differentiators.map((item) => (
+                <div
+                  key={item.title}
+                  className="flex gap-4 items-start bg-white rounded-2xl p-6 border border-border/60 hover:border-primary/30 hover:shadow-md transition-all"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <item.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-foreground mb-2">{item.title}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 4. OUR TECHNOLOGY (ASKIMATE AI) ──────────────────────────── */}
+        <section className="py-16 md:py-24 bg-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
                 <Sparkles className="w-3.5 h-3.5" />
-                CORE TECHNOLOGY
+                OUR TECHNOLOGY
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Technology</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">AskiMate AI</h2>
               <div className="w-12 h-1 bg-primary rounded-full mx-auto mb-6" />
               <p className="text-muted-foreground max-w-2xl mx-auto text-base leading-relaxed">
-                AskiMate is not a chatbot. It is a structured AI system built to support high-stakes education decisions with controlled, verifiable outputs.
+                AskiMate AI is a technology product created by Universitio. It was built to make the depth of knowledge our advisers hold available to more students — in a structured, reliable, and always-accessible format.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {[
                 {
                   icon: Brain,
-                  title: "Decision-support infrastructure",
+                  title: "Structured, not conversational",
                   description:
-                    "AskiMate evaluates student profiles against structured knowledge — institution entry requirements, visa frameworks, academic standards — and generates calibrated assessments.",
+                    "AskiMate does not generate random answers. It processes student profiles against a curated knowledge base covering university requirements, visa rules, and academic entry criteria — and produces clear, specific guidance.",
                 },
                 {
                   icon: UserCheck,
-                  title: "AI + human-in-the-loop",
+                  title: "Human experts in the loop",
                   description:
-                    "The system flags scenarios that require human judgement. Certified advisors review, validate, and act on complex cases. AI scales; humans quality-control.",
+                    "Every complex or ambiguous case is reviewed by a qualified adviser before a response is finalised. AskiMate improves the speed of guidance; it does not replace the judgement behind it.",
                 },
                 {
                   icon: RefreshCw,
-                  title: "Continuous learning system",
+                  title: "A system that learns over time",
                   description:
-                    "Every outcome is fed back into the platform. AskiMate's knowledge base grows over time, improving the accuracy and contextual relevance of every future evaluation.",
+                    "As more students use AskiMate and advisers validate outputs, the system's knowledge base is refined. Accuracy and relevance improve continuously based on real outcomes, not assumptions.",
                 },
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="bg-white rounded-2xl p-7 border border-border/60 hover:border-primary/30 hover:shadow-lg transition-all"
+                  className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-7 border border-border/60 hover:border-primary/30 hover:shadow-lg transition-all"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
                     <item.icon className="w-6 h-6 text-primary" />
@@ -252,46 +273,50 @@ export default function About() {
               ))}
             </div>
 
-            <div className="bg-white rounded-2xl p-7 border border-border/60 flex flex-col md:flex-row gap-6 items-center">
+            <div className="bg-gradient-to-r from-primary/8 to-primary/4 rounded-2xl p-7 border border-primary/20 flex flex-col md:flex-row gap-6 items-center">
               <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
                 <ShieldCheck className="w-7 h-7 text-primary" />
               </div>
               <div>
-                <h3 className="font-bold text-foreground mb-2">Controlled outputs — not random answers</h3>
+                <h3 className="font-bold text-foreground mb-2">Built from real experience — not theory</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
-                  AskiMate is designed to produce structured, domain-specific responses grounded in verified education data. Every output is scoped, explainable, and bounded — by design. This is not a general-purpose AI; it is purpose-built decision infrastructure for international education.
+                  AskiMate was designed and developed by the same team that has been advising international students since 2022. The knowledge base it draws from reflects real cases, real outcomes, and real mistakes — which is precisely what makes it more useful than a generic AI tool.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── 4. HOW THE PLATFORM WORKS ────────────────────────────────── */}
-        <section className="py-16 md:py-24 bg-white">
+        {/* ── 5. HOW WE SUPPORT STUDENTS ───────────────────────────────── */}
+        <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How the Platform Works</h2>
-              <div className="w-12 h-1 bg-primary rounded-full mb-6" />
-              <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
-                A five-stage loop that runs from first input to continuous improvement — with human oversight built in at every decision point that matters.
+            <div className="mb-12">
+              <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
+                <HeartHandshake className="w-3.5 h-3.5" />
+                THE STUDENT JOURNEY
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                How we support students
+              </h2>
+              <p className="text-white/80 text-base leading-relaxed max-w-2xl">
+                Studying abroad involves more than choosing a university and submitting a form. We support students across the entire journey — from the earliest research stage through to life in a new country.
               </p>
             </div>
-
             <div className="space-y-4">
-              {platformSteps.map((item) => (
+              {journeySteps.map((item) => (
                 <div
                   key={item.step}
-                  className="flex gap-6 items-start bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-border/60 hover:border-primary/30 hover:shadow-md transition-all"
+                  className="flex gap-6 items-start bg-white/10 border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all"
                 >
                   <div className="shrink-0 flex flex-col items-center gap-2">
-                    <span className="text-xs font-bold text-primary/50 tracking-widest">{item.step}</span>
-                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-primary" />
+                    <span className="text-xs font-bold text-white/50 tracking-widest">{item.step}</span>
+                    <div className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-white" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-bold text-foreground mb-1.5">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                    <h3 className="font-bold text-white mb-1.5">{item.title}</h3>
+                    <p className="text-sm text-white/75 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               ))}
@@ -299,54 +324,14 @@ export default function About() {
           </div>
         </section>
 
-        {/* ── 5. PRODUCT + SERVICES RELATIONSHIP ──────────────────────── */}
-        <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-white">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
-                  <Layers className="w-3.5 h-3.5" />
-                  PLATFORM ARCHITECTURE
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                  AI guides decisions.<br />Experts help execute them.
-                </h2>
-                <p className="text-white/80 text-base leading-relaxed">
-                  AskiMate is the core product — the decision layer. Universitio's advisory services are the execution layer. They are designed to work together, not independently.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Sparkles className="w-5 h-5 text-white/90" />
-                    <h3 className="font-bold text-white text-base">AskiMate AI — Core Product</h3>
-                  </div>
-                  <p className="text-white/75 text-sm leading-relaxed">
-                    Evaluates profiles, generates admission readiness scores, surfaces risks, and produces prioritised action plans. Operates 24/7 at scale.
-                  </p>
-                </div>
-                <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <UserCheck className="w-5 h-5 text-white/90" />
-                    <h3 className="font-bold text-white text-base">Universitio Services — Execution Layer</h3>
-                  </div>
-                  <p className="text-white/75 text-sm leading-relaxed">
-                    Certified advisors review complex cases, finalise applications, handle visa preparation, and intervene where human judgement is required.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── 6. TRUST & ACCREDITATION ─────────────────────────────────── */}
+        {/* ── 6. TRUST & CREDIBILITY ───────────────────────────────────── */}
         <section className="py-16 md:py-24 bg-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Regulated, Verified, Compliant</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Trust & Credibility</h2>
               <div className="w-12 h-1 bg-primary rounded-full mb-6" />
               <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
-                Universitio operates under verified accreditation frameworks and regulatory obligations. This is not a trust badge — it is the infrastructure that makes our outputs defensible, professional, and legally compliant.
+                We hold ourselves to a high standard — because the decisions we help students make are genuinely significant. Our accreditations and compliance obligations are not marketing tools; they are the baseline we operate from.
               </p>
             </div>
 
@@ -412,48 +397,19 @@ export default function About() {
           </div>
         </section>
 
-        {/* ── 7. WHY UNIVERSITIO ───────────────────────────────────────── */}
-        <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-background border-y border-border/40">
+        {/* ── 7. CLOSING CTA ───────────────────────────────────────────── */}
+        <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-background border-t border-border/40">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Why Universitio</h2>
-              <div className="w-12 h-1 bg-primary rounded-full mb-6" />
-              <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
-                Because the standard model — one advisor, one student, one spreadsheet — doesn't scale, doesn't learn, and doesn't eliminate the risk of human error on decisions that affect people's lives.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {whyItems.map((item) => (
-                <div
-                  key={item.title}
-                  className="flex gap-4 items-start bg-white rounded-2xl p-6 border border-border/60 hover:border-primary/30 hover:shadow-md transition-all"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <item.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-foreground mb-2">{item.title}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── 8. FINAL CTA ─────────────────────────────────────────────── */}
-        <section className="py-16 md:py-24 bg-white">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-br from-primary/8 to-primary/4 rounded-3xl p-10 md:p-16 text-center border border-primary/20">
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-semibold mb-8">
+            <div className="bg-white rounded-3xl p-10 md:p-16 text-center border border-border/60 shadow-sm">
+              <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-semibold mb-8">
                 <Sparkles className="w-3.5 h-3.5" />
                 GET STARTED
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
-                Start with AI.<br className="hidden md:block" /> Move forward with confidence.
+                Ready to take the next step?
               </h2>
               <p className="text-muted-foreground mb-10 max-w-xl mx-auto text-base leading-relaxed">
-                Use AskiMate to evaluate your profile, understand your options, and receive a structured plan — then connect with our advisory team to execute it.
+                Whether you want to explore your options with AskiMate AI or speak directly with one of our advisers, we are here to help you move forward with clarity and confidence.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button

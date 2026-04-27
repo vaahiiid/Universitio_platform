@@ -1,0 +1,85 @@
+Rewrite the entire "About Us" page for Universitio based on the following positioning.
+
+CRITICAL BRAND RULES:
+- Universitio is a UK-based international education company (NOT a tech platform)
+- AskiMate AI is a technology product created by Universitio (NOT the other way around)
+- Do NOT reverse this relationship under any condition
+
+-----------------------------------
+CORE POSITIONING TO REFLECT:
+
+Universitio is an established international education consultancy with real-world experience supporting 1,500+ students.
+
+AskiMate AI is a proprietary technology developed by Universitio to scale this expertise using a structured AI system with human-in-the-loop supervision.
+
+-----------------------------------
+KEY CONCEPTS TO INCLUDE (VERY IMPORTANT):
+
+- Human-in-the-loop AI (AI + real experts)
+- Personalised guidance based on student profile
+- End-to-end journey support (research → application → visa → relocation → beyond)
+- Trust, accuracy, and accountability
+- No commission-driven bias
+- Built on real experience, not theory
+- Technology enhances human expertise (NOT replaces it)
+
+-----------------------------------
+TONE & STYLE:
+
+- British English
+- Clear, confident, modern
+- Professional but human
+- No buzzwords like "product-led", "disruptive", "cutting-edge platform"
+- Avoid startup clichés
+- Sounds like a trusted company that evolved into tech
+
+-----------------------------------
+STRUCTURE TO FOLLOW:
+
+1. HERO STATEMENT (short, strong)
+   Clear positioning: education company + technology layer
+
+2. WHO WE ARE
+   - Real company
+   - Experience
+   - International reach
+
+3. WHAT MAKES US DIFFERENT
+   - Combination of human expertise + structured AI
+   - Not just advice — guided decision-making
+
+4. OUR TECHNOLOGY (ASKIMATE AI)
+   - Introduce as a product created by Universitio
+   - Explain human-in-the-loop clearly
+   - Explain knowledge base learning loop
+   - Explain personalised system
+
+5. HOW WE SUPPORT STUDENTS
+   - Full journey (not just applications)
+
+6. TRUST & CREDIBILITY
+   - 1500+ students
+   - UK-based
+   - compliance, real support, accountability
+
+7. CLOSING CTA SECTION
+   - Clear invitation to start (consultation or assessment)
+
+-----------------------------------
+STRICT RULES:
+
+- Do NOT copy from any provided text
+- Do NOT reuse exact phrases
+- Do NOT sound generic or templated
+- Everything must feel original, natural, and aligned with a serious brand
+
+-----------------------------------
+FINAL CHECK:
+
+Make sure the final text clearly communicates:
+- Universitio = trusted education company
+- AskiMate = technology built from that experience
+- AI is supervised, not autonomous
+- The system improves over time via human input
+
+If any of these are unclear → rewrite again
