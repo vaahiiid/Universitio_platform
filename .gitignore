@@ -44,10 +44,12 @@ Thumbs.db
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
-# Replit — development environment files (not needed for production)
+# Replit — environment files (kept locally, not needed in repository)
 .cache/
 .local/
 replit.md
+.replit
+.replitignore
 
 # Environment / secrets — never commit
 .env
