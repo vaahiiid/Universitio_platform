@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { Menu, X, ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImg from "@assets/universitio logo.png";
-import askiMateLogoImg from "@assets/Mate_(1590_x_396_px)_1777308437729.png";
+import askiMateLogoImg from "@assets/Mate_(1590_x_396_px)_(1)_1777308661681.png";
 import { useAskiMateAuth } from "@/contexts/AskiMateAuthContext";
 
 export function AskiMateNavbar() {
