@@ -9,7 +9,6 @@ import {
   MessageSquare,
   BookOpen,
   Zap,
-  Star,
   ArrowRight,
   Users,
   Clock,
@@ -23,7 +22,6 @@ import {
   RefreshCw,
   UserCheck,
   Globe,
-  BadgeCheck,
   Building2,
   Layers,
   AlertTriangle,
@@ -431,42 +429,6 @@ export default function AskiMateLanding() {
                 </div>
                 <h3 className="font-semibold text-foreground text-sm mb-1.5">{item.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── PRODUCT PROOF ────────────────────────────────────────────────── */}
-      <section className="py-20 md:py-24 bg-gradient-to-br from-primary/5 via-background to-background border-y border-border/40">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-xs font-semibold mb-5">
-              <TrendingUp className="w-3.5 h-3.5" />
-              THE NUMBERS
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Proven results, trusted credentials
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Backed by Universitio's track record supporting students worldwide.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {[
-              { value: "1,500+", label: "Students supported", icon: Users },
-              { value: "1,100+", label: "Community members", icon: Users },
-              { value: "95%", label: "Application success rate", icon: BadgeCheck },
-              { value: "5.0", label: "Trustpilot rating · 19 reviews", icon: Star },
-              { value: "£12", label: "From per month", icon: PoundSterling },
-            ].map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl p-6 border border-border/50 text-center hover:shadow-md hover:-translate-y-px transition-all">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-3">
-                  <stat.icon className="w-4 h-4 text-primary" />
-                </div>
-                <p className="text-2xl md:text-3xl font-black text-foreground mb-1">{stat.value}</p>
-                <p className="text-xs text-muted-foreground leading-snug">{stat.label}</p>
               </div>
             ))}
           </div>
