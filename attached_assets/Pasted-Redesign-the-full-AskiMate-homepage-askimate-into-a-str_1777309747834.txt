@@ -1,0 +1,203 @@
+Redesign the full AskiMate homepage (/askimate) into a strong, product-led main page, not a simple landing page.
+
+Use the uploaded AskiMate / Universitio deck as strategic inspiration. The page must reflect these core ideas:
+- AskiMate is an AI mate for studying abroad
+- It is human-supervised, not dependent on mentors being online
+- AI responds first, and human experts are in the loop when confidence is low or review is needed
+- It supports the full student journey: research, course selection, applications, visa, travel, arrival, accommodation, settlement, and post-study life
+- It is built on verified knowledge, expert validation, and a learning knowledge base
+- Universitio is the company behind AskiMate
+
+IMPORTANT:
+- Apply ONLY to /askimate
+- Do NOT change backend, APIs, payments, auth, database, or logic
+- Only update frontend design, copy, layout, animations, and menu labels
+- Keep all subscription/payment functionality unchanged
+
+NAVBAR:
+- Make the menu stronger and more product-like
+- Keep logo area clean
+- Menu items:
+  - About
+  - How It Works
+  - Pricing
+  - Login
+- Primary CTA:
+  Sign Up Free
+- Do NOT use “About Universitio” as a long menu label. Just use “About”
+- Change “Packages” to “Pricing”
+- Keep the navbar visually sharper and more premium
+
+REMOVE:
+- Remove “mentors online now”
+- Remove any wording that suggests mentor availability is the key feature
+- Do NOT say mentors are online/offline
+- The correct concept is: AI answers first, human experts supervise, review, or escalate when needed
+
+HERO SECTION:
+Create a much stronger, more distinctive hero.
+
+Headline option:
+Your AI Mate for Studying Abroad
+
+Subheadline:
+Get personalised, supervised guidance for every step of your study abroad journey — from choosing a course to applications, visa, arrival, and beyond.
+
+CTA buttons:
+Primary: Start Chat Free
+Secondary: View Pricing
+
+Micro proof line:
+No credit card required · 5 free questions per week · Human-supervised AI
+
+Hero visual:
+Replace the basic chat mockup with a more creative animated product visual.
+
+It should show a flow like:
+Student question → AI guidance → confidence check → expert review when needed → verified answer → knowledge base improves
+
+Animation ideas:
+- moving nodes
+- AI decision path
+- confidence signal
+- knowledge base growing
+- expert review loop
+- global study path
+
+It must feel premium, SaaS-like, and product-specific.
+
+PAGE ENTRY ANIMATION:
+Add a subtle page opening animation:
+- AskiMate logo appears smoothly
+- hero text fades/slides in
+- visual nodes animate in sequence
+- no heavy loader
+- no delay
+
+SECTION 1: PROBLEM
+Add a strong section after hero.
+
+Title:
+Study abroad guidance is fragmented, biased, and risky.
+
+Content should explain:
+- students rely on agents, forums, social media, friends, and generic AI
+- advice is often outdated, contradictory, biased, or unsafe
+- one wrong choice can affect applications, visa, or future plans
+- students need one trusted, supervised source
+
+SECTION 2: HOW ASKIMATE WORKS
+Replace current weak “Ask / Mentor / Guidance” section.
+
+Title:
+How AskiMate Works
+
+Steps:
+1. Ask your question
+From university choices and documents to visa rules, accommodation, and life after arrival.
+
+2. AI gives structured guidance
+AskiMate uses student context, verified knowledge, and destination-specific logic to give relevant guidance.
+
+3. Confidence is checked
+If the question is complex or uncertain, the system flags it instead of guessing.
+
+4. Human experts supervise
+A Universitio expert can review, improve, or take over when needed.
+
+5. The knowledge base improves
+Approved expert answers are added to the verified knowledge base so future students get stronger answers faster.
+
+SECTION 3: WHY ASKIMATE IS DIFFERENT
+Make this visually strong and not generic.
+
+Cards:
+- Human-supervised AI
+- Personalised to your profile
+- Institution-specific intelligence
+- Full journey support
+- Built on verified knowledge
+- Conflict-free guidance
+- Fraction of traditional agent cost
+- Continuously learning knowledge base
+
+SECTION 4: PRODUCT PROOF
+Add a compact proof section.
+
+Use updated numbers:
+- 1,500+ students supported through Universitio
+- 1,100+ community members
+- 95% application success rate
+- 5.0 Trustpilot rating / 19 reviews
+- From £12/month
+
+Do NOT overdo it. Keep it elegant.
+
+SECTION 5: ABOUT
+Add a short About section.
+
+Title:
+Built by Universitio
+
+Copy:
+AskiMate is a technology product created by Universitio, a UK-based international education company with real experience supporting students through global applications. Universitio combines education expertise, student support experience, and trusted accreditation with AI technology to make guidance more accessible, supervised, and accountable.
+
+Trust badges:
+- ICEF Accredited
+- British Council Certified
+- UK Registered Company
+- ICO Registered
+
+CTA:
+Learn More
+
+SECTION 6: PRICING
+Rename packages section to Pricing.
+
+Keep current pricing/payment logic unchanged.
+
+Improve the copy:
+Free:
+- 5 free questions per week
+- AI-guided support
+- Good for early exploration
+
+Premium:
+- £12/month
+- Unlimited questions
+- Priority guidance
+- Human-supervised support
+- Document and application guidance
+
+SECTION 7: FINAL CTA
+Make it strong.
+
+Title:
+Make your next study abroad decision with confidence.
+
+Text:
+Start with AskiMate for instant guidance. Get expert support when your case needs human review.
+
+Buttons:
+Start Chat Free
+View Pricing
+
+DESIGN DIRECTION:
+- Premium SaaS product page
+- Not a basic landing page
+- Animation-led
+- More distinctive than a chat mockup
+- Purple/white brand palette
+- Strong hierarchy
+- Smooth motion
+- Clean but memorable
+- Mobile responsive
+
+FINAL CHECK:
+- No “mentors online now”
+- No suggestion that mentor availability matters
+- Human-in-the-loop concept is clear
+- AI answers first, experts supervise when needed
+- AskiMate feels like a serious AI product
+- Page is stronger across all sections, not just hero
+- No backend changes

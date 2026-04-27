@@ -43,6 +43,12 @@ export function AskiMateNavbar() {
     setIsMobileMenuOpen(false);
   };
 
+  const scrollToHowItWorks = () => {
+    const el = document.getElementById("how-it-works");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -80,12 +86,18 @@ export function AskiMateNavbar() {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-5">
             <button
               onClick={() => setLocation("/about")}
-              className="text-sm font-medium text-foreground/60 hover:text-primary transition-colors"
+              className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
             >
-              About Universitio
+              About
+            </button>
+            <button
+              onClick={scrollToHowItWorks}
+              className="text-sm font-medium text-foreground/70 hover:text-primary transition-colors"
+            >
+              How It Works
             </button>
             <button
               onClick={scrollToPackages}
@@ -170,9 +182,15 @@ export function AskiMateNavbar() {
           <div className="px-4 pt-2 pb-5 space-y-1">
             <button
               onClick={() => { setLocation("/about"); setIsMobileMenuOpen(false); }}
-              className="block w-full text-left px-3 py-3 text-base font-medium text-foreground/70 hover:bg-muted rounded-md"
+              className="block w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
             >
-              About Universitio
+              About
+            </button>
+            <button
+              onClick={scrollToHowItWorks}
+              className="block w-full text-left px-3 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md"
+            >
+              How It Works
             </button>
             <button
               onClick={scrollToPackages}
