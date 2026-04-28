@@ -1,0 +1,111 @@
+Fix the AskiMate homepage hero visual. The current visual is wrong because it shows an assessment/admission scoring interface, but AskiMate is NOT the assessment product.
+
+IMPORTANT:
+
+* Do NOT redesign the whole homepage
+* Do NOT change backend, routes, assessment logic, pricing, or content outside the hero visual
+* Only replace the right-side hero visual
+* Keep the left-side hero copy and CTA buttons as they are for now
+
+CORE PRODUCT CLARITY:
+AskiMate is an AI chat product for international students. Students ask questions about studying abroad, universities, applications, visas, accommodation, documents, and student life. The AI answers. If the AI does not know enough, the question is escalated to a human agent/mentor behind the scenes, but the human does NOT directly reply to the student. The expert-reviewed answer is added to the knowledge base, and the AI uses that knowledge to answer better in future.
+
+Therefore:
+
+* Do NOT show assessment scores
+* Do NOT show admission likelihood
+* Do NOT show university match percentages
+* Do NOT show scholarship calculations
+* Do NOT show “Decision Engine”
+* Do NOT show “UCAS Verified”
+* Do NOT show profile assessment UI
+
+REPLACE WITH:
+A premium animated chat demonstration that symbolically shows how AskiMate works.
+
+VISUAL DIRECTION:
+Create a beautiful, non-interactive animated chat card.
+
+It should show sample student questions appearing one by one, followed by AskiMate AI answers.
+
+Example animated question/answer pairs:
+
+1.
+
+Student:
+“Can I work part-time on a UK Student visa?”
+AskiMate AI:
+“Yes. Most international students can usually work up to 20 hours per week during term time, but your visa conditions and CAS letter must always be checked.”
+
+2.
+
+Student:
+“What documents do I need for a UK university application?”
+AskiMate AI:
+“Usually you need academic transcripts, English evidence, passport, personal statement, CV if required, and references. Some courses may ask for a portfolio or interview.”
+
+3.
+
+Student:
+“Can I bring dependants for a master’s degree?”
+AskiMate AI:
+“In the UK, dependants are generally limited to PhD and research-based postgraduate routes. Most taught master’s courses do not qualify.”
+
+4.
+
+Student:
+“Which course is better for my background?”
+AskiMate AI:
+“Share your academic history, target country, budget, and goals. I can help compare suitable options and explain the risks before you apply.”
+
+ANIMATION:
+
+* Messages fade in sequentially
+* Typing dots appear briefly before each AI answer
+* Card has subtle floating motion
+* Soft purple glow behind the card
+* Small animated particles or lines around the card to suggest AI intelligence
+* No real input field
+* No clickable typing box
+* No functional chat input in the hero visual
+* This is a symbolic demo only
+
+DESIGN:
+
+* Premium SaaS style
+* Purple/indigo gradient header
+* Glassmorphism or soft shadow
+* Rounded modern chat card
+* Remove the large empty white bottom area
+* Make the whole card visually rich and balanced
+* The chat area should feel alive, not static
+* Keep it clean and not cluttered
+
+HEADER INSIDE THE VISUAL:
+Use:
+“AskiMate AI”
+“AI study abroad assistant”
+
+Status label:
+“Learning from verified guidance”
+
+Optional small tags:
+
+* “Human-supervised”
+* “Knowledge base”
+* “Student questions”
+
+DO NOT include:
+
+* “Online”
+* “Mentor online”
+* “Decision Engine”
+* “Assessment”
+* “Admission Score”
+* “Profile Score”
+* “Scholarship”
+* “University Match”
+
+GOAL:
+When users see the hero visual, they should immediately understand:
+“AskiMate is an AI chat assistant where I ask study abroad questions and receive clear answers. Expert input improves the knowledge base behind the AI, but the student experience remains AI-led.”
