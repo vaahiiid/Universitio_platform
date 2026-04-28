@@ -28,6 +28,29 @@ if (!process.env.JWT_SECRET) {
   console.warn("[ASKIMATE-AUTH] WARNING: JWT_SECRET not set — using fallback. Set JWT_SECRET env var for production.");
 }
 
+// (OAuth tokens are delivered via HttpOnly cookie — see consume-pending-token endpoint)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PENDING PAYMENT STORE
+// Maps userId → Stripe sessionId. Populated at checkout-session creation so
+// the Stripe session ID does NOT need to appear in the success_url. The frontend
+// only receives a generic ?payment=success signal; the backend looks up the
+// pending session by the authenticated user's ID. Entries expire after 2 hours
+// (enough time for a user to complete Stripe checkout and land back on the app).
+// ─────────────────────────────────────────────────────────────────────────────
+interface PendingPaymentEntry {
+  sessionId: string;
+  expiresAt: number;
+}
+const pendingPaymentStore = new Map<number, PendingPaymentEntry>();
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [userId, entry] of pendingPaymentStore) {
+    if (now > entry.expiresAt) pendingPaymentStore.delete(userId);
+  }
+}, 10 * 60 * 1000);
+
 export interface AskimateUserPayload {
   id: number;
   email: string;
@@ -602,16 +625,50 @@ router.get("/askimate/auth/google/callback", async (req: Request, res: Response)
       }).catch((err) => console.error("[EMAIL] Signup welcome (Google) failed:", err));
     }
 
-    // ── Step 4: Generate JWT and redirect to dashboard ─────────────────────────
+    // ── Step 4: Generate JWT, set as an HttpOnly cookie, and redirect ──────────
+    // The JWT is delivered via a short-lived HttpOnly cookie, NOT in the URL.
+    // This means the bearer token never appears in browser history, server logs,
+    // analytics, or any redirect URL. The cookie is consumed by the first call
+    // to POST /api/askimate/consume-pending-token and then cleared.
     const token = generateToken({ id: dbUser.id, email: dbUser.email });
+
+    const IS_PRODUCTION = process.env.NODE_ENV === "production";
+    res.cookie("askimate_pending_token", token, {
+      httpOnly: true,
+      secure: IS_PRODUCTION,
+      sameSite: "lax",
+      maxAge: 2 * 60 * 1000, // 2 minutes — only needs to survive the redirect
+      path: "/api/askimate/consume-pending-token",
+    });
 
     console.log(`[ASKIMATE-AUTH] Google OAuth success — user ${dbUser.id} (${dbUser.email})`);
 
-    res.redirect(`/askimate-dashboard?google_token=${encodeURIComponent(token)}`);
+    res.redirect("/askimate-dashboard");
   } catch (err) {
     console.error("[ASKIMATE-AUTH] Google callback error:", err);
     res.redirect(`/askimate-login?google_error=${encodeURIComponent("An unexpected error occurred. Please try again.")}`);
   }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONSUME PENDING TOKEN (Google OAuth post-login)
+// Called by the frontend immediately after landing on the dashboard.
+// The JWT was placed in an HttpOnly cookie (askimate_pending_token) by the OAuth
+// callback and is invisible to the browser's JS, analytics, and URL bar.
+// This endpoint pops the cookie, returns the JWT in the response body, and
+// clears the cookie so it can only be used once.
+// ─────────────────────────────────────────────────────────────────────────────
+router.post("/askimate/consume-pending-token", (req: Request, res: Response) => {
+  const token = (req as any).cookies?.askimate_pending_token as string | undefined;
+  if (!token) {
+    res.status(404).json({ error: "No pending token" });
+    return;
+  }
+  // Clear the cookie immediately (single-use)
+  res.clearCookie("askimate_pending_token", {
+    path: "/api/askimate/consume-pending-token",
+  });
+  res.json({ token });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -758,7 +815,11 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
           quantity: 1,
         },
       ],
-      success_url: `${baseRedirectUrl}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      // The session_id is stored server-side (pendingPaymentStore) keyed by userId
+      // so it does NOT need to appear in the URL. The success_url only carries a
+      // non-sensitive ?payment=success signal; the backend retrieves the session ID
+      // by looking up the authenticated caller in pendingPaymentStore.
+      success_url: `${baseRedirectUrl}?payment=success`,
       cancel_url: `${baseRedirectUrl}?cancelled=true`,
       client_reference_id: userIdString,
       customer_email: user.email,
@@ -774,6 +835,12 @@ router.post("/askimate/checkout-session", requireAskimateAuth, async (req: Reque
           planKey: plan,
         },
       },
+    });
+
+    // Store the session ID server-side so the frontend never needs to handle it
+    pendingPaymentStore.set(userPayload.id, {
+      sessionId: session.id,
+      expiresAt: Date.now() + 2 * 60 * 60 * 1000, // 2 hours
     });
 
     res.json({ sessionId: session.id, url: session.url });
@@ -831,6 +898,22 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
       return;
     }
 
+    // ── Ownership check ──────────────────────────────────────────────────────
+    // Verify the Stripe session was created for the currently authenticated user.
+    // client_reference_id and metadata.userId are both set at checkout-session
+    // creation time and cannot be forged by the caller, so comparing either one
+    // to the authenticated user's ID prevents a paid session from being applied
+    // to a different account.
+    const sessionOwnerIdStr = session.client_reference_id ?? session.metadata?.userId;
+    if (!sessionOwnerIdStr || String(userPayload.id) !== String(sessionOwnerIdStr)) {
+      console.warn(
+        `[ASKIMATE-AUTH] Ownership mismatch — session ${sessionId} belongs to userId ${sessionOwnerIdStr}, ` +
+        `but caller is userId ${userPayload.id}`,
+      );
+      res.status(403).json({ error: "This payment session does not belong to your account" });
+      return;
+    }
+
     // Determine plan from metadata
     const planKey = (session.metadata?.planKey as string) || "monthly";
     if (!PLAN_DURATION_DAYS[planKey]) {
@@ -868,6 +951,112 @@ router.post("/askimate/confirm-premium", requireAskimateAuth, async (req: Reques
   } catch (error) {
     console.error("[ASKIMATE-AUTH] Confirm premium error:", error);
     res.status(500).json({ error: "Failed to confirm premium" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIRM PENDING PAYMENT (called after ?payment=success redirect — no session_id in URL)
+// The session ID was stored server-side when the checkout was created. The
+// frontend never needs to handle or transmit the session ID; ownership is
+// guaranteed because pendingPaymentStore is keyed by the authenticated user's ID.
+// ─────────────────────────────────────────────────────────────────────────────
+router.post("/askimate/confirm-pending-payment", requireAskimateAuth, async (req: Request, res: Response) => {
+  if (!stripe) {
+    res.status(500).json({ error: "Stripe not configured" });
+    return;
+  }
+
+  try {
+    const userPayload = (req as any).askimateUser as AskimateUserPayload;
+
+    // Look up the pending session for this user — no client-supplied session ID needed
+    const pending = pendingPaymentStore.get(userPayload.id);
+    if (!pending || Date.now() > pending.expiresAt) {
+      res.status(404).json({ error: "No pending payment found. If you were charged, please contact support." });
+      return;
+    }
+    const { sessionId } = pending;
+
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.id, userPayload.id),
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    // Idempotency: if this session was already processed, return current state
+    if (user.stripeSessionId === sessionId) {
+      pendingPaymentStore.delete(userPayload.id);
+      console.log(`[ASKIMATE-AUTH] Session ${sessionId} already processed for user ${user.id}`);
+      res.json({
+        success: true,
+        alreadyProcessed: true,
+        plan: user.plan,
+        planKey: user.planKey,
+        trialEndsAt: user.trialEndsAt,
+      });
+      return;
+    }
+
+    // Retrieve and validate the Stripe session
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (session.payment_status !== "paid") {
+      res.status(402).json({ error: "Payment not completed" });
+      return;
+    }
+
+    // Defence-in-depth ownership check (session was stored per-user, so this should always pass)
+    const sessionOwnerIdStr = session.client_reference_id ?? session.metadata?.userId;
+    if (!sessionOwnerIdStr || String(userPayload.id) !== String(sessionOwnerIdStr)) {
+      console.warn(
+        `[ASKIMATE-AUTH] Ownership mismatch in confirm-pending-payment — session ${sessionId} ` +
+        `belongs to userId ${sessionOwnerIdStr}, but caller is userId ${userPayload.id}`,
+      );
+      res.status(403).json({ error: "Payment session ownership mismatch" });
+      return;
+    }
+
+    const planKey = (session.metadata?.planKey as string) || "monthly";
+    if (!PLAN_DURATION_DAYS[planKey]) {
+      res.status(400).json({ error: "Unknown plan in session metadata" });
+      return;
+    }
+
+    const now = new Date();
+    const currentExpiry = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+    const baseDate = currentExpiry && currentExpiry > now ? currentExpiry : now;
+    const planExpiresAt = new Date(baseDate.getTime() + PLAN_DURATION_DAYS[planKey] * 24 * 60 * 60 * 1000);
+
+    const [updatedUser] = await db
+      .update(askimateUsers)
+      .set({
+        plan: "premium",
+        planKey,
+        trialStartedAt: user.trialStartedAt ?? now,
+        trialEndsAt: planExpiresAt,
+        stripeSessionId: sessionId,
+        updatedAt: now,
+      })
+      .where(eq(askimateUsers.id, user.id))
+      .returning();
+
+    // Clean up the pending entry now that the session has been processed
+    pendingPaymentStore.delete(userPayload.id);
+
+    console.log(`[ASKIMATE-AUTH] Premium confirmed (pending) — user ${user.id}, plan ${planKey}, expires ${planExpiresAt.toISOString()}`);
+
+    res.json({
+      success: true,
+      plan: updatedUser.plan,
+      planKey: updatedUser.planKey,
+      trialEndsAt: updatedUser.trialEndsAt,
+    });
+  } catch (error) {
+    console.error("[ASKIMATE-AUTH] Confirm pending payment error:", error);
+    res.status(500).json({ error: "Failed to confirm payment" });
   }
 });
 

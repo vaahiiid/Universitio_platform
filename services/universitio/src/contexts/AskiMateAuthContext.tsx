@@ -40,17 +40,24 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // ── Google OAuth callback: pick up token from URL ──────────────────────
-        const urlParams = new URLSearchParams(window.location.search);
-        const googleToken = urlParams.get("google_token");
-
-        if (googleToken) {
-          // Store the JWT from the OAuth redirect and clean up the URL
-          localStorage.setItem("askimate_token", googleToken);
-          urlParams.delete("google_token");
-          const newSearch = urlParams.toString();
-          const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : "");
-          window.history.replaceState({}, "", newUrl);
+        // ── Google OAuth callback: consume HttpOnly cookie to retrieve JWT ────────
+        // The backend redirects to /askimate-dashboard with NO query parameters.
+        // The JWT is delivered in an HttpOnly cookie (askimate_pending_token) that
+        // is invisible to JS, analytics, and the URL bar. We call the consume
+        // endpoint on every mount; if no cookie is present it returns 404 silently.
+        try {
+          const consumeRes = await fetch(`${API_BASE}/askimate/consume-pending-token`, {
+            method: "POST",
+            credentials: "include", // send cookies cross-origin (same-site in production)
+          });
+          if (consumeRes.ok) {
+            const { token: cookieToken } = await consumeRes.json();
+            if (cookieToken) {
+              localStorage.setItem("askimate_token", cookieToken);
+            }
+          }
+        } catch {
+          // No pending token — normal for non-OAuth page loads
         }
 
         // ── Standard token restore ─────────────────────────────────────────────
@@ -179,8 +186,10 @@ export function AskiMateAuthProvider({ children }: { children: ReactNode }) {
 
   const googleLogin = async () => {
     // Redirect the browser to the backend Google OAuth initiation route.
-    // The backend will redirect to Google, then back to /api/askimate/auth/google/callback,
-    // which finally redirects here with ?google_token= handled in the useEffect above.
+    // The backend redirects to Google, then back to /api/askimate/auth/google/callback,
+    // which sets an HttpOnly cookie (askimate_pending_token) and redirects to
+    // /askimate-dashboard with NO query params. The useEffect above calls
+    // consume-pending-token to exchange the cookie for the JWT in localStorage.
     window.location.href = "/api/askimate/auth/google";
   };
 

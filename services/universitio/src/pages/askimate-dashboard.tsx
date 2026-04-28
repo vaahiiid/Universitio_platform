@@ -166,11 +166,11 @@ function AskiMateDashboardContent() {
   useEffect(() => {
     const handle = async () => {
       const params = new URLSearchParams(window.location.search);
-      const sessionId = params.get("session_id");
+      const paymentSuccess = params.get("payment") === "success";
       const cancelled = params.get("cancelled");
 
-      // Always clean up the URL immediately
-      if (sessionId || cancelled) {
+      // Always clean up the URL immediately — no sensitive tokens were in the URL
+      if (paymentSuccess || cancelled) {
         window.history.replaceState({}, document.title, window.location.pathname);
       }
 
@@ -180,16 +180,17 @@ function AskiMateDashboardContent() {
         return;
       }
 
-      if (!sessionId) return;
+      if (!paymentSuccess) return;
 
       try {
         const token = localStorage.getItem("askimate_token");
 
-        // Call backend to verify Stripe payment and activate the purchased plan
-        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/confirm-premium`, {
+        // The session ID was stored server-side when the checkout was created.
+        // We never read session_id from the URL — the backend looks it up by the
+        // authenticated user's identity via the pending payment store.
+        const res = await fetch(`${import.meta.env.BASE_URL}api/askimate/confirm-pending-payment`, {
           method: "POST",
           headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId }),
         });
 
         if (res.ok) {

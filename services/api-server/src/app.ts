@@ -3,6 +3,7 @@ import fs from "fs";
 import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import compression from "compression";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import router from "./routes";
 
 const app: Express = express();
@@ -74,6 +75,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Cookie parser — used to read HttpOnly auth cookies in specific endpoints
+app.use(cookieParser());
 
 // Stripe webhook needs raw body for signature verification
 app.use("/api/askimate/stripe-webhook", express.raw({ type: "application/json" }));
