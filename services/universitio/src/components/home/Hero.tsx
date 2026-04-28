@@ -1,154 +1,301 @@
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Target, BarChart3, Compass, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Send, Shield, Loader2 } from "lucide-react";
+import { apiUrl } from "@/lib/api";
 
-function AIVisual() {
-  const nodes = [
-    { x: 50, y: 50, size: 56, delay: 0 },
-    { x: 20, y: 25, size: 36, delay: 0.4 },
-    { x: 80, y: 22, size: 30, delay: 0.8 },
-    { x: 15, y: 65, size: 28, delay: 1.2 },
-    { x: 78, y: 70, size: 32, delay: 0.6 },
-    { x: 45, y: 15, size: 22, delay: 1.0 },
-    { x: 60, y: 82, size: 24, delay: 1.4 },
-  ];
+const DEMO_QAS = [
+  {
+    question: "What GPA do I need for a UK Master's degree?",
+    answer:
+      "Most UK universities require a 2:1 equivalent (roughly 3.0–3.3 GPA), though top-ranked institutions like Oxford and Imperial typically expect a 3.5+. We factor in your full profile — not just grades.",
+  },
+  {
+    question: "Can I work part-time on a UK Student Visa?",
+    answer:
+      "Yes! With a UK Student Visa you can work up to 20 hours per week during term time and full-time during official vacations. Make sure your CAS letter confirms this entitlement.",
+  },
+  {
+    question: "How much does it cost to study in London?",
+    answer:
+      "Tuition for international students ranges from £12,000–£38,000/year depending on the university and course. Living costs in London average £1,200–£1,800/month. We help you find the best value options for your budget.",
+  },
+];
 
-  const edges = [
-    [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6],
-    [1, 3], [2, 5], [4, 6],
-  ];
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-0.5 py-0.5">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-primary/60 inline-block"
+          animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
+          transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.2 }}
+        />
+      ))}
+    </span>
+  );
+}
+
+function HeroChatDemo() {
+  const [demoIndex, setDemoIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [cyclingActive, setCyclingActive] = useState(true);
+
+  const [userQuestion, setUserQuestion] = useState("");
+  const [liveQuestion, setLiveQuestion] = useState<string | null>(null);
+  const [liveAnswer, setLiveAnswer] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [rateLimited, setRateLimited] = useState(false);
+  const [questionCount, setQuestionCount] = useState(0);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const answerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!cyclingActive) return;
+
+    const answerTimer = setTimeout(() => setShowAnswer(true), 900);
+    const nextTimer = setTimeout(() => {
+      setShowAnswer(false);
+      setTimeout(() => {
+        setDemoIndex((prev) => (prev + 1) % DEMO_QAS.length);
+      }, 400);
+    }, 5000);
+
+    return () => {
+      clearTimeout(answerTimer);
+      clearTimeout(nextTimer);
+    };
+  }, [demoIndex, cyclingActive]);
+
+  const handleSubmit = useCallback(
+    async (e?: React.FormEvent) => {
+      e?.preventDefault();
+      const q = userQuestion.trim();
+      if (!q || loading || rateLimited) return;
+
+      setCyclingActive(false);
+      setLiveQuestion(q);
+      setLiveAnswer(null);
+      setError(null);
+      setLoading(true);
+      setUserQuestion("");
+
+      try {
+        const resp = await fetch(apiUrl("/askimate/hero-ask"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: q }),
+        });
+        const data = await resp.json() as { answer?: string; error?: string; message?: string };
+
+        if (resp.status === 429) {
+          setRateLimited(true);
+          setError(data.message ?? "You've used your demo questions. Sign up for the full experience.");
+        } else if (!resp.ok) {
+          setError(data.error ?? "Something went wrong. Please try again.");
+        } else {
+          setLiveAnswer(data.answer ?? "");
+          setQuestionCount((c) => c + 1);
+          setTimeout(() => answerRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
+        }
+      } catch {
+        setError("Network error. Please check your connection and try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [userQuestion, loading, rateLimited],
+  );
+
+  const currentQA = DEMO_QAS[demoIndex];
+  const hasLiveExchange = liveQuestion !== null;
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center select-none">
-      <svg
-        viewBox="0 0 100 100"
-        className="absolute inset-0 w-full h-full"
-        style={{ overflow: "visible" }}
-      >
-        <defs>
-          <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(66,20,125,0.12)" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-          <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(66,20,125,0.5)" />
-            <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
-          </linearGradient>
-        </defs>
-
-        <circle cx="50" cy="50" r="48" fill="url(#bgGlow)" />
-
-        {edges.map(([a, b], i) => (
-          <motion.line
-            key={i}
-            x1={nodes[a].x}
-            y1={nodes[a].y}
-            x2={nodes[b].x}
-            y2={nodes[b].y}
-            stroke="url(#edgeGrad)"
-            strokeWidth="0.4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.2, 0.7, 0.2] }}
-            transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.3 }}
-          />
-        ))}
-
-        {nodes.map((node, i) => (
-          <motion.circle
-            key={i}
-            cx={node.x}
-            cy={node.y}
-            r={node.size / 20}
-            fill={i === 0 ? "rgba(66,20,125,0.9)" : "rgba(66,20,125,0.2)"}
-            stroke={i === 0 ? "rgba(66,20,125,0.4)" : "rgba(66,20,125,0.3)"}
-            strokeWidth="0.5"
-            initial={{ scale: 0.8, opacity: 0.5 }}
-            animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3 + node.delay, repeat: Infinity, delay: node.delay }}
-          />
-        ))}
-      </svg>
-
-      <div className="relative z-10 flex flex-col items-center justify-center">
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-2xl shadow-primary/30 mb-6"
-        >
-          <Sparkles className="w-10 h-10 text-white" strokeWidth={1.5} />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white/90 backdrop-blur-sm border border-border/50 rounded-2xl px-4 py-3 shadow-xl text-center"
-        >
-          <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">AskiMate AI</p>
-          <p className="text-sm font-bold text-foreground">Instant guidance, 24/7</p>
-        </motion.div>
+    <div className="flex flex-col h-full rounded-2xl border border-border/60 bg-white shadow-xl shadow-primary/10 overflow-hidden">
+      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border/60 bg-gradient-to-r from-primary/5 to-secondary/5 flex-shrink-0">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-sm">
+          <Sparkles className="w-4 h-4 text-white" strokeWidth={1.5} />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-foreground leading-none">AskiMate AI</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">Your study abroad assistant</p>
+        </div>
+        <span className="ml-auto flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          Online
+        </span>
       </div>
 
-      <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute top-8 left-4 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-violet-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Brain className="w-4 h-4 text-primary" />
-        </div>
-        <div className="text-xs font-semibold text-foreground whitespace-nowrap">AI Analysis</div>
-      </motion.div>
+      <div className="flex-1 overflow-y-auto p-3 space-y-3 min-h-0">
+        {!hasLiveExchange && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={demoIndex}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-2"
+            >
+              <div className="flex justify-end">
+                <div className="max-w-[80%] bg-primary text-white text-xs px-3 py-2 rounded-2xl rounded-tr-sm shadow-sm leading-relaxed">
+                  {currentQA.question}
+                </div>
+              </div>
 
-      <motion.div
-        animate={{ y: [0, 12, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-8 right-4 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Target className="w-4 h-4 text-blue-600" />
-        </div>
-        <div>
-          <div className="text-xs font-semibold text-foreground whitespace-nowrap">Guidance Engine</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Step-by-step direction</div>
-        </div>
-      </motion.div>
+              <AnimatePresence>
+                {showAnswer && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-start gap-2"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Sparkles className="w-3 h-3 text-white" strokeWidth={1.5} />
+                    </div>
+                    <div className="max-w-[82%] bg-slate-50 border border-border/60 text-xs text-foreground/90 px-3 py-2 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
+                      {currentQA.answer}
+                    </div>
+                  </motion.div>
+                )}
+                {!showAnswer && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-3 h-3 text-white" strokeWidth={1.5} />
+                    </div>
+                    <div className="bg-slate-50 border border-border/60 px-3 py-2 rounded-2xl rounded-tl-sm">
+                      <TypingDots />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        )}
 
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-        className="absolute bottom-12 left-2 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <BarChart3 className="w-4 h-4 text-emerald-600" />
-        </div>
-        <div>
-          <div className="text-xs font-bold text-foreground">Admission Score</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Real-time evaluation</div>
-        </div>
-      </motion.div>
+        {hasLiveExchange && (
+          <div className="space-y-3">
+            <div className="flex justify-end">
+              <div className="max-w-[80%] bg-primary text-white text-xs px-3 py-2 rounded-2xl rounded-tr-sm shadow-sm leading-relaxed">
+                {liveQuestion}
+              </div>
+            </div>
 
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        className="absolute bottom-12 right-2 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Compass className="w-4 h-4 text-amber-600" />
-        </div>
-        <div>
-          <div className="text-xs font-semibold text-foreground whitespace-nowrap">Decision Path</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Structured next steps</div>
-        </div>
-      </motion.div>
+            {loading && (
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-3 h-3 text-white" strokeWidth={1.5} />
+                </div>
+                <div className="bg-slate-50 border border-border/60 px-3 py-2 rounded-2xl rounded-tl-sm">
+                  <TypingDots />
+                </div>
+              </div>
+            )}
 
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.2, 0.12] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute inset-0 rounded-full bg-primary/10 pointer-events-none"
-        style={{ margin: "10%" }}
-      />
+            {liveAnswer && !loading && (
+              <motion.div
+                ref={answerRef}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-2"
+              >
+                <div className="flex items-start gap-2">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Sparkles className="w-3 h-3 text-white" strokeWidth={1.5} />
+                  </div>
+                  <div className="max-w-[82%] bg-slate-50 border border-border/60 text-xs text-foreground/90 px-3 py-2 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
+                    {liveAnswer}
+                  </div>
+                </div>
+                {questionCount >= 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="ml-8"
+                  >
+                    <Link href="/askimate">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:text-primary/80 underline underline-offset-2 cursor-pointer transition-colors">
+                        Continue the conversation in AskiMate
+                        <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </Link>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+
+            {error && !loading && (
+              <motion.div
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="ml-8"
+              >
+                <div className="text-[11px] text-destructive/80 bg-destructive/5 border border-destructive/20 rounded-xl px-3 py-2 leading-relaxed">
+                  {error}
+                  {rateLimited && (
+                    <span className="block mt-1">
+                      <Link href="/askimate">
+                        <span className="font-semibold text-primary hover:text-primary/80 underline underline-offset-2 cursor-pointer">
+                          Sign up for unlimited access →
+                        </span>
+                      </Link>
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="px-3 py-2.5 border-t border-border/60 bg-slate-50/80 flex-shrink-0">
+        {rateLimited ? (
+          <Link href="/askimate">
+            <Button size="sm" className="w-full rounded-full bg-primary hover:bg-primary/90 text-xs h-9 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+              Get full access on AskiMate
+              <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+            </Button>
+          </Link>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex gap-2 items-center">
+            <input
+              ref={inputRef}
+              type="text"
+              value={userQuestion}
+              onChange={(e) => setUserQuestion(e.target.value)}
+              placeholder="Ask your own question…"
+              disabled={loading}
+              maxLength={500}
+              className="flex-1 text-xs bg-white border border-border/60 rounded-full px-3.5 py-2 outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all placeholder:text-muted-foreground/60 disabled:opacity-50"
+            />
+            <button
+              type="submit"
+              disabled={!userQuestion.trim() || loading}
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white disabled:opacity-40 hover:bg-primary/90 transition-colors flex-shrink-0"
+              aria-label="Send question"
+            >
+              {loading ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Send className="w-3.5 h-3.5" />
+              )}
+            </button>
+          </form>
+        )}
+        <p className="text-[10px] text-muted-foreground/60 text-center mt-1.5">
+          Try it free · No sign-up needed
+        </p>
+      </div>
     </div>
   );
 }
@@ -222,9 +369,9 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative h-[280px] sm:h-[360px] lg:h-[480px] w-full overflow-hidden"
+            className="relative h-[420px] sm:h-[440px] lg:h-[500px] w-full"
           >
-            <AIVisual />
+            <HeroChatDemo />
           </motion.div>
 
         </div>
