@@ -1,5 +1,4 @@
 packages:
-  - artifacts/*
   - services/*
   - lib/*
   - lib/integrations/*
