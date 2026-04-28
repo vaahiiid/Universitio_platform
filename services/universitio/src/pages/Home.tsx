@@ -58,6 +58,20 @@ export default function Home() {
               "@id": "https://universitio.com/#website",
               "name": "Universitio",
               "url": "https://universitio.com"
+            },
+            {
+              "@type": "SoftwareApplication",
+              "@id": "https://universitio.com/askimate#app",
+              "name": "AskiMate AI",
+              "url": "https://universitio.com/askimate",
+              "applicationCategory": "EducationApplication",
+              "description": "AskiMate AI is a smart study abroad assistant that answers questions, checks admission chances, compares countries and courses, and delivers personalised guidance powered by AI.",
+              "operatingSystem": "Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
             }
           ]
         })}</script>
