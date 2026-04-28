@@ -8,7 +8,7 @@ export const posts: BlogPost[] = [
     date: "2026-04-28",
     author: `Universitio Team`,
     excerpt: `Thousands of international students make avoidable mistakes every year when applying to UK universities. This guide identifies the most common errors — and exactly how to avoid them before they cost you your offer.`,
-    image: "/blog-images/mistakes-international-students-make-applying-uk-universities.jpg",
+    image: "blog-images/mistakes-international-students-make-applying-uk-universities.jpg",
     imageAlt: `International student looking stressed while reviewing a UK university application on a laptop`,
     categories: ["United Kingdom", "Student Guides"],
     categorySlugs: ["united-kingdom", "student-guides"],
