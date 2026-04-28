@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { trackEvent } from "@/lib/analytics";
 import { Navbar } from "@/components/layout/Navbar";
@@ -9,7 +9,7 @@ import {
   ArrowLeft, ArrowRight, Calendar, Clock, User,
   Share2, Copy, ChevronRight, Facebook, X, Linkedin
 } from "lucide-react";
-import { blogPosts, type BlogPost } from "@/data/blog/postsData";
+import { loadAllPosts, type BlogPost } from "@/data/blog/postsLoader";
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -83,7 +83,17 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  const [postsLoaded, setPostsLoaded] = useState(false);
+
+  useEffect(() => {
+    loadAllPosts().then((posts) => {
+      setAllPosts(posts);
+      setPostsLoaded(true);
+    });
+  }, []);
+
+  const post = allPosts.find((p) => p.slug === slug);
 
   useEffect(() => {
     if (post) {
@@ -99,12 +109,24 @@ export default function BlogPostPage() {
   const relatedPosts = useMemo(() => {
     if (!post) return [];
     const primaryCat = post.categorySlugs[0];
-    const sameCat = blogPosts.filter(
+    const sameCat = allPosts.filter(
       (p) => p.id !== post.id && p.categorySlugs.includes(primaryCat)
     );
     const shuffled = [...sameCat].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 3);
-  }, [post]);
+  }, [post, allPosts]);
+
+  if (!postsLoaded) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col">
+        <Navbar />
+        <main className="flex-grow pt-28 pb-24 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!post) return <PostNotFound />;
 

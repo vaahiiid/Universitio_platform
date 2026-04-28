@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useParams, useLocation } from "wouter";
 import { ArrowRight, ArrowLeft, BookOpen, Calendar, ChevronRight } from "lucide-react";
-import { blogPosts } from "@/data/blog/postsData";
+import { loadAllPosts, type BlogPost } from "@/data/blog/postsLoader";
 import { blogCategories } from "@/data/blog/categoriesData";
 
 const BASE = import.meta.env.BASE_URL;
@@ -20,13 +20,18 @@ export default function BlogCategoryPage() {
   const { category: categorySlug } = useParams<{ category: string }>();
   const [, navigate] = useLocation();
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
 
-  const category = blogCategories.find((c) => c.slug === categorySlug);
-  const posts = blogPosts.filter((p) => p.categorySlugs.includes(categorySlug || ""));
+  useEffect(() => {
+    loadAllPosts().then(setAllPosts);
+  }, []);
 
   useEffect(() => {
     setVisibleCount(POSTS_PER_PAGE);
   }, [categorySlug]);
+
+  const category = blogCategories.find((c) => c.slug === categorySlug);
+  const posts = allPosts.filter((p) => p.categorySlugs.includes(categorySlug || ""));
 
   const allCategoriesSorted = blogCategories
     .filter((c) => c.postCount > 0)
@@ -35,7 +40,7 @@ export default function BlogCategoryPage() {
   const visible = posts.slice(0, visibleCount);
   const hasMore = visibleCount < posts.length;
 
-  if (!category || posts.length === 0) {
+  if (!category) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
@@ -61,9 +66,9 @@ export default function BlogCategoryPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Helmet>
         <title>{category.name} Articles | Universitio Blog</title>
-        <meta name="description" content={`Browse ${posts.length} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`} />
+        <meta name="description" content={`Browse ${category.postCount} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`} />
         <link rel="canonical" href={`https://universitio.com/blog/category/${category.slug}`} />
-        {posts.length < 3 && <meta name="robots" content="noindex, follow" />}
+        {category.postCount < 3 && <meta name="robots" content="noindex, follow" />}
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
@@ -82,7 +87,11 @@ export default function BlogCategoryPage() {
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">{category.name}</h1>
             <p className="text-lg text-muted-foreground">
-              {posts.length} article{posts.length !== 1 ? "s" : ""} in this category
+              {posts.length > 0
+                ? `${posts.length} article${posts.length !== 1 ? "s" : ""} in this category`
+                : allPosts.length === 0
+                  ? "Loading articles…"
+                  : "No articles in this category"}
             </p>
           </div>
 

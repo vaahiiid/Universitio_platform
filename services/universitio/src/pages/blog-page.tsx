@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
 import { ArrowRight, BookOpen, Calendar, ChevronRight } from "lucide-react";
-import { blogPosts } from "@/data/blog/postsData";
+import { loadAllPosts, type BlogPost } from "@/data/blog/postsLoader";
 import { blogCategories } from "@/data/blog/categoriesData";
 
 const BASE = import.meta.env.BASE_URL;
@@ -19,8 +19,13 @@ function formatDate(dateStr: string) {
 export default function BlogPage() {
   const [, navigate] = useLocation();
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
 
-  const sortedPosts = [...blogPosts].sort(
+  useEffect(() => {
+    loadAllPosts().then(setAllPosts);
+  }, []);
+
+  const sortedPosts = [...allPosts].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   const featured = sortedPosts[0];
@@ -71,7 +76,7 @@ export default function BlogPage() {
             <h2 className="text-lg font-semibold text-foreground mb-4">Browse by Category</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {blogCategories.map((cat) => {
-                const postCount = blogPosts.filter(p => p.categories.includes(cat.name)).length;
+                const postCount = allPosts.filter(p => p.categories.includes(cat.name)).length;
                 const isActive = postCount > 0;
                 return isActive ? (
                   <Link key={cat.slug} href={`/blog/category/${cat.slug}`}>
@@ -146,7 +151,7 @@ export default function BlogPage() {
 
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-foreground">Latest Articles</h2>
-            <p className="text-muted-foreground text-sm mt-1">{sortedPosts.length} articles</p>
+            <p className="text-muted-foreground text-sm mt-1">{sortedPosts.length > 0 ? `${sortedPosts.length} articles` : "Loading articles…"}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

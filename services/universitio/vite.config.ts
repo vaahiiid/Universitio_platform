@@ -59,7 +59,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("postsData")) return "blog-posts";
+          const chunkMatch = id.match(/postsChunk(\d+)/);
+          if (chunkMatch) return `blog-posts-${chunkMatch[1]}`;
           if (id.includes("node_modules/react-dom") || id.includes("node_modules/react/")) return "vendor-react";
           if (id.includes("node_modules/framer-motion")) return "vendor-motion";
           if (id.includes("node_modules/@tanstack/react-query")) return "vendor-query";
