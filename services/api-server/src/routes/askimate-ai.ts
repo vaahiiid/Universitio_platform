@@ -1,10 +1,22 @@
 import { Router, type IRouter, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
+import { db } from "@workspace/db";
+import {
+  askimateUsers,
+  askimateWeeklyUsage,
+} from "@workspace/db/schema";
+import { eq, and } from "drizzle-orm";
 import { generateAiAnswer, type AiChatMessage } from "../ai/chatService";
 
 const router: IRouter = Router();
 
 const JWT_SECRET = process.env.JWT_SECRET || "askimate-jwt-secret-2026";
+
+// In-memory burst guard (secondary, fast layer) — not a substitute for plan enforcement
+const BURST_WINDOW_MS = 10 * 1000;
+const BURST_MAX_REQUESTS = 5;
+const HISTORY_ENTRY_MAX_CHARS = 500;
+const FREE_WEEKLY_LIMIT = 5;
 
 interface AskimateUserPayload {
   id: number;
@@ -12,7 +24,28 @@ interface AskimateUserPayload {
   emailVerified?: boolean;
 }
 
-function tryGetUser(req: Request): AskimateUserPayload | null {
+interface BurstEntry {
+  count: number;
+  windowStart: number;
+}
+
+const burstMap = new Map<number, BurstEntry>();
+
+function isBurstLimited(userId: number): boolean {
+  const now = Date.now();
+  const entry = burstMap.get(userId);
+  if (!entry || now - entry.windowStart >= BURST_WINDOW_MS) {
+    burstMap.set(userId, { count: 1, windowStart: now });
+    return false;
+  }
+  if (entry.count >= BURST_MAX_REQUESTS) {
+    return true;
+  }
+  entry.count += 1;
+  return false;
+}
+
+function getUser(req: Request): AskimateUserPayload | null {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) return null;
   const token = authHeader.slice(7);
@@ -24,17 +57,84 @@ function tryGetUser(req: Request): AskimateUserPayload | null {
   }
 }
 
+function getCurrentWeek(): string {
+  const now = new Date();
+  const start = new Date(now);
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  start.setDate(diff);
+  const year = start.getFullYear();
+  const week = Math.ceil(((now.getTime() - start.getTime()) / 86400000 + 1) / 7);
+  return `${year}-W${String(week).padStart(2, "0")}`;
+}
+
 /**
  * POST /api/askimate/ai
  * AI knowledge-base Q&A powered by OpenAI embeddings + gpt-4o-mini.
- * Open to guests and authenticated users.
+ * Requires a valid authenticated session.
  * Authenticated users must have a verified email.
+ * Free users are subject to the same 5 questions/week cap as the main chat route.
+ * Premium users (active plan) have unlimited access.
  *
  * Body: { message: string, history?: { role: "user"|"assistant", content: string }[] }
  * Response: { answer: string, sources: [...], needsHumanReview: boolean }
  */
 router.post("/askimate/ai", async (req: Request, res: Response) => {
   try {
+    const user = getUser(req);
+
+    if (!user) {
+      res.status(401).json({ error: "Authentication required" });
+      return;
+    }
+
+    if (user.emailVerified === false) {
+      res.status(403).json({ error: "EMAIL_NOT_VERIFIED" });
+      return;
+    }
+
+    // Fast burst guard (in-memory, per-process) — catches rapid-fire requests
+    if (isBurstLimited(user.id)) {
+      res.status(429).json({ error: "Too many requests. Please wait a moment before trying again." });
+      return;
+    }
+
+    // DB-backed plan/usage enforcement — persistent and cluster-safe
+    const dbUser = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.id, user.id),
+    });
+
+    if (dbUser && !dbUser.emailVerified) {
+      res.status(403).json({ error: "EMAIL_NOT_VERIFIED" });
+      return;
+    }
+
+    const now = new Date();
+    const planExpiresAt = dbUser?.trialEndsAt ? new Date(dbUser.trialEndsAt) : null;
+    const isActivePremium = dbUser?.plan === "premium" && planExpiresAt && planExpiresAt > now;
+
+    if (dbUser && !isActivePremium) {
+      const currentWeek = getCurrentWeek();
+      const usage = await db.query.askimateWeeklyUsage.findFirst({
+        where: and(
+          eq(askimateWeeklyUsage.userId, user.id),
+          eq(askimateWeeklyUsage.week, currentWeek)
+        ),
+      });
+
+      const questionsUsed = usage?.questionsUsed || 0;
+
+      if (questionsUsed >= FREE_WEEKLY_LIMIT) {
+        res.status(429).json({
+          error: "FREE_LIMIT_REACHED",
+          message: "You've used all 5 free questions for this week. Upgrade to Premium Mentoring for unlimited access.",
+          questionsUsed,
+          planExpired: dbUser.plan === "premium" && !!planExpiresAt,
+        });
+        return;
+      }
+    }
+
     const { message, history } = req.body as {
       message: string;
       history?: AiChatMessage[];
@@ -50,15 +150,6 @@ router.post("/askimate/ai", async (req: Request, res: Response) => {
       return;
     }
 
-    const user = tryGetUser(req);
-
-    if (user) {
-      if (user.emailVerified === false) {
-        res.status(403).json({ error: "EMAIL_NOT_VERIFIED" });
-        return;
-      }
-    }
-
     const safeHistory: AiChatMessage[] = Array.isArray(history)
       ? history
           .filter(
@@ -68,9 +159,35 @@ router.post("/askimate/ai", async (req: Request, res: Response) => {
               typeof h.content === "string"
           )
           .slice(-10)
+          .map((h) => ({
+            role: h.role,
+            content: h.content.slice(0, HISTORY_ENTRY_MAX_CHARS),
+          }))
       : [];
 
     const result = await generateAiAnswer(message.trim(), safeHistory);
+
+    // Track weekly usage for non-premium users (fire-and-forget, mirrors chat route)
+    if (dbUser && !isActivePremium) {
+      const currentWeek = getCurrentWeek();
+      const existingUsage = await db.query.askimateWeeklyUsage.findFirst({
+        where: and(
+          eq(askimateWeeklyUsage.userId, user.id),
+          eq(askimateWeeklyUsage.week, currentWeek)
+        ),
+      });
+
+      if (existingUsage) {
+        db.update(askimateWeeklyUsage)
+          .set({ questionsUsed: (existingUsage.questionsUsed || 0) + 1, updatedAt: new Date() })
+          .where(and(eq(askimateWeeklyUsage.userId, user.id), eq(askimateWeeklyUsage.week, currentWeek)))
+          .catch((err: unknown) => console.error("[ASKIMATE-AI] Failed to update weekly usage:", err));
+      } else {
+        db.insert(askimateWeeklyUsage)
+          .values({ userId: user.id, week: currentWeek, questionsUsed: 1 })
+          .catch((err: unknown) => console.error("[ASKIMATE-AI] Failed to insert weekly usage:", err));
+      }
+    }
 
     res.json({
       answer: result.answer,

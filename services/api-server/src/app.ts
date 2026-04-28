@@ -53,10 +53,33 @@ app.use(
     },
   })
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) {
+        callback(null, false);
+        return;
+      }
+      try {
+        const { hostname } = new URL(origin);
+        if (hostname === CANONICAL_HOST || isDevHost(hostname)) {
+          callback(null, true);
+          return;
+        }
+      } catch {
+        // ignore malformed origin
+      }
+      callback(null, false);
+    },
+    credentials: true,
+  })
+);
 
 // Stripe webhook needs raw body for signature verification
 app.use("/api/askimate/stripe-webhook", express.raw({ type: "application/json" }));
+
+// Tight body limit for AI endpoint to prevent large payload abuse
+app.use("/api/askimate/ai", express.json({ limit: "16kb" }));
 
 // Global JSON parsing for all other routes
 app.use(express.json({ limit: "10mb" }));
