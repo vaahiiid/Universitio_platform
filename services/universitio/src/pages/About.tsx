@@ -129,7 +129,7 @@ export default function About() {
               Education first.<br className="hidden md:block" /> Technology built on top.
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Universitio is a UK-based international education company that has helped over 1,500 students navigate the process of studying abroad. We are also the creators of AskiMate AI — a structured technology system built from our advisory experience to make that guidance more accessible, consistent, and reliable.
+              Universitio is a UK-based international EdTech company that has helped over 1,500 students navigate the process of studying abroad. We are also the creators of AskiMate AI — a structured technology system built from our advisory experience to make that guidance more accessible, consistent, and reliable.
             </p>
           </div>
         </section>
@@ -144,7 +144,7 @@ export default function About() {
                   <div className="w-12 h-1 bg-primary rounded-full mb-6" />
                 </div>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  Universitio is a UK-based international education company built to support students through complex study abroad decisions. Alongside its advisory work, the company has developed AskiMate AI — a structured, multi-layer technology system designed to provide reliable guidance, evaluate student readiness, and support decision-making with a combination of intelligent processing and expert oversight.
+                  Universitio is a UK-based international EdTech company built to support students through complex study abroad decisions. Alongside its advisory work, the company has developed AskiMate AI — a structured, multi-layer technology system designed to provide reliable guidance, evaluate student readiness, and support decision-making with a combination of intelligent processing and expert oversight.
                 </p>
                 <p className="text-muted-foreground text-base leading-relaxed">
                   We support students globally, guiding them through applications to leading universities across the United Kingdom, Europe, and other major study destinations.
