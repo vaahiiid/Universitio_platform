@@ -1,15 +1,18 @@
 import type { EmailTemplate, EmailTemplateBuilder, ServicesConfirmationPayload } from "../emailTypes";
-import { buildUniversitioEmailHtml, buildUniversitioEmailText } from "./_base";
+import { buildUniversitioEmailHtml, buildUniversitioEmailText, escapeHtml } from "./_base";
 
 export const buildServicesConfirmation: EmailTemplateBuilder<ServicesConfirmationPayload> = (payload) => {
   const heading = `Your service enquiry has been received`;
 
-  const serviceLabel = payload.serviceType
-    ? `your enquiry regarding <strong>${payload.serviceType}</strong>`
+  const safeFirstName = escapeHtml(payload.firstName ?? "");
+  const safeServiceType = payload.serviceType ? escapeHtml(payload.serviceType) : null;
+
+  const serviceLabel = safeServiceType
+    ? `your enquiry regarding <strong>${safeServiceType}</strong>`
     : `your service enquiry`;
 
   const bodyHtml = `
-    <p>Hi ${payload.firstName},</p>
+    <p>Hi ${safeFirstName},</p>
     <p>Thank you for reaching out. We have received ${serviceLabel} and our team will review your request shortly.</p>
     <p>Please keep an eye on your inbox for the next steps. We aim to follow up within <strong>1 working day</strong>.</p>
     <p style="margin-top:28px">

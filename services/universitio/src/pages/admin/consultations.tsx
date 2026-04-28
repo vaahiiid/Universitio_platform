@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRoute, useLocation } from "wouter";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiDownload } from "@/lib/api";
 import { downloadCsv } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,14 +78,14 @@ function CvFileSection({ cvFileName }: { cvFileName: string | null | undefined }
           <p className="text-xs text-blue-700">Submitted with application</p>
         </div>
       </div>
-      <a
-        href={`${import.meta.env.BASE_URL}api/admin/cv/${cvFileName}`}
-        download
+      <button
+        type="button"
+        onClick={() => apiDownload(`/admin/cv/${cvFileName}`, cvFileName).catch((e) => console.error("CV download failed:", e))}
         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded transition-colors"
       >
         <Download className="w-3.5 h-3.5" />
         Download
-      </a>
+      </button>
     </div>
   );
 }

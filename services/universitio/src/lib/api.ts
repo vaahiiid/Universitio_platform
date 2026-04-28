@@ -48,3 +48,40 @@ export async function apiFetch<T = unknown>(
 
   return res.json() as Promise<T>;
 }
+
+export async function apiDownload(path: string, filename: string): Promise<void> {
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(apiUrl(path), { headers });
+
+  if (res.status === 401) {
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_email");
+    if (window.location.pathname.includes("/admin")) {
+      window.location.href =
+        import.meta.env.BASE_URL.replace(/\/$/, "") + "/admin/login";
+    }
+    return;
+  }
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(
+      (body as { error?: string }).error || `Download failed (${res.status})`,
+    );
+  }
+
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}

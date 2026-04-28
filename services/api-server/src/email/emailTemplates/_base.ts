@@ -92,6 +92,16 @@ export function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, "").replace(/\s{2,}/g, " ").trim();
 }
 
+/** Escapes user-supplied strings before embedding them inside HTML email bodies. */
+export function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /**
  * Universitio-branded email shell (no AskiMate sub-brand).
  * Use for consultation, assessment, contact, referral, agent, and service form emails.

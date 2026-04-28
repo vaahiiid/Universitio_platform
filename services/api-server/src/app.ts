@@ -4,9 +4,14 @@ import express, { type Express, type Request, type Response, type NextFunction }
 import compression from "compression";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { rateLimit } from "express-rate-limit";
 import router from "./routes";
 
 const app: Express = express();
+
+// Trust the first proxy hop so that rate-limiting and IP-based middleware
+// read the real client IP from X-Forwarded-For (required behind Replit's proxy)
+app.set("trust proxy", 1);
 
 // Health checks — absolute first routes, no middleware, plain-text instant response
 app.get("/", (_req, res) => { res.send("ok"); });
@@ -88,6 +93,27 @@ app.use("/api/askimate/ai", express.json({ limit: "16kb" }));
 // Global JSON parsing for all other routes
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+// Rate limiter for public lead intake endpoints — prevents storage/email exhaustion abuse
+const leadsRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 20,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again later." },
+});
+
+app.use(
+  [
+    "/api/leads/consultation",
+    "/api/leads/assessment",
+    "/api/leads/partners",
+    "/api/leads/referral",
+    "/api/leads/contact",
+    "/api/leads/service-request",
+  ],
+  leadsRateLimit,
+);
 
 app.use("/api", router);
 

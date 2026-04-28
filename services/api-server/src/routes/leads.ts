@@ -16,9 +16,19 @@ import type { InsertContactMessage } from "@workspace/db";
 import type { InsertServiceRequest } from "@workspace/db";
 import { computeScores, type AssessmentProfile } from "@workspace/assessment-scoring";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
+import { requireAdmin } from "../middleware/auth";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+
+const ALLOWED_SERVICE_TYPES = new Set([
+  "Study Admissions",
+  "IELTS Preparation",
+  "Interview Preparation",
+  "SOP & CV Guidance",
+  "Student Accommodation",
+  "Airport Transfer",
+]);
 
 /** Extract first name from a full name string for email personalisation. */
 function getFirstName(fullName: string): string {
@@ -380,6 +390,10 @@ router.post("/leads/service-request", async (req: Request, res: Response) => {
       res.status(400).json({ error: "fullName, email and serviceType are required" });
       return;
     }
+    if (!ALLOWED_SERVICE_TYPES.has(data.serviceType as string)) {
+      res.status(400).json({ error: "Invalid serviceType" });
+      return;
+    }
     const values: InsertServiceRequest = {
       serviceType: data.serviceType as string,
       fullName: data.fullName as string,
@@ -436,7 +450,7 @@ router.post("/leads/service-request", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/admin/cv/:filename", async (req: Request, res: Response) => {
+router.get("/admin/cv/:filename", requireAdmin, async (req: Request, res: Response) => {
   try {
     const { filename } = req.params;
     
