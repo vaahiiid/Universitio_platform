@@ -86,10 +86,23 @@ router.post("/askimate/chat", async (req: Request, res: Response) => {
         return;
       }
 
-      // CRITICAL: Verify authenticated user owns this conversation
-      if (isAuthenticated && conversation.userId !== userId) {
-        res.status(403).json({ error: "Unauthorised" });
-        return;
+      // CRITICAL: Verify ownership for both authenticated and guest callers
+      if (isAuthenticated) {
+        if (conversation.userId !== userId) {
+          res.status(403).json({ error: "Unauthorised" });
+          return;
+        }
+      } else {
+        // Guest: session ID must match the conversation's guest session
+        if (
+          !conversation.isGuest ||
+          !conversation.guestSessionId ||
+          !guestSessionId ||
+          guestSessionId !== conversation.guestSessionId
+        ) {
+          res.status(403).json({ error: "Unauthorised" });
+          return;
+        }
       }
     } else {
       // Create new conversation
@@ -370,15 +383,19 @@ router.get("/askimate/chat/:conversationId", async (req: Request, res: Response)
   try {
     const authHeader = req.headers.authorization;
     let userId: number | null = null;
-    
+    let isAuthenticated = false;
+
     // Check if authenticated
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.slice(7);
       try {
         const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
         userId = decoded.id;
+        isAuthenticated = true;
       } catch {
-        // Token invalid, but allow guest access
+        // Token present but invalid — reject rather than silently downgrading to guest
+        res.status(401).json({ error: "Invalid token" });
+        return;
       }
     }
 
@@ -393,18 +410,35 @@ router.get("/askimate/chat/:conversationId", async (req: Request, res: Response)
       return;
     }
 
-    // CRITICAL: Verify user owns this conversation (not guest access for authenticated users)
-    if (userId && conversation.userId !== userId) {
-      res.status(403).json({ error: "Unauthorised" });
-      return;
+    if (isAuthenticated) {
+      // Authenticated: must own the conversation
+      if (conversation.userId !== userId) {
+        res.status(403).json({ error: "Unauthorised" });
+        return;
+      }
+    } else {
+      // Unauthenticated: must be a guest conversation and session ID must match
+      const callerGuestSessionId = req.headers["x-guest-session-id"];
+      if (
+        !conversation.isGuest ||
+        !conversation.guestSessionId ||
+        typeof callerGuestSessionId !== "string" ||
+        callerGuestSessionId !== conversation.guestSessionId
+      ) {
+        res.status(403).json({ error: "Unauthorised" });
+        return;
+      }
     }
 
     const messages = await db.query.askimateMessages.findMany({
       where: eq(askimateMessages.conversationId, conversationId),
     });
 
+    // Strip guestSessionId from the returned conversation object to prevent harvesting
+    const { guestSessionId: _omit, ...safeConversation } = conversation;
+
     res.json({
-      conversation,
+      conversation: safeConversation,
       messages,
     });
   } catch (error) {
@@ -432,6 +466,19 @@ router.post("/askimate/chat/migrate", async (req: Request, res: Response) => {
       userId = decoded.id;
     } catch {
       res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Require x-guest-session-id header and validate it matches the body value.
+    // This ensures the caller actually holds the session (browser storage) rather
+    // than having merely obtained the ID by other means.
+    const headerGuestSessionId = req.headers["x-guest-session-id"];
+    if (
+      !guestSessionId ||
+      typeof headerGuestSessionId !== "string" ||
+      headerGuestSessionId !== guestSessionId
+    ) {
+      res.status(403).json({ error: "Unauthorised" });
       return;
     }
 
