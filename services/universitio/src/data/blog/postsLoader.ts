@@ -1,3 +1,7 @@
+// AUTO-GENERATED FILE — do not edit manually.
+// Run `pnpm --filter @workspace/universitio run split-posts`
+// to regenerate this file alongside the chunk files.
+
 import type { BlogPost } from "./postsData";
 export type { BlogPost };
 

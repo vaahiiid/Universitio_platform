@@ -7,7 +7,8 @@
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
     "build": "tsx scripts/generate-home-posts.ts && tsx scripts/generate-sitemap.ts && vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "split-posts": "tsx scripts/split-posts.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

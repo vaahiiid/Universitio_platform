@@ -14,15 +14,6 @@ export interface HomePost {
 
 export const homePostsData: HomePost[] = [
   {
-    id: 271,
-    slug: `mistakes-international-students-make-applying-uk-universities`,
-    title: `The Biggest Mistakes International Students Make When Applying to UK Universities`,
-    date: "2026-04-28",
-    excerpt: `Thousands of international students make avoidable mistakes every year when applying to UK universities. This guide identifies the most common errors — and exactly how to avoid them before they cost you your offer.`,
-    image: "blog-images/mistakes-international-students-make-applying-uk-universities.jpg",
-    imageAlt: `International student looking stressed while reviewing a UK university application on a laptop`,
-  },
-  {
     id: 270,
     slug: `study-in-uk-from-hong-kong-complete-guide`,
     title: `Study in the UK from Hong Kong: The Complete Guide for Hong Kong Students`,
@@ -66,5 +57,14 @@ export const homePostsData: HomePost[] = [
     excerpt: `Considering studying in the UK from Turkey? This complete guide covers everything Turkish students need to know — from entry requirements and applications to student visas, scholarships, and life in the UK.`,
     image: "blog-images/study-in-uk-from-turkey-complete-guide.jpg",
     imageAlt: `Turkish student researching UK universities on a laptop in a library`,
+  },
+  {
+    id: 265,
+    slug: `study-in-uk-from-india-complete-guide`,
+    title: `Study in the UK from India: The Complete Guide for Indian Students`,
+    date: "2026-04-20",
+    excerpt: `Planning to study in the UK from India? This complete guide covers everything Indian students need to know — from entry requirements and UCAS applications to student visas, scholarships, and living in the UK.`,
+    image: "blog-images/study-in-uk-from-india-complete-guide.webp",
+    imageAlt: `Indian student smiling while reviewing UK university prospectus`,
   }
 ];
