@@ -1,154 +1,151 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Target, BarChart3, Compass, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, Bot, User } from "lucide-react";
 
-function AIVisual() {
-  const nodes = [
-    { x: 50, y: 50, size: 56, delay: 0 },
-    { x: 20, y: 25, size: 36, delay: 0.4 },
-    { x: 80, y: 22, size: 30, delay: 0.8 },
-    { x: 15, y: 65, size: 28, delay: 1.2 },
-    { x: 78, y: 70, size: 32, delay: 0.6 },
-    { x: 45, y: 15, size: 22, delay: 1.0 },
-    { x: 60, y: 82, size: 24, delay: 1.4 },
-  ];
+const QA_PAIRS = [
+  {
+    question: "What GPA do I need for top UK universities?",
+    answer:
+      "Most top UK universities like UCL or Edinburgh expect a GPA of 3.5+ or equivalent. With a 3.7 and strong English scores, you'd be highly competitive for engineering and business programs.",
+  },
+  {
+    question: "Can I work part-time on a student visa in Canada?",
+    answer:
+      "Yes! On a Canadian student visa you can work up to 20 hrs/week during term and full-time during scheduled breaks — no extra work permit needed.",
+  },
+  {
+    question: "How do I boost my NYU admission chances?",
+    answer:
+      "Strong extracurriculars, a compelling personal statement, and a GPA above 3.5 significantly help. NYU values leadership and community involvement — highlight any impactful roles.",
+  },
+];
 
-  const edges = [
-    [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6],
-    [1, 3], [2, 5], [4, 6],
-  ];
+type Phase = "question" | "typing" | "answer";
+
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-1">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-primary/60 inline-block"
+          animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
+          transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.2 }}
+        />
+      ))}
+    </span>
+  );
+}
+
+function HeroChatDemo() {
+  const [qaIndex, setQaIndex] = useState(0);
+  const [phase, setPhase] = useState<Phase>("question");
+
+  useEffect(() => {
+    let t1: ReturnType<typeof setTimeout>;
+    let t2: ReturnType<typeof setTimeout>;
+    let t3: ReturnType<typeof setTimeout>;
+
+    if (phase === "question") {
+      t1 = setTimeout(() => setPhase("typing"), 900);
+    } else if (phase === "typing") {
+      t2 = setTimeout(() => setPhase("answer"), 2200);
+    } else if (phase === "answer") {
+      t3 = setTimeout(() => {
+        setQaIndex((i) => (i + 1) % QA_PAIRS.length);
+        setPhase("question");
+      }, 4200);
+    }
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [phase, qaIndex]);
+
+  const qa = QA_PAIRS[qaIndex];
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center select-none">
-      <svg
-        viewBox="0 0 100 100"
-        className="absolute inset-0 w-full h-full"
-        style={{ overflow: "visible" }}
-      >
-        <defs>
-          <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(66,20,125,0.12)" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-          <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(66,20,125,0.5)" />
-            <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
-          </linearGradient>
-        </defs>
+    <div className="relative w-full h-full flex flex-col items-center justify-center">
+      <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl shadow-primary/15 border border-border/50 overflow-hidden flex flex-col">
+        <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-primary to-secondary">
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-white leading-none">AskiMate AI</p>
+            <p className="text-[10px] text-white/70 leading-none mt-0.5">Online · Study Abroad Assistant</p>
+          </div>
+          <span className="ml-auto flex h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+        </div>
 
-        <circle cx="50" cy="50" r="48" fill="url(#bgGlow)" />
+        <div className="flex flex-col gap-3 px-4 py-4 min-h-[280px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`q-${qaIndex}`}
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.35 }}
+              className="flex items-end gap-2 justify-end"
+            >
+              <div className="max-w-[80%] bg-primary text-white text-sm rounded-2xl rounded-br-sm px-4 py-2.5 shadow-sm leading-relaxed">
+                {qa.question}
+              </div>
+              <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0 mb-0.5">
+                <User className="w-3.5 h-3.5 text-slate-500" />
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
-        {edges.map(([a, b], i) => (
-          <motion.line
-            key={i}
-            x1={nodes[a].x}
-            y1={nodes[a].y}
-            x2={nodes[b].x}
-            y2={nodes[b].y}
-            stroke="url(#edgeGrad)"
-            strokeWidth="0.4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.2, 0.7, 0.2] }}
-            transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.3 }}
-          />
-        ))}
+          <AnimatePresence>
+            {(phase === "typing" || phase === "answer") && (
+              <motion.div
+                key={`ai-${qaIndex}`}
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.35 }}
+                className="flex items-end gap-2"
+              >
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mb-0.5">
+                  <Bot className="w-3.5 h-3.5 text-primary" />
+                </div>
+                <div className="max-w-[80%] bg-slate-50 border border-border/50 text-sm rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-sm leading-relaxed text-foreground">
+                  {phase === "typing" ? (
+                    <TypingDots />
+                  ) : (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {qa.answer}
+                    </motion.span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-        {nodes.map((node, i) => (
-          <motion.circle
-            key={i}
-            cx={node.x}
-            cy={node.y}
-            r={node.size / 20}
-            fill={i === 0 ? "rgba(66,20,125,0.9)" : "rgba(66,20,125,0.2)"}
-            stroke={i === 0 ? "rgba(66,20,125,0.4)" : "rgba(66,20,125,0.3)"}
-            strokeWidth="0.5"
-            initial={{ scale: 0.8, opacity: 0.5 }}
-            animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3 + node.delay, repeat: Infinity, delay: node.delay }}
-          />
-        ))}
-      </svg>
-
-      <div className="relative z-10 flex flex-col items-center justify-center">
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-2xl shadow-primary/30 mb-6"
-        >
-          <Sparkles className="w-10 h-10 text-white" strokeWidth={1.5} />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white/90 backdrop-blur-sm border border-border/50 rounded-2xl px-4 py-3 shadow-xl text-center"
-        >
-          <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-1">AskiMate AI</p>
-          <p className="text-sm font-bold text-foreground">Instant guidance, 24/7</p>
-        </motion.div>
+        <div className="px-4 pb-4">
+          <Link
+            href="/askimate"
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold rounded-xl py-2.5 hover:opacity-90 transition-opacity group"
+          >
+            <Sparkles className="w-4 h-4" />
+            Try it yourself
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        </div>
       </div>
 
-      <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute top-8 left-4 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-violet-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Brain className="w-4 h-4 text-primary" />
-        </div>
-        <div className="text-xs font-semibold text-foreground whitespace-nowrap">AI Analysis</div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, 12, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-8 right-4 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Target className="w-4 h-4 text-blue-600" />
-        </div>
-        <div>
-          <div className="text-xs font-semibold text-foreground whitespace-nowrap">Guidance Engine</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Step-by-step direction</div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-        className="absolute bottom-12 left-2 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <BarChart3 className="w-4 h-4 text-emerald-600" />
-        </div>
-        <div>
-          <div className="text-xs font-bold text-foreground">Admission Score</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Real-time evaluation</div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        className="absolute bottom-12 right-2 bg-white rounded-2xl shadow-lg border border-border/50 px-3 py-2.5 flex items-center gap-2"
-      >
-        <div className="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Compass className="w-4 h-4 text-amber-600" />
-        </div>
-        <div>
-          <div className="text-xs font-semibold text-foreground whitespace-nowrap">Decision Path</div>
-          <div className="text-[10px] text-muted-foreground whitespace-nowrap">Structured next steps</div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.12, 0.2, 0.12] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute inset-0 rounded-full bg-primary/10 pointer-events-none"
-        style={{ margin: "10%" }}
-      />
+      <div className="absolute -top-3 -right-3 w-24 h-24 bg-primary/8 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute -bottom-3 -left-3 w-20 h-20 bg-secondary/10 rounded-full blur-2xl pointer-events-none" />
     </div>
   );
 }
@@ -222,9 +219,9 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative h-[480px] w-full hidden lg:block"
+            className="relative h-[480px] w-full hidden lg:flex items-center justify-center"
           >
-            <AIVisual />
+            <HeroChatDemo />
           </motion.div>
 
         </div>
