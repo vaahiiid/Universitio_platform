@@ -1,198 +1,236 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Shield, Zap, CheckCircle2, BookOpen } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, Brain, BookOpen, Users } from "lucide-react";
 
-const STATUS_ROWS = [
-  { label: "Academic Profile", status: "Strong",  color: "text-emerald-400", bg: "bg-emerald-400/10" },
-  { label: "English (IELTS)", status: "Pending",  color: "text-amber-400",   bg: "bg-amber-400/10"  },
-  { label: "UCAS Application", status: "Ready",   color: "text-sky-400",     bg: "bg-sky-400/10"    },
+const QA_PAIRS = [
+  {
+    question: "Can I work part-time on a UK Student visa?",
+    answer:
+      "Yes. Most international students can work up to 20 hours per week during term time, but your visa conditions and CAS letter must always be checked.",
+  },
+  {
+    question: "What documents do I need for a UK university application?",
+    answer:
+      "Usually: academic transcripts, English evidence, passport, personal statement, CV if required, and references. Some courses may ask for a portfolio or interview.",
+  },
+  {
+    question: "Can I bring dependants for a master's degree?",
+    answer:
+      "In the UK, dependants are generally limited to PhD and research-based postgraduate routes. Most taught master's courses do not qualify.",
+  },
+  {
+    question: "Which course is better for my background?",
+    answer:
+      "Share your academic history, target country, budget, and goals. I can help compare suitable options and explain the risks before you apply.",
+  },
 ];
 
-const FLOAT_CHIPS = [
-  { icon: CheckCircle2, label: "UCAS Verified",     top: "6%",  left: "-4%",  delay: 0.2 },
-  { icon: BookOpen,     label: "13 Unis Matched",   top: "52%", right: "-2%", delay: 0.9 },
-  { icon: Zap,          label: "£3,200 Scholarship",bottom: "8%",left: "8%",  delay: 1.6 },
+const TAGS = [
+  { icon: Users,    label: "Human-supervised" },
+  { icon: Brain,    label: "Knowledge base"    },
+  { icon: BookOpen, label: "Student questions" },
 ];
 
-function Node({ cx, cy, r, delay }: { cx: number; cy: number; r: number; delay: number }) {
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-1 py-0.5">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-white/50 inline-block"
+          animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.18 }}
+        />
+      ))}
+    </span>
+  );
+}
+
+/* Pulsing SVG node */
+function Node({ x, y, r, delay }: { x: string; y: string; r: number; delay: number }) {
   return (
     <motion.circle
-      cx={cx} cy={cy} r={r}
-      fill="rgba(66,20,125,0.5)"
-      animate={{ opacity: [0.3, 0.9, 0.3], r: [r, r + 1.5, r] }}
-      transition={{ duration: 2.8 + delay, repeat: Infinity, ease: "easeInOut", delay }}
+      cx={x} cy={y} r={r}
+      fill="rgba(139,92,246,0.45)"
+      animate={{ opacity: [0.25, 0.8, 0.25], r: [r, r + 1.4, r] }}
+      transition={{ duration: 2.6 + delay, repeat: Infinity, ease: "easeInOut", delay }}
     />
   );
 }
 
-function AIBrainVisual() {
+/* The animated chat card */
+function AskiMateChatDemo() {
+  const [index, setIndex]       = useState(0);
+  const [phase, setPhase]       = useState<"question" | "typing" | "answer" | "hold">("question");
+
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout>;
+    if (phase === "question") {
+      t = setTimeout(() => setPhase("typing"), 900);
+    } else if (phase === "typing") {
+      t = setTimeout(() => setPhase("answer"), 1300);
+    } else if (phase === "answer") {
+      t = setTimeout(() => setPhase("hold"), 200);
+    } else {
+      // hold — wait then advance
+      t = setTimeout(() => {
+        setPhase("question");
+        setIndex((prev) => (prev + 1) % QA_PAIRS.length);
+      }, 3800);
+    }
+    return () => clearTimeout(t);
+  }, [phase, index]);
+
+  const qa = QA_PAIRS[index];
+
   return (
     <div className="relative h-full w-full flex items-center justify-center select-none">
 
       {/* Ambient outer glow */}
       <motion.div
-        animate={{ opacity: [0.55, 0.85, 0.55] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-[-8%] bg-gradient-to-br from-primary/25 via-secondary/10 to-transparent rounded-[40px] blur-3xl pointer-events-none"
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-[-6%] bg-gradient-to-br from-primary/30 via-secondary/10 to-transparent rounded-[44px] blur-3xl pointer-events-none"
       />
 
-      {/* Floating background nodes (SVG) */}
+      {/* SVG node network */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
-        <Node cx={18}  cy={55}  r={3}   delay={0}   />
-        <Node cx={82}  cy={22}  r={2.5} delay={0.6} />
-        <Node cx={92}  cy={72}  r={3.5} delay={1.2} />
-        <Node cx={10}  cy={80}  r={2}   delay={0.9} />
-        <Node cx={50}  cy={10}  r={2}   delay={1.8} />
-        <motion.line x1="18%" y1="55%" x2="50%" y2="10%" stroke="rgba(66,20,125,0.18)" strokeWidth="1"
-          animate={{ opacity: [0.15, 0.4, 0.15] }} transition={{ duration: 4, repeat: Infinity, delay: 0.5 }} />
-        <motion.line x1="82%" y1="22%" x2="92%" y2="72%" stroke="rgba(99,44,160,0.15)" strokeWidth="1"
-          animate={{ opacity: [0.1, 0.35, 0.1] }} transition={{ duration: 5, repeat: Infinity, delay: 1.2 }} />
-        <motion.line x1="10%" y1="80%" x2="18%" y2="55%" stroke="rgba(66,20,125,0.15)" strokeWidth="1"
-          animate={{ opacity: [0.12, 0.3, 0.12] }} transition={{ duration: 3.5, repeat: Infinity, delay: 0.3 }} />
+        <Node x="12%"  y="18%" r={3}   delay={0}   />
+        <Node x="88%"  y="25%" r={2.5} delay={0.7} />
+        <Node x="93%"  y="68%" r={3}   delay={1.4} />
+        <Node x="8%"   y="78%" r={2.5} delay={1.0} />
+        <Node x="50%"  y="7%"  r={2}   delay={1.9} />
+        <motion.line x1="12%" y1="18%" x2="50%" y2="7%"   stroke="rgba(139,92,246,0.18)" strokeWidth="1" animate={{ opacity:[0.12,0.38,0.12] }} transition={{ duration:4,   repeat:Infinity, delay:0.4 }} />
+        <motion.line x1="88%" y1="25%" x2="93%" y2="68%"  stroke="rgba(139,92,246,0.14)" strokeWidth="1" animate={{ opacity:[0.10,0.30,0.10] }} transition={{ duration:5,   repeat:Infinity, delay:1.1 }} />
+        <motion.line x1="8%"  y1="78%" x2="12%" y2="18%"  stroke="rgba(139,92,246,0.15)" strokeWidth="1" animate={{ opacity:[0.10,0.32,0.10] }} transition={{ duration:3.8, repeat:Infinity, delay:0.2 }} />
       </svg>
 
-      {/* Floating chips */}
-      {FLOAT_CHIPS.map(({ icon: Icon, label, delay, ...pos }) => (
-        <motion.div
-          key={label}
-          style={{ position: "absolute", ...pos } as React.CSSProperties}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: [0, -5, 0] }}
-          transition={{ opacity: { delay, duration: 0.5 }, y: { duration: 3.5 + delay, repeat: Infinity, ease: "easeInOut", delay } }}
-          className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm border border-white/60 shadow-lg shadow-primary/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-foreground z-30 whitespace-nowrap"
-        >
-          <Icon className="w-3 h-3 text-primary" />
-          {label}
-        </motion.div>
-      ))}
-
-      {/* Main card — gently floating */}
+      {/* Main card */}
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-20 w-full max-w-[94%] rounded-3xl overflow-hidden"
-        style={{ boxShadow: "0 0 70px rgba(66,20,125,0.32), 0 20px 60px rgba(0,0,0,0.35)" }}
+        className="relative z-10 w-full max-w-[92%] rounded-3xl overflow-hidden"
+        style={{ boxShadow: "0 0 70px rgba(66,20,125,0.35), 0 20px 55px rgba(0,0,0,0.38)" }}
       >
-        {/* Card dark background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0e0522] via-[#140936] to-[#0b1648]" />
+        {/* Dark card background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0e0522] via-[#130934] to-[#0b1648]" />
 
-        {/* Breathing aurora inside card */}
+        {/* Aurora blobs */}
         <motion.div
-          animate={{ opacity: [0.35, 0.6, 0.35] }}
-          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-1/3 -right-1/4 w-3/4 h-3/4 bg-primary/35 rounded-full blur-3xl pointer-events-none"
+          animate={{ opacity: [0.3, 0.58, 0.3] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-1/3 -right-1/4 w-3/4 h-3/4 bg-primary/30 rounded-full blur-3xl pointer-events-none"
         />
         <motion.div
-          animate={{ opacity: [0.2, 0.42, 0.2] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute -bottom-1/3 -left-1/4 w-2/3 h-2/3 bg-secondary/20 rounded-full blur-3xl pointer-events-none"
+          animate={{ opacity: [0.18, 0.38, 0.18] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+          className="absolute -bottom-1/3 -left-1/4 w-2/3 h-2/3 bg-secondary/18 rounded-full blur-3xl pointer-events-none"
         />
 
         {/* Header */}
-        <div className="relative z-10 flex items-center gap-3 px-5 py-4 border-b border-white/8">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/40">
-            <Sparkles className="w-4 h-4 text-white" strokeWidth={1.5} />
+        <div className="relative z-10 px-5 py-4 border-b border-white/8">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/40 flex-shrink-0">
+              <Sparkles className="w-4 h-4 text-white" strokeWidth={1.5} />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white leading-none">AskiMate AI</p>
+              <p className="text-[11px] text-white/45 mt-0.5">AI study abroad assistant</p>
+            </div>
+            <div className="ml-auto text-right">
+              <p className="text-[10px] text-white/40 leading-tight">Learning from</p>
+              <p className="text-[10px] text-violet-300 font-semibold leading-tight">verified guidance</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-bold text-white leading-none">AskiMate AI</p>
-            <p className="text-[11px] text-white/45 mt-0.5">Decision Engine · v2.4</p>
-          </div>
-          <div className="ml-auto flex items-center gap-1.5">
-            <motion.span
-              animate={{ opacity: [1, 0.35, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-2 h-2 rounded-full bg-emerald-400"
-            />
-            <span className="text-[11px] font-semibold text-emerald-400">Active</span>
+
+          {/* Tag chips */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {TAGS.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1 text-[10px] font-medium text-white/50 bg-white/6 border border-white/10 px-2.5 py-0.5 rounded-full"
+              >
+                <Icon className="w-3 h-3" />
+                {label}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Body */}
-        <div className="relative z-10 p-4 space-y-3">
-
-          {/* User query bubble */}
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.3 }}
-            className="flex justify-end"
-          >
-            <div
-              className="max-w-[75%] text-white text-[11.5px] px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed"
-              style={{ background: "linear-gradient(135deg, #42147d, #6b21a8)", boxShadow: "0 4px 20px rgba(66,20,125,0.5)" }}
-            >
-              Assess my profile for Imperial College MSc Computer Science.
-            </div>
-          </motion.div>
-
-          {/* AI response card */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.65 }}
-            className="bg-white/6 border border-white/10 rounded-2xl rounded-tl-sm p-4 space-y-3 backdrop-blur-sm"
-          >
-            {/* Score + ring */}
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[10px] text-white/40 uppercase tracking-widest font-semibold">Admission Likelihood</p>
-                <p className="text-[26px] font-extrabold text-white mt-0.5 leading-none">
-                  82%{" "}
-                  <span className="text-emerald-400 text-sm font-semibold align-middle">Strong</span>
-                </p>
-              </div>
-              <svg width="52" height="52" viewBox="0 0 52 52" className="shrink-0" aria-hidden="true">
-                <circle cx="26" cy="26" r="21" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="4.5" />
-                <motion.circle
-                  cx="26" cy="26" r="21"
-                  fill="none"
-                  stroke="url(#heroRing)"
-                  strokeWidth="4.5"
-                  strokeLinecap="round"
-                  strokeDasharray={String(2 * Math.PI * 21)}
-                  initial={{ strokeDashoffset: 2 * Math.PI * 21 }}
-                  animate={{ strokeDashoffset: 2 * Math.PI * 21 * (1 - 0.82) }}
-                  transition={{ duration: 1.3, delay: 0.9, ease: "easeOut" }}
-                  transform="rotate(-90 26 26)"
-                />
-                <defs>
-                  <linearGradient id="heroRing" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#7c3aed" />
-                    <stop offset="100%" stopColor="#34d399" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-
-            {/* Status rows */}
-            <div className="space-y-1.5">
-              {STATUS_ROWS.map((row, i) => (
-                <motion.div
-                  key={row.label}
-                  initial={{ opacity: 0, x: -5 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.35, delay: 1.0 + i * 0.14 }}
-                  className="flex items-center justify-between text-[11px]"
-                >
-                  <span className="text-white/55">{row.label}</span>
-                  <span className={`px-2 py-0.5 rounded-full font-semibold ${row.color} ${row.bg}`}>
-                    {row.status}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Divider + next step */}
+        {/* Chat area */}
+        <div className="relative z-10 px-4 py-4 space-y-3 min-h-[220px] flex flex-col justify-end">
+          <AnimatePresence mode="wait">
             <motion.div
+              key={index}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 0.4 }}
-              className="pt-2 border-t border-white/8 flex items-start gap-2 text-[10.5px] text-white/45 leading-relaxed"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="space-y-3"
             >
-              <Zap className="w-3.5 h-3.5 text-secondary mt-0.5 shrink-0" />
-              <span>Next step: Submit IELTS score to unlock your full application review.</span>
+              {/* Student question */}
+              <div className="flex justify-end">
+                <motion.div
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="max-w-[78%] text-white text-[11.5px] px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed"
+                  style={{
+                    background: "linear-gradient(135deg, #42147d, #6b21a8)",
+                    boxShadow: "0 4px 18px rgba(66,20,125,0.45)",
+                  }}
+                >
+                  {qa.question}
+                </motion.div>
+              </div>
+
+              {/* AI avatar row */}
+              <div className="flex items-start gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md shadow-primary/30">
+                  <Sparkles className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
+                </div>
+
+                {/* Typing dots */}
+                {(phase === "typing") && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="bg-white/8 border border-white/10 px-3.5 py-2.5 rounded-2xl rounded-tl-sm backdrop-blur-sm"
+                  >
+                    <TypingDots />
+                  </motion.div>
+                )}
+
+                {/* Answer */}
+                {(phase === "answer" || phase === "hold") && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35 }}
+                    className="max-w-[82%] bg-white/8 border border-white/10 text-[11.5px] text-white/85 px-4 py-2.5 rounded-2xl rounded-tl-sm backdrop-blur-sm leading-relaxed"
+                  >
+                    {qa.answer}
+                  </motion.div>
+                )}
+              </div>
             </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Footer strip */}
+        <div className="relative z-10 px-5 py-3 border-t border-white/8 flex items-center justify-between">
+          <p className="text-[10px] text-white/35">Powered by Universitio knowledge base</p>
+          <motion.div
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2.2, repeat: Infinity }}
+            className="flex items-center gap-1.5"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+            <span className="text-[10px] font-medium text-violet-400">AI processing</span>
           </motion.div>
         </div>
       </motion.div>
@@ -210,6 +248,7 @@ export function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
 
+          {/* Left column — unchanged */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -265,13 +304,14 @@ export function Hero() {
             </div>
           </motion.div>
 
+          {/* Right column — animated chat visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.2 }}
             className="relative h-[420px] sm:h-[440px] lg:h-[500px] w-full"
           >
-            <AIBrainVisual />
+            <AskiMateChatDemo />
           </motion.div>
 
         </div>
