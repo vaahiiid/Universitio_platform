@@ -93,17 +93,65 @@ export default function AskiMateLanding() {
         <link rel="canonical" href="https://universitio.com/askimate" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "WebPage",
-          "@id": "https://universitio.com/askimate",
-          "name": "AskiMate AI — Your AI Mate for Studying Abroad",
-          "description": "AskiMate is an AI-first guidance system created by Universitio, supporting international students through every stage of studying abroad.",
-          "url": "https://universitio.com/askimate",
-          "isPartOf": {
-            "@type": "WebSite",
-            "@id": "https://universitio.com/#website",
-            "name": "Universitio",
-            "url": "https://universitio.com"
-          }
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://universitio.com/askimate",
+              "name": "AskiMate AI — Your AI Mate for Studying Abroad",
+              "description": "AskiMate is an AI-first guidance system created by Universitio, supporting international students through every stage of studying abroad.",
+              "url": "https://universitio.com/askimate",
+              "isPartOf": {
+                "@type": "WebSite",
+                "@id": "https://universitio.com/#website",
+                "name": "Universitio",
+                "url": "https://universitio.com"
+              }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "@id": "https://universitio.com/askimate#software",
+              "name": "AskiMate",
+              "url": "https://universitio.com/askimate",
+              "description": "AskiMate is an AI-first guidance system for international students, combining structured AI reasoning with human expert supervision to deliver reliable, personalised study abroad guidance.",
+              "applicationCategory": "EducationalApplication",
+              "operatingSystem": "Web",
+              "offers": [
+                {
+                  "@type": "Offer",
+                  "name": "Basic Access",
+                  "price": "0",
+                  "priceCurrency": "GBP",
+                  "description": "5 questions per week, AI-powered structured answers covering study options, visas, and applications."
+                },
+                {
+                  "@type": "Offer",
+                  "name": "Pro Access",
+                  "price": "12",
+                  "priceCurrency": "GBP",
+                  "priceSpecification": {
+                    "@type": "UnitPriceSpecification",
+                    "price": "12",
+                    "priceCurrency": "GBP",
+                    "unitText": "MONTH"
+                  },
+                  "description": "Unlimited questions, deeper AI analysis, personalised answers, conversation memory, and human-in-the-loop validation."
+                }
+              ],
+              "creator": {
+                "@type": "Organization",
+                "name": "Universitio",
+                "url": "https://universitio.com"
+              },
+              "featureList": [
+                "Human-supervised AI guidance",
+                "Personalised to student profile",
+                "Institution-specific intelligence",
+                "Full study abroad journey support",
+                "Continuously learning knowledge base",
+                "Conflict-free guidance"
+              ]
+            }
+          ]
         })}</script>
       </Helmet>
 

@@ -172,21 +172,32 @@ export default function BlogPostPage() {
           "@graph": [
             {
               "@type": "BlogPosting",
+              "@id": `https://universitio.com/blog/${post.slug}#article`,
               "headline": post.title,
               "description": post.excerpt.slice(0, 160),
+              "url": `https://universitio.com/blog/${post.slug}`,
               "datePublished": post.date,
               "dateModified": post.date,
+              "inLanguage": "en-GB",
               "image": {
                 "@type": "ImageObject",
-                "url": `https://universitio.com/${post.image}`
+                "url": `https://universitio.com/${post.image}`,
+                "width": 1200,
+                "height": 675
               },
-              "author": { "@type": "Person", "name": post.author },
+              "author": {
+                "@type": "Person",
+                "name": post.author,
+                "url": "https://universitio.com/about"
+              },
               "publisher": {
                 "@type": "Organization",
                 "name": "Universitio",
+                "url": "https://universitio.com",
                 "logo": { "@type": "ImageObject", "url": "https://universitio.com/logo.png" }
               },
-              "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` }
+              "mainEntityOfPage": { "@type": "WebPage", "@id": `https://universitio.com/blog/${post.slug}` },
+              ...(post.tags.length > 0 ? { "keywords": post.tags.join(", ") } : {})
             },
             {
               "@type": "BreadcrumbList",
