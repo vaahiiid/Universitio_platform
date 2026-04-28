@@ -222,7 +222,7 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative h-[480px] w-full hidden lg:block"
+            className="relative h-[280px] sm:h-[360px] lg:h-[480px] w-full overflow-hidden"
           >
             <AIVisual />
           </motion.div>
