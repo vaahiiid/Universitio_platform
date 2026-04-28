@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { siteData } from "@/data/siteData";
-import { homePostsData as latestPosts } from "@/data/blog/homePostsData";
+import { loadAllPosts, type BlogPost } from "@/data/blog/postsLoader";
 import { trackEvent } from "@/lib/analytics";
 import { Star, Mail, MapPin, CheckCircle2, ArrowRight, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,16 @@ export function SocialProof() {
   const [termsError, setTermsError] = useState("");
   const { toast } = useToast();
   const autoplayPlugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
+  const [latestPosts, setLatestPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    loadAllPosts().then((posts) => {
+      const sorted = [...posts].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      setLatestPosts(sorted.slice(0, 3));
+    });
+  }, []);
 
   const onSubmit = async (data: Record<string, unknown>) => {
     if (!termsAccepted) {
