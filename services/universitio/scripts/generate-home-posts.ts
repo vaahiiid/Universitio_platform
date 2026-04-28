@@ -1,7 +1,11 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { blogPosts } from "../src/data/blog/postsData";
+import { posts as chunk1 } from "../src/data/blog/postsChunk1";
+import { posts as chunk2 } from "../src/data/blog/postsChunk2";
+import { posts as chunk3 } from "../src/data/blog/postsChunk3";
+import { posts as chunk4 } from "../src/data/blog/postsChunk4";
+import { posts as chunk5 } from "../src/data/blog/postsChunk5";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,12 +20,16 @@ interface HomePost {
   imageAlt: string;
 }
 
+const HOME_POSTS_COUNT = 6;
+
 function generateHomePostsData(): string {
-  const sortedPosts = [...blogPosts].sort(
+  const allPosts = [...chunk1, ...chunk2, ...chunk3, ...chunk4, ...chunk5];
+
+  const sortedPosts = allPosts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-  const homePosts: HomePost[] = sortedPosts.slice(0, 6).map((post) => ({
+  const homePosts: HomePost[] = sortedPosts.slice(0, HOME_POSTS_COUNT).map((post) => ({
     id: post.id,
     slug: post.slug,
     title: post.title,
@@ -31,7 +39,11 @@ function generateHomePostsData(): string {
     imageAlt: post.imageAlt,
   }));
 
-  const typeScript = `export interface HomePost {
+  const typeScript = `// AUTO-GENERATED FILE — do not edit manually.
+// Run \`pnpm --filter @workspace/universitio build\` (or \`tsx scripts/generate-home-posts.ts\`)
+// to regenerate this file from the chunk sources (postsChunk1–postsChunk5).
+
+export interface HomePost {
   id: number;
   slug: string;
   title: string;
