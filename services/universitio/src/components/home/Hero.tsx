@@ -39,7 +39,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-white/50 inline-block"
+          className="w-1.5 h-1.5 rounded-full bg-primary/50 inline-block"
           animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }}
           transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.18 }}
         />
@@ -111,37 +111,25 @@ function AskiMateChatDemo() {
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-10 w-full max-w-[92%] rounded-3xl overflow-hidden"
-        style={{ boxShadow: "0 0 70px rgba(66,20,125,0.35), 0 20px 55px rgba(0,0,0,0.38)" }}
+        className="relative z-10 w-full max-w-[92%] rounded-3xl overflow-hidden border border-primary/15"
+        style={{ boxShadow: "0 0 45px rgba(66,20,125,0.18), 0 16px 40px rgba(66,20,125,0.10), 0 4px 20px rgba(0,0,0,0.06)" }}
       >
-        {/* Dark card background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0e0522] via-[#130934] to-[#0b1648]" />
+        {/* Light card background */}
+        <div className="absolute inset-0 bg-white" />
 
-        {/* Aurora blobs */}
-        <motion.div
-          animate={{ opacity: [0.3, 0.58, 0.3] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-1/3 -right-1/4 w-3/4 h-3/4 bg-primary/30 rounded-full blur-3xl pointer-events-none"
-        />
-        <motion.div
-          animate={{ opacity: [0.18, 0.38, 0.18] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
-          className="absolute -bottom-1/3 -left-1/4 w-2/3 h-2/3 bg-secondary/18 rounded-full blur-3xl pointer-events-none"
-        />
-
-        {/* Header */}
-        <div className="relative z-10 px-5 py-4 border-b border-white/8">
+        {/* Header — purple gradient matching real AskiMate */}
+        <div className="relative z-10 px-5 py-4 border-b border-primary/15 bg-gradient-to-r from-primary via-[#5b189c] to-secondary">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/40 flex-shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-4 h-4 text-white" strokeWidth={1.5} />
             </div>
             <div>
               <p className="text-sm font-bold text-white leading-none">AskiMate AI</p>
-              <p className="text-[11px] text-white/45 mt-0.5">AI study abroad assistant</p>
+              <p className="text-[11px] text-white/70 mt-0.5">AI study abroad assistant</p>
             </div>
             <div className="ml-auto text-right">
-              <p className="text-[10px] text-white/40 leading-tight">Learning from</p>
-              <p className="text-[10px] text-violet-300 font-semibold leading-tight">verified guidance</p>
+              <p className="text-[10px] text-white/60 leading-tight">Learning from</p>
+              <p className="text-[10px] text-white/90 font-semibold leading-tight">verified guidance</p>
             </div>
           </div>
 
@@ -150,7 +138,7 @@ function AskiMateChatDemo() {
             {TAGS.map(({ icon: Icon, label }) => (
               <span
                 key={label}
-                className="inline-flex items-center gap-1 text-[10px] font-medium text-white/50 bg-white/6 border border-white/10 px-2.5 py-0.5 rounded-full"
+                className="inline-flex items-center gap-1 text-[10px] font-medium text-white/80 bg-white/15 border border-white/25 px-2.5 py-0.5 rounded-full"
               >
                 <Icon className="w-3 h-3" />
                 {label}
@@ -160,7 +148,7 @@ function AskiMateChatDemo() {
         </div>
 
         {/* Chat area */}
-        <div className="relative z-10 px-4 py-4 space-y-3 min-h-[220px] flex flex-col justify-end">
+        <div className="relative z-10 px-4 py-4 space-y-3 min-h-[220px] flex flex-col justify-end bg-slate-50/60">
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
@@ -176,11 +164,7 @@ function AskiMateChatDemo() {
                   initial={{ opacity: 0, x: 8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.35 }}
-                  className="max-w-[78%] text-white text-[11.5px] px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed"
-                  style={{
-                    background: "linear-gradient(135deg, #42147d, #6b21a8)",
-                    boxShadow: "0 4px 18px rgba(66,20,125,0.45)",
-                  }}
+                  className="max-w-[78%] bg-primary text-white text-[11.5px] px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm shadow-primary/25"
                 >
                   {qa.question}
                 </motion.div>
@@ -199,7 +183,7 @@ function AskiMateChatDemo() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.25 }}
-                    className="bg-white/8 border border-white/10 px-3.5 py-2.5 rounded-2xl rounded-tl-sm backdrop-blur-sm"
+                    className="bg-slate-100 border border-slate-200 px-3.5 py-2.5 rounded-2xl rounded-tl-sm"
                   >
                     <TypingDots />
                   </motion.div>
@@ -211,7 +195,7 @@ function AskiMateChatDemo() {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35 }}
-                    className="max-w-[82%] bg-white/8 border border-white/10 text-[11.5px] text-white/85 px-4 py-2.5 rounded-2xl rounded-tl-sm backdrop-blur-sm leading-relaxed"
+                    className="max-w-[82%] bg-white border border-slate-200 text-[11.5px] text-slate-800 px-4 py-2.5 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed"
                   >
                     {qa.answer}
                   </motion.div>
@@ -222,15 +206,15 @@ function AskiMateChatDemo() {
         </div>
 
         {/* Footer strip */}
-        <div className="relative z-10 px-5 py-3 border-t border-white/8 flex items-center justify-between">
-          <p className="text-[10px] text-white/35">Powered by Universitio knowledge base</p>
+        <div className="relative z-10 px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+          <p className="text-[10px] text-slate-400">Powered by Universitio knowledge base</p>
           <motion.div
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2.2, repeat: Infinity }}
             className="flex items-center gap-1.5"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
-            <span className="text-[10px] font-medium text-violet-400">AI processing</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span className="text-[10px] font-medium text-primary">AI processing</span>
           </motion.div>
         </div>
       </motion.div>
