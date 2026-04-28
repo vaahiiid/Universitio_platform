@@ -1,23 +1,25 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "universitio-admin-secret-key-2026";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "vahidmoir@gmail.com";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Universitio2002@";
+const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
-if (!process.env.JWT_SECRET) {
-  console.warn("[AUTH] WARNING: JWT_SECRET not set — using fallback. Set JWT_SECRET env var for production.");
+if (!ADMIN_JWT_SECRET) {
+  throw new Error("[AUTH] FATAL: ADMIN_JWT_SECRET environment variable is not set. Refusing to start.");
 }
-if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
-  console.warn("[AUTH] WARNING: ADMIN_EMAIL / ADMIN_PASSWORD not set — using defaults. Set env vars for production.");
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  throw new Error("[AUTH] FATAL: ADMIN_EMAIL and ADMIN_PASSWORD environment variables must be set. Refusing to start.");
 }
 
 export interface AdminPayload {
   email: string;
+  role: "admin";
 }
 
-export function generateToken(payload: AdminPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
+export function generateToken(payload: Omit<AdminPayload, "role">): string {
+  const tokenPayload: AdminPayload = { ...payload, role: "admin" };
+  return jwt.sign(tokenPayload, ADMIN_JWT_SECRET!, { expiresIn: "24h" });
 }
 
 export function verifyCredentials(email: string, password: string): boolean {
@@ -32,7 +34,11 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction): v
   }
   const token = authHeader.slice(7);
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AdminPayload;
+    const decoded = jwt.verify(token, ADMIN_JWT_SECRET!) as AdminPayload;
+    if (decoded.role !== "admin") {
+      res.status(403).json({ error: "Forbidden" });
+      return;
+    }
     req.admin = decoded;
     next();
   } catch {
