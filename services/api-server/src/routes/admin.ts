@@ -13,6 +13,7 @@ import {
   askimateConversations,
   askimateMessages,
   askimateWeeklyUsage,
+  heroAnalytics,
 } from "@workspace/db";
 import { eq, desc, ilike, or, and, sql, count, type SQL, type Column } from "drizzle-orm";
 import type { PgTable, PgColumn } from "drizzle-orm/pg-core";
@@ -1604,6 +1605,161 @@ router.patch("/admin/askimate-members/:userId", async (req: Request, res: Respon
   } catch (err) {
     console.error("askimate-member patch error:", err);
     res.status(500).json({ error: "Failed to update member" });
+  }
+});
+
+/** Lightweight keyword-based theme classifier for hero chat questions. */
+const HERO_THEMES: { theme: string; keywords: RegExp }[] = [
+  { theme: "Visa & Immigration",     keywords: /\b(visa|immigration|tier|brp|leave|permit|entry clearance|biometric)\b/i },
+  { theme: "Work & Employment",      keywords: /\b(work|job|employment|intern|part.?time|carer|earn|salary|paid)\b/i },
+  { theme: "University & Admissions",keywords: /\b(universit|college|admission|apply|ucas|offer|acceptance|course|degree|master|phd|bachelor)\b/i },
+  { theme: "Fees & Finances",        keywords: /\b(fee|tuition|cost|fund|scholarship|bursary|loan|money|budget|afford|pay)\b/i },
+  { theme: "Language & English",     keywords: /\b(ielts|english|language|score|band|toefl|test|requirement)\b/i },
+  { theme: "Documents & Application",keywords: /\b(document|passport|cv|résumé|statement|reference|transcript|certificate|letter)\b/i },
+  { theme: "Accommodation & Living", keywords: /\b(accommodation|housing|flat|rent|live|dormitory|halls|student house)\b/i },
+  { theme: "Dependants & Family",    keywords: /\b(dependan|spouse|partner|child|family|bring|accompany)\b/i },
+];
+
+function classifyQuestion(question: string): string {
+  for (const { theme, keywords } of HERO_THEMES) {
+    if (keywords.test(question)) return theme;
+  }
+  return "General / Other";
+}
+
+/**
+ * GET /admin/hero-analytics
+ * Returns engagement stats for the homepage hero chat demo:
+ *  - totalThisWeek: questions asked in the last 7 days
+ *  - totalAllTime: all-time question count
+ *  - rateLimitedThisWeek: rate-limited attempts this week
+ *  - ctrClicksThisWeek: "Continue in AskiMate" clicks this week
+ *  - ctrRate: ctrClicks / answered questions (0-1, or null if no data)
+ *  - needsReviewThisWeek: questions that triggered human-review flag
+ *  - topThemes: top question themes by count (from all-time questions)
+ *  - recentQuestions: last 50 questions (newest first) with their outcome and timestamp
+ */
+router.get("/admin/hero-analytics", async (_req: Request, res: Response) => {
+  try {
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+    const [totalAllTime] = await db
+      .select({ value: count() })
+      .from(heroAnalytics)
+      .where(sql`${heroAnalytics.outcome} != 'ctr_click'`);
+
+    const [uniqueVisitorsThisWeek] = await db
+      .select({ value: sql<string>`COUNT(DISTINCT ${heroAnalytics.ipHash})` })
+      .from(heroAnalytics)
+      .where(
+        and(
+          sql`${heroAnalytics.outcome} != 'ctr_click'`,
+          sql`${heroAnalytics.createdAt} >= ${weekAgo}`,
+        ),
+      );
+
+    const [totalThisWeek] = await db
+      .select({ value: count() })
+      .from(heroAnalytics)
+      .where(
+        and(
+          sql`${heroAnalytics.outcome} != 'ctr_click'`,
+          sql`${heroAnalytics.createdAt} >= ${weekAgo}`,
+        ),
+      );
+
+    const [answeredThisWeek] = await db
+      .select({ value: count() })
+      .from(heroAnalytics)
+      .where(
+        and(
+          sql`${heroAnalytics.outcome} = 'answered'`,
+          sql`${heroAnalytics.createdAt} >= ${weekAgo}`,
+        ),
+      );
+
+    const [rateLimitedThisWeek] = await db
+      .select({ value: count() })
+      .from(heroAnalytics)
+      .where(
+        and(
+          sql`${heroAnalytics.outcome} = 'rate_limited'`,
+          sql`${heroAnalytics.createdAt} >= ${weekAgo}`,
+        ),
+      );
+
+    const [ctrClicksThisWeek] = await db
+      .select({ value: count() })
+      .from(heroAnalytics)
+      .where(
+        and(
+          sql`${heroAnalytics.outcome} = 'ctr_click'`,
+          sql`${heroAnalytics.createdAt} >= ${weekAgo}`,
+        ),
+      );
+
+    const [needsReviewThisWeek] = await db
+      .select({ value: count() })
+      .from(heroAnalytics)
+      .where(
+        and(
+          sql`${heroAnalytics.needsHumanReview} = true`,
+          sql`${heroAnalytics.createdAt} >= ${weekAgo}`,
+        ),
+      );
+
+    const recentQuestions = await db
+      .select({
+        id: heroAnalytics.id,
+        question: heroAnalytics.question,
+        outcome: heroAnalytics.outcome,
+        needsHumanReview: heroAnalytics.needsHumanReview,
+        createdAt: heroAnalytics.createdAt,
+      })
+      .from(heroAnalytics)
+      .where(sql`${heroAnalytics.question} IS NOT NULL`)
+      .orderBy(desc(heroAnalytics.createdAt))
+      .limit(50);
+
+    // Fetch all questions (up to 2000) for theme classification
+    const allQuestions = await db
+      .select({ question: heroAnalytics.question })
+      .from(heroAnalytics)
+      .where(sql`${heroAnalytics.question} IS NOT NULL`)
+      .orderBy(desc(heroAnalytics.createdAt))
+      .limit(2000);
+
+    const themeCounts = new Map<string, number>();
+    for (const row of allQuestions) {
+      if (row.question) {
+        const theme = classifyQuestion(row.question);
+        themeCounts.set(theme, (themeCounts.get(theme) ?? 0) + 1);
+      }
+    }
+    const topThemes = Array.from(themeCounts.entries())
+      .map(([theme, count]) => ({ theme, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 8);
+
+    const answered = Number(answeredThisWeek.value);
+    const ctrClicks = Number(ctrClicksThisWeek.value);
+    const ctrRate = answered > 0 ? Math.round((ctrClicks / answered) * 1000) / 10 : null;
+
+    res.json({
+      totalAllTime: Number(totalAllTime.value),
+      totalThisWeek: Number(totalThisWeek.value),
+      uniqueVisitorsThisWeek: Number(uniqueVisitorsThisWeek.value),
+      answeredThisWeek: answered,
+      rateLimitedThisWeek: Number(rateLimitedThisWeek.value),
+      ctrClicksThisWeek: ctrClicks,
+      ctrRate,
+      needsReviewThisWeek: Number(needsReviewThisWeek.value),
+      topThemes,
+      recentQuestions,
+    });
+  } catch (err) {
+    console.error("hero-analytics error:", err);
+    res.status(500).json({ error: "Failed to fetch hero analytics" });
   }
 });
 

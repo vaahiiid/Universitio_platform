@@ -44,6 +44,7 @@ const MembersPage = lazy(() => import("@/pages/admin/members"));
 const ServiceRequestsPage = lazy(() => import("@/pages/admin/service-requests"));
 const AskiMateUsersPage = lazy(() => import("@/pages/admin/askimate-users"));
 const AskiMateMembersPage = lazy(() => import("@/pages/admin/askimate-members"));
+const HeroAnalyticsPage = lazy(() => import("@/pages/admin/hero-analytics"));
 
 const queryClient = new QueryClient();
 
@@ -157,6 +158,9 @@ function Router() {
           </Route>
           <Route path="/admin/askimate-members">
             {() => <AdminGuard><AskiMateMembersPage /></AdminGuard>}
+          </Route>
+          <Route path="/admin/hero-analytics">
+            {() => <AdminGuard><HeroAnalyticsPage /></AdminGuard>}
           </Route>
           <Route path="/admin/:rest*">
             {() => <AdminGuard><Redirect to="/admin" /></AdminGuard>}

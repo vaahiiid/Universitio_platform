@@ -1,5 +1,7 @@
 import { Router, type IRouter, type Request, type Response } from "express";
+import { createHash } from "node:crypto";
 import { generateAiAnswer } from "../ai/chatService";
+import { db, heroAnalytics } from "@workspace/db";
 
 const router: IRouter = Router();
 
@@ -34,6 +36,28 @@ setInterval(() => {
   }
 }, HERO_WINDOW_MS);
 
+function hashIp(ip: string): string {
+  return createHash("sha256").update(ip).digest("hex").slice(0, 16);
+}
+
+async function logHeroEvent(
+  ipHash: string,
+  question: string | null,
+  outcome: string,
+  needsHumanReview?: boolean,
+): Promise<void> {
+  try {
+    await db.insert(heroAnalytics).values({
+      ipHash,
+      question: question ?? undefined,
+      outcome,
+      needsHumanReview: needsHumanReview ?? undefined,
+    });
+  } catch (err) {
+    console.error("[HERO-ANALYTICS] Failed to log event:", err);
+  }
+}
+
 /**
  * POST /api/askimate/hero-ask
  * Guest-accessible endpoint for the homepage hero chat demo.
@@ -43,15 +67,9 @@ setInterval(() => {
  */
 router.post("/askimate/hero-ask", async (req: Request, res: Response) => {
   const ip = (req.ip ?? req.socket.remoteAddress ?? "unknown").replace(/^::ffff:/, "");
+  const ipHash = hashIp(ip);
 
-  if (isRateLimited(ip)) {
-    res.status(429).json({
-      error: "RATE_LIMITED",
-      message: "You've used your demo questions. Sign up for AskiMate to keep chatting.",
-    });
-    return;
-  }
-
+  // Parse message BEFORE rate-limit check so we can log the attempted question
   const { message } = req.body as { message?: string };
 
   if (!message || typeof message !== "string" || message.trim().length === 0) {
@@ -64,8 +82,20 @@ router.post("/askimate/hero-ask", async (req: Request, res: Response) => {
     return;
   }
 
+  const question = message.trim();
+
+  if (isRateLimited(ip)) {
+    void logHeroEvent(ipHash, question, "rate_limited");
+    res.status(429).json({
+      error: "RATE_LIMITED",
+      message: "You've used your demo questions. Sign up for AskiMate to keep chatting.",
+    });
+    return;
+  }
+
   try {
-    const result = await generateAiAnswer(message.trim(), []);
+    const result = await generateAiAnswer(question, []);
+    void logHeroEvent(ipHash, question, "answered", result.needsHumanReview);
     res.json({
       answer: result.answer,
       needsHumanReview: result.needsHumanReview,
@@ -73,6 +103,7 @@ router.post("/askimate/hero-ask", async (req: Request, res: Response) => {
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";
     console.error("[HERO-ASK] Error:", msg);
+    void logHeroEvent(ipHash, question, "error");
 
     if (msg.includes("vector_store.json not found")) {
       res.status(503).json({ error: "AI knowledge base is warming up. Please try again shortly." });
@@ -84,6 +115,19 @@ router.post("/askimate/hero-ask", async (req: Request, res: Response) => {
     }
     res.status(500).json({ error: "Failed to generate a response. Please try again." });
   }
+});
+
+/**
+ * POST /api/askimate/hero-ctr
+ * Tracks when a visitor clicks "Continue the conversation in AskiMate"
+ * after receiving an answer in the hero demo.
+ * Body: {} (empty — IP is all we need)
+ * Response: { ok: true }
+ */
+router.post("/askimate/hero-ctr", (req: Request, res: Response) => {
+  const ip = (req.ip ?? req.socket.remoteAddress ?? "unknown").replace(/^::ffff:/, "");
+  void logHeroEvent(hashIp(ip), null, "ctr_click");
+  res.json({ ok: true });
 });
 
 export default router;

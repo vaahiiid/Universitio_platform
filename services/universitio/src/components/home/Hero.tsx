@@ -3,6 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowDown, Sparkles, Shield, Brain, BookOpen, Users } from "lucide-react";
+import { apiFetch } from "@/lib/api";
+
+function trackHeroCtr(): void {
+  apiFetch("/askimate/hero-ctr", { method: "POST" }).catch(() => {});
+}
 
 const QA_PAIRS = [
   {
@@ -256,7 +261,7 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/askimate">
+              <Link href="/askimate" onClick={trackHeroCtr}>
                 <Button size="lg" className="w-full sm:w-auto text-base rounded-full bg-primary hover:bg-primary/90 px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl transition-all hover:-translate-y-0.5 group">
                   <Sparkles className="mr-2 w-5 h-5" />
                   Try AskiMate AI
