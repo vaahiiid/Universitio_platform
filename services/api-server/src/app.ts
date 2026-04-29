@@ -103,6 +103,17 @@ const leadsRateLimit = rateLimit({
   message: { error: "Too many requests, please try again later." },
 });
 
+// Strict rate limit for password reset — prevents abuse of reset email sending
+const passwordResetRateLimit = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { error: "Too many password reset requests. Please try again in an hour." },
+});
+
+app.use("/api/askimate/auth/forgot-password", passwordResetRateLimit);
+
 app.use(
   [
     "/api/leads/consultation",

@@ -47,6 +47,12 @@ export const askimateUsers = pgTable("askimate_users", {
   // Free-text notes added by admins for internal operational tracking.
   adminNotes: text("admin_notes"),
   // ─────────────────────────────────────────────────────────────────────────
+  // ── Password reset ────────────────────────────────────────────────────────
+  // SHA-256 hash of the single-use token sent in the reset email link.
+  // Raw token is never stored; only the hash. Null once used or not requested.
+  passwordResetToken: text("password_reset_token"),
+  passwordResetExpiresAt: timestamp("password_reset_expires_at"),
+  // ─────────────────────────────────────────────────────────────────────────
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

@@ -30,6 +30,8 @@ const TermsAndConditions = lazy(() => import("@/pages/terms-and-conditions"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
+const ResetPassword = lazy(() => import("@/pages/reset-password"));
+
 const AdminLogin = lazy(() => import("@/pages/admin/login"));
 const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
 const ConsultationsPage = lazy(() => import("@/pages/admin/consultations"));
@@ -120,6 +122,7 @@ function Router() {
           <Route path="/careers" component={Careers} />
           <Route path="/terms-and-conditions" component={TermsAndConditions} />
           <Route path="/privacy-policy" component={PrivacyPolicy} />
+          <Route path="/reset-password" component={ResetPassword} />
 
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/admin">

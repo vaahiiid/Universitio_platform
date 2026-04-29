@@ -17,6 +17,7 @@ import { buildContactConfirmation }        from "./contactConfirmation";
 import { buildReferralConfirmation }       from "./referralConfirmation";
 import { buildAgentConfirmation }          from "./agentConfirmation";
 import { buildServicesConfirmation }       from "./servicesConfirmation";
+import { buildPasswordReset }              from "./passwordReset";
 
 /**
  * Central template registry.
@@ -46,4 +47,5 @@ export const templateRegistry: {
   [EmailType.REFERRAL_CONFIRMATION]:      buildReferralConfirmation,
   [EmailType.AGENT_CONFIRMATION]:         buildAgentConfirmation,
   [EmailType.SERVICES_CONFIRMATION]:      buildServicesConfirmation,
+  [EmailType.PASSWORD_RESET]:             buildPasswordReset,
 };

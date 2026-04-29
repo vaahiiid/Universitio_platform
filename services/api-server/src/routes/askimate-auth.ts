@@ -465,6 +465,139 @@ router.post("/askimate/auth/resend-verification", requireAskimateAuth, async (re
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// FORGOT PASSWORD — request a reset email
+// POST /api/askimate/auth/forgot-password
+// Always responds with the same neutral message to avoid email enumeration.
+// Stores a SHA-256 hash of the raw token; raw token travels only in the email.
+// ─────────────────────────────────────────────────────────────────────────────
+router.post("/askimate/auth/forgot-password", async (req: Request, res: Response) => {
+  const NEUTRAL_MSG = "If an account exists with this email, you will receive a password reset link shortly.";
+
+  try {
+    const { email } = req.body as { email?: string };
+
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      res.status(400).json({ error: "A valid email address is required." });
+      return;
+    }
+
+    const normalised = email.toLowerCase().trim();
+
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.email, normalised),
+    });
+
+    // Respond identically regardless of whether the user exists
+    if (!user) {
+      res.json({ message: NEUTRAL_MSG });
+      return;
+    }
+
+    // Google-only accounts have no password — silently skip (same neutral response)
+    if (user.passwordHash === "GOOGLE_NO_PASSWORD") {
+      res.json({ message: NEUTRAL_MSG });
+      return;
+    }
+
+    // Generate a 32-byte cryptographically random token
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    // Store only the SHA-256 hash in the database
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 60 minutes
+
+    await db
+      .update(askimateUsers)
+      .set({
+        passwordResetToken: tokenHash,
+        passwordResetExpiresAt: expiresAt,
+        updatedAt: new Date(),
+      })
+      .where(eq(askimateUsers.id, user.id));
+
+    const resetLink = `https://universitio.com/reset-password?token=${rawToken}`;
+
+    sendTransactionalEmail(EmailType.PASSWORD_RESET, user.email, {
+      firstName: user.firstName,
+      resetLink,
+      expiryMinutes: 60,
+    }).catch((err) => console.error("[EMAIL] Password reset email failed:", err));
+
+    console.log(`[ASKIMATE-AUTH] Password reset requested for user ${user.id}`);
+    res.json({ message: NEUTRAL_MSG });
+  } catch (err) {
+    console.error("[ASKIMATE-AUTH] Forgot password error:", err);
+    // Still return neutral message — don't expose server errors to the client
+    res.json({ message: "If an account exists with this email, you will receive a password reset link shortly." });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESET PASSWORD — consume the token and set a new password
+// POST /api/askimate/auth/reset-password
+// ─────────────────────────────────────────────────────────────────────────────
+router.post("/askimate/auth/reset-password", async (req: Request, res: Response) => {
+  try {
+    const { token, password } = req.body as { token?: string; password?: string };
+
+    if (!token || typeof token !== "string" || token.trim() === "") {
+      res.status(400).json({ error: "Reset token is required." });
+      return;
+    }
+
+    if (!password || typeof password !== "string") {
+      res.status(400).json({ error: "New password is required." });
+      return;
+    }
+
+    if (password.length < 8) {
+      res.status(400).json({ error: "Password must be at least 8 characters." });
+      return;
+    }
+
+    // Hash the incoming raw token to compare with the stored hash
+    const tokenHash = crypto.createHash("sha256").update(token.trim()).digest("hex");
+
+    const user = await db.query.askimateUsers.findFirst({
+      where: eq(askimateUsers.passwordResetToken, tokenHash),
+    });
+
+    if (!user) {
+      res.status(400).json({ error: "This reset link is invalid or has already been used." });
+      return;
+    }
+
+    if (!user.passwordResetExpiresAt || new Date(user.passwordResetExpiresAt) < new Date()) {
+      // Clear the expired token
+      await db
+        .update(askimateUsers)
+        .set({ passwordResetToken: null, passwordResetExpiresAt: null, updatedAt: new Date() })
+        .where(eq(askimateUsers.id, user.id));
+      res.status(400).json({ error: "This reset link has expired. Please request a new one." });
+      return;
+    }
+
+    // Hash the new password and clear the reset token (single-use)
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    await db
+      .update(askimateUsers)
+      .set({
+        passwordHash,
+        passwordResetToken: null,
+        passwordResetExpiresAt: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(askimateUsers.id, user.id));
+
+    console.log(`[ASKIMATE-AUTH] Password reset successful for user ${user.id}`);
+    res.json({ message: "Your password has been reset. You can now log in." });
+  } catch (err) {
+    console.error("[ASKIMATE-AUTH] Reset password error:", err);
+    res.status(500).json({ error: "Failed to reset password. Please try again." });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // GOOGLE OAUTH — INITIATE
 // ─────────────────────────────────────────────────────────────────────────────
 router.get("/askimate/auth/google", (req: Request, res: Response) => {

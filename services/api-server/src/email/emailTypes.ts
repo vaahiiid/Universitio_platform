@@ -24,6 +24,7 @@ export const EmailType = {
   REFERRAL_CONFIRMATION:         "REFERRAL_CONFIRMATION",
   AGENT_CONFIRMATION:            "AGENT_CONFIRMATION",
   SERVICES_CONFIRMATION:         "SERVICES_CONFIRMATION",
+  PASSWORD_RESET:                "PASSWORD_RESET",
 } as const;
 
 export type EmailType = (typeof EmailType)[keyof typeof EmailType];
@@ -136,6 +137,12 @@ export interface ServicesConfirmationPayload {
   serviceType?: string;
 }
 
+export interface PasswordResetPayload {
+  firstName: string;
+  resetLink: string;
+  expiryMinutes?: number;
+}
+
 // ─── Payload Map — ties each EmailType to its payload interface ───────────────
 
 export type EmailPayloadMap = {
@@ -159,6 +166,7 @@ export type EmailPayloadMap = {
   [EmailType.REFERRAL_CONFIRMATION]:      ReferralConfirmationPayload;
   [EmailType.AGENT_CONFIRMATION]:         AgentConfirmationPayload;
   [EmailType.SERVICES_CONFIRMATION]:      ServicesConfirmationPayload;
+  [EmailType.PASSWORD_RESET]:             PasswordResetPayload;
 };
 
 // ─── Compiled Template — what every builder must return ──────────────────────
