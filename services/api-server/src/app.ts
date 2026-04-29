@@ -158,6 +158,9 @@ if (process.env.NODE_ENV === "production") {
     // Valid frontend routes for 404 detection
     const validRoutePatterns = [
       /^\/$/,                                    // Home
+      /^\/about$/,                               // About
+      /^\/services$/,                            // Services
+      /^\/contact$/,                             // Contact
       /^\/free-consultation$/,                   // Free Consultation
       /^\/assessment-form$/,                     // Assessment Form
       /^\/blog$/,                                // Blog listing
@@ -168,6 +171,12 @@ if (process.env.NODE_ENV === "production") {
       /^\/careers$/,                             // Careers
       /^\/terms-and-conditions$/,                // Terms
       /^\/privacy-policy$/,                      // Privacy
+      /^\/askimate$/,                            // AskiMate landing
+      /^\/askimate-signup$/,                     // AskiMate sign up
+      /^\/askimate-login$/,                      // AskiMate login
+      /^\/askimate-dashboard$/,                  // AskiMate dashboard
+      /^\/askimate-try$/,                        // AskiMate guest chat
+      /^\/reset-password$/,                      // Password reset (email link target)
       /^\/admin(?:\/.*)?$/,                      // Admin and subroutes
     ];
 
