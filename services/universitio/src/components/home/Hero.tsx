@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Shield, Brain, BookOpen, Users } from "lucide-react";
+import { ArrowRight, ArrowDown, Sparkles, Shield, Brain, BookOpen, Users } from "lucide-react";
 
 const QA_PAIRS = [
   {
@@ -270,6 +270,24 @@ export function Hero() {
               </Link>
             </div>
 
+            {/* Mobile-only: scroll prompt to AI visual */}
+            <button
+              onClick={() => {
+                document.getElementById("hero-ai-visual")?.scrollIntoView({ behavior: "smooth", block: "center" });
+              }}
+              className="lg:hidden mt-2 flex items-center gap-1.5 text-sm font-medium text-primary/70 hover:text-primary transition-colors group self-center"
+              aria-label="See how the AI works"
+            >
+              <motion.span
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                className="flex items-center gap-1.5"
+              >
+                <ArrowDown className="w-4 h-4" />
+                See how it works
+              </motion.span>
+            </button>
+
             <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-3 text-sm text-muted-foreground font-medium">
                 <div className="flex -space-x-2">
@@ -290,6 +308,7 @@ export function Hero() {
 
           {/* Right column — animated chat visual */}
           <motion.div
+            id="hero-ai-visual"
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.2 }}
