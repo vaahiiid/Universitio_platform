@@ -9,3 +9,4 @@ export * from "./members";
 export * from "./askimate-users";
 export * from "./askimate-conversations";
 export * from "./hero-analytics";
+export * from "./hero-rate-limit";
