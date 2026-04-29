@@ -77,6 +77,12 @@ function AskiMateChatDemo() {
     } else if (phase === "typing") {
       t = setTimeout(() => setPhase("answer"), 1300);
     } else if (phase === "answer") {
+      // Persist the question that just got an answer so AskiMate can pre-fill it
+      try {
+        sessionStorage.setItem("hero_last_question", QA_PAIRS[index].question);
+      } catch {
+        // sessionStorage unavailable (private browsing edge case) — ignore
+      }
       t = setTimeout(() => setPhase("hold"), 200);
     } else {
       // hold — wait then advance

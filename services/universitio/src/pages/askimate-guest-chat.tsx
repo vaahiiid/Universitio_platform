@@ -46,6 +46,19 @@ export default function AskimateGuestChat() {
     }
   }, []);
 
+  // Pre-fill input with any question the visitor saw in the hero demo
+  useEffect(() => {
+    try {
+      const heroQuestion = sessionStorage.getItem("hero_last_question");
+      if (heroQuestion) {
+        setInputValue(heroQuestion);
+        sessionStorage.removeItem("hero_last_question");
+      }
+    } catch {
+      // sessionStorage unavailable — ignore
+    }
+  }, []);
+
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
