@@ -1209,7 +1209,7 @@ export const posts: BlogPost[] = [
   "date": "2026-04-29",
   "author": "Universitio Team",
   "excerpt": "Planning to study in the UK from China? This complete guide covers everything Chinese students need to know — from entry requirements and UCAS applications to student visas, scholarships, and life in the UK.",
-  "image": "blog-images/study-in-uk-from-china-complete-guide.jpg",
+  "image": "blog-images/study-in-uk-from-china-complete-guide.webp",
   "imageAlt": "Chinese student smiling while reviewing UK university options on a laptop",
   "categories": [
     "United Kingdom",
