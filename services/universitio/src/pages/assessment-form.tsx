@@ -498,6 +498,56 @@ export default function AssessmentForm() {
       <Helmet>
         <title>Free Admissions Assessment | Universitio</title>
         <meta name="description" content="Take the free Universitio admissions assessment to estimate your chances at top UK universities. Get a personalised readiness score in under 5 minutes." />
+        <link rel="canonical" href="https://universitio.com/assessment-form" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://universitio.com/assessment-form",
+              "name": "Free Admissions Assessment | Universitio",
+              "description": "Take the free Universitio admissions assessment to estimate your chances at top UK universities. Get a personalised readiness score in under 5 minutes.",
+              "url": "https://universitio.com/assessment-form",
+              "isPartOf": {
+                "@type": "WebSite",
+                "@id": "https://universitio.com/#website",
+                "name": "Universitio",
+                "url": "https://universitio.com"
+              },
+              "mainEntity": { "@id": "https://universitio.com/assessment-form#service" }
+            },
+            {
+              "@type": "Service",
+              "@id": "https://universitio.com/assessment-form#service",
+              "name": "Free University Admissions Assessment",
+              "description": "A free, instant admissions readiness assessment for international students. Answer questions about your academic background, language qualifications, and study goals to receive a personalised score for your chosen destinations.",
+              "url": "https://universitio.com/assessment-form",
+              "serviceType": "University Admissions Assessment",
+              "category": "Education Consulting",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "GBP",
+                "availability": "https://schema.org/InStock",
+                "description": "Free online university admissions readiness assessment"
+              },
+              "provider": {
+                "@type": "Organization",
+                "@id": "https://universitio.com/#organization",
+                "name": "Universitio",
+                "url": "https://universitio.com"
+              },
+              "areaServed": {
+                "@type": "Place",
+                "name": "Worldwide"
+              },
+              "audience": {
+                "@type": "Audience",
+                "audienceType": "International students applying to universities in the UK, USA, Canada, Germany, Netherlands, and Australia"
+              }
+            }
+          ]
+        })}</script>
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">

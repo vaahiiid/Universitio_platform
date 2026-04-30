@@ -197,6 +197,56 @@ export default function FreeConsultation() {
       <Helmet>
         <title>Book a Free Consultation | Universitio</title>
         <meta name="description" content="Book your free, no-obligation consultation with Universitio. Tell us about your study goals and we'll help you find the right university and course." />
+        <link rel="canonical" href="https://universitio.com/free-consultation" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebPage",
+              "@id": "https://universitio.com/free-consultation",
+              "name": "Book a Free Consultation | Universitio",
+              "description": "Book your free, no-obligation consultation with Universitio. Tell us about your study goals and we'll help you find the right university and course.",
+              "url": "https://universitio.com/free-consultation",
+              "isPartOf": {
+                "@type": "WebSite",
+                "@id": "https://universitio.com/#website",
+                "name": "Universitio",
+                "url": "https://universitio.com"
+              },
+              "mainEntity": { "@id": "https://universitio.com/free-consultation#service" }
+            },
+            {
+              "@type": "Service",
+              "@id": "https://universitio.com/free-consultation#service",
+              "name": "Free University Admissions Consultation",
+              "description": "A free, no-obligation one-to-one consultation with a Universitio advisor. Share your study goals, academic background, and budget — we'll match you with the right university and course.",
+              "url": "https://universitio.com/free-consultation",
+              "serviceType": "University Admissions Consulting",
+              "category": "Education Consulting",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "GBP",
+                "availability": "https://schema.org/InStock",
+                "description": "Free, no-obligation university admissions consultation"
+              },
+              "provider": {
+                "@type": "Organization",
+                "@id": "https://universitio.com/#organization",
+                "name": "Universitio",
+                "url": "https://universitio.com"
+              },
+              "areaServed": {
+                "@type": "Place",
+                "name": "Worldwide"
+              },
+              "audience": {
+                "@type": "Audience",
+                "audienceType": "International students applying to universities"
+              }
+            }
+          ]
+        })}</script>
       </Helmet>
       <Navbar />
 
