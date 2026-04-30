@@ -14,6 +14,15 @@ export interface HomePost {
 
 export const homePostsData: HomePost[] = [
   {
+    id: 272,
+    slug: `what-is-ucas-complete-guide-international-students`,
+    title: `What is UCAS? A Complete Guide for International Students`,
+    date: "2026-04-30",
+    excerpt: `Never heard of UCAS before? This complete guide explains exactly what UCAS is, how it works, and everything international students need to know before applying to a UK university through the UCAS system.`,
+    image: "blog-images/what-is-ucas-complete-guide-international-students.jpg",
+    imageAlt: `Student with backpack and documents reviewing her university application on a tablet`,
+  },
+  {
     id: 271,
     slug: `study-in-uk-from-china-complete-guide`,
     title: `Study in the UK from China: The Complete Guide for Chinese Students`,
@@ -57,14 +66,5 @@ export const homePostsData: HomePost[] = [
     excerpt: `Planning to study in the UK from Bangladesh? This complete guide covers everything Bangladeshi students need to know — from entry requirements and UCAS applications to student visas, scholarships, and life in the UK.`,
     image: "blog-images/study-in-uk-from-bangladesh-complete-guide.webp",
     imageAlt: `Bangladeshi student reviewing UK university options on a laptop`,
-  },
-  {
-    id: 266,
-    slug: `study-in-uk-from-turkey-complete-guide`,
-    title: `Study in the UK from Turkey: The Complete Guide for Turkish Students`,
-    date: "2026-04-21",
-    excerpt: `Considering studying in the UK from Turkey? This complete guide covers everything Turkish students need to know — from entry requirements and applications to student visas, scholarships, and life in the UK.`,
-    image: "blog-images/study-in-uk-from-turkey-complete-guide.jpg",
-    imageAlt: `Turkish student researching UK universities on a laptop in a library`,
   }
 ];

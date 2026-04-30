@@ -7,6 +7,7 @@ import { db, pool } from "@workspace/db";
 import { askimateUsers, askimateWeeklyUsage } from "@workspace/db/schema";
 import { eq, and } from "drizzle-orm";
 import { sendTransactionalEmail, EmailType } from "../email/transactionalEmailService";
+import { sendEmail } from "../services/emailService";
 
 const router: IRouter = Router();
 
@@ -476,6 +477,8 @@ router.post("/askimate/auth/forgot-password", async (req: Request, res: Response
   try {
     const { email } = req.body as { email?: string };
 
+    console.log(`[FORGOT-PW] Request received — email: "${email ?? "(none)"}"`);
+
     if (!email || typeof email !== "string" || !email.includes("@")) {
       res.status(400).json({ error: "A valid email address is required." });
       return;
@@ -487,14 +490,64 @@ router.post("/askimate/auth/forgot-password", async (req: Request, res: Response
       where: eq(askimateUsers.email, normalised),
     });
 
-    // Respond identically regardless of whether the user exists
     if (!user) {
+      console.log(`[FORGOT-PW] No user found for "${normalised}" — returning neutral response`);
       res.json({ message: NEUTRAL_MSG });
       return;
     }
 
-    // Google-only accounts have no password — silently skip (same neutral response)
+    console.log(`[FORGOT-PW] User found: id=${user.id} email="${user.email}" pw_type="${user.passwordHash === "GOOGLE_NO_PASSWORD" ? "GOOGLE_NO_PASSWORD" : "bcrypt"}"`);
+
+    // Google-only accounts have no password — send a sign-in reminder instead
     if (user.passwordHash === "GOOGLE_NO_PASSWORD") {
+      console.log(`[FORGOT-PW] Google-only account — sending sign-in-with-Google reminder email`);
+      const reminderResult = await sendEmail({
+        to: user.email,
+        subject: "Sign in to Universitio with Google",
+        html: `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
+<body style="font-family:sans-serif;background:#f4f4f7;padding:32px 0;margin:0">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+  <table width="560" cellpadding="0" cellspacing="0"
+         style="background:#fff;border-radius:10px;overflow:hidden;max-width:560px">
+    <tr><td style="background:#42147d;padding:24px 32px">
+      <div style="color:#fff;font-size:22px;font-weight:800;letter-spacing:-0.5px">UNIVERSITIO</div>
+    </td></tr>
+    <tr><td style="padding:32px">
+      <h2 style="margin:0 0 16px;color:#1a1a1a;font-size:19px">Hi ${user.firstName},</h2>
+      <p style="color:#444;font-size:15px;line-height:1.7;margin:0 0 20px">
+        We received a password reset request for your Universitio account.<br><br>
+        Your account is linked to <strong>Google Sign-In</strong>, so it does not have a separate password.
+        To access your account, please click the button below and choose <em>Continue with Google</em>.
+      </p>
+      <p style="margin:24px 0">
+        <a href="https://universitio.com/askimate-login"
+           style="background:#42147d;color:#fff;padding:13px 28px;border-radius:7px;
+                  text-decoration:none;font-weight:700;font-size:15px;display:inline-block">
+          Sign In with Google
+        </a>
+      </p>
+      <p style="color:#999;font-size:13px;margin-top:24px">
+        If you did not request this, you can safely ignore this email.
+      </p>
+    </td></tr>
+    <tr><td style="background:#f9f8fc;padding:16px 32px;border-top:1px solid #ede8f5">
+      <p style="margin:0;color:#b0a8c4;font-size:11px">
+        Universitio Ltd &bull; Co. No. 15168670 &bull;
+        <a href="https://universitio.com" style="color:#7c6fa0;text-decoration:none">universitio.com</a>
+      </p>
+    </td></tr>
+  </table></td></tr></table>
+</body></html>`,
+        text: `Hi ${user.firstName},\n\nWe received a password reset request for your Universitio account.\n\nYour account uses Google Sign-In and does not have a separate password.\nPlease visit https://universitio.com/askimate-login and click "Continue with Google".\n\nIf you did not request this, you can safely ignore this email.\n\n— Universitio`,
+        sender: "universitio-noreply",
+      });
+
+      if (reminderResult.success) {
+        console.log(`[FORGOT-PW] Google reminder email sent — Resend id: ${reminderResult.id}`);
+      } else {
+        console.error(`[PASSWORD_RESET_EMAIL_ERROR] Google reminder failed: ${reminderResult.error}`);
+      }
+
       res.json({ message: NEUTRAL_MSG });
       return;
     }
@@ -514,18 +567,28 @@ router.post("/askimate/auth/forgot-password", async (req: Request, res: Response
       })
       .where(eq(askimateUsers.id, user.id));
 
+    console.log(`[FORGOT-PW] Token stored in DB for user ${user.id} — sending reset email`);
+
     const resetLink = `https://universitio.com/reset-password?token=${rawToken}`;
 
-    sendTransactionalEmail(EmailType.PASSWORD_RESET, user.email, {
+    const emailResult = await sendTransactionalEmail(EmailType.PASSWORD_RESET, user.email, {
       firstName: user.firstName,
       resetLink,
       expiryMinutes: 60,
-    }).catch((err) => console.error("[EMAIL] Password reset email failed:", err));
+    }).catch((err) => {
+      console.error("[PASSWORD_RESET_EMAIL_ERROR] sendTransactionalEmail threw:", err);
+      return { success: false as const, error: String(err) };
+    });
 
-    console.log(`[ASKIMATE-AUTH] Password reset requested for user ${user.id}`);
+    if (emailResult.success) {
+      console.log(`[FORGOT-PW] Reset email sent successfully — Resend id: ${emailResult.id}`);
+    } else {
+      console.error(`[PASSWORD_RESET_EMAIL_ERROR] Email send failed for user ${user.id}: ${emailResult.error}`);
+    }
+
     res.json({ message: NEUTRAL_MSG });
   } catch (err) {
-    console.error("[ASKIMATE-AUTH] Forgot password error:", err);
+    console.error("[FORGOT-PW] Unexpected error:", err);
     // Still return neutral message — don't expose server errors to the client
     res.json({ message: "If an account exists with this email, you will receive a password reset link shortly." });
   }

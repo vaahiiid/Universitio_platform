@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowDown, Sparkles, Shield, Brain, BookOpen, Users } from "lucide-react";
+import { ArrowRight, ArrowDown, Sparkles, Shield, Brain, BookOpen, Users, Send, MessageCircle } from "lucide-react";
 import { apiFetch } from "@/lib/api";
 
 function trackHeroCtr(): void {
@@ -38,6 +38,8 @@ const TAGS = [
   { icon: BookOpen, label: "Student questions" },
 ];
 
+const MAX_QUESTIONS = 3;
+
 function TypingDots() {
   return (
     <span className="inline-flex items-center gap-1 py-0.5">
@@ -65,7 +67,41 @@ function Node({ x, y, r, delay }: { x: string; y: string; r: number; delay: numb
   );
 }
 
-/* The animated chat card */
+/* Shared card chrome (header + tags) */
+function CardHeader() {
+  return (
+    <div className="relative z-10 px-5 py-4 border-b border-primary/15 bg-gradient-to-r from-primary via-[#5b189c] to-secondary">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
+          <Sparkles className="w-4 h-4 text-white" strokeWidth={1.5} />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-white leading-none">AskiMate AI</p>
+          <p className="text-[11px] text-white/70 mt-0.5">AI study abroad assistant</p>
+        </div>
+        <div className="ml-auto text-right">
+          <p className="text-[10px] text-white/60 leading-tight">Learning from</p>
+          <p className="text-[10px] text-white/90 font-semibold leading-tight">verified guidance</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 flex-wrap">
+        {TAGS.map(({ icon: Icon, label }) => (
+          <span
+            key={label}
+            className="inline-flex items-center gap-1 text-[10px] font-medium text-white/80 bg-white/15 border border-white/25 px-2.5 py-0.5 rounded-full"
+          >
+            <Icon className="w-3 h-3" />
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  The original animated chat demo                                    */
+/* ------------------------------------------------------------------ */
 function AskiMateChatDemo() {
   const [index, setIndex]       = useState(0);
   const [phase, setPhase]       = useState<"question" | "typing" | "answer" | "hold">("question");
@@ -77,7 +113,6 @@ function AskiMateChatDemo() {
     } else if (phase === "typing") {
       t = setTimeout(() => setPhase("answer"), 1300);
     } else if (phase === "answer") {
-      // Persist the question that just got an answer so AskiMate can pre-fill it
       try {
         sessionStorage.setItem("hero_last_question", QA_PAIRS[index].question);
       } catch {
@@ -85,7 +120,6 @@ function AskiMateChatDemo() {
       }
       t = setTimeout(() => setPhase("hold"), 200);
     } else {
-      // hold — wait then advance
       t = setTimeout(() => {
         setPhase("question");
         setIndex((prev) => (prev + 1) % QA_PAIRS.length);
@@ -125,38 +159,8 @@ function AskiMateChatDemo() {
         className="relative z-10 w-full max-w-[92%] rounded-3xl overflow-hidden border border-primary/15"
         style={{ boxShadow: "0 0 45px rgba(66,20,125,0.18), 0 16px 40px rgba(66,20,125,0.10), 0 4px 20px rgba(0,0,0,0.06)" }}
       >
-        {/* Light card background */}
         <div className="absolute inset-0 bg-white" />
-
-        {/* Header — purple gradient matching real AskiMate */}
-        <div className="relative z-10 px-5 py-4 border-b border-primary/15 bg-gradient-to-r from-primary via-[#5b189c] to-secondary">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-white" strokeWidth={1.5} />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white leading-none">AskiMate AI</p>
-              <p className="text-[11px] text-white/70 mt-0.5">AI study abroad assistant</p>
-            </div>
-            <div className="ml-auto text-right">
-              <p className="text-[10px] text-white/60 leading-tight">Learning from</p>
-              <p className="text-[10px] text-white/90 font-semibold leading-tight">verified guidance</p>
-            </div>
-          </div>
-
-          {/* Tag chips */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {TAGS.map(({ icon: Icon, label }) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-1 text-[10px] font-medium text-white/80 bg-white/15 border border-white/25 px-2.5 py-0.5 rounded-full"
-              >
-                <Icon className="w-3 h-3" />
-                {label}
-              </span>
-            ))}
-          </div>
-        </div>
+        <CardHeader />
 
         {/* Chat area */}
         <div className="relative z-10 px-4 py-4 space-y-3 min-h-[220px] flex flex-col justify-end bg-slate-50/60">
@@ -187,7 +191,6 @@ function AskiMateChatDemo() {
                   <Sparkles className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
                 </div>
 
-                {/* Typing dots */}
                 {(phase === "typing") && (
                   <motion.div
                     initial={{ opacity: 0, y: 4 }}
@@ -200,7 +203,6 @@ function AskiMateChatDemo() {
                   </motion.div>
                 )}
 
-                {/* Answer */}
                 {(phase === "answer" || phase === "hold") && (
                   <motion.div
                     initial={{ opacity: 0, y: 5 }}
@@ -233,7 +235,295 @@ function AskiMateChatDemo() {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Live interactive chat                                               */
+/* ------------------------------------------------------------------ */
+
+interface ChatMessage {
+  role: "user" | "ai";
+  text: string;
+  isLastAnswer?: boolean;
+}
+
+function HeroLiveChat() {
+  const [, navigate] = useLocation();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [questionsUsed, setQuestionsUsed] = useState(0);
+  const [rateLimited, setRateLimited] = useState(false);
+  const [lastQuestion, setLastQuestion] = useState("");
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isLoading]);
+
+  const remaining = MAX_QUESTIONS - questionsUsed;
+
+  async function handleSend() {
+    const q = input.trim();
+    if (!q || isLoading || rateLimited) return;
+
+    setInput("");
+    setLastQuestion(q);
+    setMessages((prev) => [...prev.map((m) => ({ ...m, isLastAnswer: false })), { role: "user", text: q }]);
+    setIsLoading(true);
+
+    try {
+      const data = await apiFetch<{ answer: string; needsHumanReview: boolean }>(
+        "/askimate/hero-ask",
+        { method: "POST", body: JSON.stringify({ message: q }) },
+      );
+      setQuestionsUsed((n) => n + 1);
+      setMessages((prev) => [
+        ...prev,
+        { role: "ai", text: data.answer, isLastAnswer: true },
+      ]);
+      try {
+        sessionStorage.setItem("hero_last_question", q);
+      } catch {
+        // ignore
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "";
+      if (msg === "RATE_LIMITED") {
+        setRateLimited(true);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "ai",
+            text: "You've used your 3 demo questions. Sign up to AskiMate to keep the conversation going with no limits.",
+            isLastAnswer: false,
+          },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { role: "ai", text: msg || "Something went wrong. Please try again.", isLastAnswer: false },
+        ]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function handleContinue() {
+    trackHeroCtr();
+    try {
+      sessionStorage.setItem("hero_last_question", lastQuestion);
+    } catch {
+      // ignore
+    }
+    navigate("/askimate");
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      void handleSend();
+    }
+  }
+
+  const canAsk = !isLoading && !rateLimited && questionsUsed < MAX_QUESTIONS;
+
+  return (
+    <div className="relative w-full flex items-start justify-center">
+
+      {/* Ambient glow */}
+      <motion.div
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-[-6%] bg-gradient-to-br from-primary/30 via-secondary/10 to-transparent rounded-[44px] blur-3xl pointer-events-none"
+      />
+
+      {/* Card */}
+      <div
+        className="relative z-10 w-full max-w-[92%] rounded-3xl overflow-hidden border border-primary/15"
+        style={{ boxShadow: "0 0 45px rgba(66,20,125,0.18), 0 16px 40px rgba(66,20,125,0.10), 0 4px 20px rgba(0,0,0,0.06)" }}
+      >
+        <div className="absolute inset-0 bg-white" />
+        <CardHeader />
+
+        {/* Chat messages */}
+        <div className="relative z-10 px-4 pt-4 pb-2 space-y-3 min-h-[200px] max-h-[280px] overflow-y-auto bg-slate-50/60 scroll-smooth">
+          {messages.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-2.5"
+            >
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md shadow-primary/30">
+                <Sparkles className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
+              </div>
+              <div className="max-w-[82%] bg-white border border-slate-200 text-[11.5px] text-slate-800 px-4 py-2.5 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
+                Hi! Ask me anything about studying abroad — visas, universities, documents, or anything else on your mind.
+              </div>
+            </motion.div>
+          )}
+
+          <AnimatePresence initial={false}>
+            {messages.map((msg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {msg.role === "user" ? (
+                  <div className="flex justify-end">
+                    <div className="max-w-[78%] bg-primary text-white text-[11.5px] px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm shadow-primary/25">
+                      {msg.text}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md shadow-primary/30">
+                        <Sparkles className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
+                      </div>
+                      <div className="max-w-[82%] bg-white border border-slate-200 text-[11.5px] text-slate-800 px-4 py-2.5 rounded-2xl rounded-tl-sm shadow-sm leading-relaxed">
+                        {msg.text}
+                      </div>
+                    </div>
+                    {msg.isLastAnswer && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.3 }}
+                        className="pl-9"
+                      >
+                        <button
+                          onClick={handleContinue}
+                          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-primary bg-primary/8 hover:bg-primary/15 border border-primary/20 px-3 py-1.5 rounded-full transition-colors"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5" />
+                          Continue in AskiMate
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-2.5"
+            >
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md shadow-primary/30">
+                <Sparkles className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
+              </div>
+              <div className="bg-slate-100 border border-slate-200 px-3.5 py-2.5 rounded-2xl rounded-tl-sm">
+                <TypingDots />
+              </div>
+            </motion.div>
+          )}
+
+          <div ref={chatEndRef} />
+        </div>
+
+        {/* Input area */}
+        <div className="relative z-10 px-4 py-3 border-t border-slate-200 bg-white">
+          {rateLimited || questionsUsed >= MAX_QUESTIONS ? (
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-[11px] text-slate-500 leading-snug">
+                Demo limit reached — continue in AskiMate for unlimited answers.
+              </p>
+              <button
+                onClick={handleContinue}
+                className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-white bg-primary hover:bg-primary/90 px-3 py-1.5 rounded-full transition-colors"
+              >
+                <Sparkles className="w-3 h-3" />
+                Open AskiMate
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="flex-1 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-3.5 py-2 focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={`Ask anything… (${remaining} question${remaining !== 1 ? "s" : ""} left)`}
+                  className="flex-1 bg-transparent text-[12px] text-slate-800 placeholder:text-slate-400 outline-none min-w-0"
+                  maxLength={500}
+                  disabled={!canAsk}
+                  autoFocus
+                />
+              </div>
+              <button
+                onClick={() => void handleSend()}
+                disabled={!canAsk || !input.trim()}
+                className="w-8 h-8 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0 transition-colors shadow-sm shadow-primary/30"
+                aria-label="Send"
+              >
+                <Send className="w-3.5 h-3.5 text-white" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Mode toggle                                                         */
+/* ------------------------------------------------------------------ */
+type Mode = "demo" | "live";
+
+function ModeToggle({ mode, onChange }: { mode: Mode; onChange: (m: Mode) => void }) {
+  return (
+    <div className="flex items-center justify-center mb-4">
+      <div className="inline-flex items-center bg-white/80 backdrop-blur-sm border border-primary/15 rounded-full p-1 shadow-sm gap-0.5">
+        <button
+          onClick={() => onChange("demo")}
+          className={`text-[11.5px] font-semibold px-4 py-1.5 rounded-full transition-all ${
+            mode === "demo"
+              ? "bg-primary text-white shadow-sm"
+              : "text-slate-500 hover:text-primary"
+          }`}
+        >
+          Demo
+        </button>
+        <button
+          onClick={() => onChange("live")}
+          className={`inline-flex items-center gap-1.5 text-[11.5px] font-semibold px-4 py-1.5 rounded-full transition-all ${
+            mode === "live"
+              ? "bg-primary text-white shadow-sm"
+              : "text-slate-500 hover:text-primary"
+          }`}
+        >
+          <span className="flex h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+          Try it live
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hero                                                                */
+/* ------------------------------------------------------------------ */
 export function Hero() {
+  const aiVisualRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(aiVisualRef, { once: true, margin: "-15% 0px" });
+  const [glowActive, setGlowActive] = useState(false);
+  const [mode, setMode] = useState<Mode>("demo");
+
+  useEffect(() => {
+    if (!inView) return;
+    if (!window.matchMedia("(max-width: 1023px)").matches) return;
+    setGlowActive(true);
+    const t = setTimeout(() => setGlowActive(false), 1400);
+    return () => clearTimeout(t);
+  }, [inView]);
+
   return (
     <section id="home" aria-label="Introduction" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-br from-slate-50 via-violet-50/30 to-blue-50/40">
       <div className="absolute top-20 right-0 w-[700px] h-[700px] bg-primary/6 rounded-full blur-3xl -z-10" />
@@ -243,7 +533,7 @@ export function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
 
-          {/* Left column — unchanged */}
+          {/* Left column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -317,15 +607,59 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Right column — animated chat visual */}
+          {/* Right column — demo or live chat */}
           <motion.div
+            ref={aiVisualRef}
             id="hero-ai-visual"
             initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative h-[420px] sm:h-[440px] lg:h-[500px] w-full"
+            animate={
+              glowActive
+                ? {
+                    opacity: 1,
+                    scale: [1, 1.035, 1.01, 1],
+                    filter: [
+                      "drop-shadow(0 0 0px rgba(139,92,246,0))",
+                      "drop-shadow(0 0 28px rgba(139,92,246,0.7))",
+                      "drop-shadow(0 0 14px rgba(139,92,246,0.4))",
+                      "drop-shadow(0 0 0px rgba(139,92,246,0))",
+                    ],
+                  }
+                : { opacity: 1, scale: 1, filter: "drop-shadow(0 0 0px rgba(139,92,246,0))" }
+            }
+            transition={
+              glowActive
+                ? { duration: 1.2, ease: "easeInOut" }
+                : { duration: 0.9, delay: 0.2 }
+            }
+            className="relative w-full"
           >
-            <AskiMateChatDemo />
+            <ModeToggle mode={mode} onChange={setMode} />
+
+            <AnimatePresence mode="wait">
+              {mode === "demo" ? (
+                <motion.div
+                  key="demo"
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.3 }}
+                  className="h-[420px] sm:h-[440px] lg:h-[500px] w-full"
+                >
+                  <AskiMateChatDemo />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="live"
+                  initial={{ opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 12 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full"
+                >
+                  <HeroLiveChat />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
 
         </div>

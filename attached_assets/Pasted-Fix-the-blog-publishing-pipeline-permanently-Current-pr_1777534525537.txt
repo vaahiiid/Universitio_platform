@@ -1,0 +1,56 @@
+Fix the blog publishing pipeline permanently.
+
+Current problem:
+A new blog post was added to postsData.ts and sitemap.xml, the image was copied, and the frontend was built, but the post still does NOT appear:
+
+* on the live blog URL
+* on the homepage latest blog section
+* on the blog listing page
+
+This issue keeps repeating.
+
+Root issue to investigate:
+The blog system appears to use generated chunk files (postsChunk*.ts), not postsData.ts directly. New posts are being added to postsData.ts but not reliably propagated to the files actually used by the app.
+
+Tasks:
+
+1. Identify the exact source of truth used by:
+
+   * Blog listing page
+   * Homepage latest posts section
+   * Individual blog post route
+2. Confirm whether the app reads from postsData.ts or generated postsChunk*.ts files.
+3. If chunks are used, make the process automatic and permanent:
+
+   * Update the frontend build script so split-posts always runs before build.
+   * Example:
+     "build": "pnpm run split-posts && vite build"
+4. Also ensure Preview/dev mode reads fresh blog data:
+
+   * Either run split-posts before dev startup
+   * Or make dev read directly from the master source
+   * But do not leave a manual step.
+5. Add verification after build:
+
+   * Confirm the new slug exists in generated chunk files
+   * Confirm the new slug exists in dist output
+   * Confirm the direct blog URL returns the article
+   * Confirm homepage latest 3 includes the newest post
+   * Confirm blog listing page includes the newest post
+6. Clean any stale dist before building.
+7. Do not just append to postsData.ts and build.
+8. Do not say it is done unless all verification checks pass.
+
+For this specific post, verify this slug:
+what-is-ucas-complete-guide-international-students
+
+Final required outcome:
+
+* The post is live at:
+  https://universitio.com/blog/what-is-ucas-complete-guide-international-students
+* It appears first in the homepage Latest Insights section
+* It appears first on the blog listing page
+* Future blog posts automatically appear without needing me to remind you to run split-posts
+
+Important:
+This must be fixed permanently. Every future blog post must automatically update the real data source used by the site, Preview, and production build.

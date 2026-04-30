@@ -1,8 +1,88 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import fs from "fs";
+import { exec } from "child_process";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+function staleChunksWarnerPlugin(): Plugin {
+  return {
+    name: "stale-chunks-warner",
+    configureServer(server) {
+      const blogDir = path.resolve(import.meta.dirname, "src/data/blog");
+      const postsDataPath = path.join(blogDir, "postsData.ts");
+
+      try {
+        const postsDataContent = fs.readFileSync(postsDataPath, "utf-8");
+        const postsDataCount = (postsDataContent.match(/^\s+id:\s+\d+,/gm) ?? []).length;
+        const postsDataMtime = fs.statSync(postsDataPath).mtimeMs;
+
+        const chunkFiles = fs.readdirSync(blogDir).filter((f) => /^postsChunk\d+\.ts$/.test(f));
+        let chunkTotal = 0;
+        let newestChunkMtime = 0;
+        for (const file of chunkFiles) {
+          const filePath = path.join(blogDir, file);
+          const content = fs.readFileSync(filePath, "utf-8");
+          chunkTotal += (content.match(/^\s+"id":\s+\d+,/gm) ?? []).length;
+          const mtime = fs.statSync(filePath).mtimeMs;
+          if (mtime > newestChunkMtime) newestChunkMtime = mtime;
+        }
+
+        const countMismatch = postsDataCount !== chunkTotal;
+        const postsDataNewer = newestChunkMtime > 0 && postsDataMtime > newestChunkMtime;
+
+        if (countMismatch || postsDataNewer) {
+          const reason = countMismatch
+            ? `postsData.ts has ${postsDataCount} post(s), but the chunk files contain ${chunkTotal} post(s)`
+            : `postsData.ts was modified after the chunk files were last generated`;
+          server.config.logger.warn(
+            `\n⚠️  [stale-chunks-warner] Blog chunk files appear to be out of date.\n` +
+            `   ${reason}.\n` +
+            `   Run the following command to regenerate the chunk files:\n\n` +
+            `     pnpm --filter @workspace/universitio run split-posts\n`,
+            { timestamp: true }
+          );
+        }
+      } catch (err) {
+        server.config.logger.warn(
+          `[stale-chunks-warner] Could not check chunk freshness: ${(err as Error).message}`,
+          { timestamp: true }
+        );
+      }
+    },
+  };
+}
+
+function homePostsWatcherPlugin(): Plugin {
+  return {
+    name: "home-posts-watcher",
+    configureServer(server) {
+      const chunksDir = path.resolve(import.meta.dirname, "src/data/blog");
+      server.watcher.add(path.join(chunksDir, "postsChunk*.ts"));
+      server.watcher.on("change", (file) => {
+        if (/postsChunk\d+\.ts$/.test(file)) {
+          exec(
+            "tsx scripts/generate-home-posts.ts",
+            { cwd: import.meta.dirname },
+            (err, stdout, stderr) => {
+              if (err) {
+                server.config.logger.error(
+                  `[home-posts-watcher] Failed to regenerate homePostsData:\n${stderr}`
+                );
+              } else {
+                server.config.logger.info(
+                  `[home-posts-watcher] ${stdout.trim()}`,
+                  { timestamp: true }
+                );
+              }
+            }
+          );
+        }
+      });
+    },
+  };
+}
 
 const isBuild = process.argv.includes("build");
 
@@ -30,6 +110,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
+    staleChunksWarnerPlugin(),
+    homePostsWatcherPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

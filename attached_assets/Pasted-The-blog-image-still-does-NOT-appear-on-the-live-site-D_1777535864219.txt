@@ -1,0 +1,59 @@
+The blog image still does NOT appear on the live site. Do not repeat local-only checks.
+
+Problem:
+You previously claimed the image was fixed, but after publish the live site still does not show the blog image.
+
+Specific post:
+Slug:
+what-is-ucas-complete-guide-international-students
+
+Expected live image URL:
+https://universitio.com/blog-images/what-is-ucas-complete-guide-international-students.jpg
+
+IMPORTANT:
+
+* Do NOT only test localhost
+* Do NOT say it is fixed unless the live URL returns the image
+* Do NOT only check dist
+* Do NOT only check Preview
+* Verify the actual live published domain
+
+Tasks:
+
+1. Check whether the image file is tracked/available in the deploy artifact, not only in local public/.
+2. Confirm the image exists at:
+   services/universitio/public/blog-images/what-is-ucas-complete-guide-international-students.jpg
+3. Confirm the production build contains it at:
+   services/universitio/dist/public/blog-images/what-is-ucas-complete-guide-international-students.jpg
+4. Confirm the post image field uses the exact same filename and path format as working blog images.
+5. Compare with a working blog image path from another post and make this one identical in pattern.
+6. Run the full pipeline:
+
+   * split-posts
+   * generate-home-posts
+   * generate-sitemap
+   * clean build
+7. Publish/deploy the updated artifact.
+8. After publish, test the actual live URL:
+   https://universitio.com/blog-images/what-is-ucas-complete-guide-international-students.jpg
+9. It must return:
+
+   * HTTP 200
+   * Content-Type: image/jpeg
+10. Also test the live blog post page and homepage card visually.
+
+If live image URL is still 404 or broken:
+
+* Inspect Replit deployment artifact config
+* Confirm publicDir is correct
+* Confirm static files from services/universitio/dist/public/blog-images are included in publish
+* Fix the publish artifact path
+
+Final requirement:
+Do not mark complete until the image is visible on:
+
+* live blog post page
+* live blog listing card
+* live homepage latest card
+
+This must be verified on https://universitio.com, not localhost.
