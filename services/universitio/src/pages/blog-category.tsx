@@ -69,6 +69,43 @@ export default function BlogCategoryPage() {
         <meta name="description" content={`Browse ${category.postCount} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`} />
         <link rel="canonical" href={`https://universitio.com/blog/category/${category.slug}`} />
         {category.postCount < 3 && <meta name="robots" content="noindex, follow" />}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": `${category.name} Articles | Universitio Blog`,
+          "description": `Browse ${category.postCount} articles about ${category.name}. Expert guidance and insights for international students from Universitio.`,
+          "url": `https://universitio.com/blog/category/${category.slug}`,
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://universitio.com/#website",
+            "name": "Universitio",
+            "url": "https://universitio.com"
+          }
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://universitio.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Blog",
+              "item": "https://universitio.com/blog"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": category.name,
+              "item": `https://universitio.com/blog/category/${category.slug}`
+            }
+          ]
+        })}</script>
       </Helmet>
       <Navbar />
       <main className="flex-grow pt-28 pb-24">
